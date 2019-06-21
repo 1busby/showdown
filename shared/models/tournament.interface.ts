@@ -1,8 +1,8 @@
-import { IEvent } from './event.interface';
+import { IEvent } from './';
 
 export interface ITournament {
   id: string;
-  events?: IEvent[] | string[];
+  events?: IEvent[];
   createdOn: Date;
   updatedOn: Date;
 }

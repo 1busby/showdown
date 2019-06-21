@@ -1,9 +1,8 @@
-import { IUser } from './user.interface';
-import { IMatch } from './match.interface';
+import { IUser, IMatch } from './';
 
 export interface ISet {
   id: string;
-  match: IMatch | string;
+  match: IMatch;
   highSeedScore: number;
   lowSeedScore: number;
   winner: IUser;

@@ -1,3 +1,3 @@
-export default interface MatchObserver {
+export interface MatchObserver {
   update();
 }

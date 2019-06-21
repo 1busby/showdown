@@ -1,8 +1,9 @@
-import { IMatch, IUser } from './index';
+import { IMatch, IUser, ITeam } from './';
 
 export interface IEvent {
   id: string;
-  matches: IMatch[] | string[];
+  matches: IMatch[];
+  contestants: ITeam[];
   createdOn: Date;
   updatedOn: Date;
   createdBy?: Partial<IUser> | string;

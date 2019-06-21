@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { IEvent } from './../../../../shared/models/event.interface';
-import { ITournament } from './../../../../shared/models/tournament.interface';
-import { Match } from './../../shared/models/match';
+import { MatchContainer } from '../../shared/models/match-container';
 
 @Injectable()
 export class DataService {
-  tournament: BehaviorSubject<ITournament>;
-  event: BehaviorSubject<IEvent>;
+  matchContainers: BehaviorSubject<MatchContainer[]> = new BehaviorSubject<
+    MatchContainer[]
+  >(null);
 
-  matches: BehaviorSubject<Match>[];
+  setMatchContainers(matchContainers: MatchContainer[]) {
+    this.matchContainers.next(matchContainers);
+  }
+
+  getMatchContainers() {
+    return this.matchContainers;
+  }
 }

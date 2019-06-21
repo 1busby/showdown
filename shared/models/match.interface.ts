@@ -1,9 +1,11 @@
-import { ITeam } from './team.interface';
-import { IEvent } from './event.interface';
+import { IUser, ITeam, IEvent } from './';
 
 export interface IMatch {
   id: string;
   event: IEvent | string;
-  teams?: ITeam[] | string[];
+  teams?: ITeam[];
+  highSeed: ITeam;
+  lowSeed: ITeam;
+  winner: ITeam;
   winnerSeed: string;
 }

@@ -1,6 +1,6 @@
-import MatchObserver from './match-observer';
+import { MatchObserver } from './match-observer';
 
-export default abstract class MatchSubject {
+export abstract class MatchSubject {
   observers: MatchObserver[] = [];
 
   addObserver(observer) {

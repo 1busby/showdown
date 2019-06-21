@@ -1,4 +1,4 @@
-import { ITeam } from './team.interface';
+import { ITeam } from './';
 
 export interface IUser {
   id: string;
@@ -6,7 +6,7 @@ export interface IUser {
   email?: string;
   firstName?: string;
   lastName?: string;
-  teams: ITeam[] | string[];
+  teams: ITeam[];
   createdOn: Date;
   updatedOn: Date;
 }

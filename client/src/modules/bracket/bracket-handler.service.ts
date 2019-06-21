@@ -1,9 +1,10 @@
+import { DataService } from './data.service';
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
 
 import { Observable } from 'rxjs';
 
-import { Match } from '../../shared/models/match';
+import { MatchContainer } from '../../shared/models/match-container';
 import { IEvent, IUser } from '../../../../shared/models/index';
 
 @Injectable()
@@ -12,7 +13,7 @@ export class BracketHandler {
   activeContestants: IUser[] = [];
   numContestants: number; // number of contestants
   numTotalMatches: number; // number of total matches in the tournament
-  matches: any = []; // all the matches in this tournament
+  matchContainers: MatchContainer[] = []; // all the matches in this tournament
 
   numRows: number; // number of rows for layout ()
   high2Power: number; // the next 2^x after numContestants
@@ -34,25 +35,25 @@ export class BracketHandler {
   matchHeight;
   padding = 16;
 
-  constructor() {}
+  constructor(private data: DataService) {}
 
   createBracket(bracket) {
     this.activeEvent = bracket;
     this.activeContestants = bracket.contestants;
-    this.matches = [];
+    this.matchContainers = [];
     this.numContestants = this.activeContestants.length;
     this.createSeededBracket();
     this.defineLayoutPlacements();
 
     // if this is a previously stored match, update the winners
     if (this.activeEvent.matches) {
-      this.matches.forEach((match, i) => {
+      this.matchContainers.forEach((match, i) => {
         if (this.activeEvent.matches[i].winnerSeed) {
           match.updateWinner(this.activeEvent.matches[i].winnerSeed);
         }
       });
     }
-    this.store.dispatch(new fromBracketStore.PushMatches(this.matches));
+    this.data.setMatchContainers(this.matchContainers);
   }
 
   createSeededBracket() {
@@ -73,8 +74,8 @@ export class BracketHandler {
     // Starts from the winner and moves back.
     for (let i = 0; i < this.numRounds; i++) {
       for (let j = 0; j < numFirstRoundMatchesTops / Math.pow(2, i); j++) {
-        this.matchesPerRound[i][j] = new Match();
-        this.matches.push(this.matchesPerRound[i][j]);
+        this.matchesPerRound[i][j] = new MatchContainer();
+        this.matchContainers.push(this.matchesPerRound[i][j]);
       }
     }
 
@@ -207,7 +208,7 @@ export class BracketHandler {
           if (!thisMatch.lowSeed) {
             thisMatch.updateWinner(thisMatch.highSeed);
             soonToBeRemovedMatches.push(thisMatch);
-            thisMatch.updateWinner(Match.HIGHSEED);
+            thisMatch.updateWinner(MatchContainer.HIGHSEED);
           }
           thisMatch.top = (this.matchHeight + this.padding) * j + this.padding;
           thisMatch.left = 0 + this.padding;
@@ -224,7 +225,7 @@ export class BracketHandler {
         }
       }
     }
-    this.matches = this.matches.filter(m => {
+    this.matchContainers = this.matchContainers.filter(m => {
       return soonToBeRemovedMatches.indexOf(m) === -1;
     });
   }
@@ -240,10 +241,15 @@ export class BracketHandler {
       return 0;
     }
     --x;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 1;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 2;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 4;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 8;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 16;
     return x + 1;
   }
@@ -258,11 +264,17 @@ export class BracketHandler {
     if (x < 0) {
       return 0;
     }
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 1;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 2;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 4;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 8;
+    // tslint:disable-next-line: no-bitwise
     x |= x >> 16;
+    // tslint:disable-next-line: no-bitwise
     return x - (x >> 1);
   }
 }

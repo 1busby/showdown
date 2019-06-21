@@ -1,9 +1,10 @@
-import { IUser } from './user.interface';
+import { IUser } from './';
 
 export interface ITeam {
   id?: string;
   name?: string;
-  users?: IUser[] | string[];
+  seed: number;
+  users?: IUser[];
   createdOn: Date;
   updatedOn: Date;
 }
