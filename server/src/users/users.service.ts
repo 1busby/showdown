@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersArgs } from './dto/users.args';
-import { User } from './models/user';
+import { User } from './user';
 
 @Injectable()
 export class UsersService {

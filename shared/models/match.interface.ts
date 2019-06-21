@@ -4,5 +4,6 @@ import { IEvent } from './event.interface';
 export interface IMatch {
   id: string;
   event: IEvent | string;
-  teams: ITeam[] | string[];
+  teams?: ITeam[] | string[];
+  winnerSeed: string;
 }

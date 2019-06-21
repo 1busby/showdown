@@ -1,5 +1,6 @@
+import { Team } from './../teams/team';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { IUser, ITeam } from '../../../../shared/models/index';
+import { IUser } from '../../../shared/models/index';
 
 @ObjectType()
 export class User implements IUser {
@@ -18,8 +19,8 @@ export class User implements IUser {
   @Field({ nullable: true })
   lastName?: string;
 
-  @Field(type => [ID])
-  teams: string[];
+  @Field(type => [Team])
+  teams: Team[];
 
   @Field({ nullable: true })
   createdOn: Date;

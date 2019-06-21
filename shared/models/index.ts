@@ -1,6 +1,6 @@
-export { IUser } from './interfaces/user.interface';
-export { ITournament } from './interfaces/tournament.interface';
-export { ITeam } from './interfaces/team.interface';
-export { IMatch } from './interfaces/match.interface';
-export { IGame } from './interfaces/game.interface';
-export { IEvent } from './interfaces/event.interface';
+export { IUser } from './user.interface';
+export { ITournament } from './tournament.interface';
+export { ITeam } from './team.interface';
+export { IMatch } from './match.interface';
+export { ISet } from './set.interface';
+export { IEvent } from './event.interface';

@@ -3,5 +3,7 @@ import { IUser } from './user.interface';
 export interface ITeam {
   id?: string;
   name?: string;
-  players: IUser[] | string[];
+  users?: IUser[] | string[];
+  createdOn: Date;
+  updatedOn: Date;
 }
