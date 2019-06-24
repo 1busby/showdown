@@ -11,7 +11,7 @@ export class User implements IUser {
   alias: string;
 
   @Field({ nullable: true })
-  email: string;
+  email?: string;
 
   @Field({ nullable: true })
   firstName?: string;
@@ -19,8 +19,8 @@ export class User implements IUser {
   @Field({ nullable: true })
   lastName?: string;
 
-  @Field(type => [Team])
-  teams: Team[];
+  @Field(type => [Team], { nullable: true })
+  teams?: Team[];
 
   @Field({ nullable: true })
   createdOn: Date;

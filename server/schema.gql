@@ -9,6 +9,8 @@ scalar Date
 type Mutation {
   addRecipe(newRecipeData: NewRecipeInput!): Recipe!
   removeRecipe(id: String!): Boolean!
+  addUser(newUserData: NewUserInput!): User!
+  removeUser(id: String!): Boolean!
 }
 
 input NewRecipeInput {
@@ -17,9 +19,17 @@ input NewRecipeInput {
   ingredients: [String!]!
 }
 
+input NewUserInput {
+  title: String!
+  description: String
+  ingredients: [String!]!
+}
+
 type Query {
   recipe(id: String!): Recipe!
   recipes(skip: Int = 0, take: Int = 25): [Recipe!]!
+  user(id: String!): User!
+  users(skip: Int = 0, take: Int = 25): [User!]!
 }
 
 type Recipe {
@@ -32,4 +42,28 @@ type Recipe {
 
 type Subscription {
   recipeAdded: Recipe!
+  userAdded: User!
+}
+
+type Team {
+  id: ID!
+  alias: String!
+  email: String
+  firstName: String
+  lastName: String
+  createdOn: Date!
+  updatedOn: Date!
+  users: [User!]!
+  seed: Float!
+}
+
+type User {
+  id: ID!
+  alias: String!
+  email: String
+  firstName: String
+  lastName: String
+  teams: [Team!]!
+  createdOn: Date
+  updatedOn: Date
 }

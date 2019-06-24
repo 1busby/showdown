@@ -6,7 +6,7 @@ export interface IUser {
   email?: string;
   firstName?: string;
   lastName?: string;
-  teams: ITeam[];
+  teams?: ITeam[];
   createdOn: Date;
   updatedOn: Date;
 }
