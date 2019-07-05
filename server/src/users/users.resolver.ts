@@ -27,9 +27,7 @@ export class UsersResolver {
   }
 
   @Mutation(returns => User)
-  async addUser(
-    @Args('newUserData') newUserData: NewUserInput,
-  ): Promise<User> {
+  async addUser(@Args('newUserData') newUserData: NewUserInput): Promise<User> {
     const user = await this.usersService.create(newUserData);
     pubSub.publish('userAdded', { userAdded: user });
     return user;

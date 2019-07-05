@@ -1,3 +1,4 @@
+import { Team } from './../../teams/team';
 import { IsOptional, Length, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
@@ -5,13 +6,14 @@ import { Field, InputType } from 'type-graphql';
 export class NewUserInput {
   @Field()
   @MaxLength(30)
-  title: string;
+  alias: string;
 
-  @Field({ nullable: true })
-  @IsOptional()
-  @Length(30, 255)
-  description?: string;
+  @Field()
+  email: string;
 
-  @Field(type => [String])
-  ingredients: string[];
+  @Field()
+  firstName: string;
+
+  @Field()
+  lastName: string;
 }

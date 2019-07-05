@@ -20,9 +20,10 @@ input NewRecipeInput {
 }
 
 input NewUserInput {
-  title: String!
-  description: String
-  ingredients: [String!]!
+  alias: String!
+  email: String!
+  firstName: String!
+  lastName: String!
 }
 
 type Query {
@@ -47,13 +48,10 @@ type Subscription {
 
 type Team {
   id: ID!
-  alias: String!
-  email: String
-  firstName: String
-  lastName: String
+  name: String!
   createdOn: Date!
   updatedOn: Date!
-  users: [User!]!
+  users: [User!]
   seed: Float!
 }
 
@@ -63,7 +61,7 @@ type User {
   email: String
   firstName: String
   lastName: String
-  teams: [Team!]!
+  teams: [Team!]
   createdOn: Date
   updatedOn: Date
 }
