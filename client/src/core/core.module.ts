@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-
-import { HomeComponent } from './pages/home.component';
+import { AuthModule } from './authentication/auth.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [HomeComponent],
-  exports: [AppRoutingModule]
+  declarations: [],
+  exports: [FormsModule, ReactiveFormsModule, AppRoutingModule, AuthModule]
 })
 export class CoreModule {}

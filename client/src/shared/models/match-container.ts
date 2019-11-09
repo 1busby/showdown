@@ -1,5 +1,3 @@
-import { BehaviorSubject } from 'rxjs';
-
 import { ITeam, ISet, IMatch } from './../../../../shared/models';
 import { MatchSubject, MatchObserver } from '../utils';
 
