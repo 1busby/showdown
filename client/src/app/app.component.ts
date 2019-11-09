@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { AuthenticationService } from 'src/core/authentication/services/authentication.service';
 import { User } from 'src/core/authentication/models/user';
+import { AppStore } from 'src/app.store';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,14 @@ import { User } from 'src/core/authentication/models/user';
 export class AppComponent {
   currentUser: User;
 
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(
+    private authenticationService: AuthenticationService,
+    private appStore: AppStore
+  ) {
     this.authenticationService.currentUser.subscribe(
-      x => (this.currentUser = x)
+      x => {
+        this.currentUser = x;
+      }
     );
-  }
-
-  logout() {
-    this.authenticationService.logout();
   }
 }

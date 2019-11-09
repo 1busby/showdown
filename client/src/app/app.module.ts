@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { ErrorInterceptor } from 'src/core/authentication/helpers/error.interceptor';
 import { JwtInterceptor } from 'src/core/authentication/helpers/jwt.interceptor';
 import { fakeBackendProvider } from 'src/core/authentication/helpers/fake-backend';
+import { AppStore } from 'src/app.store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,8 @@ import { fakeBackendProvider } from 'src/core/authentication/helpers/fake-backen
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    fakeBackendProvider
+    fakeBackendProvider,
+    AppStore
   ],
   bootstrap: [AppComponent]
 })

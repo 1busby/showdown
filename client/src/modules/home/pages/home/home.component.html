@@ -1,9 +1,12 @@
 <mat-toolbar color="primary">
-    <span>Brackets</span>
+    <span [routerLink]="'/home'">Brackets</span>
 
     <span class="toolbar-remaining-space"></span>
 
-    <span><button mat-button>Log In</button></span>
+    <span>
+        <button *ngIf="!user" mat-button (click)="login()">Log In</button>
+        <button *ngIf="user" mat-button (click)="logout()">Logout</button>
+    </span>
 </mat-toolbar>
 
 <router-outlet></router-outlet>
