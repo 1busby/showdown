@@ -55,6 +55,7 @@ type Team {
   seed: Float!
 }
 
+"""The user model"""
 type User {
   id: ID!
   alias: String!

@@ -10,11 +10,19 @@ export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async create(data: NewUserInput): Promise<User> {
-    const createdUser = new this.userModel(data);
+    const createdUser = new this.userModel({
+      ...data,
+      createdOn: Date.now(),
+      updatedOn: Date.now(),
+    });
     return await createdUser.save();
   }
 
   async findOneById(id: string): Promise<User> {
+    return {} as any;
+  }
+
+  async findOneByToken(token: string): Promise<User> {
     return {} as any;
   }
 

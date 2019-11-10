@@ -2,7 +2,7 @@ import { Team } from './../teams/team';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { IUser } from '../../../shared/models/index';
 
-@ObjectType()
+@ObjectType({ description: 'The user model' })
 export class User implements IUser {
   @Field(type => ID)
   id: string;
