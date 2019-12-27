@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { ErrorInterceptor } from 'src/core/authentication/helpers/error.interceptor';
 import { JwtInterceptor } from 'src/core/authentication/helpers/jwt.interceptor';
 import { fakeBackendProvider } from 'src/core/authentication/helpers/fake-backend';
-import { AppStore } from 'src/app.store';
+import { AppStore } from 'src/shared/app.store';
 
 @NgModule({
   declarations: [AppComponent],

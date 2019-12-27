@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthenticationService } from '../../services';
+import { AppStore } from 'src/shared/app.store';
 
 @Component({
   selector: 'app-login',
@@ -21,10 +22,11 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private appStore: AppStore
   ) {
     // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
+    if (this.appStore.loggedInUser.value) {
       this.router.navigate(['/']);
     }
   }

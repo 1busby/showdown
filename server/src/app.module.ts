@@ -5,12 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RecipesModule } from './recipes/recipes.module';
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from 'config/config.module';
-import appConfig from '../config/app.secret.json';
+import appConfig from '../config/app.secret.config.json';
 
 @Module({
   imports: [
-    ConfigModule,
     MongooseModule.forRoot(appConfig.DATABASE_URL),
     RecipesModule,
     UsersModule,

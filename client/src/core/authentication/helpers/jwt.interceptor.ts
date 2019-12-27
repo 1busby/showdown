@@ -7,18 +7,18 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { AuthenticationService } from '../services/authentication.service';
+import { AppStore } from 'src/shared/app.store';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(private appStore: AppStore) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
-    let currentUser = this.authenticationService.currentUserValue;
+    const currentUser = this.appStore.loggedInUser.value;
     if (currentUser && currentUser.token) {
       request = request.clone({
         setHeaders: {

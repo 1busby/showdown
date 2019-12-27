@@ -2,11 +2,13 @@ import { ITeam } from './';
 
 export interface IUser {
   id: string;
-  alias: string;
+  name: string;
   email?: string;
-  firstName?: string;
-  lastName?: string;
   teams?: ITeam[];
   createdOn: Date;
   updatedOn: Date;
+
+  // front end only
+  token?: string;
+  password: string;
 }

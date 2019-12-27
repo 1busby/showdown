@@ -1,39 +1,24 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { User } from 'src/core/authentication/models/user';
 import { AuthenticationService } from 'src/core/authentication/services';
+import { AppStore } from 'src/shared/app.store';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnDestroy {
-  user: User;
-  ngUnsubscribe = new Subject();
+export class HomeComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
-  ) {
-    this.user = authenticationService.currentUserValue;
-    authenticationService.currentUser
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(user => {
-        this.user = user;
-      });
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
+    private authenticationService: AuthenticationService,
+    public appStore: AppStore
+  ) {}
 
   login() {
-    this.router.navigateByUrl('/home/login');
+    this.router.navigateByUrl('/login');
   }
 
   logout() {

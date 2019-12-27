@@ -1,11 +1,11 @@
-<mat-toolbar color="primary">
+<mat-toolbar>
     <span [routerLink]="'/home'">Brackets</span>
 
     <span class="toolbar-remaining-space"></span>
 
     <span>
-        <button *ngIf="!user" mat-button (click)="login()">Log In</button>
-        <button *ngIf="user" mat-button (click)="logout()">Logout</button>
+        <button *ngIf="!(appStore.loggedInUser | async)" mat-button (click)="login()">Log In</button>
+        <button *ngIf="(appStore.loggedInUser | async)" mat-button (click)="logout()">Logout</button>
     </span>
 </mat-toolbar>
 
