@@ -1,4 +1,4 @@
-import { ITeam, ISet, IMatch } from './../../../../shared/models';
+import { ITeam, ISet, IMatch, IContestant } from './../../../../shared/models';
 import { MatchSubject, MatchObserver } from '../utils';
 
 export class MatchContainer extends MatchSubject implements MatchObserver {
@@ -7,14 +7,14 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
 
   match: IMatch;
 
-  highSeed: ITeam; // higher seeded contestant that will be shown at top
-  lowSeed: ITeam; // lower seeded contestant that will be shown at bottom
+  highSeed: IContestant; // higher seeded contestant that will be shown at top
+  lowSeed: IContestant; // lower seeded contestant that will be shown at bottom
   highMatch: IMatch; // match from previous round that will determine our high seed
   lowMatch: IMatch; // match from previous round that will determine our low seed
 
   sets: ISet[] = [];
 
-  winner: ITeam; // the winner of this match;
+  winner: IContestant; // the winner of this match;
   winnerSeed: string;
 
   width;

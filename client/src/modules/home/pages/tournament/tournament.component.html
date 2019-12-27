@@ -1,13 +1,13 @@
 <form>
   <mat-form-field appearance="outline">
     <mat-label>Tournament Name</mat-label>
-    <input matInput required value="Mega Battle XTreme" />
+    <input matInput required [value]="(tournament | async)?.name" />
   </mat-form-field>
 
   <mat-form-field appearance="outline">
     <mat-label>Number of Contestants</mat-label>
-    <input matInput type="number" required value="16"/>
+    <input matInput type="number" required [value]="(tournament | async)?.contestantCount"/>
   </mat-form-field>
 
-  <contestant-list [contestants]="contestants"></contestant-list>
+  <contestant-list [contestants]="(tournament | async)?.contestants"></contestant-list>
 </form>

@@ -5,11 +5,11 @@ import _ from 'lodash';
 import { Observable } from 'rxjs';
 
 import { MatchContainer } from '../../shared/models/match-container';
-import { IEvent, IUser } from '../../../../shared/models/index';
+import { IUser, ITournament } from '../../../../shared/models/index';
 
 @Injectable()
 export class BracketHandler {
-  activeEvent: IEvent;
+  activeTournament: ITournament;
   activeContestants: IUser[] = [];
   numContestants: number; // number of contestants
   numTotalMatches: number; // number of total matches in the tournament
@@ -38,7 +38,7 @@ export class BracketHandler {
   constructor(private data: DataService) {}
 
   createBracket(bracket) {
-    this.activeEvent = bracket;
+    this.activeTournament = bracket;
     this.activeContestants = bracket.contestants;
     this.matchContainers = [];
     this.numContestants = this.activeContestants.length;
@@ -46,10 +46,10 @@ export class BracketHandler {
     this.defineLayoutPlacements();
 
     // if this is a previously stored match, update the winners
-    if (this.activeEvent.matches) {
+    if (this.activeTournament.matches) {
       this.matchContainers.forEach((match, i) => {
-        if (this.activeEvent.matches[i].winnerSeed) {
-          match.updateWinner(this.activeEvent.matches[i].winnerSeed);
+        if (this.activeTournament.matches[i].winnerSeed) {
+          match.updateWinner(this.activeTournament.matches[i].winnerSeed);
         }
       });
     }

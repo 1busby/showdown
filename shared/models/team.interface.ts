@@ -1,8 +1,6 @@
-import { IUser } from './';
+import { IUser, IContestant } from './';
 
-export interface ITeam {
-  id?: string;
-  name?: string;
+export interface ITeam extends IContestant {
   seed: number;
   users?: IUser[];
   createdOn: Date;

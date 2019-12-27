@@ -1,12 +1,11 @@
 import { ITeam } from './';
+import { IContestant } from './contestant.interface';
 
-export interface IUser {
-  id?: string;
-  name?: string;
+export interface IUser extends IContestant {
   email?: string;
   teams?: ITeam[];
-  createdOn?: Date;
-  updatedOn?: Date;
+  createdOn: Date;
+  updatedOn: Date;
 
   // front end only
   token?: string;

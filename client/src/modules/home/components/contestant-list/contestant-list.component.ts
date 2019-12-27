@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { IUser } from '../../../../../../shared/models';
+import { IContestant } from '../../../../../../shared/models';
 
 @Component({
   selector: 'contestant-list',
@@ -7,8 +7,8 @@ import { IUser } from '../../../../../../shared/models';
   styleUrls: ['./contestant-list.component.scss']
 })
 export class ContestantListComponent {
-  @Input() contestants: IUser[];
-  @Output() newContestantsEmitter = new EventEmitter<IUser[]>();
+  @Input() contestants: Partial<IContestant>[];
+  @Output() newContestantsEmitter = new EventEmitter<IContestant[]>();
 
   newContestantName = '';
 
@@ -20,7 +20,7 @@ export class ContestantListComponent {
       ...this.contestants,
       {
         name: this.newContestantName
-      } as IUser
+      }
     ];
     this.newContestantName = '';
   }
