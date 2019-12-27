@@ -6,9 +6,10 @@ import { HomeComponent } from './pages/home/home.component';
 import { BracketModule } from '../bracket/bracket.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { LandingComponent } from './pages/landing/landing.component';
+import { TournamentComponent } from './pages/tournament/tournament.component';
 
 @NgModule({
-  declarations: [HomeComponent, LandingComponent],
+  declarations: [HomeComponent, LandingComponent, TournamentComponent],
   imports: [CommonModule, HomeRoutingModule, SharedModule, BracketModule],
 })
 export class HomeModule {}
