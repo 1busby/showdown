@@ -1,0 +1,13 @@
+<form>
+  <mat-form-field appearance="outline">
+    <mat-label>Tournament Name</mat-label>
+    <input matInput required value="Mega Battle XTreme" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Number of Contestants</mat-label>
+    <input matInput type="number" required value="16"/>
+  </mat-form-field>
+
+  <contestant-list [contestants]="contestants"></contestant-list>
+</form>

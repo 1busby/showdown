@@ -1,12 +1,20 @@
 <mat-toolbar>
-    <span [routerLink]="'/home'">Brackets</span>
+  <span [routerLink]="'/home'">Brackets</span>
 
-    <span class="toolbar-remaining-space"></span>
+  <span class="toolbar-remaining-space"></span>
 
-    <span>
-        <button *ngIf="!(appStore.loggedInUser | async)" mat-button (click)="login()">Log In</button>
-        <button *ngIf="(appStore.loggedInUser | async)" mat-button (click)="logout()">Logout</button>
-    </span>
+  <span>
+    <button
+      *ngIf="!(appStore.loggedInUser | async)"
+      mat-button
+      (click)="login()"
+    >
+      Log In
+    </button>
+    <button *ngIf="appStore.loggedInUser | async" mat-button (click)="logout()">
+      Logout
+    </button>
+  </span>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

@@ -1,12 +1,12 @@
 import { ITeam } from './';
 
 export interface IUser {
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
   email?: string;
   teams?: ITeam[];
-  createdOn: Date;
-  updatedOn: Date;
+  createdOn?: Date;
+  updatedOn?: Date;
 
   // front end only
   token?: string;
