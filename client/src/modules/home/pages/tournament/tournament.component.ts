@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { ITournament } from '../../../../../../shared/models';
 import { AppStore } from 'src/shared/app.store';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-tournament',
@@ -12,8 +13,10 @@ import { BehaviorSubject } from 'rxjs';
 export class TournamentComponent {
   tournament: BehaviorSubject<Partial<ITournament>>;
 
-  constructor(private appStore: AppStore) {
+  constructor(private router: Router, private appStore: AppStore) {
     this.tournament = this.appStore.currentTournament;
-    
+    if (!appStore.currentTournament.value) {
+      this.router.navigateByUrl('/');
+    }
   }
 }

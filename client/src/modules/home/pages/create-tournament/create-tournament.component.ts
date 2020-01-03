@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ITournament } from '../../../../../../shared/models';
 import { AppStore } from 'src/shared/app.store';
+import { Router } from '@angular/router';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-create-tournament',
@@ -23,16 +25,22 @@ export class CreateTournamentComponent {
     return this.tournamentForm.get('contestants') as FormArray;
   }
 
-  constructor(private formBuilder: FormBuilder, private appStore: AppStore) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private appStore: AppStore
+  ) {
     this.tournament = this.appStore.currentTournament;
 
-    this.tournament.next({
-      name: 'Mega Battle XTreme',
-      contestantCount: 8,
-      contestants: []
-    });
-
-    this.loadTournament();
+    if (this.tournament.value) {
+      this.loadTournament();
+    } else {
+      this.tournamentForm.patchValue({
+        name: 'Mega Battle XTreme',
+        contestantCount: 8,
+        contestants: []
+      });
+    }
   }
 
   loadTournament() {
@@ -40,14 +48,26 @@ export class CreateTournamentComponent {
   }
 
   onSubmit() {
-    debugger
+    // TODO extra validation, maybe show a confirmation dialog
+    this.createTournament();
   }
 
   createTournament() {
-    
+    this.tournament.next(this.tournamentForm.value);
+    this.router.navigateByUrl('/tournament');
   }
 
   addContestant(contestant) {
     this.contestants.push(this.formBuilder.control(contestant));
+  }
+
+  countChange(event) {
+    const contestantSizeDifference =
+      this.contestants.length - event.target.value;
+    if (contestantSizeDifference > 0) {
+      for (let i = 0; i < contestantSizeDifference; i++) {
+        this.contestants.removeAt(this.contestants.length - 1 - i);
+      }
+    }
   }
 }

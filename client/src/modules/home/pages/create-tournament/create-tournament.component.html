@@ -6,7 +6,7 @@
 
   <mat-form-field appearance="outline">
     <mat-label>Number of Contestants</mat-label>
-    <input matInput type="number" required formControlName="contestantCount" />
+    <input matInput type="number" required formControlName="contestantCount" (change)="countChange($event)" />
   </mat-form-field>
 
   <contestant-list
@@ -15,5 +15,5 @@
     (newContestantEmitter)="addContestant($event)"
   ></contestant-list>
 
-  <button type="submit" mat-raised-button color="primary">Primary</button>
+  <button type="submit" mat-raised-button color="primary">Create</button>
 </form>

@@ -28,13 +28,7 @@ export class ContestantListComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (
-      changes.contestants.isFirstChange() ||
-      changes.contestants.currentValue.length !==
-        changes.contestants.previousValue.length
-    ) {
-        this.buildList();
-    }
+    this.buildList();
   }
 
   buildList() {
@@ -46,7 +40,7 @@ export class ContestantListComponent implements OnChanges {
       this.localContestantList.push({});
     }
     if (this.isOrderedBySeed) {
-      this.localContestantList.sort((a,b) => a.seed - b.seed);
+      this.localContestantList.sort((a, b) => a.seed - b.seed);
     }
   }
 
@@ -54,9 +48,10 @@ export class ContestantListComponent implements OnChanges {
     if (this.newContestantForm.value.name.length < 1) {
       return;
     }
-    this.newContestantEmitter.emit({
+    const newContestant = {
       name: this.newContestantForm.value.name
-    });
+    };
+    this.newContestantEmitter.emit(newContestant);
     this.newContestantForm.controls.name.setValue('');
   }
 }
