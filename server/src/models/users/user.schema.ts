@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import mongodb = require('mongodb');
 
 export const UserSchema = new mongoose.Schema({
-  alias: String,
+  name: String,
   email: String,
   firstName: String,
   lastName: String,

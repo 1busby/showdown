@@ -4,7 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RecipesModule } from './recipes/recipes.module';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './models/users/users.module';
 import appConfig from '../config/app.secret.config.json';
 
 @Module({

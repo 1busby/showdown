@@ -9,5 +9,5 @@ export interface IUser extends IContestant {
 
   // front end only
   token?: string;
-  password: string;
+  password?: string;
 }
