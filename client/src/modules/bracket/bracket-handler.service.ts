@@ -5,12 +5,12 @@ import _ from 'lodash';
 import { Observable } from 'rxjs';
 
 import { MatchContainer } from '../../shared/models/match-container';
-import { IUser, ITournament } from '../../../../shared/models/index';
+import { ITournament, IContestant } from '../../../../shared/models/index';
 
 @Injectable()
 export class BracketHandler {
-  activeTournament: ITournament;
-  activeContestants: IUser[] = [];
+  activeTournament: Partial<ITournament>;
+  activeContestants: Partial<IContestant>[] = [];
   numContestants: number; // number of contestants
   numTotalMatches: number; // number of total matches in the tournament
   matchContainers: MatchContainer[] = []; // all the matches in this tournament
@@ -29,15 +29,15 @@ export class BracketHandler {
   // matchesPerRound[round][match]
   matchesPerRound = [];
 
-  windowWidth;
-  windowHeight;
+  containerWidth = 0;
+  containerHeight = 0;
   matchWidth;
   matchHeight;
   padding = 16;
 
   constructor(private data: DataService) {}
 
-  createBracket(bracket) {
+  createBracket(bracket: Partial<ITournament>) {
     this.activeTournament = bracket;
     this.activeContestants = bracket.contestants;
     this.matchContainers = [];
@@ -194,11 +194,8 @@ export class BracketHandler {
   }
 
   defineLayoutPlacements() {
-    this.windowWidth = window.innerWidth - this.padding * 2;
-    this.windowHeight = window.innerHeight - this.padding * 2;
-
-    this.matchWidth = this.windowWidth / 3 - this.padding;
-    this.matchHeight = this.windowHeight / 4 - this.padding;
+    this.matchWidth = this.containerWidth / 3 - this.padding;
+    this.matchHeight = this.containerHeight / 4 - this.padding;
 
     const soonToBeRemovedMatches = [];
     for (let i = 0; i < this.matchesPerRound.length; i++) {
@@ -276,5 +273,10 @@ export class BracketHandler {
     x |= x >> 16;
     // tslint:disable-next-line: no-bitwise
     return x - (x >> 1);
+  }
+
+  setContainerDimensions(width: number, height: number) {
+    this.containerWidth = width - this.padding * 2;
+    this.containerHeight = height - this.padding * 2;
   }
 }

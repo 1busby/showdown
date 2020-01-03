@@ -1,23 +1,26 @@
-<ng-container *ngIf="matches | async">
-  <mat-card
-    *ngFor="let match of matches | async"
-    [ngStyle]="match.getStyleObject()"
-    (click)="showMatchDetails(match)"
-  >
-    you did it!
-    <!-- <mat-grid-list class="match-grid">
+<div class="container">
+  <ng-container *ngIf="matches | async">
+    <mat-card
+      class="match-container"
+      *ngFor="let match of matches | async"
+      [ngStyle]="match.getStyleObject()"
+      (click)="showMatchDetails(match)"
+    >
+      you did it!
+      <!-- <mat-grid-list class="match-grid">
       <ion-row class="match-row">
         <ion-label *ngIf="match?.highSeed">{{
-          match.highSeed.alias
+          match.highSeed.name
         }}</ion-label>
       </ion-row>
       <ion-row class="match-row">
-        <ion-label *ngIf="match?.lowSeed">{{ match.lowSeed.alias }}</ion-label>
+        <ion-label *ngIf="match?.lowSeed">{{ match.lowSeed.name }}</ion-label>
       </ion-row>
     </mat-grid-list> -->
-  </mat-card>
-</ng-container>
+    </mat-card>
+  </ng-container>
 
-<button ion-fab style="color: #FFFFFF" color="accent">
-  edit
-</button>
+  <button style="color: #FFFFFF" color="accent">
+    edit
+  </button>
+</div>

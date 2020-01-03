@@ -1,25 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, ElementRef, Self } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { BracketHandler } from '../bracket-handler.service';
 import { MatchContainer } from './../../../shared/models/match-container';
 import { DataService } from './../data.service';
+import { ITournament } from '../../../../../shared/models';
 
 @Component({
-  // tslint:disable-next-line: component-selector
   selector: 'bracket-view',
   templateUrl: './bracket-view.component.html',
   styleUrls: ['./bracket-view.component.scss']
 })
-export class BracketViewComponent implements OnInit {
+export class BracketViewComponent implements OnChanges, OnInit {
   showingModal = false;
 
   matches: BehaviorSubject<MatchContainer[]>;
 
+  @Input() tournament: ITournament;
+
   constructor(
+    @Self() private element: ElementRef,
     private bracketHandler: BracketHandler,
     private data: DataService
-  ) {}
+  ) {
+    this.bracketHandler.setContainerDimensions(element.nativeElement.offsetWidth, element.nativeElement.offsetHeight);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+  }
 
   ngOnInit() {
     this.matches = this.data.getMatchContainers();
@@ -27,19 +36,19 @@ export class BracketViewComponent implements OnInit {
     this.bracketHandler.createBracket({
       contestants: [
         {
-          alias: 'A',
+          name: 'A',
           seed: 0
         },
         {
-          alias: 'B',
+          name: 'B',
           seed: 1
         },
         {
-          alias: 'C',
+          name: 'C',
           seed: 2
         },
         {
-          alias: 'D',
+          name: 'D',
           seed: 4
         }
       ]
