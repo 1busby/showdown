@@ -20,7 +20,7 @@ input NewRecipeInput {
 }
 
 input NewUserInput {
-  alias: String!
+  name: String!
   email: String!
   firstName: String!
   lastName: String!
@@ -58,7 +58,7 @@ type Team {
 """The user model"""
 type User {
   id: ID!
-  alias: String!
+  name: String!
   email: String
   firstName: String
   lastName: String
