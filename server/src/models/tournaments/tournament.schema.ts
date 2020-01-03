@@ -3,10 +3,15 @@ import mongodb = require('mongodb');
 
 export const TournamentSchema = new mongoose.Schema({
   name: String,
-  email: String,
-  firstName: String,
-  lastName: String,
-  teams: mongodb.ObjectID,
+  contestantCount: Number,
+  contestants: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  }],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   createdOn: Date,
   updatedOn: Date,
 });
