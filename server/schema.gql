@@ -11,12 +11,21 @@ type Mutation {
   removeRecipe(id: String!): Boolean!
   addUser(newUserData: NewUserInput!): User!
   removeUser(id: String!): Boolean!
+  addTournament(newTournamentData: NewTournamentInput!): Tournament!
+  removeTournament(id: String!): Boolean!
 }
 
 input NewRecipeInput {
   title: String!
   description: String
   ingredients: [String!]!
+}
+
+input NewTournamentInput {
+  name: String!
+  email: String!
+  firstName: String!
+  lastName: String!
 }
 
 input NewUserInput {
@@ -29,8 +38,8 @@ input NewUserInput {
 type Query {
   recipe(id: String!): Recipe!
   recipes(skip: Int = 0, take: Int = 25): [Recipe!]!
-  user(id: String!): User!
-  users(skip: Int = 0, take: Int = 25): [User!]!
+  user(id: String!): Tournament!
+  users(skip: Int = 0, take: Int = 25): [Tournament!]!
 }
 
 type Recipe {
@@ -44,6 +53,7 @@ type Recipe {
 type Subscription {
   recipeAdded: Recipe!
   userAdded: User!
+  tournamentAdded: Tournament!
 }
 
 type Team {
@@ -53,6 +63,17 @@ type Team {
   updatedOn: Date!
   users: [User!]
   seed: Float!
+}
+
+"""The user model"""
+type Tournament {
+  id: ID!
+  name: String!
+  contestantCount: Float!
+  createdBy: User!
+  teams: [Team!]
+  createdOn: Date
+  updatedOn: Date
 }
 
 """The user model"""
