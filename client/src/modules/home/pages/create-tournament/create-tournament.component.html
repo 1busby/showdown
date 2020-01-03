@@ -1,0 +1,19 @@
+<form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label>Tournament Name</mat-label>
+    <input type="text" matInput required formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Number of Contestants</mat-label>
+    <input matInput type="number" required formControlName="contestantCount" />
+  </mat-form-field>
+
+  <contestant-list
+    [contestantCount]="tournamentForm.value.contestantCount"
+    [contestants]="contestants.value"
+    (newContestantEmitter)="addContestant($event)"
+  ></contestant-list>
+
+  <button type="submit" mat-raised-button color="primary">Primary</button>
+</form>

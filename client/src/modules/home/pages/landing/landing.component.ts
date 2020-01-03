@@ -11,6 +11,6 @@ export class LandingComponent {
   constructor(private router: Router) {}
 
   createTournament() {
-    this.router.navigateByUrl('/home/tournament');
+    this.router.navigateByUrl('/tournament/create');
   }
 }

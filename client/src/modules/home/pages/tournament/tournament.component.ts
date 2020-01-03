@@ -14,16 +14,6 @@ export class TournamentComponent {
 
   constructor(private appStore: AppStore) {
     this.tournament = this.appStore.currentTournament;
-    this.setupNewTournament();
-  }
-
-  setupNewTournament() {
-    this.appStore.currentTournament.next(
-      {
-        name: 'Mega Battle XTreme',
-        contestantCount: 16,
-        contestants: []
-      }
-    );
+    
   }
 }

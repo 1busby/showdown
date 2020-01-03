@@ -1,13 +1,27 @@
 <section class="list-container">
-  <ng-container *ngFor="let contestant of contestants; let i = index">
-    {{ i + 1 }}: {{ contestant.name }} <br>
+  <ng-container *ngFor="let contestant of localContestantList; let i = index">
+    <div class="contestant-container">
+      {{ contestant.name }}
+    </div>
   </ng-container>
-  <br>
-  <mat-form-field appearance="outline">
-    <mat-label>New Contestant</mat-label>
-    <input matInput [(ngModel)]="newContestantName"/>
-    <button type="button" *ngIf="newContestantName" mat-button matSuffix mat-icon-button aria-label="App" (click)="addContestant()">
-      <mat-icon>send</mat-icon>
-    </button>
-  </mat-form-field>
+  <ng-container [formGroup]="newContestantForm" (ngSubmit)="addContestant()">
+    <mat-form-field
+      appearance="outline"
+      *ngIf="contestants.length < contestantCount"
+    >
+      <mat-label>New Contestant</mat-label>
+      <input matInput formControlName="name" />
+      <button
+        type="submit"
+        *ngIf="newContestantForm.value.name"
+        mat-button
+        matSuffix
+        mat-icon-button
+        aria-label="App"
+        (click)="addContestant()"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-form-field>
+  </ng-container>
 </section>
