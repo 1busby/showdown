@@ -1,6 +1,6 @@
 <div class="container">
   <ng-container *ngIf="matches | async">
-    <mat-card
+    <div
       class="match-container"
       *ngFor="let match of matches | async"
       [ngStyle]="match.getStyleObject()"
@@ -17,7 +17,7 @@
         <ion-label *ngIf="match?.lowSeed">{{ match.lowSeed.name }}</ion-label>
       </ion-row>
     </mat-grid-list> -->
-    </mat-card>
+    </div>
   </ng-container>
 
   <button style="color: #FFFFFF" color="accent">

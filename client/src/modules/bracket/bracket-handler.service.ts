@@ -194,8 +194,12 @@ export class BracketHandler {
   }
 
   defineLayoutPlacements() {
+    // this.containerWidth = window.innerWidth - this.padding * 2;
+    // this.containerHeight = window.innerHeight - this.padding * 2;
+
     this.matchWidth = this.containerWidth / 3 - this.padding;
     this.matchHeight = this.containerHeight / 4 - this.padding;
+    debugger
 
     const soonToBeRemovedMatches = [];
     for (let i = 0; i < this.matchesPerRound.length; i++) {

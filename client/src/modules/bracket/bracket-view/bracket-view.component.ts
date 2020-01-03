@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges, ElementRef, Self } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  SimpleChanges,
+  OnChanges,
+  ElementRef,
+  Self
+} from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { BracketHandler } from '../bracket-handler.service';
@@ -22,17 +30,16 @@ export class BracketViewComponent implements OnChanges, OnInit {
     @Self() private element: ElementRef,
     private bracketHandler: BracketHandler,
     private data: DataService
-  ) {
-    this.bracketHandler.setContainerDimensions(element.nativeElement.offsetWidth, element.nativeElement.offsetHeight);
-  }
+  ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
   ngOnInit() {
     this.matches = this.data.getMatchContainers();
-
+    this.bracketHandler.setContainerDimensions(
+      this.element.nativeElement.firstElementChild.offsetWidth,
+      this.element.nativeElement.firstElementChild.offsetHeight
+    );
     this.bracketHandler.createBracket({
       contestants: [
         {
