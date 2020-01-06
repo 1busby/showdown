@@ -13,7 +13,7 @@ export class TournamentsResolver {
   constructor(private readonly tournamentsService: TournamentsService) {}
 
   @Query(returns => Tournament)
-  async user(@Args('id') id: string): Promise<Tournament> {
+  async tournament(@Args('id') id: string): Promise<Tournament> {
     const tournament = await this.tournamentsService.findOneById(id);
     if (!tournament) {
       throw new NotFoundException(id);
@@ -21,15 +21,24 @@ export class TournamentsResolver {
     return tournament;
   }
 
+  @Query(returns => Tournament)
+  async tournamentFromLinkCode(@Args('linkCode') linkCode: string): Promise<Tournament> {
+    const tournament = await this.tournamentsService.findOneByLinkCode(linkCode);
+    if (!tournament) {
+      throw new NotFoundException(linkCode);
+    }
+    return tournament;
+  }
+
   @Query(returns => [Tournament])
-  users(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+  tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
     return this.tournamentsService.findAll(tournamentsArgs);
   }
 
   @Mutation(returns => Tournament)
   async addTournament(@Args('newTournamentData') newTournamentData: NewTournamentInput): Promise<Tournament> {
     const tournament = await this.tournamentsService.create(newTournamentData);
-    pubSub.publish('tournamentAdded', { userAdded: tournament });
+    pubSub.publish('tournamentAdded', { tournamentAdded: tournament });
     return tournament;
   }
 

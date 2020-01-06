@@ -24,8 +24,8 @@ export class TournamentsService {
     return {} as any;
   }
 
-  async findOneByToken(token: string): Promise<Tournament> {
-    return {} as any;
+  async findOneByLinkCode(linkCode: string): Promise<Tournament> {
+    return await this.tournamentModel.findOne({ linkCode });
   }
 
   async findAll(tournamentssArgs: TournamentsArgs): Promise<Tournament[]> {

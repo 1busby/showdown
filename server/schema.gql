@@ -44,8 +44,11 @@ input NewUserInput {
 type Query {
   recipe(id: String!): Recipe!
   recipes(skip: Int = 0, take: Int = 25): [Recipe!]!
-  user(id: String!): Tournament!
-  users(skip: Int = 0, take: Int = 25): [Tournament!]!
+  user(id: String!): User!
+  users(skip: Int = 0, take: Int = 25): [User!]!
+  tournament(id: String!): Tournament!
+  tournamentFromLinkCode(linkCode: String!): Tournament!
+  tournaments(skip: Int = 0, take: Int = 25): [Tournament!]!
 }
 
 type Recipe {

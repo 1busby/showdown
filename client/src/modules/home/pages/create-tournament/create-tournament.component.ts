@@ -54,9 +54,14 @@ export class CreateTournamentComponent {
   }
 
   createTournament() {
-    this.tournamentDataService.createTournament(this.tournamentForm.value);
-    this.tournament.next(this.tournamentForm.value);
-    this.router.navigateByUrl('/tournament');
+    this.tournamentDataService
+      .createTournament(this.tournamentForm.value)
+      .toPromise()
+      .then(result => {
+        this.router.navigateByUrl(
+          `/tournament/view/${result.data['addTournament'].linkCode}`
+        );
+      });
   }
 
   addContestant(contestant) {

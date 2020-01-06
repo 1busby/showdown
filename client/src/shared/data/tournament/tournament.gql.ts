@@ -14,5 +14,15 @@ export const TournamentGqlFunctions = {
         }
       }
     `
+  },
+  queries: {
+    tournamentFromLinkCode: gql`
+      query tournamentFromLinkCode($linkCode: String!) {
+        tournamentFromLinkCode(linkCode: $linkCode) {
+          id
+          name
+        }
+      }
+    `
   }
 };
