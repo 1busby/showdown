@@ -11,6 +11,7 @@ export const TournamentGqlFunctions = {
           name
           contestantCount
           linkCode
+          createdOn
         }
       }
     `
@@ -21,6 +22,9 @@ export const TournamentGqlFunctions = {
         tournamentFromLinkCode(linkCode: $linkCode) {
           id
           name
+          contestantCount
+          linkCode
+          createdOn
         }
       }
     `

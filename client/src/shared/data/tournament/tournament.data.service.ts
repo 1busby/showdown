@@ -34,7 +34,6 @@ export class TournamentDataService {
       })
       .pipe(
         tap(result => {
-          debugger;
           this.appStore.currentTournament.next(result.data['tournamentFromLinkCode']);
         })
       );

@@ -1,3 +1,12 @@
-<div>{{ (this.tournament | async)?.name }}</div>
+<ng-container *ngIf="this.tournament | async">
+  <div id="tournament-name">{{ (this.tournament | async)?.name }}</div>
 
-<!-- <!-- <bracket-view></bracket-view> --> -->
+  <!-- <bracket-view></bracket-view> -->
+
+  <mat-tab-group dynamicHeight>
+    <mat-tab label="Updates">
+      <div>Tournament created on {{ (this.tournament | async).createdOn | date:'long' }}</div>
+    </mat-tab>
+    <mat-tab label="Contestants"> </mat-tab>
+  </mat-tab-group>
+</ng-container>
