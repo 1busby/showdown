@@ -3,9 +3,9 @@ import gql from 'graphql-tag';
 export const TournamentGqlFunctions = {
   mutations: {
     createTournament: gql`
-      mutation {
+      mutation addTournament($name: String!, $contestantCount: Int!) {
         addTournament(
-          newTournamentData: { name: "test 73", contestantCount: 14 }
+          newTournamentData: { name: $name, contestantCount: $contestantCount }
         ) {
           id
           name

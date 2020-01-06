@@ -1,7 +1,5 @@
 import { MaxLength } from 'class-validator';
-import { Field, InputType, ID } from 'type-graphql';
-import { User } from '../../users/user';
-import { Tournament } from '../tournament';
+import { Field, InputType, ID, Int } from 'type-graphql';
 
 @InputType()
 export class NewTournamentInput {
@@ -9,7 +7,7 @@ export class NewTournamentInput {
   @MaxLength(30)
   name: string;
 
-  @Field()
+  @Field(type => Int)
   contestantCount: number;
 
   @Field(type => ID, { nullable: true })

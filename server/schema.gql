@@ -30,7 +30,7 @@ input NewRecipeInput {
 
 input NewTournamentInput {
   name: String!
-  contestantCount: Float!
+  contestantCount: Int!
   createdBy: ID
 }
 
@@ -75,7 +75,7 @@ type Team {
 type Tournament {
   id: ID!
   name: String!
-  contestantCount: Float!
+  contestantCount: Int!
   createdBy: User
   teams: [Team!]
   createdOn: Date

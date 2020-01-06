@@ -1,5 +1,5 @@
 import { Team } from '../teams/team';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType, Int } from 'type-graphql';
 import { ITournament } from '../../../../shared/models/index';
 import { User } from '../users/user';
 
@@ -11,7 +11,7 @@ export class Tournament implements ITournament {
   @Field()
   name: string;
 
-  @Field()
+  @Field(type => Int)
   contestantCount: number;
 
   @Field(type => User, { nullable: true })
