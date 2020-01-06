@@ -4,18 +4,20 @@ import { Model } from 'mongoose';
 import { NewTournamentInput } from './dto/new-tournament.input';
 import { TournamentsArgs } from './dto/tournaments.args';
 import { Tournament } from './tournament';
+import * as shortid from 'shortid';
 
 @Injectable()
 export class TournamentsService {
   constructor(@InjectModel('Tournament') private readonly tournamentModel: Model<Tournament>) {}
 
   async create(data: NewTournamentInput): Promise<Tournament> {
-    const createdUser = new this.tournamentModel({
+    const createdTournament = new this.tournamentModel({
       ...data,
+      linkCode: shortid.generate(),
       createdOn: Date.now(),
       updatedOn: Date.now(),
     });
-    return await createdUser.save();
+    return await createdTournament.save();
   }
 
   async findOneById(id: string): Promise<Tournament> {

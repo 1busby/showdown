@@ -80,6 +80,7 @@ type Tournament {
   teams: [Team!]
   createdOn: Date
   updatedOn: Date
+  linkCode: String!
 }
 
 """The user model"""

@@ -3,9 +3,10 @@ import { Field, ID, ObjectType } from 'type-graphql';
 import { Team } from '../teams/team';
 import { IUser } from '../../../../shared/models/index';
 import { Contestant } from '../contestants/contestant.interface';
+import { Document } from 'mongoose';
 
 @ObjectType({ description: 'The user model', implements: Contestant })
-export class User implements IUser {
+export class User extends Document implements IUser {
   // fields inherited from Contestant
   id: string;
   name: string;

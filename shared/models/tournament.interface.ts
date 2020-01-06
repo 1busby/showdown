@@ -9,4 +9,5 @@ export interface ITournament {
   createdBy: Partial<IUser> | string;
   createdOn: Date;
   updatedOn: Date;
+  linkCode: string;
 }
