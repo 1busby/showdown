@@ -1,9 +1,9 @@
 import { Team } from '../teams/team';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { IUser, ITeam, ITournament } from '../../../../shared/models/index';
+import { ITournament } from '../../../../shared/models/index';
 import { User } from '../users/user';
 
-@ObjectType({ description: 'The user model' })
+@ObjectType({ description: 'The tournament model' })
 export class Tournament implements ITournament {
   @Field(type => ID)
   id: string;
@@ -14,11 +14,11 @@ export class Tournament implements ITournament {
   @Field()
   contestantCount: number;
 
-  @Field(type => User)
-  createdBy: IUser;
+  @Field(type => User, { nullable: true })
+  createdBy: User;
 
   @Field(type => [Team], { nullable: true })
-  teams?: ITeam[];
+  teams?: Team[];
 
   @Field({ nullable: true })
   createdOn: Date;

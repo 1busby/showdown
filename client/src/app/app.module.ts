@@ -11,6 +11,7 @@ import { ErrorInterceptor } from 'src/core/authentication/helpers/error.intercep
 import { JwtInterceptor } from 'src/core/authentication/helpers/jwt.interceptor';
 import { fakeBackendProvider } from 'src/core/authentication/helpers/fake-backend';
 import { AppStore } from 'src/shared/app.store';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +21,8 @@ import { AppStore } from 'src/shared/app.store';
     HttpClientModule,
     CoreModule,
     SharedModule,
-    BracketModule
+    BracketModule,
+    GraphQLModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

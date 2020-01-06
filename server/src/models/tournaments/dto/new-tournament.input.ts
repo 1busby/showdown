@@ -1,7 +1,7 @@
-import { IsOptional, Length, MaxLength } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
-import { IUser } from '../../../../../shared/models';
-import { User } from 'src/models/users/user';
+import { MaxLength } from 'class-validator';
+import { Field, InputType, ID } from 'type-graphql';
+import { User } from '../../users/user';
+import { Tournament } from '../tournament';
 
 @InputType()
 export class NewTournamentInput {
@@ -10,11 +10,8 @@ export class NewTournamentInput {
   name: string;
 
   @Field()
-  contestantCount: string;
+  contestantCount: number;
 
-  @Field(type => User)
-  createdBy: IUser;
-
-  @Field()
-  lastName: string;
+  @Field(type => ID, { nullable: true })
+  createdBy?: string;
 }

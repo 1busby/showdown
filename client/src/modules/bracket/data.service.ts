@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { MatchContainer } from '../../shared/models/match-container';
+import { MatchContainer } from '../../shared/data/match-container';
 
 @Injectable()
 export class DataService {

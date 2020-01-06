@@ -10,7 +10,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 
 import { BracketHandler } from '../bracket-handler.service';
-import { MatchContainer } from './../../../shared/models/match-container';
+import { MatchContainer } from '../../../shared/data/match-container';
 import { DataService } from './../data.service';
 import { ITournament } from '../../../../../shared/models';
 

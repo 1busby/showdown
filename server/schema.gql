@@ -3,6 +3,13 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+interface Contestant {
+  id: ID!
+  name: String!
+  seed: Int
+  points: Int
+}
+
 """Date custom scalar type"""
 scalar Date
 
@@ -23,9 +30,8 @@ input NewRecipeInput {
 
 input NewTournamentInput {
   name: String!
-  email: String!
-  firstName: String!
-  lastName: String!
+  contestantCount: Float!
+  createdBy: ID
 }
 
 input NewUserInput {
@@ -65,21 +71,23 @@ type Team {
   seed: Float!
 }
 
-"""The user model"""
+"""The tournament model"""
 type Tournament {
   id: ID!
   name: String!
   contestantCount: Float!
-  createdBy: User!
+  createdBy: User
   teams: [Team!]
   createdOn: Date
   updatedOn: Date
 }
 
 """The user model"""
-type User {
+type User implements Contestant {
   id: ID!
   name: String!
+  seed: Int
+  points: Int
   email: String
   firstName: String
   lastName: String

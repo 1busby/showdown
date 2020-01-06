@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ITournament } from '../../../../../../shared/models';
 import { AppStore } from 'src/shared/app.store';
 import { Router } from '@angular/router';
-import { debug } from 'util';
+import { TournamentDataService } from 'src/shared/data/tournament/tournament.data.service';
 
 @Component({
   selector: 'app-create-tournament',
@@ -28,7 +28,8 @@ export class CreateTournamentComponent {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private appStore: AppStore
+    private appStore: AppStore,
+    private tournamentDataService: TournamentDataService
   ) {
     this.tournament = this.appStore.currentTournament;
 
@@ -53,6 +54,7 @@ export class CreateTournamentComponent {
   }
 
   createTournament() {
+    this.tournamentDataService.createTournament(this.tournamentForm.value);
     this.tournament.next(this.tournamentForm.value);
     this.router.navigateByUrl('/tournament');
   }

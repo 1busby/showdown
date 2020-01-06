@@ -1,14 +1,16 @@
-import { Team } from '../teams/team';
 import { Field, ID, ObjectType } from 'type-graphql';
-import { IUser, ITeam } from '../../../../shared/models/index';
 
-@ObjectType({ description: 'The user model' })
+import { Team } from '../teams/team';
+import { IUser } from '../../../../shared/models/index';
+import { Contestant } from '../contestants/contestant.interface';
+
+@ObjectType({ description: 'The user model', implements: Contestant })
 export class User implements IUser {
-  @Field(type => ID)
+  // fields inherited from Contestant
   id: string;
-
-  @Field()
   name: string;
+  seed?: number;
+  points?: number;
 
   @Field({ nullable: true })
   email?: string;
@@ -20,7 +22,7 @@ export class User implements IUser {
   lastName?: string;
 
   @Field(type => [Team], { nullable: true })
-  teams?: ITeam[];
+  teams?: Team[];
 
   @Field({ nullable: true })
   createdOn: Date;

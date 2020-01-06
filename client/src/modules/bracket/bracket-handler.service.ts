@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { Observable } from 'rxjs';
 
-import { MatchContainer } from '../../shared/models/match-container';
+import { MatchContainer } from '../../shared/data/match-container';
 import { ITournament, IContestant } from '../../../../shared/models/index';
 
 @Injectable()
