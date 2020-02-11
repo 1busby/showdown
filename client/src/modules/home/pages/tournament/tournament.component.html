@@ -3,10 +3,33 @@
 
   <!-- <bracket-view></bracket-view> -->
 
-  <mat-tab-group dynamicHeight>
+  <mat-tab-group>
     <mat-tab label="Updates">
-      <div>Tournament created on {{ (this.tournament | async).createdOn | date:'long' }}</div>
+      <mat-card>
+        <mat-card-content>
+          Tournament created on
+          {{ (this.tournament | async).createdOn | date: 'long' }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-content>
+          Tournament created on
+          {{ (this.tournament | async).createdOn | date: 'long' }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-content>
+          Tournament created on
+          {{ (this.tournament | async).createdOn | date: 'long' }}
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
-    <mat-tab label="Contestants"> </mat-tab>
+
+    <mat-tab label="Contestants">
+      <div>
+        {{ (this.tournament | async)?.contestants?.length || 0 }} / {{ (this.tournament | async)?.contestantCount }} Contestants Registered
+      </div>
+      <button mat-raised-button color="primary" (click)="joinClicked()">Join</button>
+    </mat-tab>
   </mat-tab-group>
 </ng-container>

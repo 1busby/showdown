@@ -3,7 +3,7 @@
 
   <span class="toolbar-remaining-space"></span>
 
-  <span>
+  <!-- <span>
     <button
       *ngIf="!(appStore.loggedInUser | async)"
       mat-button
@@ -14,7 +14,7 @@
     <button *ngIf="appStore.loggedInUser | async" mat-button (click)="logout()">
       Logout
     </button>
-  </span>
+  </span> -->
 </mat-toolbar>
 
 <router-outlet></router-outlet>

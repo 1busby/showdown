@@ -1,10 +1,12 @@
 import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
+
 import { NewTournamentInput } from './dto/new-tournament.input';
 import { TournamentsArgs } from './dto/tournaments.args';
 import { Tournament } from './tournament';
 import { TournamentsService } from './tournaments.service';
+import { UpdateTournamentInput } from './dto/update-tournament.input';
 
 const pubSub = new PubSub();
 
@@ -43,7 +45,12 @@ export class TournamentsResolver {
   }
 
   @Mutation(returns => Boolean)
-  async removeTournament(@Args('id') id: string) {
+  async updateTournament(@Args('updateTournamentData') updateTournamentData: UpdateTournamentInput): Promise<boolean> {
+    return this.tournamentsService.updateOne(updateTournamentData);
+  }
+
+  @Mutation(returns => Boolean)
+  removeTournament(@Args('id') id: string) {
     return this.tournamentsService.remove(id);
   }
 

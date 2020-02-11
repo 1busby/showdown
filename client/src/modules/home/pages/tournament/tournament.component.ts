@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
-import { ITournament } from '../../../../../../shared/models';
+import { ITournament, IContestant } from '../../../../../../shared/models';
 import { AppStore } from 'src/shared/app.store';
 import { TournamentDataService } from 'src/shared/data/tournament/tournament.data.service';
 
@@ -15,6 +15,8 @@ import { TournamentDataService } from 'src/shared/data/tournament/tournament.dat
 export class TournamentComponent implements OnInit, OnDestroy {
   tournament: BehaviorSubject<Partial<ITournament>>;
   ngUnsubscribe: Subject<any> = new Subject<any>();
+
+  localContestantList: Partial<IContestant>[] = [];
 
   constructor(
     private router: Router,
@@ -45,4 +47,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
+
+  joinClicked() {}
 }

@@ -19,6 +19,7 @@ type Mutation {
   addUser(newUserData: NewUserInput!): User!
   removeUser(id: String!): Boolean!
   addTournament(newTournamentData: NewTournamentInput!): Tournament!
+  updateTournament(updateTournamentData: UpdateTournamentInput!): Boolean!
   removeTournament(id: String!): Boolean!
 }
 
@@ -84,6 +85,14 @@ type Tournament {
   createdOn: Date
   updatedOn: Date
   linkCode: String!
+}
+
+input UpdateTournamentInput {
+  id: ID!
+  name: String
+  contestantCount: Int
+  contestants: [String!]
+  createdBy: ID
 }
 
 """The user model"""

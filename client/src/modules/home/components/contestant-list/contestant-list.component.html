@@ -1,8 +1,10 @@
 <section class="container">
   <ng-container *ngFor="let contestant of localContestantList; let i = index">
-    <div class="contestant-container">
-      {{ contestant.name }}
-    </div>
+    <mat-card class="contestant-container">
+      <mat-card-content >
+          {{ contestant.name }}
+      </mat-card-content>
+    </mat-card>
   </ng-container>
   <ng-container [formGroup]="newContestantForm" (ngSubmit)="addContestant()">
     <mat-form-field

@@ -18,8 +18,8 @@ export class TournamentDataService {
         }
       })
       .pipe(
-        tap(result => {
-          this.appStore.currentTournament.next(result.data['addTournament']);
+        tap((result: any) => {
+          this.appStore.currentTournament.next(result.data.addTournament);
         })
       );
   }
@@ -33,9 +33,13 @@ export class TournamentDataService {
         }
       })
       .pipe(
-        tap(result => {
-          this.appStore.currentTournament.next(result.data['tournamentFromLinkCode']);
+        tap((result: any) => {
+          this.appStore.currentTournament.next(result.data.tournamentFromLinkCode);
         })
       );
+  }
+
+  addContestant(tournamentId: string, contestant) {
+    
   }
 }
