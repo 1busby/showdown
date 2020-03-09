@@ -3,7 +3,7 @@
 </button>
 
 <ng-container *ngFor="let tournament of allTournaments | async">
-  <div class="tournament-card" (click)="viewTournament()">
+  <div class="tournament-card" (click)="viewTournament(tournament)">
     <h3>
       {{ tournament.name }}
     </h3>

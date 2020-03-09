@@ -24,8 +24,7 @@ export class LandingComponent {
   }
 
   viewTournament(tournament: ITournament) {
-    debugger
-    this.tournamentDataService.getTournamentFromId(tournament.id);
-    this.router.navigateByUrl('/tournament/create');
+    // this.tournamentDataService.getTournamentFromId(tournament.id);
+    this.router.navigateByUrl(`/tournament/${tournament.linkCode}/view`);
   }
 }

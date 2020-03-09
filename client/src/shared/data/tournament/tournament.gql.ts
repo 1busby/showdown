@@ -45,6 +45,7 @@ export const TournamentGqlFunctions = {
           id
           name
           createdOn
+          linkCode
         }
       }
     `
