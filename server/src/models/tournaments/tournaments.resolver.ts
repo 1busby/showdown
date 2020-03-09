@@ -25,6 +25,7 @@ export class TournamentsResolver {
 
   @Query(returns => Tournament)
   async tournamentFromLinkCode(@Args('linkCode') linkCode: string): Promise<Tournament> {
+    console.log('tournamentFromLinkCode called!');
     const tournament = await this.tournamentsService.findOneByLinkCode(linkCode);
     if (!tournament) {
       throw new NotFoundException(linkCode);
@@ -34,6 +35,7 @@ export class TournamentsResolver {
 
   @Query(returns => [Tournament])
   tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+    console.log('tournaments called!');
     return this.tournamentsService.findAll(tournamentsArgs);
   }
 

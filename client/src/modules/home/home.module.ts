@@ -9,6 +9,7 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { TournamentComponent } from './pages/tournament/tournament.component';
 import { ContestantListComponent } from './components/contestant-list/contestant-list.component';
 import { CreateTournamentComponent } from './pages/create-tournament/create-tournament.component';
+import { JoinTournamentComponent } from './pages/join-tournament/join-tournament.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { CreateTournamentComponent } from './pages/create-tournament/create-tour
     LandingComponent,
     TournamentComponent,
     CreateTournamentComponent,
-    ContestantListComponent
+    ContestantListComponent,
+    JoinTournamentComponent
   ],
   imports: [CommonModule, HomeRoutingModule, SharedModule, BracketModule]
 })

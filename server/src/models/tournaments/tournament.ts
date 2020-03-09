@@ -27,6 +27,6 @@ export class Tournament extends Document implements ITournament {
   @Field({ nullable: true })
   updatedOn: Date;
 
-  @Field()
+  @Field({ nullable: true })
   linkCode: string;
 }

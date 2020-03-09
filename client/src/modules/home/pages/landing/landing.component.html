@@ -1,1 +1,12 @@
-<button mat-stroked-button (click)="createTournament()">Create Tournament</button>
+<button mat-stroked-button (click)="createTournament()">
+  Create Tournament
+</button>
+
+<ng-container *ngFor="let tournament of allTournaments | async">
+  <div class="tournament-card" (click)="viewTournament()">
+    <h3>
+      {{ tournament.name }}
+    </h3>
+    {{ tournament.createdOn | date }}
+  </div>
+</ng-container>

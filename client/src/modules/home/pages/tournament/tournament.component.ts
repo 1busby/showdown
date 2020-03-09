@@ -48,5 +48,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  joinClicked() {}
+  joinClicked() {
+    this.router.navigateByUrl(
+      `/tournament/${this.tournament.value.linkCode}/join`
+    );
+  }
 }

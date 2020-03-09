@@ -33,11 +33,13 @@ export class TournamentsService {
   }
 
   async findAll(tournamentssArgs: TournamentsArgs): Promise<Tournament[]> {
+    console.log('findAll tournaments');
     return await this.tournamentModel.find().exec();
   }
 
   async updateOne(data: UpdateTournamentInput): Promise<boolean> {
-    return this.tournamentModel.updateOne({ _id: data.id }, data)
+    return this.tournamentModel
+      .updateOne({ _id: data.id }, data)
       .then(result => {
         console.log('Update tournament result >>> ' + JSON.stringify(result));
         return true;

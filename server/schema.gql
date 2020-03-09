@@ -84,7 +84,7 @@ type Tournament {
   teams: [Team!]
   createdOn: Date
   updatedOn: Date
-  linkCode: String!
+  linkCode: String
 }
 
 input UpdateTournamentInput {

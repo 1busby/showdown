@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
 import { TournamentDataService } from 'src/shared/data/tournament/tournament.data.service';
 
 @Component({
-  selector: 'app-create-tournament',
-  templateUrl: './create-tournament.component.html',
-  styleUrls: ['./create-tournament.component.scss']
+  selector: 'app-join-tournament',
+  templateUrl: './join-tournament.component.html',
+  styleUrls: ['./join-tournament.component.scss']
 })
-export class CreateTournamentComponent {
+export class JoinTournamentComponent {
   tournament: BehaviorSubject<Partial<ITournament>>;
 
   tournamentForm = this.formBuilder.group({
@@ -59,7 +59,7 @@ export class CreateTournamentComponent {
       .toPromise()
       .then(result => {
         this.router.navigateByUrl(
-          `/tournament/${result.data['addTournament'].linkCode}/view`
+          `/tournament/view/${result.data['addTournament'].linkCode}`
         );
       });
   }
