@@ -20,7 +20,8 @@ export class TournamentDataService {
         catchError((error, caught) => {
           return caught;
         })
-      ).toPromise();
+      )
+      .toPromise();
   }
 
   createTournament({ name, contestantCount }) {
@@ -49,7 +50,9 @@ export class TournamentDataService {
       })
       .pipe(
         tap((result: any) => {
-          this.appStore.currentTournament.next(result.data.tournamentFromLinkCode);
+          this.appStore.currentTournament.next(
+            result.data.tournamentFromLinkCode
+          );
         })
       );
   }
@@ -64,12 +67,12 @@ export class TournamentDataService {
       })
       .pipe(
         tap((result: any) => {
-          this.appStore.currentTournament.next(result.data.tournamentFromLinkCode);
+          this.appStore.currentTournament.next(
+            result.data.tournamentFromLinkCode
+          );
         })
       );
   }
 
-  addContestant(tournamentId: string, contestant) {
-    
-  }
+  addContestant(tournamentId: string, contestant) {}
 }
