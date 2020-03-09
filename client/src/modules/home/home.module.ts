@@ -12,6 +12,7 @@ import { CreateTournamentComponent } from './pages/create-tournament/create-tour
 import { JoinTournamentComponent } from './pages/join-tournament/join-tournament.component';
 
 @NgModule({
+  imports: [CommonModule, HomeRoutingModule, SharedModule, BracketModule],
   declarations: [
     HomeComponent,
     LandingComponent,
@@ -19,7 +20,6 @@ import { JoinTournamentComponent } from './pages/join-tournament/join-tournament
     CreateTournamentComponent,
     ContestantListComponent,
     JoinTournamentComponent
-  ],
-  imports: [CommonModule, HomeRoutingModule, SharedModule, BracketModule]
+  ]
 })
 export class HomeModule {}
