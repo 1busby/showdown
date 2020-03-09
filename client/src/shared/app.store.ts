@@ -1,7 +1,9 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { IUser, ITournament } from '../../../shared/models';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class AppStore {
   loggedInUser: BehaviorSubject<IUser> = new BehaviorSubject<IUser>(null);
   currentTournament: BehaviorSubject<Partial<ITournament>> = new BehaviorSubject<Partial<ITournament>>(null);
