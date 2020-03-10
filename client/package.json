@@ -12,7 +12,8 @@
     "wstart": "webpack-dev-server --mode development --open",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "jest": "jest --watch"
   },
   "private": true,
   "dependencies": {
@@ -45,18 +46,25 @@
     "@angular/compiler-cli": "~9.0.5",
     "@angular/language-service": "~9.0.5",
     "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addon-notes": "^5.3.14",
     "@storybook/addons": "^5.3.14",
     "@storybook/angular": "^5.3.14",
+    "@testing-library/angular": "^8.2.0",
+    "@testing-library/jest-dom": "^5.1.1",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/jest": "^25.1.4",
     "@types/node": "^12.11.1",
     "babel-loader": "^8.0.6",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
+    "jest": "^25.1.0",
+    "jest-preset-angular": "^7.1.1",
     "karma": "~4.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
@@ -69,5 +77,56 @@
   },
   "prettier": {
     "singleQuote": true
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/jest-config/setup.ts"
+    ],
+    "transformIgnorePatterns":[
+      "node_modules/(?!@storybook/*)"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/",
+      "<rootDir>/storybook-static/",
+      "<rootDir>/src/test.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/jest-config/",
+      "/node_modules/"
+    ],
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/jest-preset-angular/AngularSnapshotSerializer.js",
+      "<rootDir>/node_modules/jest-preset-angular/HTMLCommentSerializer.js"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "<rootDir>/src/tsconfig.spec.json",
+        "stringifyContentPathRegex": "\\.html$",
+        "diagnostics": false,
+        "isolatedModules": true,
+        "astTransformers": [
+          "<rootDir>/node_modules/jest-preset-angular/InlineHtmlStripStylesTransformer"
+        ]
+      }
+    },
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/src/jest-config/styleMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/jest-config/fileMock.js"
+    },
+    "transform": {
+      "^.+\\.(ts|html)$": "ts-jest",
+      "^.+\\.js$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node",
+      ".html"
+    ]
   }
 }

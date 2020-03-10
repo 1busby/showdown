@@ -7,14 +7,12 @@
   "angularCompilerOptions": {
     "enableIvy": false
   },
-  "files": [
-    "main.ts",
-    "polyfills.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ],
+  "files": ["main.ts", "polyfills.ts"],
+  "include": ["src/**/*.d.ts"],
   "exclude": [
-    "**/*.stories.ts"
+    "src/test.ts",
+    "src/**/*.spec.ts",
+    "**/*.stories.ts",
+    "src/jest-config"
   ]
 }
