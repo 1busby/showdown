@@ -6,12 +6,15 @@
   },
   "angularCompilerOptions": {
     "enableIvy": false
-  },
+  },
   "files": [
     "main.ts",
     "polyfills.ts"
   ],
   "include": [
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "**/*.stories.ts"
   ]
 }
