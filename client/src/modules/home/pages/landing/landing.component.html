@@ -3,10 +3,5 @@
 </button>
 
 <ng-container *ngFor="let tournament of allTournaments | async">
-  <div class="tournament-card" (click)="viewTournament(tournament)">
-    <h3>
-      {{ tournament.name }}
-    </h3>
-    {{ tournament.createdOn | date }}
-  </div>
+  <tournament-card [tournament]="tournament" (selectTournament)="viewTournament(tournament)"></tournament-card>
 </ng-container>

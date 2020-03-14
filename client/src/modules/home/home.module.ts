@@ -10,6 +10,7 @@ import { TournamentComponent } from './pages/tournament/tournament.component';
 import { ContestantListComponent } from './components/contestant-list/contestant-list.component';
 import { CreateTournamentComponent } from './pages/create-tournament/create-tournament.component';
 import { JoinTournamentComponent } from './pages/join-tournament/join-tournament.component';
+import { TournamentCardComponent } from './components/tournament-card/tournament-card.component';
 
 @NgModule({
   imports: [CommonModule, HomeRoutingModule, SharedModule, BracketModule],
@@ -19,7 +20,8 @@ import { JoinTournamentComponent } from './pages/join-tournament/join-tournament
     TournamentComponent,
     CreateTournamentComponent,
     ContestantListComponent,
-    JoinTournamentComponent
+    JoinTournamentComponent,
+    TournamentCardComponent
   ]
 })
 export class HomeModule {}

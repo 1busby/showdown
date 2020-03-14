@@ -1,0 +1,15 @@
+<!-- <di class="container" (click)="onSelect(tournament)">
+  <di>
+    {{ tournament.name }}
+  </di>
+  {{ tournament.createdOn | date }}
+</div> -->
+
+<mat-card class="container" (click)="onSelect(tournament)">
+  <mat-card-title>
+    {{ tournament.name }}
+</mat-card-title>
+  <mat-card-footer>
+    {{ tournament.createdOn | date }}
+  </mat-card-footer>
+</mat-card>
