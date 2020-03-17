@@ -1,0 +1,18 @@
+.top-container {
+  width: 100%;
+  position: fixed;
+  z-index: 2;
+  background-color: white;
+  padding: 12px;
+  // border: 1px solid;
+  box-shadow: 0px 2px 5px #888888;
+}
+
+.create-button {
+  width: 100%;
+  display: block;
+}
+
+.content-container {
+  overflow: auto;
+}

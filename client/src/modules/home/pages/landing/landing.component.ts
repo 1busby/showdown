@@ -25,6 +25,9 @@ export class LandingComponent {
 
   viewTournament(tournament: ITournament) {
     // this.tournamentDataService.getTournamentFromId(tournament.id);
+    if (!tournament.linkCode) {
+      return;
+    }
     this.router.navigateByUrl(`/tournament/${tournament.linkCode}/view`);
   }
 }

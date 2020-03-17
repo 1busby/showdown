@@ -1,7 +1,11 @@
-<button mat-stroked-button (click)="createTournament()">
-  Create Tournament
-</button>
+<div class="top-container">
+  <button mat-raised-button class="create-button" isRoundButton="true" color="primary" (click)="createTournament()">
+    Create Tournament
+  </button>
+</div>
 
-<ng-container *ngFor="let tournament of allTournaments | async">
-  <tournament-card [tournament]="tournament" (selectTournament)="viewTournament(tournament)"></tournament-card>
-</ng-container>
+<div class="content-container">
+  <ng-container *ngFor="let tournament of allTournaments | async">
+    <tournament-card [tournament]="tournament" (selectTournament)="viewTournament(tournament)"></tournament-card>
+  </ng-container>
+</div>
