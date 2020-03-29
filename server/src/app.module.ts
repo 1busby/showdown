@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RecipesModule } from './models/recipes/recipes.module';
 import { UsersModule } from './models/users/users.module';
-import appConfig from '../config/app.secret.config.json';
+import appConfig from '../config/app-config.secret.json';
 import { TournamentsModule } from './models/tournaments/tournaments.module';
 
 @Module({
