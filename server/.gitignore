@@ -1,7 +1,8 @@
 # compiled output
 /dist
 /node_modules
-/config/app.secret.json
+/config/app-config.secret.json
+/config/app-config.json
 /config/development.env
 
 # Logs
