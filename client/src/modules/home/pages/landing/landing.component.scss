@@ -4,6 +4,7 @@
   z-index: 2;
   background-color: white;
   padding: 12px;
+  height: 64 px;
   // border: 1px solid;
   box-shadow: 0px 2px 5px #888888;
 }
@@ -15,4 +16,5 @@
 
 .content-container {
   overflow: auto;
+  padding-top: 64px;
 }
