@@ -7,10 +7,19 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch via NPM",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "debug"],
-      "port": 9229
+      "name": "Debug Nest Framework",
+      "args": ["${workspaceFolder}/server/src/main.ts"],
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "ts-node/register",
+        "-r",
+        "tsconfig-paths/register"
+      ],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}/server",
+      "protocol": "inspector",
+      "outputCapture": "std"
     }
   ]
 }

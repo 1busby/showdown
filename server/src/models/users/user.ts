@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 import { Team } from '../teams/team';
 import { IUser } from '../../../../shared/models/index';

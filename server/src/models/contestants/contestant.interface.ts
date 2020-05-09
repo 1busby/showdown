@@ -1,4 +1,4 @@
-import { InterfaceType, Field, ID, Int } from 'type-graphql';
+import { InterfaceType, Field, ID, Int } from '@nestjs/graphql';
 import { IContestant } from '../../../../shared/models';
 
 @InterfaceType()

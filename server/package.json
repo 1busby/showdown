@@ -5,7 +5,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && cp -r public dist/server/public",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "start:dev": "concurrently --handle-input \"wait-on dist/server/src/main.js && nodemon\" \"tsc -w -p tsconfig.build.json\" ",
@@ -24,12 +24,12 @@
     "docker-run": "docker run -p 3000:3000 mbusbydocker/brackets"
   },
   "dependencies": {
-    "@nestjs/common": "^6.10.13",
-    "@nestjs/core": "^6.10.13",
-    "@nestjs/graphql": "^6.5.3",
-    "@nestjs/mongoose": "^6.1.2",
-    "@nestjs/passport": "^6.1.1",
-    "@nestjs/platform-express": "^6.10.13",
+    "@nestjs/common": "^7.0.9",
+    "@nestjs/core": "^7.0.9",
+    "@nestjs/graphql": "^7.3.7",
+    "@nestjs/mongoose": "^7.0.0",
+    "@nestjs/passport": "^7.0.0",
+    "@nestjs/platform-express": "^7.0.9",
     "apollo-server-express": "^2.9.15",
     "dotenv": "^8.2.0",
     "graphql": "^14.5.8",
@@ -62,7 +62,7 @@
     "ts-node": "8.1.0",
     "tsconfig-paths": "3.8.0",
     "tslint": "5.16.0",
-    "typescript": "3.4.3",
+    "typescript": "3.8.3",
     "wait-on": "^3.3.0"
   },
   "jest": {

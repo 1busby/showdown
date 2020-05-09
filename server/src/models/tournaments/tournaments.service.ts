@@ -39,7 +39,7 @@ export class TournamentsService {
 
   async updateOne(data: UpdateTournamentInput): Promise<boolean> {
     return this.tournamentModel
-      .updateOne({ _id: data.id }, data)
+      .updateOne({ _id: data.id }, data as any)
       .then(result => {
         console.log('Update tournament result >>> ' + JSON.stringify(result));
         return true;

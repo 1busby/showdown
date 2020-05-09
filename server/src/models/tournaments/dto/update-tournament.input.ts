@@ -1,5 +1,5 @@
 import { MaxLength } from 'class-validator';
-import { Field, InputType, ID, Int } from 'type-graphql';
+import { Field, InputType, ID, Int } from '@nestjs/graphql';
 import { Contestant } from 'src/models/contestants/contestant.interface';
 
 @InputType()

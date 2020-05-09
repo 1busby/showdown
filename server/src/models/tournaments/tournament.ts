@@ -1,5 +1,5 @@
 import { Team } from '../teams/team';
-import { Field, ID, ObjectType, Int } from 'type-graphql';
+import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { ITournament } from '../../../../shared/models/index';
 import { User } from '../users/user';
 import { Document } from 'mongoose';

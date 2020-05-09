@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 
@@ -8,6 +8,7 @@ import { RecipesModule } from './models/recipes/recipes.module';
 import { UsersModule } from './models/users/users.module';
 import appConfig from '../config/app-config.json';
 import { TournamentsModule } from './models/tournaments/tournaments.module';
+import { FrontendMiddleware } from './middleware/frontend.middleware';
 
 @Module({
   imports: [
@@ -25,4 +26,15 @@ import { TournamentsModule } from './models/tournaments/tournaments.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer
+      .apply(FrontendMiddleware)
+      .forRoutes(
+      {
+        path: '/**', // For all routes
+        method: RequestMethod.ALL, // For all methods
+      },
+    );
+  }
+}
