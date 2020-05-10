@@ -18,10 +18,18 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "docker-b": "npm run docker-build",
-    "docker-build": "cd .. && docker build -t mbusbydocker/brackets -f server/docker/Dockerfile .",
-    "docker-r": "npm run docker-run",
-    "docker-run": "docker run -p 3000:3000 mbusbydocker/brackets"
+    "db": "npm run docker-build",
+    "docker-build": "cd .. && docker build -t mbusbydocker/brackets -f Dockerfile .",
+    "dr": "npm run docker-run",
+    "docker-run": "docker run -p 3000:3000 mbusbydocker/brackets",
+    "hb": "npm run heroku-build",
+    "heroku-build": "cd .. && heroku container:push web -a busby-brackets",
+    "hr": "npm run heroku-release",
+    "heroku-release": "heroku container:release web -a busby-brackets",
+    "ho": "npm run heroku-open",
+    "heroku-open": "heroku open -a busby-brackets",
+    "hl": "npm run heroku-logs",
+    "heroku-logs": "heroku logs --tail -a busby-brackets"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.9",
