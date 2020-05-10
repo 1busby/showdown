@@ -1,18 +1,22 @@
 import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
+import configuration from '../config/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RecipesModule } from './models/recipes/recipes.module';
 import { UsersModule } from './models/users/users.module';
-import appConfig from '../config/app-config.json';
 import { TournamentsModule } from './models/tournaments/tournaments.module';
 import { FrontendMiddleware } from './middleware/frontend.middleware';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(appConfig.DATABASE_URL),
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
     RecipesModule,
     UsersModule,
     TournamentsModule,
