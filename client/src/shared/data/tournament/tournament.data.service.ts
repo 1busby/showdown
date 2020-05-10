@@ -18,6 +18,7 @@ export class TournamentDataService {
           this.appStore.allTournaments.next(result.data.tournaments);
         }),
         catchError((error, caught) => {
+          console.error('ERROR: getAllTournaments > ', error);
           return caught;
         })
       )

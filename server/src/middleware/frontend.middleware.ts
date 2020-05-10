@@ -20,7 +20,7 @@ export class FrontendMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
     const { originalUrl } = req;
     console.log('LOOK >>> incoming request url = ' + originalUrl);
-    if (originalUrl.indexOf('api') === 1) {
+    if (originalUrl.indexOf('graphql') === 1) {
       // it starts with /api --> continue with execution
       next();
     } else if (allowedExt.filter(ext => originalUrl.includes(ext) > 0).length > 0) {

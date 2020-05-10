@@ -21,6 +21,7 @@ import { FrontendMiddleware } from './middleware/frontend.middleware';
       playground: true,
       autoSchemaFile: 'schema.gql',
       context: ({ req }) => ({ req }),
+      cors: false,
     }),
   ],
   controllers: [AppController],
