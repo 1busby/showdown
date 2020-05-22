@@ -43,7 +43,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.900.5",
     "@angular/cli": "~9.0.5",
-    "@angular/compiler-cli": "~9.0.5",
+    "@angular/compiler-cli": "^9.1.9",
     "@angular/language-service": "~9.0.5",
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
@@ -83,7 +83,7 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/jest-config/setup.ts"
     ],
-    "transformIgnorePatterns":[
+    "transformIgnorePatterns": [
       "node_modules/(?!@storybook/*)"
     ],
     "testPathIgnorePatterns": [

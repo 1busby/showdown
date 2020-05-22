@@ -36,10 +36,10 @@ export class AppModule {
     consumer
       .apply(FrontendMiddleware)
       .forRoutes(
-      {
-        path: '/**', // For all routes
-        method: RequestMethod.ALL, // For all methods
-      },
-    );
+        {
+          path: '/**', // For all routes
+          method: RequestMethod.ALL, // For all methods
+        },
+      );
   }
 }
