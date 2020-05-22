@@ -145,5 +145,8 @@
       }
     }
   },
-  "defaultProject": "brackets-client"
+  "defaultProject": "brackets-client",
+  "cli": {
+    "analytics": false
+  }
 }
