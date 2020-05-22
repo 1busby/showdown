@@ -59,7 +59,7 @@ export class CreateTournamentComponent {
       .toPromise()
       .then(result => {
         this.router.navigateByUrl(
-          `/tournament/${result.data['addTournament'].linkCode}/view`
+          `/tournament/${result.data.addTournament.linkCode}/view`
         );
       });
   }

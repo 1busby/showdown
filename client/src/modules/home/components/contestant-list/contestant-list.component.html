@@ -1,8 +1,11 @@
+<!-- NOTE to future self: leaving cards blank for now because in the future the cards will be clickable. 
+  Clicking on a card will cause it to expand and allow it to be edited.
+  Cards will also be drag and droppable, with seed on the side. -->
 <section class="container">
   <ng-container *ngFor="let contestant of localContestantList; let i = index">
     <mat-card class="contestant-container">
-      <mat-card-content >
-          {{ contestant.name }}
+      <mat-card-content>
+        {{ contestant.name }}
       </mat-card-content>
     </mat-card>
   </ng-container>

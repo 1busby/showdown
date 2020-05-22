@@ -1,0 +1,17 @@
+button[matStepperPrevious] {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+}
+
+button[matStepperNext] {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+}
+
+button[type="submit"] {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+}
