@@ -41,10 +41,10 @@ export class TournamentDataService {
       );
   }
 
-  getTournamentFromId(linkCode: string) {
+  getTournament(id?: string, linkCode?: string) {
     return this.apollo
       .query({
-        query: TournamentGqlFunctions.queries.tournamentFromLinkCode,
+        query: TournamentGqlFunctions.queries.tournament,
         variables: {
           linkCode
         }
@@ -52,24 +52,7 @@ export class TournamentDataService {
       .pipe(
         tap((result: any) => {
           this.appStore.currentTournament.next(
-            result.data.tournamentFromLinkCode
-          );
-        })
-      );
-  }
-
-  getTournamentFromLinkCode(linkCode: string) {
-    return this.apollo
-      .query({
-        query: TournamentGqlFunctions.queries.tournamentFromLinkCode,
-        variables: {
-          linkCode
-        }
-      })
-      .pipe(
-        tap((result: any) => {
-          this.appStore.currentTournament.next(
-            result.data.tournamentFromLinkCode
+            result.data.tournament
           );
         })
       );

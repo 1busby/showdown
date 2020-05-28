@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, NotAcceptableException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
@@ -15,18 +15,20 @@ export class TournamentsResolver {
   constructor(private readonly tournamentsService: TournamentsService) {}
 
   @Query(returns => Tournament)
-  async tournament(@Args('id') id: string): Promise<Tournament> {
-    const tournament = await this.tournamentsService.findOneById(id);
-    if (!tournament) {
-      throw new NotFoundException(id);
-    }
-    return tournament;
-  }
-
-  @Query(returns => Tournament)
-  async tournamentFromLinkCode(@Args('linkCode') linkCode: string): Promise<Tournament> {
+  async tournament(
+    @Args('id', { nullable: true }) id?: string,
+    @Args('linkCode', { nullable: true }) linkCode?: string,
+  ): Promise<Tournament> {
     console.log('tournamentFromLinkCode called!');
-    const tournament = await this.tournamentsService.findOneByLinkCode(linkCode);
+
+    let tournament;
+    if (id) {
+      tournament = await this.tournamentsService.findOneById(id);
+    } else if (linkCode) {
+      tournament = await this.tournamentsService.findOneByLinkCode(linkCode);
+    } else {
+      throw new NotAcceptableException(null, 'No link code or description found.');
+    }
     if (!tournament) {
       throw new NotFoundException(linkCode);
     }

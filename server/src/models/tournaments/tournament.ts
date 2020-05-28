@@ -1,8 +1,9 @@
-import { Team } from '../teams/team';
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
-import { ITournament } from '../../../../shared/models/index';
-import { User } from '../users/user';
 import { Document } from 'mongoose';
+
+import { ITournament } from '../../../../shared/models/index';
+import { Team } from '../teams/team';
+import { User } from '../users/user';
 
 @ObjectType({ description: 'The tournament model' })
 export class Tournament extends Document implements ITournament {

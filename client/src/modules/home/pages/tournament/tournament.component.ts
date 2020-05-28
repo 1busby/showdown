@@ -31,7 +31,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.ngUnsubscribe),
         switchMap((params: ParamMap) =>
-          this.tournamentDataService.getTournamentFromLinkCode(
+          this.tournamentDataService.getTournament(
+            null,
             params.get('linkCode')
           )
         )

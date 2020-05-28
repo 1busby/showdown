@@ -17,20 +17,9 @@ export const TournamentGqlFunctions = {
     `
   },
   queries: {
-    tournamentFromId: gql`
-      query tournamentFromLinkCode($linkCode: String!) {
-        tournamentFromLinkCode(linkCode: $linkCode) {
-          id
-          name
-          contestantCount
-          linkCode
-          createdOn
-        }
-      }
-    `,
-    tournamentFromLinkCode: gql`
-      query tournamentFromLinkCode($linkCode: String!) {
-        tournamentFromLinkCode(linkCode: $linkCode) {
+    tournament: gql`
+      query tournament($id: String, $linkCode: String) {
+        tournament(id: $id, linkCode: $linkCode) {
           id
           name
           contestantCount

@@ -7,8 +7,8 @@ export class NewTournamentInput {
   @MaxLength(30)
   name: string;
 
-  @Field(type => Int)
-  contestantCount: number;
+  @Field(type => Int, { nullable: true })
+  contestantCount?: number;
 
   @Field(type => ID, { nullable: true })
   createdBy?: string;
