@@ -9,8 +9,8 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { TournamentComponent } from './pages/tournament/tournament.component';
 import { ContestantListComponent } from './components/contestant-list/contestant-list.component';
 import { CreateTournamentComponent } from './pages/create-tournament/create-tournament.component';
-import { JoinTournamentComponent } from './pages/join-tournament/join-tournament.component';
 import { TournamentCardComponent } from './components/tournament-card/tournament-card.component';
+import { QuickJoinDialogComponent } from './components/quick-join-dialog/quick-join-dialog.component';
 
 @NgModule({
   imports: [CommonModule, HomeRoutingModule, SharedModule, BracketModule],
@@ -20,8 +20,9 @@ import { TournamentCardComponent } from './components/tournament-card/tournament
     TournamentComponent,
     CreateTournamentComponent,
     ContestantListComponent,
-    JoinTournamentComponent,
-    TournamentCardComponent
-  ]
+    TournamentCardComponent,
+    QuickJoinDialogComponent
+  ],
+  bootstrap: [QuickJoinDialogComponent]
 })
 export class HomeModule {}

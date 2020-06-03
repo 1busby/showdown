@@ -49,6 +49,21 @@ export class TournamentsService {
       });
   }
 
+  addContestant(id, contestantName?, userId?) {
+    const updateObj = {
+      temporaryContestants: null,
+      contesants: null,
+    };
+    if (contestantName) {
+      updateObj.temporaryContestants = contestantName;
+    } else if (userId) {
+      updateObj.contesants = userId;
+    } else {
+      return;
+    }
+    return this.tournamentModel.findOneAndUpdate({ _id: id }, updateObj, { new: true }).exec();
+  }
+
   remove(id: string): Promise<boolean> {
     return this.tournamentModel
       .deleteOne({ _id: id })

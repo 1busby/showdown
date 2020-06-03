@@ -60,5 +60,15 @@ export class TournamentDataService {
       );
   }
 
-  addContestant(tournamentId: string, contestant) {}
+  joinTournament(id: string, contestantName?: string, userId?: string) {
+    return this.apollo
+      .mutate({
+        mutation: TournamentGqlFunctions.mutations.joinTournament,
+        variables: {
+          id,
+          contestantName,
+          userId
+        }
+      });
+  }
 }

@@ -27,14 +27,24 @@
 
     <mat-tab label="Contestants">
       <div>
-        {{ (this.tournament | async)?.contestants?.length || 0 }} / {{ (this.tournament | async)?.contestantCount }} Contestants Registered
+        {{ ((this.tournament | async)?.contestants?.length || 0) + ((this.tournament | async)?.temporaryContestants?.length || 0) }} /
+        {{ (this.tournament | async)?.contestantCount }} Contestants Registered
       </div>
-      <button mat-raised-button color="primary" (click)="joinClicked()">Join</button>
+      <button
+        *ngIf="
+          ((this.tournament | async)?.contestants?.length) + ((this.tournament | async)?.temporaryContestants?.length || 0) <
+          (this.tournament | async)?.contestantCount
+        "
+        mat-raised-button
+        color="primary"
+        (click)="joinClicked()"
+      >
+        Join
+      </button>
       <contestant-list
         interactionMode="view"
         [contestants]="(this.tournament | async)?.temporaryContestants"
       ></contestant-list>
     </mat-tab>
-
   </mat-tab-group>
 </ng-container>

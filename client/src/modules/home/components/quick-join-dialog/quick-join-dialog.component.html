@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Join {{data.tournamentName}}</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Game Tag</mat-label>
+    <input matInput type="text" [(ngModel)]="data.contestant.name" required />
+  </mat-form-field>
+  <br> -- or -- <br>
+  <button mat-raised-button color="primary">Sign Up</button>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="data.contestant" cdkFocusInitial>Join Tournament</button>
+</mat-dialog-actions>

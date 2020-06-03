@@ -12,6 +12,7 @@ type Mutation {
   removeUser(id: String!): Boolean!
   addTournament(newTournamentData: NewTournamentInput!): Tournament!
   updateTournament(updateTournamentData: UpdateTournamentInput!): Boolean!
+  joinTournament(userId: ID, contestantName: String, id: ID!): Tournament!
   removeTournament(id: String!): Boolean!
 }
 

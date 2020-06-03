@@ -14,6 +14,14 @@ export const TournamentGqlFunctions = {
           createdOn
         }
       }
+    `,
+    joinTournament: gql`
+      mutation joinTournament($id: ID!, $contestantName: String, $userId: ID) {
+        joinTournament(id: $id, contestantName: $contestantName, userId: $userId) {
+          id
+          temporaryContestants
+        }
+      }
     `
   },
   queries: {
