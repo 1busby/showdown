@@ -30,7 +30,7 @@ export class TournamentsResolver {
       throw new NotAcceptableException(null, 'No link code or description found.');
     }
     if (!tournament) {
-      throw new NotFoundException(linkCode);
+      throw new NotFoundException('Tournament Not Found');
     }
     return tournament;
   }

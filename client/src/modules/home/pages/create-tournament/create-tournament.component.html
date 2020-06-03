@@ -26,6 +26,7 @@
     <!-- Step 2 -->
     <mat-step>
       <contestant-list
+        interactionMode="edit"
         [contestantCount]="tournamentForm.value.contestantCount"
         [contestants]="contestants.value"
         (newContestantEmitter)="addContestant($event)"

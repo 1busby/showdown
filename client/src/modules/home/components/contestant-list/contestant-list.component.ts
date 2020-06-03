@@ -15,6 +15,7 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./contestant-list.component.scss']
 })
 export class ContestantListComponent implements OnChanges {
+  @Input() interactionMode: 'view' | 'edit' = 'view';
   @Input() isOrderedBySeed = false;
   @Input() contestantCount = 0;
   @Input() contestants: Partial<IContestant>[] = [];

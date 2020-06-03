@@ -16,7 +16,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
   tournament: BehaviorSubject<Partial<ITournament>>;
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
-  localContestantList: Partial<IContestant>[] = [];
+  contestantList: Partial<IContestant>[] = [];
 
   constructor(
     private router: Router,
@@ -38,6 +38,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe(result => {
+        debugger
         if (!this.appStore.currentTournament.value) {
           this.router.navigateByUrl('/');
         }

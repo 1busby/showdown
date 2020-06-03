@@ -15,4 +15,5 @@ export const TournamentSchema = new mongoose.Schema({
   createdOn: Date,
   updatedOn: Date,
   linkCode: String,
+  temporaryContestants: [String],
 });

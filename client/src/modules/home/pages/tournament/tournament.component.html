@@ -30,6 +30,11 @@
         {{ (this.tournament | async)?.contestants?.length || 0 }} / {{ (this.tournament | async)?.contestantCount }} Contestants Registered
       </div>
       <button mat-raised-button color="primary" (click)="joinClicked()">Join</button>
+      <contestant-list
+        interactionMode="view"
+        [contestants]="(this.tournament | async)?.temporaryContestants"
+      ></contestant-list>
     </mat-tab>
+
   </mat-tab-group>
 </ng-container>

@@ -91,6 +91,8 @@ input UpdateTournamentInput {
 
 """The user model"""
 type User {
+  id: String
+  name: String
   email: String
   firstName: String
   lastName: String

@@ -5,14 +5,14 @@
   <ng-container *ngFor="let contestant of localContestantList; let i = index">
     <mat-card class="contestant-container">
       <mat-card-content>
-        {{ contestant.name }}
+        {{ contestant.name || contestant }}
       </mat-card-content>
     </mat-card>
   </ng-container>
   <ng-container [formGroup]="newContestantForm" (ngSubmit)="addContestant()">
     <mat-form-field
       appearance="outline"
-      *ngIf="contestants.length < contestantCount"
+      *ngIf="contestants.length < contestantCount && interactionMode === 'edit'"
     >
       <mat-label>New Contestant</mat-label>
       <input matInput formControlName="name" />

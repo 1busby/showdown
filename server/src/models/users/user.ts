@@ -7,10 +7,11 @@ import { Document } from 'mongoose';
 @ObjectType({ description: 'The user model' })
 export class User extends Document implements IUser {
   // fields inherited from Contestant
+  @Field({ nullable: true })
   id: string;
+
+  @Field({ nullable: true })
   name: string;
-  seed?: number;
-  points?: number;
 
   @Field({ nullable: true })
   email?: string;

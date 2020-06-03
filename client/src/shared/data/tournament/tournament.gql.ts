@@ -25,6 +25,11 @@ export const TournamentGqlFunctions = {
           contestantCount
           linkCode
           createdOn
+          contestants {
+            id
+            name
+          }
+          temporaryContestants
         }
       }
     `,

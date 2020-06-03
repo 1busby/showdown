@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 
-import { ITournament } from '../../../../../../shared/models';
+import { ITournament, IContestant } from '../../../../../../shared/models';
 import { AppStore } from 'src/shared/app.store';
 import { Router } from '@angular/router';
 import { TournamentDataService } from 'src/shared/data/tournament/tournament.data.service';
@@ -18,11 +18,15 @@ export class CreateTournamentComponent {
   tournamentForm = this.formBuilder.group({
     name: [''],
     contestantCount: [0],
-    contestants: this.formBuilder.array([])
+    contestants: this.formBuilder.array([]),
   });
 
   get contestants() {
     return this.tournamentForm.get('contestants') as FormArray;
+  }
+
+  get temporaryContestants() {
+    return this.tournamentForm.get('temporaryContestants') as FormArray;
   }
 
   constructor(
@@ -39,7 +43,8 @@ export class CreateTournamentComponent {
       this.tournamentForm.patchValue({
         name: 'Mega Battle XTreme',
         contestantCount: 8,
-        contestants: []
+        contestants: [],
+        temporaryContestants: [],
       });
     }
   }
@@ -64,7 +69,7 @@ export class CreateTournamentComponent {
       });
   }
 
-  addContestant(contestant) {
+  addContestant(contestant: Partial<IContestant>) {
     this.contestants.push(this.formBuilder.control(contestant));
   }
 

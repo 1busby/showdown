@@ -3,6 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { TournamentGqlFunctions } from './tournament.gql';
 import { tap, catchError } from 'rxjs/operators';
 import { AppStore } from 'src/shared/app.store';
+import { ITournament } from '../../../../../shared/models';
 
 @Injectable()
 export class TournamentDataService {
@@ -25,14 +26,14 @@ export class TournamentDataService {
       .toPromise();
   }
 
-  createTournament({ name, contestantCount, temporaryContestants }) {
+  createTournament(tournament: ITournament) {
     return this.apollo
       .mutate({
         mutation: TournamentGqlFunctions.mutations.createTournament,
         variables: {
-          name,
-          contestantCount,
-          temporaryContestants
+          name: tournament.name,
+          contestantCount: tournament.contestantCount,
+          temporaryContestants: tournament.contestants.filter(c => !c.id).map(c => c.name)
         }
       })
       .pipe(
