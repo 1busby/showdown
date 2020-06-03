@@ -5,7 +5,8 @@ export interface ITournament {
   name: string;
   contestantCount: number;
   matches?: Partial<IMatch>[];
-  contestants?: Partial<IContestant>[];
+  contestants?: Partial<IUser>[];
+  temporaryContestants?: string[];
   createdBy: Partial<IUser> | string;
   createdOn: Date;
   updatedOn: Date;

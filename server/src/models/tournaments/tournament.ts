@@ -19,8 +19,14 @@ export class Tournament extends Document implements ITournament {
   @Field(type => User, { nullable: true })
   createdBy: User;
 
-  @Field(type => [Team], { nullable: true })
-  teams?: Team[];
+  @Field(type => [User], { nullable: 'itemsAndList' })
+  contestants: User[];
+
+  @Field(type => [String], { nullable: 'itemsAndList' })
+  temporaryContestants: string[];
+
+  @Field(type => [Team], { nullable: 'itemsAndList' })
+  teams: Team[];
 
   @Field({ nullable: true })
   createdOn: Date;

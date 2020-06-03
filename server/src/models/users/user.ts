@@ -2,10 +2,9 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 import { Team } from '../teams/team';
 import { IUser } from '../../../../shared/models/index';
-import { Contestant } from '../contestants/contestant.interface';
 import { Document } from 'mongoose';
 
-@ObjectType({ description: 'The user model', implements: Contestant })
+@ObjectType({ description: 'The user model' })
 export class User extends Document implements IUser {
   // fields inherited from Contestant
   id: string;
@@ -22,7 +21,7 @@ export class User extends Document implements IUser {
   @Field({ nullable: true })
   lastName?: string;
 
-  @Field(type => [Team], { nullable: true })
+  @Field(type => [Team], { nullable: 'itemsAndList' })
   teams?: Team[];
 
   @Field({ nullable: true })

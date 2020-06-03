@@ -25,13 +25,14 @@ export class TournamentDataService {
       .toPromise();
   }
 
-  createTournament({ name, contestantCount }) {
+  createTournament({ name, contestantCount, temporaryContestants }) {
     return this.apollo
       .mutate({
         mutation: TournamentGqlFunctions.mutations.createTournament,
         variables: {
           name,
-          contestantCount
+          contestantCount,
+          temporaryContestants
         }
       })
       .pipe(

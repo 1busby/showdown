@@ -12,4 +12,7 @@ export class NewTournamentInput {
 
   @Field(type => ID, { nullable: true })
   createdBy?: string;
+
+  @Field(type => [String], { nullable: 'itemsAndList' })
+  temporaryContestants?: [string];
 }

@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-interface Contestant {
-  id: ID!
-  name: String!
-  seed: Int
-  points: Int
-}
-
 """Date custom scalar type"""
 scalar Date
 
@@ -32,6 +25,7 @@ input NewTournamentInput {
   name: String!
   contestantCount: Int
   createdBy: ID
+  temporaryContestants: [String]
 }
 
 input NewUserInput {
@@ -79,7 +73,9 @@ type Tournament {
   name: String!
   contestantCount: Int!
   createdBy: User
-  teams: [Team!]
+  contestants: [User]
+  temporaryContestants: [String]
+  teams: [Team]
   createdOn: Date
   updatedOn: Date
   linkCode: String
@@ -94,15 +90,11 @@ input UpdateTournamentInput {
 }
 
 """The user model"""
-type User implements Contestant {
-  id: ID!
-  name: String!
-  seed: Int
-  points: Int
+type User {
   email: String
   firstName: String
   lastName: String
-  teams: [Team!]
+  teams: [Team]
   createdOn: Date
   updatedOn: Date
 }
