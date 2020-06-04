@@ -25,10 +25,10 @@ export class TournamentsService {
   }
 
   async findOneById(id: string): Promise<Tournament> {
-    return {} as any;
+    return this.tournamentModel.findById(id).exec();
   }
 
-  findOneByLinkCode(linkCode): Promise<Tournament> {
+  findOneByLinkCode(linkCode: string): Promise<Tournament> {
     return this.tournamentModel.findOne({ linkCode }).exec();
   }
 
@@ -61,7 +61,7 @@ export class TournamentsService {
     } else {
       return;
     }
-    return this.tournamentModel.findOneAndUpdate({ _id: id }, updateObj, { new: true }).exec();
+    return this.tournamentModel.findOneAndUpdate({ _id: id }, { $push: updateObj }, { new: true }).exec();
   }
 
   remove(id: string): Promise<boolean> {

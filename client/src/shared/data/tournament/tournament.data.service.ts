@@ -45,12 +45,13 @@ export class TournamentDataService {
 
   getTournament(id?: string, linkCode?: string) {
     return this.apollo
-      .query({
+      .watchQuery({
         query: TournamentGqlFunctions.queries.tournament,
         variables: {
           linkCode
         }
       })
+      .valueChanges
       .pipe(
         tap((result: any) => {
           this.appStore.currentTournament.next(

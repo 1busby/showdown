@@ -6,8 +6,6 @@ const whitelist = [
 ]
 const corsOptions = {
   origin(origin, callback) {
-    console.log('CORS callback - Origin: ' + origin);
-
     return callback(null, true);
     if (!origin) {
       return callback(null, true);
