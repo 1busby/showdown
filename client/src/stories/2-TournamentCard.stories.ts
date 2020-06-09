@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 import { moduleMetadata } from '@storybook/angular';
 
-import { TournamentCardComponent } from '../modules/home/components/tournament-card/tournament-card.component';
+import { TournamentCardComponent } from '../app/features/home/components/tournament-card/tournament-card.component';
 import { ITournament } from '../../../shared/models';
 import { MaterialModule } from 'src/shared/material.module';
 

@@ -11,6 +11,7 @@ const allowedExt = [
   '.woff',
   '.ttf',
   '.svg',
+  '.webmanifest',
 ];
 
 const resolvePath = (file: string) => path.resolve(`public/brackets-client${file}`);

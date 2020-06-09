@@ -3,15 +3,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { CoreModule } from '../core/core.module';
-import { SharedModule } from '../shared/shared.module';
-import { BracketModule } from './../modules/bracket/bracket.module';
+import { AppRoutingModule } from './app-routing.module';
+import { CoreModule } from '@app/core';
+import { SharedModule } from '@app/shared';
+import { BracketModule } from './features/bracket/bracket.module';
 import { AppComponent } from './app.component';
-import { ErrorInterceptor } from 'src/core/authentication/helpers/error.interceptor';
-import { JwtInterceptor } from 'src/core/authentication/helpers/jwt.interceptor';
-import { fakeBackendProvider } from 'src/core/authentication/helpers/fake-backend';
-import { AppStore } from 'src/shared/app.store';
+import { ErrorInterceptor } from '@app/core/authentication/helpers/error.interceptor';
+import { JwtInterceptor } from '@app/core/authentication/helpers/jwt.interceptor';
+import { fakeBackendProvider } from '@app/core/authentication/helpers/fake-backend';
 import { GraphQLModule } from './graphql.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,17 +21,20 @@ import { GraphQLModule } from './graphql.module';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    AppRoutingModule,
     CoreModule,
     SharedModule,
     BracketModule,
-    GraphQLModule
+    GraphQLModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     fakeBackendProvider,
-    AppStore
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
