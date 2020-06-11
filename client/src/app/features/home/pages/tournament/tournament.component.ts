@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { switchMap, takeUntil, first } from 'rxjs/operators';
 
-import { AppStore, TournamentDataService } from '@app/core';
-import { ITournament, IContestant } from '../../../../../../../shared/models';
+import { TournamentGQL, JoinTournamentGQL } from '@app/core';
+import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/qui
   styleUrls: ['./tournament.component.scss'],
 })
 export class TournamentComponent implements OnInit, OnDestroy {
-  tournament: BehaviorSubject<Partial<ITournament>>;
+  tournament: Partial<ITournament>;
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   contestantList: Partial<IContestant>[] = [];
@@ -22,24 +22,28 @@ export class TournamentComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private appStore: AppStore,
-    private tournamentDataService: TournamentDataService,
+    private tournamentGql: TournamentGQL,
+    private joinTournamentGql: JoinTournamentGQL,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.tournament = this.appStore.currentTournament;
     this.route.paramMap
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        switchMap((params: ParamMap) =>
-          this.tournamentDataService.getTournament(null, params.get('linkCode'))
+        switchMap(
+          (params: ParamMap) =>
+            this.tournamentGql.watch({ linkCode: params.get('linkCode') })
+              .valueChanges
         )
       )
       .subscribe((result) => {
-        if (!this.appStore.currentTournament.value) {
+        if (!result) {
           this.router.navigateByUrl('/');
+          return;
         }
+
+        this.tournament = result.data['tournament'];
       });
   }
 
@@ -51,7 +55,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
   joinClicked() {
     const dialogRef = this.dialog.open(QuickJoinDialogComponent, {
       data: {
-        tournamentName: this.tournament.value.name,
+        tournamentName: this.tournament.name,
       },
     });
 
@@ -59,13 +63,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(first())
       .subscribe((contestant) => {
-        this.tournamentDataService.joinTournament(
-          this.tournament.value.id,
-          contestant.name,
-          contestant.id
-        ).pipe(first()).subscribe(result => {
-          console.log('LOOK joinTournament result: ', result);
-        });
+        this.joinTournamentGql
+          .mutate({
+            id: this.tournament.id,
+            contestantName: contestant.name,
+            userId: contestant.id,
+          })
+          .pipe(first())
+          .subscribe((result) => {
+            console.log('LOOK joinTournament result: ', result);
+          });
       });
   }
 }

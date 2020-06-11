@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { tap, catchError } from 'rxjs/operators';
 
-import { ITournament } from '../../../../../../shared/models';
+import { ITournament } from '@app/shared';
 import { TournamentGqlFunctions } from './tournament.gql';
-import { AppStore } from '../app.store.service';
+import { AppStore } from '@app/core';
 
 @Injectable({ providedIn: 'root' })
 export class TournamentDataService {
