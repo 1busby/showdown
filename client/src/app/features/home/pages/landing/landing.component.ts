@@ -1,21 +1,25 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
-import { AppStore, TournamentDataService } from '@app/core';
-import { ITournament } from '../../../../../../../shared/models';
+import { TournamentsGQL } from '@app/core';
+import { ITournament } from '@app/shared';
 
 @Component({
   selector: 'app-home',
   templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.scss']
+  styleUrls: ['./landing.component.scss'],
 })
 export class LandingComponent {
-  allTournaments: BehaviorSubject<Partial<ITournament>[]>;
+  allTournaments: Partial<ITournament>[];
 
-  constructor(private router: Router, private appStore: AppStore, private tournamentDataService: TournamentDataService) {
-    this.tournamentDataService.getAllTournaments();
-    this.allTournaments = appStore.allTournaments;
+  constructor(private router: Router, private tournamentsGql: TournamentsGQL) {
+    this.tournamentsGql
+      .fetch()
+      .pipe(first())
+      .subscribe((result) => {
+        this.allTournaments = result.data.tournaments;
+      });
   }
 
   createTournament() {
@@ -23,10 +27,13 @@ export class LandingComponent {
   }
 
   viewTournament(tournament: ITournament) {
-    // this.tournamentDataService.getTournamentFromId(tournament.id);
     if (!tournament.linkCode) {
       return;
     }
     this.router.navigateByUrl(`/tournament/${tournament.linkCode}/view`);
+  }
+
+  trackByFn(index, tournament) {
+    return tournament.id;
   }
 }

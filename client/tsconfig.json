@@ -22,8 +22,7 @@
     "paths": {
       "@app/*": ["app/*"],
       "@env/*": ["environments/*"],
-      "@assets/*": ["assets/*"],
-      "@models/*": ["../../shared/models/*"]
+      "@assets/*": ["assets/*"]
     }
   }
 }

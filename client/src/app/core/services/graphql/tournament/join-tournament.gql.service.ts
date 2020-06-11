@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Mutation } from 'apollo-angular';
 import gql from 'graphql-tag';
 
-import { ITournament } from '@app/shared';
-
 @Injectable({
   providedIn: 'root',
 })

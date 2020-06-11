@@ -4,7 +4,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 import { ITournament } from '@app/shared';
 import { TournamentGqlFunctions } from './tournament.gql';
-import { AppStore } from '@app/core';
+import { AppStore, CreateTournamentGQL } from '@app/core';
 
 @Injectable({ providedIn: 'root' })
 export class TournamentDataService {

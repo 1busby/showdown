@@ -5,7 +5,7 @@
 </div>
 
 <div class="content-container">
-  <ng-container *ngFor="let tournament of allTournaments | async">
+  <ng-container *ngFor="let tournament of allTournaments; trackBy: trackByFn">
     <tournament-card [tournament]="tournament" (selectTournament)="viewTournament(tournament)"></tournament-card>
   </ng-container>
 </div>

@@ -8,6 +8,8 @@ export * from './services/app.store.service';
 // GraphQL Services
 export * from './services/graphql/tournament/tournament.data.service';
 export * from './services/graphql/tournament/tournament.gql.service';
+export * from './services/graphql/tournament/tournaments.gql.service';
+export * from './services/graphql/tournament/create-tournament.gql.service';
 export * from './services/graphql/tournament/join-tournament.gql.service';
 
 export * from './utils/match-container';

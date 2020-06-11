@@ -43,7 +43,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.tournament = result.data['tournament'];
+        this.tournament = result.data.tournament;
       });
   }
 
