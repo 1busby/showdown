@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { IUser, ITournament } from '../../../../../shared/models';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AppStore {
   loggedInUser: BehaviorSubject<IUser> = new BehaviorSubject<IUser>(null);
   currentTournament: BehaviorSubject<

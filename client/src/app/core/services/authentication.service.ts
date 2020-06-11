@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-import { AppStore } from './../../data/app.store.service';
+import { AppStore } from './app.store.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {

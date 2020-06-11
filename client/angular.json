@@ -35,6 +35,11 @@
               "src/theme.scss",
               "node_modules/bulma/css/bulma.min.css"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles"
+              ]
+            },
             "scripts": [],
             "es5BrowserSupport": true
           },

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { TournamentGqlFunctions } from './tournament.gql';
 import { tap, catchError } from 'rxjs/operators';
-import { AppStore } from '../app.store.service';
-import { ITournament } from '../../../../../../shared/models';
 
-@Injectable()
+import { ITournament } from '../../../../../../shared/models';
+import { TournamentGqlFunctions } from './tournament.gql';
+import { AppStore } from '../app.store.service';
+
+@Injectable({ providedIn: 'root' })
 export class TournamentDataService {
   constructor(private apollo: Apollo, private appStore: AppStore) {}
 
