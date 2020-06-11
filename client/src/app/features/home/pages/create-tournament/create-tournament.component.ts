@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 import { ITournament, IContestant } from '../../../../../../../shared/models';
-import { AppStore, TournamentDataService } from '@app/core';
+import { AppStore, CreateTournamentGQL, TournamentGQL } from '@app/core';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-tournament',
   templateUrl: './create-tournament.component.html',
-  styleUrls: ['./create-tournament.component.scss']
+  styleUrls: ['./create-tournament.component.scss'],
 })
 export class CreateTournamentComponent {
   tournament: BehaviorSubject<Partial<ITournament>>;
@@ -32,9 +33,11 @@ export class CreateTournamentComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private appStore: AppStore,
-    private tournamentDataService: TournamentDataService
+    private createTournamentGql: CreateTournamentGQL,
+    private tournamentGql: TournamentGQL
   ) {
     this.tournament = this.appStore.currentTournament;
+    // this.tournament = this.tournamentGql.client..
 
     if (this.tournament.value) {
       this.loadTournament();
@@ -58,10 +61,15 @@ export class CreateTournamentComponent {
   }
 
   createTournament() {
-    this.tournamentDataService
-      .createTournament(this.tournamentForm.value)
-      .toPromise()
-      .then(result => {
+    this.createTournamentGql
+      .mutate({
+        name: this.tournament.value.name,
+        contestantCount: this.tournament.value.contestantCount,
+        temporaryContestants: this.tournament.value.contestants
+          .filter((c) => !c.id)
+          .map((c) => c.name),
+      }).pipe(first())
+      .subscribe((result) => {
         this.router.navigateByUrl(
           `/tournament/${result.data.addTournament.linkCode}/view`
         );

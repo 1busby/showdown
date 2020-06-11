@@ -7,7 +7,7 @@ import { ITournament } from '@app/shared';
 @Injectable({
   providedIn: 'root',
 })
-export class CreateTournamentGQL extends Mutation<ITournament> {
+export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }> {
   document = gql`
     mutation addTournament(
       $name: String!

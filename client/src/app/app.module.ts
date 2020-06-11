@@ -1,35 +1,45 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { ApolloModule, Apollo } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from '@app/core';
 import { BracketModule } from './features/bracket/bracket.module';
 import { AppComponent } from './app.component';
 import { httpInterceptorProviders } from './http-interceptors';
-import { GraphQLModule } from './graphql.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+
+const uri = 'http://localhost:3000/graphql'; // <-- add the URL of the GraphQL server here
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    AppRoutingModule,
     CoreModule,
+    ApolloModule,
+    HttpLinkModule,
+    AppRoutingModule,
     BracketModule,
-    GraphQLModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
-    httpInterceptorProviders
+    httpInterceptorProviders,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    apollo: Apollo,
+    httpLink: HttpLink
+  ) {
+    const link = httpLink.create({ uri });
+
+    apollo.create({
+      link,
+      cache: new InMemoryCache(),
+    });
+  }
+}
