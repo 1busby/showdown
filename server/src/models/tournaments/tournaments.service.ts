@@ -54,10 +54,10 @@ export class TournamentsService {
       temporaryContestants: null,
       contesants: null,
     };
-    if (contestantName) {
-      updateObj.temporaryContestants = contestantName;
-    } else if (userId) {
+    if (userId) {
       updateObj.contesants = userId;
+    } else if (contestantName) {
+      updateObj.temporaryContestants = contestantName;
     } else {
       return;
     }

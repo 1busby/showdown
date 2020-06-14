@@ -6,6 +6,8 @@ import {
   Resolver,
   Subscription,
   ID,
+  Parent,
+  ResolveField,
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
@@ -83,4 +85,12 @@ export class TournamentsResolver {
   tournamentAdded() {
     return pubSub.asyncIterator('tournamentAdded');
   }
+
+  // @ResolveField()
+  // contestants(@Parent() tournament: Tournament & { 'temporaryContestants': { name: string } }) {
+  //   tournament.contestants = {
+  //     ...tournament.contestants,
+  //     ...tournament.temporaryContestants,
+  //   };
+  // }
 }

@@ -3,10 +3,10 @@ import { IContestant } from '../../../../shared/models';
 
 @InterfaceType()
 export abstract class Contestant implements Partial<IContestant> {
-  @Field(type => ID)
-  id: string;
+  @Field(type => ID, { nullable: true })
+  eventId?: string;
 
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
   @Field(type => Int, { nullable: true })

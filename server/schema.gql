@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+interface Contestant {
+  eventId: ID
+  name: String
+  seed: Int
+  points: Int
+}
+
 """Date custom scalar type"""
 scalar Date
 
@@ -74,8 +81,7 @@ type Tournament {
   name: String!
   contestantCount: Int!
   createdBy: User
-  contestants: [User]
-  temporaryContestants: [String]
+  contestants: [Contestant]
   teams: [Team]
   createdOn: Date
   updatedOn: Date
@@ -91,9 +97,12 @@ input UpdateTournamentInput {
 }
 
 """The user model"""
-type User {
-  id: String
+type User implements Contestant {
+  eventId: ID
   name: String
+  seed: Int
+  points: Int
+  id: ID
   email: String
   firstName: String
   lastName: String

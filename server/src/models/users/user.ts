@@ -3,15 +3,12 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Team } from '../teams/team';
 import { IUser } from '../../../../shared/models/index';
 import { Document } from 'mongoose';
+import { Contestant } from '../contestants/contestant.interface';
 
-@ObjectType({ description: 'The user model' })
-export class User extends Document implements IUser {
-  // fields inherited from Contestant
-  @Field({ nullable: true })
+@ObjectType({ implements: [Contestant], description: 'The user model' })
+export class User extends Document implements IUser, Contestant {
+  @Field(type => ID, { nullable: true })
   id: string;
-
-  @Field({ nullable: true })
-  name: string;
 
   @Field({ nullable: true })
   email?: string;
@@ -30,4 +27,13 @@ export class User extends Document implements IUser {
 
   @Field({ nullable: true })
   updatedOn: Date;
+
+  // fields inherited from Contestant
+  eventId?: string;
+
+  name?: string;
+
+  seed?: number;
+
+  points?: number;
 }

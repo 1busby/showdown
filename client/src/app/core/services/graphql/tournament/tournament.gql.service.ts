@@ -17,10 +17,11 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         linkCode
         createdOn
         contestants {
-          id
+          eventId
           name
+          seed
+          points
         }
-        temporaryContestants
       }
     }
   `;
