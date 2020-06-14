@@ -11,7 +11,7 @@ import { httpInterceptorProviders } from './http-interceptors';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-const uri = 'http://localhost:3000/graphql'; // <-- add the URL of the GraphQL server here
+const uri = '/graphql'; // <-- add the URL of the GraphQL server here
 
 @NgModule({
   declarations: [AppComponent],
