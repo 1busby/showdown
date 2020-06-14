@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StateGQL } from './core';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  constructor() {}
+  constructor(private stateGql: StateGQL) {
+    this.stateGql.setIsDark(false);
+  }
 }

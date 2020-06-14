@@ -23,14 +23,14 @@ export class LandingComponent {
   }
 
   createTournament() {
-    this.router.navigateByUrl('/tournament/create');
+    this.router.navigateByUrl('/create');
   }
 
   viewTournament(tournament: ITournament) {
     if (!tournament.linkCode) {
       return;
     }
-    this.router.navigateByUrl(`/tournament/${tournament.linkCode}/view`);
+    this.router.navigateByUrl(`/${tournament.linkCode}`);
   }
 
   trackByFn(index, tournament) {

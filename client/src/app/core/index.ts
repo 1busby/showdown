@@ -6,6 +6,7 @@ export * from './services/user.service';
 export * from './services/app.store.service';
 
 // GraphQL Services
+export * from './services/state.gql.service';
 export * from './services/graphql/tournament/tournament.gql.service';
 export * from './services/graphql/tournament/tournaments.gql.service';
 export * from './services/graphql/tournament/create-tournament.gql.service';

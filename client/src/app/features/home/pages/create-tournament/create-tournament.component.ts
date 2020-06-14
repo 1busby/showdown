@@ -1,19 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray } from '@angular/forms';
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-
-import { ITournament, IContestant } from '../../../../../../../shared/models';
-import { AppStore, CreateTournamentGQL, TournamentGQL } from '@app/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
+
+import { ITournament, IContestant } from '@app/shared';
+import { CreateTournamentGQL, TournamentGQL } from '@app/core';
 
 @Component({
   selector: 'app-create-tournament',
   templateUrl: './create-tournament.component.html',
   styleUrls: ['./create-tournament.component.scss'],
 })
-export class CreateTournamentComponent {
-  tournament: BehaviorSubject<Partial<ITournament>>;
+export class CreateTournamentComponent implements OnInit {
+  tournament: ITournament;
 
   tournamentForm = this.formBuilder.group({
     name: [''],
@@ -31,28 +30,35 @@ export class CreateTournamentComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private router: Router,
-    private appStore: AppStore,
     private createTournamentGql: CreateTournamentGQL,
     private tournamentGql: TournamentGQL
-  ) {
-    this.tournament = this.appStore.currentTournament;
-    // this.tournament = this.tournamentGql.client..
+  ) {}
 
-    if (this.tournament.value) {
-      this.loadTournament();
-    } else {
+  ngOnInit() {
+    const linkCode = this.route.snapshot.paramMap.get('linkCode');
+    console.log('linkCode: ' + linkCode);
+debugger
+    // if (linkCode) {
+    //   // this.tournamentGql
+    //   //   .fetch({ linkCode }, { fetchPolicy: 'cache-only' })
+    //   //   .pipe(first())
+    //   //   .subscribe((currentTournament) => {
+    //   //     this.tournamentForm.patchValue(currentTournament);
+    //   //   });
+    // } else {
       this.tournamentForm.patchValue({
-        name: 'Mega Battle XTreme',
-        contestantCount: 8,
+        name: '',
+        contestantCount: 0,
         contestants: [],
         temporaryContestants: [],
       });
-    }
+    // }
   }
 
-  loadTournament() {
-    this.tournamentForm.patchValue(this.tournament.value);
+  loadTournament(tournament: ITournament) {
+    this.tournamentForm.patchValue(tournament);
   }
 
   onSubmit() {
@@ -63,16 +69,15 @@ export class CreateTournamentComponent {
   createTournament() {
     this.createTournamentGql
       .mutate({
-        name: this.tournament.value.name,
-        contestantCount: this.tournament.value.contestantCount,
-        temporaryContestants: this.tournament.value.contestants
+        name: this.tournament.name,
+        contestantCount: this.tournament.contestantCount,
+        temporaryContestants: this.tournament.contestants
           .filter((c) => !c.id)
           .map((c) => c.name),
-      }).pipe(first())
+      })
+      .pipe(first())
       .subscribe((result) => {
-        this.router.navigateByUrl(
-          `/tournament/${result.data.addTournament.linkCode}/view`
-        );
+        this.router.navigateByUrl(`/${result.data.addTournament.linkCode}`);
       });
   }
 

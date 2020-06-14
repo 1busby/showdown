@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { IUser, ITournament } from '../../../../../shared/models';
+import { IUser, ITournament } from '@app/shared';
 
 @Injectable({ providedIn: 'root' })
 export class AppStore {

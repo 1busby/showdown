@@ -4,14 +4,14 @@ import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { AppRoutingModule } from './app-routing.module';
-import { CoreModule } from '@app/core';
+import { CoreModule, typeDefs } from '@app/core';
 import { BracketModule } from './features/bracket/bracket.module';
 import { AppComponent } from './app.component';
 import { httpInterceptorProviders } from './http-interceptors';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-const uri = '/graphql'; // <-- add the URL of the GraphQL server here
+const uri = 'http://localhost:3000/graphql'; // <-- add the URL of the GraphQL server here
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +40,7 @@ export class AppModule {
     apollo.create({
       link,
       cache: new InMemoryCache(),
+      typeDefs
     });
   }
 }
