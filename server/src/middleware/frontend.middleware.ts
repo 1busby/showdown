@@ -12,9 +12,10 @@ const allowedExt = [
   '.ttf',
   '.svg',
   '.webmanifest',
+  '.json',
 ];
 
-const resolvePath = (file: string) => path.resolve(`public/brackets-client${file}`);
+const resolvePath = (file: string) => path.resolve(`dist/server/public/brackets-client${file}`);
 
 @Injectable()
 export class FrontendMiddleware implements NestMiddleware {
