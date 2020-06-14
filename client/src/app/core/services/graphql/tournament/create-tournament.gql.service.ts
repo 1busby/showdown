@@ -11,19 +11,17 @@ export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }
   document = gql`
     mutation addTournament(
       $name: String!
-      $contestantCount: Int!
-      $temporaryContestants: [String]
+      $contestantCount: Int
+      $contestants: [ContestantInput]
     ) {
       addTournament(
         newTournamentData: {
           name: $name
           contestantCount: $contestantCount
-          temporaryContestants: $temporaryContestants
+          contestants: $contestants
         }
       ) {
         id
-        name
-        contestantCount
         linkCode
         createdOn
       }

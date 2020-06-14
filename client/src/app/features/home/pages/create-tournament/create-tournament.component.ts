@@ -23,10 +23,6 @@ export class CreateTournamentComponent implements OnInit {
     return this.tournamentForm.get('contestants') as FormArray;
   }
 
-  get temporaryContestants() {
-    return this.tournamentForm.get('temporaryContestants') as FormArray;
-  }
-
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -50,7 +46,6 @@ export class CreateTournamentComponent implements OnInit {
         name: '',
         contestantCount: 0,
         contestants: [],
-        temporaryContestants: [],
       });
     }
   }
@@ -69,9 +64,7 @@ export class CreateTournamentComponent implements OnInit {
       .mutate({
         name: this.tournamentForm.value.name,
         contestantCount: this.tournamentForm.value.contestantCount,
-        temporaryContestants: this.tournamentForm.value.contestants
-          .filter((c) => !c.id)
-          .map((c) => c.name),
+        contestants: this.tournamentForm.value.contestants,
       })
       .pipe(first())
       .subscribe((result) => {

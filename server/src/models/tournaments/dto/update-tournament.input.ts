@@ -1,6 +1,5 @@
 import { MaxLength } from 'class-validator';
 import { Field, InputType, ID, Int } from '@nestjs/graphql';
-import { Contestant } from 'src/models/contestants/contestant.interface';
 
 @InputType()
 export class UpdateTournamentInput {
@@ -13,9 +12,6 @@ export class UpdateTournamentInput {
 
   @Field(type => Int, { nullable: true })
   contestantCount?: number;
-
-  @Field(type => [String], { nullable: true })
-  contestants?: string[];
 
   @Field(type => ID, { nullable: true })
   createdBy?: string;

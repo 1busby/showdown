@@ -21,6 +21,9 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           name
           seed
           points
+          ... on User {
+            id
+          }
         }
       }
     }

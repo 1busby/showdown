@@ -4,10 +4,12 @@ import mongodb = require('mongodb');
 export const TournamentSchema = new mongoose.Schema({
   name: String,
   contestantCount: Number,
-  contestants: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  }],
+  contestants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -15,5 +17,7 @@ export const TournamentSchema = new mongoose.Schema({
   createdOn: Date,
   updatedOn: Date,
   linkCode: String,
-  temporaryContestants: [String],
+  anonymousContestants: [
+    { eventId: String, name: String, seed: Number, points: Number },
+  ],
 });

@@ -6,10 +6,9 @@ export interface ITournament {
   contestantCount: number;
   matches?: Partial<IMatch>[];
   contestants?: Partial<IUser>[];
-  temporaryContestants?: string[];
-  createdBy: Partial<IUser> | string;
-  createdOn: Date;
-  updatedOn: Date;
-  linkCode: string;
+  createdBy?: Partial<IUser> | string;
+  createdOn?: Date;
+  updatedOn?: Date;
+  linkCode?: string;
   updates?: [IUpdate];
 }

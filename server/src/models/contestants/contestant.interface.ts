@@ -7,7 +7,7 @@ export abstract class Contestant implements Partial<IContestant> {
   eventId?: string;
 
   @Field({ nullable: true })
-  name: string;
+  name?: string;
 
   @Field(type => Int, { nullable: true })
   seed?: number;

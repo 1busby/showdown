@@ -9,6 +9,15 @@ interface Contestant {
   points: Int
 }
 
+input ContestantInput {
+  name: String
+  seed: Int
+  points: Int
+
+  """User ID if not anonymous"""
+  userId: ID
+}
+
 """Date custom scalar type"""
 scalar Date
 
@@ -33,7 +42,7 @@ input NewTournamentInput {
   name: String!
   contestantCount: Int
   createdBy: ID
-  temporaryContestants: [String]
+  contestants: [ContestantInput]
 }
 
 input NewUserInput {
@@ -92,7 +101,6 @@ input UpdateTournamentInput {
   id: ID!
   name: String
   contestantCount: Int
-  contestants: [String!]
   createdBy: ID
 }
 

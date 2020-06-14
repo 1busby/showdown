@@ -1,6 +1,6 @@
 export interface IContestant {
-  id: string;
-  name: string;
+  eventId?: string;
+  name?: string;
   seed?: number;
   points?: number;
 }

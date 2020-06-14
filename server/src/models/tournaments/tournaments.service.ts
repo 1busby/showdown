@@ -15,6 +15,15 @@ export class TournamentsService {
   ) {}
 
   async create(data: NewTournamentInput): Promise<Tournament> {
+    const anonymousContestants = [];
+
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = data.contestants.length - 1; i >= 0; i--) {
+      if (!data.contestants[i].userId) {
+        anonymousContestants.push(data.contestants[i]);
+        data.contestants.splice(i, 1);
+      }
+    }
     const createdTournament = new this.tournamentModel({
       ...data,
       linkCode: shortid.generate(),
@@ -61,7 +70,9 @@ export class TournamentsService {
     } else {
       return;
     }
-    return this.tournamentModel.findOneAndUpdate({ _id: id }, { $push: updateObj }, { new: true }).exec();
+    return this.tournamentModel
+      .findOneAndUpdate({ _id: id }, { $push: updateObj }, { new: true })
+      .exec();
   }
 
   remove(id: string): Promise<boolean> {

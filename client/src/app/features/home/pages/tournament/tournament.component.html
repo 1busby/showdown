@@ -27,12 +27,12 @@
 
     <mat-tab label="Contestants">
       <div>
-        {{ (this.tournament?.contestants?.length || 0) + (this.tournament?.temporaryContestants?.length || 0) }} /
+        {{ this.tournament?.contestants?.length || 0 }} /
         {{ this.tournament?.contestantCount || 0 }} Contestants Registered
       </div>
       <button
         *ngIf="
-          (this.tournament?.contestants?.length) + (this.tournament?.temporaryContestants?.length || 0) <
+          (this.tournament?.contestants?.length) <
           this.tournament?.contestantCount
         "
         mat-raised-button
@@ -43,7 +43,7 @@
       </button>
       <contestant-list
         interactionMode="view"
-        [contestants]="this.tournament?.temporaryContestants || []"
+        [contestants]="this.tournament?.contestants || []"
       ></contestant-list>
     </mat-tab>
   </mat-tab-group>
