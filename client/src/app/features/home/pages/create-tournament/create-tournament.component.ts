@@ -12,7 +12,6 @@ import { CreateTournamentGQL, TournamentGQL } from '@app/core';
   styleUrls: ['./create-tournament.component.scss'],
 })
 export class CreateTournamentComponent implements OnInit {
-  tournament: ITournament;
 
   tournamentForm = this.formBuilder.group({
     name: [''],
@@ -39,22 +38,21 @@ export class CreateTournamentComponent implements OnInit {
   ngOnInit() {
     const linkCode = this.route.snapshot.paramMap.get('linkCode');
     console.log('linkCode: ' + linkCode);
-debugger
-    // if (linkCode) {
-    //   // this.tournamentGql
-    //   //   .fetch({ linkCode }, { fetchPolicy: 'cache-only' })
-    //   //   .pipe(first())
-    //   //   .subscribe((currentTournament) => {
-    //   //     this.tournamentForm.patchValue(currentTournament);
-    //   //   });
-    // } else {
+    if (linkCode) {
+      this.tournamentGql
+        .fetch({ linkCode }, { fetchPolicy: 'cache-only' })
+        .pipe(first())
+        .subscribe((currentTournament) => {
+          this.tournamentForm.patchValue(currentTournament);
+        });
+    } else {
       this.tournamentForm.patchValue({
         name: '',
         contestantCount: 0,
         contestants: [],
         temporaryContestants: [],
       });
-    // }
+    }
   }
 
   loadTournament(tournament: ITournament) {
@@ -69,9 +67,9 @@ debugger
   createTournament() {
     this.createTournamentGql
       .mutate({
-        name: this.tournament.name,
-        contestantCount: this.tournament.contestantCount,
-        temporaryContestants: this.tournament.contestants
+        name: this.tournamentForm.value.name,
+        contestantCount: this.tournamentForm.value.contestantCount,
+        temporaryContestants: this.tournamentForm.value.contestants
           .filter((c) => !c.id)
           .map((c) => c.name),
       })

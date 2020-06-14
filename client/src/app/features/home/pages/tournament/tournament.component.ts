@@ -28,7 +28,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.log('LOOK TournamentComponent.ngOnInit')
+    console.log('LOOK TournamentComponent.ngOnInit');
     this.route.paramMap
       .pipe(
         takeUntil(this.ngUnsubscribe),

@@ -9,9 +9,9 @@ import { CreateTournamentComponent } from './pages/create-tournament/create-tour
 const routes: Routes = [
   { path: '', component: HomeComponent, children: [
     { path: '', component: LandingComponent },
-    { path: ':linkCode', component: TournamentComponent },
     { path: 'create', component: CreateTournamentComponent },
-    // { path: ':linkCode/edit', component: CreateTournamentComponent },
+    { path: ':linkCode', component: TournamentComponent },
+    { path: ':linkCode/edit', component: CreateTournamentComponent },
   ]},
 ];
 
