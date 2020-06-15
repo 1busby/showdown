@@ -60,10 +60,10 @@ export class TournamentsResolver {
     return tournament;
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation(returns => Tournament)
   async updateTournament(
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
-  ): Promise<boolean> {
+  ): Promise<Tournament> {
     return this.tournamentsService.updateOne(updateTournamentData);
   }
 

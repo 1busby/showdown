@@ -1,5 +1,6 @@
 <ng-container *ngIf="this.tournament">
   <div id="tournament-name">{{ this.tournament?.name }}</div>
+  <button mat-raised-button color="primary" (click)="editTournament(tournament.linkCode)">Edit Tournament</button>
 
   <!-- <bracket-view></bracket-view> -->
 

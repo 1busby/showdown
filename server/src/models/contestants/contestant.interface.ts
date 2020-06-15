@@ -19,4 +19,7 @@ export abstract class Contestant implements Partial<IContestant> {
 
   @Field(type => Int, { nullable: true })
   points?: number;
+
+  @Field({ nullable: true })
+  isRegistered: boolean;
 }

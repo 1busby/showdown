@@ -3,6 +3,9 @@ import { IContestant } from '../../../../shared/models';
 
 @InputType()
 export class ContestantInput implements Partial<IContestant> {
+  @Field(type => ID, { nullable: true })
+  _id?: string;
+
   @Field({ nullable: true })
   name?: string;
 
@@ -12,6 +15,6 @@ export class ContestantInput implements Partial<IContestant> {
   @Field(type => Int, { nullable: true })
   points?: number;
 
-  @Field(type => ID, { nullable: true, description: 'User ID if not anonymous' })
-  userId?: number;
+  @Field(type => ID, { nullable: true })
+  isRegistered?: number;
 }

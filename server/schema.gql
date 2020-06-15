@@ -7,15 +7,15 @@ interface Contestant {
   name: String
   seed: Int
   points: Int
+  isRegistered: Boolean
 }
 
 input ContestantInput {
+  _id: ID
   name: String
   seed: Int
   points: Int
-
-  """User ID if not anonymous"""
-  userId: ID
+  isRegistered: ID
 }
 
 """Date custom scalar type"""
@@ -27,7 +27,7 @@ type Mutation {
   addUser(newUserData: NewUserInput!): User!
   removeUser(id: String!): Boolean!
   addTournament(newTournamentData: NewTournamentInput!): Tournament!
-  updateTournament(updateTournamentData: UpdateTournamentInput!): Boolean!
+  updateTournament(updateTournamentData: UpdateTournamentInput!): Tournament!
   joinTournament(userId: ID, contestantName: String, id: ID!): Tournament!
   removeTournament(id: String!): Boolean!
 }
@@ -98,10 +98,11 @@ type Tournament {
 }
 
 input UpdateTournamentInput {
-  id: ID!
+  _id: ID!
   name: String
   contestantCount: Int
-  createdBy: ID
+  contestants: [ContestantInput]
+  updatedBy: ID
 }
 
 """The user model"""
@@ -110,11 +111,11 @@ type User implements Contestant {
   name: String
   seed: Int
   points: Int
+  isRegistered: Boolean
   email: String
   firstName: String
   lastName: String
   teams: [Team]
   createdOn: Date
   updatedOn: Date
-  isRegistered: Boolean
 }

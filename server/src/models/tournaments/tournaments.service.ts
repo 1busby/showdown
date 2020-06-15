@@ -6,7 +6,6 @@ import { TournamentsArgs } from './dto/tournaments.args';
 import { Tournament } from './tournament';
 import * as shortid from 'shortid';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
-import { Contestant } from '../contestants/contestant.interface';
 
 @Injectable()
 export class TournamentsService {
@@ -20,7 +19,7 @@ export class TournamentsService {
 
     // tslint:disable-next-line: prefer-for-of
     for (let i = data.contestants.length - 1; i >= 0; i--) {
-      if (!data.contestants[i].userId) {
+      if (!data.contestants[i].isRegistered) {
         anonymousContestants.push(data.contestants[i]);
         data.contestants.splice(i, 1);
       }
@@ -58,11 +57,24 @@ export class TournamentsService {
     return await this.tournamentModel.find().exec();
   }
 
-  async updateOne(data: UpdateTournamentInput): Promise<boolean> {
+  async updateOne(data: UpdateTournamentInput): Promise<Tournament> {
+    // separate anonymous users from regular users
+    const updateData: any = { ...data };
+    if (data.contestants && data.contestants.length > 0) {
+      const anonymousContestants = [];
+      // tslint:disable-next-line: prefer-for-of
+      for (let i = data.contestants.length - 1; i >= 0; i--) {
+        if (!data.contestants[i].isRegistered) {
+          anonymousContestants.push(data.contestants[i]);
+          data.contestants.splice(i, 1);
+        }
+      }
+      updateData.anonymousContestants = anonymousContestants;
+    }
     return this.tournamentModel
-      .updateOne({ _id: data.id }, data as any)
+      .findByIdAndUpdate({ _id: data._id }, updateData, { new: true })
       .then(result => {
-        return true;
+        return result;
       })
       .catch(error => {
         throw new Error('Error updating tournament >>> ' + error);

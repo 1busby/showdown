@@ -4,7 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 
 import { ITournament, IContestant } from '@app/shared';
-import { CreateTournamentGQL, TournamentGQL } from '@app/core';
+import {
+  CreateTournamentGQL,
+  TournamentGQL,
+  EditTournamentGQL,
+} from '@app/core';
 
 @Component({
   selector: 'app-create-tournament',
@@ -12,7 +16,7 @@ import { CreateTournamentGQL, TournamentGQL } from '@app/core';
   styleUrls: ['./create-tournament.component.scss'],
 })
 export class CreateTournamentComponent implements OnInit {
-
+  private _tournament: ITournament;
   tournamentForm = this.formBuilder.group({
     name: [''],
     contestantCount: [0],
@@ -23,23 +27,29 @@ export class CreateTournamentComponent implements OnInit {
     return this.tournamentForm.get('contestants') as FormArray;
   }
 
+  editMode = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private createTournamentGql: CreateTournamentGQL,
+    private editTournamentGql: EditTournamentGQL,
     private tournamentGql: TournamentGQL
   ) {}
 
   ngOnInit() {
     const linkCode = this.route.snapshot.paramMap.get('linkCode');
-    console.log('linkCode: ' + linkCode);
     if (linkCode) {
+      this.editMode = true;
       this.tournamentGql
-        .fetch({ linkCode }, { fetchPolicy: 'cache-only' })
-        .pipe(first())
-        .subscribe((currentTournament) => {
-          this.tournamentForm.patchValue(currentTournament);
+        .fetch({ linkCode }, { fetchPolicy: 'cache-first' })
+        .subscribe(({ data: { tournament } }) => {
+          this._tournament = tournament;
+          this.tournamentForm.patchValue(tournament);
+          tournament.contestants.forEach(({ __typename, ...contestant }: any) =>
+            this.addContestant(contestant)
+          );
         });
     } else {
       this.tournamentForm.patchValue({
@@ -60,16 +70,31 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   createTournament() {
-    this.createTournamentGql
-      .mutate({
-        name: this.tournamentForm.value.name,
-        contestantCount: this.tournamentForm.value.contestantCount,
-        contestants: this.tournamentForm.value.contestants,
-      })
-      .pipe(first())
-      .subscribe((result) => {
-        this.router.navigateByUrl(`/${result.data.addTournament.linkCode}`);
-      });
+    if (this.editMode) {
+      this.editTournamentGql
+        .mutate({
+          _id: this._tournament._id,
+          name: this.tournamentForm.value.name,
+          contestantCount: this.tournamentForm.value.contestantCount,
+          contestants: this.tournamentForm.value.contestants,
+        })
+        .pipe(first())
+        .subscribe((result) => {
+          this.router.navigateByUrl(`/${result.data.updateTournament.linkCode}`);
+        });
+    } else {
+      this.createTournamentGql
+        .mutate({
+
+          name: this.tournamentForm.value.name,
+          contestantCount: this.tournamentForm.value.contestantCount,
+          contestants: this.tournamentForm.value.contestants,
+        })
+        .pipe(first())
+        .subscribe((result) => {
+          this.router.navigateByUrl(`/${result.data.addTournament.linkCode}`);
+        });
+    }
   }
 
   addContestant(contestant: Partial<IContestant>) {

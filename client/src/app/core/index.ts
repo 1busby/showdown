@@ -10,6 +10,7 @@ export * from './services/state.gql.service';
 export * from './services/graphql/tournament/tournament.gql.service';
 export * from './services/graphql/tournament/tournaments.gql.service';
 export * from './services/graphql/tournament/create-tournament.gql.service';
+export * from './services/graphql/tournament/edit-tournament.gql.service';
 export * from './services/graphql/tournament/join-tournament.gql.service';
 
 export * from './utils/match-container';
