@@ -177,14 +177,14 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
 
   getData() {
     return {
-      highSeed: this.highSeed.eventId,
-      lowSeed: this.lowSeed.eventId,
+      highSeed: this.highSeed._id,
+      lowSeed: this.lowSeed._id,
       highMatch: this.highMatch,
       lowMatch: this.lowMatch,
 
       matchRounds: this.sets,
 
-      winner: this.winner.eventId,
+      winner: this.winner._id,
       winnerSeed: this.winnerSeed
     };
   }
