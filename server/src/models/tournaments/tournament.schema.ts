@@ -1,6 +1,13 @@
 import * as mongoose from 'mongoose';
 import mongodb = require('mongodb');
 
+const anonymousContestantSchema = new mongoose.Schema({
+  eventId: String,
+  name: String,
+  seed: Number,
+  points: Number,
+});
+
 export const TournamentSchema = new mongoose.Schema({
   name: String,
   contestantCount: Number,
@@ -17,7 +24,5 @@ export const TournamentSchema = new mongoose.Schema({
   createdOn: Date,
   updatedOn: Date,
   linkCode: String,
-  anonymousContestants: [
-    { eventId: String, name: String, seed: Number, points: Number },
-  ],
+  anonymousContestants: [anonymousContestantSchema],
 });

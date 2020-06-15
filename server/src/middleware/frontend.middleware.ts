@@ -21,7 +21,6 @@ const resolvePath = (file: string) => path.resolve(`dist/server/public/brackets-
 export class FrontendMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
     const { originalUrl } = req;
-    console.log('FrontendMiddleware - originalUrl', JSON.stringify(originalUrl));
     if (originalUrl.indexOf('graphql') === 1) {
       // it starts with /api --> continue with execution
       next();

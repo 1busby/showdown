@@ -34,4 +34,6 @@ export class Tournament extends Document implements ITournament {
 
   @Field({ nullable: true })
   linkCode: string;
+
+  anonymousContestants?: [];
 }

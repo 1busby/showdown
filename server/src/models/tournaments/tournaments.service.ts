@@ -6,6 +6,7 @@ import { TournamentsArgs } from './dto/tournaments.args';
 import { Tournament } from './tournament';
 import * as shortid from 'shortid';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
+import { Contestant } from '../contestants/contestant.interface';
 
 @Injectable()
 export class TournamentsService {
@@ -29,6 +30,7 @@ export class TournamentsService {
       linkCode: shortid.generate(),
       createdOn: Date.now(),
       updatedOn: Date.now(),
+      anonymousContestants,
     });
     return await createdTournament.save();
   }
@@ -36,13 +38,29 @@ export class TournamentsService {
   async findOneById(id: string): Promise<Tournament> {
     return this.tournamentModel.findById(id).exec();
   }
-
+  //anonymousContestants
   findOneByLinkCode(linkCode: string): Promise<Tournament> {
-    return this.tournamentModel.findOne({ linkCode }).exec();
+    return this.tournamentModel
+      .findOne({ linkCode })
+      .populate('contestants')
+      // .then(tournament => {
+      //   return tournament
+      //     .populate('contestants')
+      //     .populate('anonymousContestants')
+      //     .execPopulate();
+      // })
+      .then(tournament => {
+        tournament = tournament.toJSON();
+        tournament.id = tournament._id;
+        tournament.contestants = [
+          ...tournament.contestants,
+          ...tournament.anonymousContestants,
+        ];
+        return tournament;
+      });
   }
 
-  async findAll(tournamentssArgs: TournamentsArgs): Promise<Tournament[]> {
-    console.log('findAll tournaments');
+  async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
     return await this.tournamentModel.find().exec();
   }
 
@@ -50,7 +68,6 @@ export class TournamentsService {
     return this.tournamentModel
       .updateOne({ _id: data.id }, data as any)
       .then(result => {
-        console.log('Update tournament result >>> ' + JSON.stringify(result));
         return true;
       })
       .catch(error => {

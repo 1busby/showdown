@@ -85,12 +85,4 @@ export class TournamentsResolver {
   tournamentAdded() {
     return pubSub.asyncIterator('tournamentAdded');
   }
-
-  // @ResolveField()
-  // contestants(@Parent() tournament: Tournament & { 'temporaryContestants': { name: string } }) {
-  //   tournament.contestants = {
-  //     ...tournament.contestants,
-  //     ...tournament.temporaryContestants,
-  //   };
-  // }
 }
