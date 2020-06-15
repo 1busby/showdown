@@ -38,20 +38,14 @@ export class TournamentsService {
   async findOneById(id: string): Promise<Tournament> {
     return this.tournamentModel.findById(id).exec();
   }
-  //anonymousContestants
+
   findOneByLinkCode(linkCode: string): Promise<Tournament> {
     return this.tournamentModel
       .findOne({ linkCode })
       .populate('contestants')
-      // .then(tournament => {
-      //   return tournament
-      //     .populate('contestants')
-      //     .populate('anonymousContestants')
-      //     .execPopulate();
-      // })
       .then(tournament => {
         tournament = tournament.toJSON();
-        tournament.id = tournament._id;
+        tournament._id = tournament._id;
         tournament.contestants = [
           ...tournament.contestants,
           ...tournament.anonymousContestants,

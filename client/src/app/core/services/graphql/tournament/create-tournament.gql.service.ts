@@ -21,7 +21,7 @@ export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }
           contestants: $contestants
         }
       ) {
-        id
+        _id
         linkCode
         createdOn
       }

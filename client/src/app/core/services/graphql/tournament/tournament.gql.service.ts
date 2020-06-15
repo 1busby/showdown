@@ -11,18 +11,18 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
   document = gql`
     query tournament($id: String, $linkCode: String) {
       tournament(id: $id, linkCode: $linkCode) {
-        id
+        _id
         name
         contestantCount
         linkCode
         createdOn
         contestants {
-          eventId
+          _id
           name
           seed
           points
           ... on User {
-            id
+            isRegistered
           }
         }
       }

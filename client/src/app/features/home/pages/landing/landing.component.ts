@@ -34,6 +34,6 @@ export class LandingComponent {
   }
 
   trackByFn(index, tournament) {
-    return tournament.id;
+    return tournament._id;
   }
 }

@@ -53,7 +53,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       );
       if (!user) return error('Username or password is incorrect');
       return ok({
-        id: user.id,
+        id: user._id,
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -68,7 +68,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return error('Username "' + user.username + '" is already taken');
       }
 
-      user.id = users.length ? Math.max(...users.map((x) => x.id)) + 1 : 1;
+      user._id = users.length ? Math.max(...users.map((x) => x._id)) + 1 : 1;
       users.push(user);
       localStorage.setItem('users', JSON.stringify(users));
 
@@ -83,7 +83,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function deleteUser() {
       if (!isLoggedIn()) return unauthorized();
 
-      users = users.filter((x) => x.id !== idFromUrl());
+      users = users.filter((x) => x._id !== idFromUrl());
       localStorage.setItem('users', JSON.stringify(users));
       return ok();
     }

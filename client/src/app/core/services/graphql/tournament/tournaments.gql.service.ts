@@ -11,7 +11,7 @@ export class TournamentsGQL extends Query<{ tournaments: [ITournament] }> {
   document = gql`
     query tournaments($skip: Int, $take: Int) {
       tournaments(skip: $skip, take: $take) {
-        id
+        _id
         name
         createdOn
         linkCode

@@ -8,7 +8,7 @@ import { Contestant } from '../contestants/contestant.interface';
 @ObjectType({ implements: [Contestant], description: 'The user model' })
 export class User extends Document implements IUser, Contestant {
   @Field(type => ID, { nullable: true })
-  id: string;
+  _id: string;
 
   @Field({ nullable: true })
   email?: string;
@@ -27,6 +27,9 @@ export class User extends Document implements IUser, Contestant {
 
   @Field({ nullable: true })
   updatedOn: Date;
+
+  @Field({ nullable: true })
+  isRegistered: boolean;
 
   // fields inherited from Contestant
   eventId?: string;

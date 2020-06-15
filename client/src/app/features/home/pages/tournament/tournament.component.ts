@@ -74,9 +74,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
       .subscribe((contestant) => {
         this.joinTournamentGql
           .mutate({
-            id: this.tournament.id,
+            id: this.tournament._id,
             contestantName: contestant.name,
-            userId: contestant.id,
+            userId: contestant._id,
           })
           .pipe(first())
           .subscribe((result) => {

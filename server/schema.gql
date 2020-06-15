@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 interface Contestant {
-  eventId: ID
+  _id: ID
   name: String
   seed: Int
   points: Int
@@ -86,7 +86,7 @@ type Team {
 
 """The tournament model"""
 type Tournament {
-  id: ID!
+  _id: ID!
   name: String!
   contestantCount: Int!
   createdBy: User
@@ -106,15 +106,15 @@ input UpdateTournamentInput {
 
 """The user model"""
 type User implements Contestant {
-  eventId: ID
+  _id: ID
   name: String
   seed: Int
   points: Int
-  id: ID
   email: String
   firstName: String
   lastName: String
   teams: [Team]
   createdOn: Date
   updatedOn: Date
+  isRegistered: Boolean
 }

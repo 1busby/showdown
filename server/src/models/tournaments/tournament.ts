@@ -9,7 +9,7 @@ import { Contestant } from '../contestants/contestant.interface';
 @ObjectType({ description: 'The tournament model' })
 export class Tournament extends Document implements ITournament {
   @Field(type => ID)
-  id: string;
+  _id: string;
 
   @Field()
   name: string;

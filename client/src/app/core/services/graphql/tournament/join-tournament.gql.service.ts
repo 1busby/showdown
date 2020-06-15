@@ -13,7 +13,7 @@ export class JoinTournamentGQL extends Mutation {
         contestantName: $contestantName
         userId: $userId
       ) {
-        id
+        _id
         contestants
       }
     }

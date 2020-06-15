@@ -1,5 +1,5 @@
 export interface IContestant {
-  eventId?: string;
+  _id?: string;
   name?: string;
   seed?: number;
   points?: number;

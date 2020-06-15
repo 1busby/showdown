@@ -1,7 +1,7 @@
 import { IMatch, IUser, IContestant, IUpdate } from './';
 
 export interface ITournament {
-  id: string;
+  _id: string;
   name: string;
   contestantCount: number;
   matches?: Partial<IMatch>[];
