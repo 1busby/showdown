@@ -12,7 +12,10 @@
     "incremental": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@config/*": ["./config/*"],
+    }
   },
   "exclude": ["node_modules", "./dist"]
 }

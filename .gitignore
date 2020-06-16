@@ -1,2 +1,22 @@
 
 server/.env
+
+server/config/csr.pem
+
+server/config/gamebrackets_app.ca-bundle
+
+server/config/gamebrackets_app.crt
+
+server/config/private.key
+
+server/config/gamebrackets_app.csr
+
+server/config/gamebrackets_app.key
+
+server/config/old/csr.pem
+
+server/config/old/gamebrackets_app.ca-bundle
+
+server/config/old/gamebrackets_app.crt
+
+server/config/old/private.key

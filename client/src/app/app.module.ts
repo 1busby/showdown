@@ -11,7 +11,9 @@ import { httpInterceptorProviders } from './http-interceptors';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-const uri = environment.production ? '/graphql' : 'http://localhost:3000/graphql'; // <-- add the URL of the GraphQL server here
+const uri = environment.production
+  ? '/graphql'
+  : 'https://localhost:3000/graphql';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,22 +27,17 @@ const uri = environment.production ? '/graphql' : 'http://localhost:3000/graphql
       enabled: environment.production,
     }),
   ],
-  providers: [
-    httpInterceptorProviders,
-  ],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(
-    apollo: Apollo,
-    httpLink: HttpLink
-  ) {
+  constructor(apollo: Apollo, httpLink: HttpLink) {
     const link = httpLink.create({ uri });
 
     apollo.create({
       link,
       cache: new InMemoryCache(),
-      typeDefs
+      typeDefs,
     });
   }
 }

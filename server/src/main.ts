@@ -1,9 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as fs from 'fs';
 
-const whitelist = [
-  'http://localhost:4200',
-]
+const whitelist = ['http://localhost:4200'];
 const corsOptions = {
   origin(origin, callback) {
     return callback(null, true);
@@ -14,13 +13,23 @@ const corsOptions = {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'));
+      callback(
+        new Error(
+          'The CORS policy for this site does not allow access from the specified Origin.',
+        ),
+      );
     }
   },
 };
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const httpsOptions = {
+    key: fs.readFileSync('./config/gamebrackets_app.key'),
+    cert: fs.readFileSync('./config/gamebrackets_app.crt'),
+    ca: fs.readFileSync ('./config/gamebrackets_app.ca-bundle'),
+  };
+
+  const app = await NestFactory.create(AppModule, { httpsOptions });
   app.enableCors(corsOptions);
   await app.listen(process.env.PORT);
 }
