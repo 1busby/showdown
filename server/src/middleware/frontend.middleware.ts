@@ -20,13 +20,19 @@ const resolvePath = (file: string) => path.resolve(`dist/server/public/brackets-
 @Injectable()
 export class FrontendMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
-    const { originalUrl } = req;
+    const { originalUrl }: { [key: string]: string } = req;
     if (originalUrl.indexOf('graphql') === 1) {
       // it starts with /graphql --> continue with execution
       next();
     } else if (originalUrl.indexOf('health') === 1) {
       res.sendFile(resolvePath('/health.html'));
     } else if (allowedExt.filter(ext => originalUrl.includes(ext)).length > 0) {
+      if (originalUrl.includes('?ngsw-cache-bust=')) {
+        const actualFilePath = originalUrl.slice(0, originalUrl.indexOf('?'));
+        console.log('actualFilePath: ' + actualFilePath);
+        res.sendFile(resolvePath(actualFilePath));
+      }
+      console.log('originalUrl: ' + originalUrl);
       // it has a file extension --> resolve the file
       res.sendFile(resolvePath(originalUrl));
     } else {
