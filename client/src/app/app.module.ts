@@ -5,7 +5,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule, typeDefs } from '@app/core';
-import { BracketModule } from './features/bracket/bracket.module';
 import { AppComponent } from './app.component';
 import { httpInterceptorProviders } from './http-interceptors';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -22,7 +21,6 @@ const uri = environment.production
     ApolloModule,
     HttpLinkModule,
     AppRoutingModule,
-    BracketModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
