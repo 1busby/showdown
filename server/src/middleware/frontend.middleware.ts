@@ -28,13 +28,12 @@ export class FrontendMiddleware implements NestMiddleware {
       res.sendFile(resolvePath('/health.html'));
     } else if (allowedExt.filter(ext => originalUrl.includes(ext)).length > 0) {
       if (originalUrl.includes('?ngsw-cache-bust=')) {
+        // it has a file extension --> resolve the file
         const actualFilePath = originalUrl.slice(0, originalUrl.indexOf('?'));
-        console.log('actualFilePath: ' + actualFilePath);
         res.sendFile(resolvePath(actualFilePath));
+      } else {
+        res.sendFile(resolvePath(originalUrl));
       }
-      console.log('originalUrl: ' + originalUrl);
-      // it has a file extension --> resolve the file
-      res.sendFile(resolvePath(originalUrl));
     } else {
       // in all other cases, redirect to the index.html!
       // res.sendFile(resolvePath('index.html'));
