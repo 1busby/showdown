@@ -116,12 +116,15 @@ export class TournamentsService {
     requestEditAccessInput: RequestEditAccessInput,
   ): Promise<EditAccessRequest> {
     if (requestEditAccessInput.editAccessCode) {
-      // TODO: check access code
-      return new Promise((res, rej) => {
-        res({
-          canEdit: true,
+      return this.tournamentModel
+        .findById(requestEditAccessInput.tournamentId, 'editAccessCode')
+        .exec()
+        .then(result => {
+          return {
+            canEdit:
+              result.editAccessCode === requestEditAccessInput.editAccessCode,
+          };
         });
-      });
     }
   }
 }

@@ -107,8 +107,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
           })
           .subscribe((result) => {
             //  TODO: fix
-            // if (result.data['requestEditAccess'].canEdit) {
-            if (false) {
+            if (result.data['requestEditAccess'].canEdit) {
               this.router.navigateByUrl(`/${linkCode}/edit`);
             } else {
               this.alertService.error('Something went wrong');
