@@ -21,7 +21,7 @@ export class CreateTournamentComponent implements OnInit {
     name: [''],
     contestantCount: [0],
     contestants: this.formBuilder.array([]),
-    editAccessCode: ''
+    editAccessCode: '',
   });
 
   get contestants() {
@@ -47,7 +47,8 @@ export class CreateTournamentComponent implements OnInit {
         .fetch({ linkCode }, { fetchPolicy: 'cache-first' })
         .subscribe(({ data: { tournament } }) => {
           this._tournament = tournament;
-          this.tournamentForm.patchValue(tournament);
+          const editAccessCode = localStorage.getItem('editAccessCode');
+          this.tournamentForm.patchValue({ ...tournament, editAccessCode });
           tournament.contestants.forEach(({ __typename, ...contestant }: any) =>
             this.addContestant(contestant)
           );
@@ -57,7 +58,7 @@ export class CreateTournamentComponent implements OnInit {
         name: '',
         contestantCount: 0,
         contestants: [],
-        editAccessCode: '123'
+        editAccessCode: '123',
       });
     }
   }
@@ -76,19 +77,27 @@ export class CreateTournamentComponent implements OnInit {
       this.editTournamentGql
         .mutate({
           _id: this._tournament._id,
-          ...this.tournamentForm.value
+          ...this.tournamentForm.value,
         })
         .pipe(first())
         .subscribe((result) => {
-          localStorage.setItem('editAccessCode', this.tournamentForm.value.editAccessCode);
-          this.router.navigateByUrl(`/${result.data.updateTournament.linkCode}`);
+          localStorage.setItem(
+            'editAccessCode',
+            this.tournamentForm.value.editAccessCode
+          );
+          this.router.navigateByUrl(
+            `/${result.data.updateTournament.linkCode}`
+          );
         });
     } else {
       this.createTournamentGql
         .mutate(this.tournamentForm.value)
         .pipe(first())
         .subscribe((result) => {
-          localStorage.setItem('editAccessCode', this.tournamentForm.value.editAccessCode);
+          localStorage.setItem(
+            'editAccessCode',
+            this.tournamentForm.value.editAccessCode
+          );
           this.router.navigateByUrl(`/${result.data.addTournament.linkCode}`);
         });
     }
