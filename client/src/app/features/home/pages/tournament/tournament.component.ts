@@ -88,7 +88,27 @@ export class TournamentComponent implements OnInit, OnDestroy {
       });
   }
 
-  editTournament(linkCode) {
+  editTournament() {
+    const editAccessCode = localStorage.getItem('editAccessCode');
+    if (editAccessCode) {
+      this.requestEditAccessGql
+        .fetch({
+          tournamentId: this.tournament._id,
+          editAccessCode,
+        })
+        .subscribe((result) => {
+          if (result.data['requestEditAccess'].canEdit) {
+            this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+          } else {
+            this.showEditAccessDialog();
+          }
+        });
+    } else {
+      this.showEditAccessDialog();
+    }
+  }
+
+  showEditAccessDialog() {
     const dialogRef = this.dialog.open(EditAccessDialogComponent, {
       data: {
         tournamentId: this.tournament._id,
@@ -106,9 +126,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
             editAccessCode,
           })
           .subscribe((result) => {
-            //  TODO: fix
             if (result.data['requestEditAccess'].canEdit) {
-              this.router.navigateByUrl(`/${linkCode}/edit`);
+              localStorage.setItem('editAccessCode', editAccessCode);
+              this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
             } else {
               this.alertService.error('Something went wrong');
             }

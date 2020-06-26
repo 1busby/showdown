@@ -80,6 +80,7 @@ export class CreateTournamentComponent implements OnInit {
         })
         .pipe(first())
         .subscribe((result) => {
+          localStorage.setItem('editAccessCode', this.tournamentForm.value.editAccessCode);
           this.router.navigateByUrl(`/${result.data.updateTournament.linkCode}`);
         });
     } else {
@@ -87,6 +88,7 @@ export class CreateTournamentComponent implements OnInit {
         .mutate(this.tournamentForm.value)
         .pipe(first())
         .subscribe((result) => {
+          localStorage.setItem('editAccessCode', this.tournamentForm.value.editAccessCode);
           this.router.navigateByUrl(`/${result.data.addTournament.linkCode}`);
         });
     }
