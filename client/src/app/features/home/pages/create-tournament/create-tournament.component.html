@@ -32,6 +32,17 @@
         (newContestantEmitter)="addContestant($event)"
       ></contestant-list>
 
+      <mat-form-field appearance="outline">
+        <mat-label>Admin Access Code</mat-label>
+        <input
+          matInput
+          type="text"
+          required
+          formControlName="editAccessCode"
+          (change)="countChange($event)"
+        />
+      </mat-form-field>
+
       <div class="step-buttons">
         <button mat-button matStepperPrevious type="button">Back</button>
         <button type="submit" mat-raised-button color="primary">Create</button>

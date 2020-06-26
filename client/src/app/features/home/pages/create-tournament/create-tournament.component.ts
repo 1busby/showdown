@@ -21,6 +21,7 @@ export class CreateTournamentComponent implements OnInit {
     name: [''],
     contestantCount: [0],
     contestants: this.formBuilder.array([]),
+    editAccessCode: ''
   });
 
   get contestants() {
@@ -56,6 +57,7 @@ export class CreateTournamentComponent implements OnInit {
         name: '',
         contestantCount: 0,
         contestants: [],
+        editAccessCode: '123'
       });
     }
   }
@@ -74,9 +76,7 @@ export class CreateTournamentComponent implements OnInit {
       this.editTournamentGql
         .mutate({
           _id: this._tournament._id,
-          name: this.tournamentForm.value.name,
-          contestantCount: this.tournamentForm.value.contestantCount,
-          contestants: this.tournamentForm.value.contestants,
+          ...this.tournamentForm.value
         })
         .pipe(first())
         .subscribe((result) => {
@@ -84,12 +84,7 @@ export class CreateTournamentComponent implements OnInit {
         });
     } else {
       this.createTournamentGql
-        .mutate({
-
-          name: this.tournamentForm.value.name,
-          contestantCount: this.tournamentForm.value.contestantCount,
-          contestants: this.tournamentForm.value.contestants,
-        })
+        .mutate(this.tournamentForm.value)
         .pipe(first())
         .subscribe((result) => {
           this.router.navigateByUrl(`/${result.data.addTournament.linkCode}`);

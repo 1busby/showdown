@@ -21,6 +21,11 @@ input ContestantInput {
 """Date custom scalar type"""
 scalar Date
 
+"""An object with to inform app of access status"""
+type EditAccessRequest {
+  canEdit: Boolean
+}
+
 type Mutation {
   addRecipe(newRecipeData: NewRecipeInput!): Recipe!
   removeRecipe(id: String!): Boolean!
@@ -43,6 +48,7 @@ input NewTournamentInput {
   contestantCount: Int
   createdBy: ID
   contestants: [ContestantInput]
+  editAccessCode: String
 }
 
 input NewUserInput {
@@ -59,6 +65,7 @@ type Query {
   users(skip: Int = 0, take: Int = 25): [User!]!
   tournament(linkCode: String, id: String): Tournament!
   tournaments(skip: Int = 0, take: Int = 25): [Tournament!]!
+  requestEditAccess(requestEditAccessInput: RequestEditAccessInput!): EditAccessRequest!
 }
 
 type Recipe {
@@ -67,6 +74,11 @@ type Recipe {
   description: String
   creationDate: Date!
   ingredients: [String!]!
+}
+
+input RequestEditAccessInput {
+  tournamentId: String
+  editAccessCode: String
 }
 
 type Subscription {
@@ -95,6 +107,7 @@ type Tournament {
   createdOn: Date
   updatedOn: Date
   linkCode: String
+  editAccessCode: String
 }
 
 input UpdateTournamentInput {
@@ -102,6 +115,7 @@ input UpdateTournamentInput {
   name: String
   contestantCount: Int
   contestants: [ContestantInput]
+  editAccessCode: String
   updatedBy: ID
 }
 

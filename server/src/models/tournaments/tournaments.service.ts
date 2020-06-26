@@ -6,6 +6,8 @@ import { TournamentsArgs } from './dto/tournaments.args';
 import { Tournament } from './tournament';
 import * as shortid from 'shortid';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
+import { RequestEditAccessInput } from './dto/request-edit-access.input';
+import { EditAccessRequest } from './dto/edit-access-request';
 
 @Injectable()
 export class TournamentsService {
@@ -108,5 +110,18 @@ export class TournamentsService {
       .catch(error => {
         throw new Error('Error removing tournament >>> ' + error);
       });
+  }
+
+  handleEditAccessRequest(
+    requestEditAccessInput: RequestEditAccessInput,
+  ): Promise<EditAccessRequest> {
+    if (requestEditAccessInput.editAccessCode) {
+      // TODO: check access code
+      return new Promise((res, rej) => {
+        res({
+          canEdit: true,
+        });
+      });
+    }
   }
 }

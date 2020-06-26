@@ -18,22 +18,25 @@ export class Tournament extends Document implements ITournament {
   contestantCount: number;
 
   @Field(type => User, { nullable: true })
-  createdBy: User;
+  createdBy?: User;
 
   @Field(type => [Contestant], { nullable: 'itemsAndList' })
-  contestants: Contestant[];
+  contestants?: Contestant[];
 
   @Field(type => [Team], { nullable: 'itemsAndList' })
-  teams: Team[];
+  teams?: Team[];
 
   @Field({ nullable: true })
-  createdOn: Date;
+  createdOn?: Date;
 
   @Field({ nullable: true })
-  updatedOn: Date;
+  updatedOn?: Date;
 
   @Field({ nullable: true })
-  linkCode: string;
+  linkCode?: string;
+
+  @Field({ nullable: true })
+  editAccessCode?: string;
 
   anonymousContestants?: [];
 }

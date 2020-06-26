@@ -16,4 +16,7 @@ export class NewTournamentInput {
 
   @Field(type => [ContestantInput], { nullable: 'itemsAndList' })
   contestants?: ContestantInput[];
+
+  @Field({ nullable: true })
+  editAccessCode?: string;
 }

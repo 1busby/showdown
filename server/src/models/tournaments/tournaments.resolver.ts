@@ -16,6 +16,8 @@ import { TournamentsArgs } from './dto/tournaments.args';
 import { Tournament } from './tournament';
 import { TournamentsService } from './tournaments.service';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
+import { RequestEditAccessInput } from './dto/request-edit-access.input';
+import { EditAccessRequest } from './dto/edit-access-request';
 
 const pubSub = new PubSub();
 
@@ -49,6 +51,11 @@ export class TournamentsResolver {
   @Query(returns => [Tournament])
   tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
     return this.tournamentsService.findAll(tournamentsArgs);
+  }
+
+  @Query(returns => EditAccessRequest)
+  requestEditAccess(@Args('requestEditAccessInput') requestEditAccessInput: RequestEditAccessInput): Promise<EditAccessRequest> {
+    return this.tournamentsService.handleEditAccessRequest(requestEditAccessInput);
   }
 
   @Mutation(returns => Tournament)
