@@ -12,7 +12,7 @@ import { environment } from '../environments/environment';
 
 const uri = environment.production
   ? '/graphql'
-  : 'https://localhost:3000/graphql';
+  : 'http://localhost:3000/graphql';
 
 @NgModule({
   declarations: [AppComponent],

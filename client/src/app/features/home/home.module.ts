@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '@app/shared';
 import { BracketModule } from '../bracket/bracket.module';
@@ -11,9 +10,10 @@ import { ContestantListComponent } from './components/contestant-list/contestant
 import { CreateTournamentComponent } from './pages/create-tournament/create-tournament.component';
 import { TournamentCardComponent } from './components/tournament-card/tournament-card.component';
 import { QuickJoinDialogComponent } from './components/quick-join-dialog/quick-join-dialog.component';
+import { EditAccessDialogComponent } from './components/edit-access-dialog/edit-access-dialog.component';
 
 @NgModule({
-  imports: [CommonModule, HomeRoutingModule, SharedModule, BracketModule],
+  imports: [HomeRoutingModule, SharedModule, BracketModule],
   declarations: [
     HomeComponent,
     LandingComponent,
@@ -21,8 +21,9 @@ import { QuickJoinDialogComponent } from './components/quick-join-dialog/quick-j
     CreateTournamentComponent,
     ContestantListComponent,
     TournamentCardComponent,
-    QuickJoinDialogComponent
+    QuickJoinDialogComponent,
+    EditAccessDialogComponent
   ],
-  bootstrap: [QuickJoinDialogComponent]
+  bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent]
 })
 export class HomeModule {}

@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType({ description: 'An object with to inform app of access status' })
 export class EditAccessRequest {

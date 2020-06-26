@@ -5,7 +5,6 @@ import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  exports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule],
-  providers: []
+  exports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule]
 })
 export class SharedModule {}

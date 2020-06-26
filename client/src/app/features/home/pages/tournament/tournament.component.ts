@@ -4,9 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject, of } from 'rxjs';
 import { switchMap, takeUntil, first, catchError } from 'rxjs/operators';
 
-import { TournamentGQL, JoinTournamentGQL } from '@app/core';
+import { TournamentGQL, JoinTournamentGQL, AlertService } from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
+import { RequestEditAccessGQL } from '@app/core/services/graphql/tournament/request-edit-access.gql.service';
+import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
 
 @Component({
   selector: 'app-tournament',
@@ -24,6 +26,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private tournamentGql: TournamentGQL,
     private joinTournamentGql: JoinTournamentGQL,
+    private requestEditAccessGql: RequestEditAccessGQL,
+    private alertService: AlertService,
     public dialog: MatDialog
   ) {}
 
@@ -33,10 +37,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
         switchMap(
           (params: ParamMap) =>
-          this.tournamentGql.watch({ linkCode: params.get('linkCode') })
-          .valueChanges
+            this.tournamentGql.watch({ linkCode: params.get('linkCode') })
+              .valueChanges
         ),
-        catchError(error => {
+        catchError((error) => {
           this.router.navigateByUrl('/');
           return of('Error finding tournament because ' + error);
         })
@@ -85,6 +89,31 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   editTournament(linkCode) {
-    this.router.navigateByUrl(`/${linkCode}/edit`);
+    const dialogRef = this.dialog.open(EditAccessDialogComponent, {
+      data: {
+        tournamentId: this.tournament._id,
+        tournamentName: this.tournament.name,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(first())
+      .subscribe((editAccessCode: string) => {
+        this.requestEditAccessGql
+          .fetch({
+            tournamentId: this.tournament._id,
+            editAccessCode,
+          })
+          .subscribe((result) => {
+            //  TODO: fix
+            // if (result.data['requestEditAccess'].canEdit) {
+            if (false) {
+              this.router.navigateByUrl(`/${linkCode}/edit`);
+            } else {
+              this.alertService.error('Something went wrong');
+            }
+          });
+      });
   }
 }
