@@ -21,6 +21,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   contestantList: Partial<IContestant>[] = [];
 
+  isCheckingEditAccess = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -89,6 +91,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   editTournament() {
+    this.isCheckingEditAccess = true;
     const editAccessCode = localStorage.getItem('editAccessCode');
     if (editAccessCode) {
       this.requestEditAccessGql

@@ -1,32 +1,50 @@
 <!-- NOTE to future self: leaving cards blank for now because in the future the cards will be clickable. 
   Clicking on a card will cause it to expand and allow it to be edited.
   Cards will also be drag and droppable, with seed on the side. -->
-<section class="container">
-  <ng-container *ngFor="let contestant of localContestantList; let i = index; trackBy:trackById">
-    <mat-card [matBadge]="i+1" matBadgePosition="before" matBadgeColor="accent" class="contestant-container">
-      <mat-card-content>
-        {{ contestant.name || '---' }}
-      </mat-card-content>
-    </mat-card>
-  </ng-container>
-  <ng-container [formGroup]="newContestantForm" (ngSubmit)="addContestant()">
-    <mat-form-field
-      appearance="outline"
-      *ngIf="contestants?.length < contestantCount && interactionMode === 'edit'"
+<div class="outer-container">
+  <div class="list-container">
+    <ng-container
+      *ngFor="
+        let contestant of localContestantList;
+        let i = index;
+        trackBy: trackById
+      "
     >
-      <mat-label>New Contestant</mat-label>
-      <input matInput formControlName="name" />
-      <button
-        type="submit"
-        *ngIf="newContestantForm.value.name"
-        mat-button
-        matSuffix
-        mat-icon-button
-        aria-label="App"
-        (click)="addContestant()"
+      <mat-card
+        [matBadge]="i + 1"
+        matBadgePosition="before"
+        matBadgeColor="accent"
+        class="contestant-container"
       >
-        <mat-icon>send</mat-icon>
-      </button>
-    </mat-form-field>
-  </ng-container>
-</section>
+        <mat-card-content>
+          {{ contestant.name || '---' }}
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </div>
+
+  <div class="options-container" *ngIf="interactionMode === 'edit'">
+    <ng-container [formGroup]="newContestantForm" (ngSubmit)="addContestant()">
+      <mat-form-field
+        appearance="outline"
+        *ngIf="
+          contestants?.length < contestantCount
+        "
+      >
+        <mat-label>New Contestant</mat-label>
+        <input matInput formControlName="name" />
+        <button
+          type="submit"
+          *ngIf="newContestantForm.value.name"
+          mat-button
+          matSuffix
+          mat-icon-button
+          aria-label="App"
+          (click)="addContestant()"
+        >
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-form-field>
+    </ng-container>
+  </div>
+</div>

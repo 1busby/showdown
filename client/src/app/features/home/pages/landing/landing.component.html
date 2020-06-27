@@ -1,11 +1,23 @@
 <div class="top-container mat-app-background">
-  <button mat-raised-button class="create-button" isRoundButton="true" color="primary" (click)="createTournament()">
+  <button
+    mat-raised-button
+    class="create-button"
+    isRoundButton="true"
+    color="primary"
+    (click)="createTournament()"
+  >
     Create Tournament
   </button>
 </div>
 
 <div class="content-container">
-  <ng-container *ngFor="let tournament of allTournaments; trackBy: trackByFn">
-    <tournament-card [tournament]="tournament" (selectTournament)="viewTournament(tournament)"></tournament-card>
+  <ng-container *ngIf="allTournaments">
+    <tournament-card
+      *ngFor="let tournament of allTournaments; trackBy: trackByFn"
+      [tournament]="tournament"
+      (selectTournament)="viewTournament(tournament)"
+    ></tournament-card>
   </ng-container>
+
+  <mat-spinner *ngIf="!allTournaments"></mat-spinner>
 </div>
