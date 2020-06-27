@@ -17,6 +17,9 @@ import {
 })
 export class CreateTournamentComponent implements OnInit {
   private _tournament: ITournament;
+
+  stepperIsInTransition = true;
+
   tournamentForm = this.formBuilder.group({
     name: [''],
     contestantCount: [0],

@@ -1,5 +1,8 @@
 <form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()">
-  <mat-horizontal-stepper>
+  <mat-horizontal-stepper
+    (animationDone)="this.stepperIsInTransition = false"
+    (selectionChange)="this.stepperIsInTransition = true"
+  >
     <!-- Step 1 -->
     <mat-step class="height-100">
       <mat-form-field appearance="outline">
@@ -18,7 +21,7 @@
         />
       </mat-form-field>
 
-      <div class="step-buttons">
+      <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
         <button mat-button matStepperNext type="button">Next</button>
       </div>
     </mat-step>
@@ -43,7 +46,7 @@
         />
       </mat-form-field>
 
-      <div class="step-buttons">
+      <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
         <button mat-button matStepperPrevious type="button">Back</button>
         <button type="submit" mat-raised-button color="primary">Create</button>
       </div>
