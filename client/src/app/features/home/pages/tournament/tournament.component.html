@@ -1,11 +1,38 @@
 <ng-container *ngIf="this.tournament">
   <div id="tournament-name">{{ this.tournament?.name }}</div>
-  <button mat-raised-button color="primary" (click)="editTournament(tournament.linkCode)">Edit Tournament</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="editTournament(tournament.linkCode)"
+  >
+    Edit Tournament
+  </button>
 
   <!-- <bracket-view></bracket-view> -->
 
   <mat-tab-group>
     <mat-tab label="Updates">
+      <mat-card>
+        <mat-card-content>
+          Tournament created on
+          {{ this.tournament.createdOn | date: 'long' }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-content>
+          Tournament created on
+          {{ this.tournament.createdOn | date: 'long' }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-content>
+          Tournament created on
+          {{ this.tournament.createdOn | date: 'long' }}
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Matches">
       <mat-card>
         <mat-card-content>
           Tournament created on
@@ -33,7 +60,7 @@
       </div>
       <button
         *ngIf="
-          (this.tournament?.contestants?.length) <
+          this.tournament?.contestants?.length <
           this.tournament?.contestantCount
         "
         mat-raised-button
