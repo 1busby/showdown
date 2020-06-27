@@ -4,7 +4,7 @@ import {
   Output,
   EventEmitter,
   SimpleChanges,
-  OnChanges
+  OnChanges,
 } from '@angular/core';
 import { IContestant } from '../../../../../../../shared/models';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -12,7 +12,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 @Component({
   selector: 'contestant-list',
   templateUrl: './contestant-list.component.html',
-  styleUrls: ['./contestant-list.component.scss']
+  styleUrls: ['./contestant-list.component.scss'],
 })
 export class ContestantListComponent implements OnChanges {
   @Input() interactionMode: 'view' | 'edit' = 'view';
@@ -22,7 +22,7 @@ export class ContestantListComponent implements OnChanges {
   @Output() newContestantEmitter = new EventEmitter<Partial<IContestant>>();
 
   newContestantForm = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl(''),
   });
   localContestantList: Partial<IContestant>[] = [];
 
@@ -34,7 +34,7 @@ export class ContestantListComponent implements OnChanges {
 
   buildList() {
     this.localContestantList = [];
-    this.contestants.forEach(contestant => {
+    this.contestants.forEach((contestant) => {
       this.localContestantList.push(contestant);
     });
     for (let i = 0; i < this.contestantCount - this.contestants.length; i++) {
@@ -50,9 +50,13 @@ export class ContestantListComponent implements OnChanges {
       return;
     }
     const newContestant = {
-      name: this.newContestantForm.value.name
+      name: this.newContestantForm.value.name,
     };
     this.newContestantEmitter.emit(newContestant);
     this.newContestantForm.controls.name.setValue('');
+  }
+
+  trackById(index: number, contestant: IContestant): string {
+    return contestant._id;
   }
 }

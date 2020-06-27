@@ -2,7 +2,7 @@
   Clicking on a card will cause it to expand and allow it to be edited.
   Cards will also be drag and droppable, with seed on the side. -->
 <section class="container">
-  <ng-container *ngFor="let contestant of localContestantList; let i = index">
+  <ng-container *ngFor="let contestant of localContestantList; let i = index; trackBy:trackById">
     <mat-card [matBadge]="i+1" matBadgePosition="before" matBadgeColor="accent" class="contestant-container">
       <mat-card-content>
         {{ contestant.name || '---' }}
