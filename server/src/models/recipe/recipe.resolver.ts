@@ -4,7 +4,7 @@ import { PubSub } from 'apollo-server-express';
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { RecipesArgs } from './dto/recipes.args';
 import { Recipe } from './models/recipe';
-import { RecipesService } from './recipes.service';
+import { RecipesService } from './recipe.service';
 
 const pubSub = new PubSub();
 

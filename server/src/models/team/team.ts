@@ -1,4 +1,4 @@
-import { User } from '../users/user';
+import { User } from '../user/user';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ITeam, IUser } from '../../../../shared/models/index';
 

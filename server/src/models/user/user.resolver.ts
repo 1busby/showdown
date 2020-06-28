@@ -4,7 +4,7 @@ import { PubSub } from 'apollo-server-express';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersArgs } from './dto/users.args';
 import { User } from './user';
-import { UsersService } from './users.service';
+import { UsersService } from './user.service';
 
 const pubSub = new PubSub();
 

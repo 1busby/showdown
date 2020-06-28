@@ -27,20 +27,12 @@ type EditAccessRequest {
 }
 
 type Mutation {
-  addRecipe(newRecipeData: NewRecipeInput!): Recipe!
-  removeRecipe(id: String!): Boolean!
   addUser(newUserData: NewUserInput!): User!
   removeUser(id: String!): Boolean!
   addTournament(newTournamentData: NewTournamentInput!): Tournament!
   updateTournament(updateTournamentData: UpdateTournamentInput!): Tournament!
   joinTournament(userId: ID, contestantName: String, id: ID!): Tournament!
   removeTournament(id: String!): Boolean!
-}
-
-input NewRecipeInput {
-  title: String!
-  description: String
-  ingredients: [String!]!
 }
 
 input NewTournamentInput {
@@ -59,21 +51,11 @@ input NewUserInput {
 }
 
 type Query {
-  recipe(id: String!): Recipe!
-  recipes(skip: Int = 0, take: Int = 25): [Recipe!]!
   user(id: String!): User!
   users(skip: Int = 0, take: Int = 25): [User!]!
   tournament(linkCode: String, id: String): Tournament!
   tournaments(skip: Int = 0, take: Int = 25): [Tournament!]!
   requestEditAccess(requestEditAccessInput: RequestEditAccessInput!): EditAccessRequest!
-}
-
-type Recipe {
-  id: ID!
-  title: String!
-  description: String
-  creationDate: Date!
-  ingredients: [String!]!
 }
 
 input RequestEditAccessInput {
@@ -82,7 +64,6 @@ input RequestEditAccessInput {
 }
 
 type Subscription {
-  recipeAdded: Recipe!
   userAdded: User!
   tournamentAdded: Tournament!
 }

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DateScalar } from '../../common/scalars/date.scalar';
-import { UsersResolver } from './users.resolver';
-import { UsersService } from './users.service';
+import { UsersResolver } from './user.resolver';
+import { UsersService } from './user.service';
 import { UserSchema } from './user.schema';
 
 @Module({

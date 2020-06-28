@@ -14,7 +14,7 @@ import { PubSub } from 'apollo-server-express';
 import { NewTournamentInput } from './dto/new-tournament.input';
 import { TournamentsArgs } from './dto/tournaments.args';
 import { Tournament } from './tournament';
-import { TournamentsService } from './tournaments.service';
+import { TournamentsService } from './tournament.service';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';

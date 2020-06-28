@@ -6,9 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../config/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RecipesModule } from './models/recipes/recipes.module';
-import { UsersModule } from './models/users/users.module';
-import { TournamentsModule } from './models/tournaments/tournaments.module';
+import { UsersModule } from './models/user/user.module';
+import { TournamentsModule } from './models/tournament/tournament.module';
 import { FrontendMiddleware } from './middleware/frontend.middleware';
 
 @Module({
@@ -17,7 +16,6 @@ import { FrontendMiddleware } from './middleware/frontend.middleware';
       load: [configuration],
     }),
     MongooseModule.forRoot(process.env.DATABASE_URL),
-    RecipesModule,
     UsersModule,
     TournamentsModule,
     GraphQLModule.forRoot({
