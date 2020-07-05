@@ -1,12 +1,12 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
-import { IMatch } from '../../../../shared/models/index';
+import { IMatch } from '@app/shared';
 import { Tournament } from '../tournament/tournament.model';
 import { User } from '../user/user.model';
 import { Contestant } from '../contestant/contestant.entity';
 
-@ObjectType({ description: 'The tournament model' })
+@ObjectType({ description: 'The match model' })
 export class Match extends Document implements IMatch {
   @Field(type => ID)
   _id: string;

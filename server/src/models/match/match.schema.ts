@@ -8,7 +8,7 @@ const anonymousContestantSchema = new mongoose.Schema({
   points: Number,
 });
 
-export const TournamentSchema = new mongoose.Schema({
+export const MatchSchema = new mongoose.Schema({
   name: String,
   contestantCount: Number,
   contestants: [

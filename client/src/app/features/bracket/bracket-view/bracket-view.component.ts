@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 import { BracketHandler } from '../bracket-handler.service';
 import { MatchContainer } from '@app/core';
 import { DataService } from '../data.service';
-import { ITournament } from '../../../../../../shared/models';
+import { ITournament } from '@app/shared';
 
 @Component({
   selector: 'bracket-view',

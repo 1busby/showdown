@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { Observable } from 'rxjs';
 
 import { MatchContainer } from '@app/core';
-import { ITournament, IContestant } from '../../../../../shared/models/index';
+import { ITournament, IContestant } from '@app/shared';
 
 @Injectable()
 export class BracketHandler {

@@ -15,6 +15,7 @@
     "esModuleInterop": true,
     "paths": {
       "@config/*": ["config/*"],
+      "@app/*": ["src/*"]
     }
   },
   "exclude": ["node_modules", "./dist"]

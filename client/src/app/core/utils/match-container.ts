@@ -1,4 +1,4 @@
-import { ITeam, ISet, IMatch, IContestant } from '../../../../../shared/models';
+import { ITeam, ISet, IMatch, IContestant } from '@app/shared';
 import { MatchObserver } from './match-observer';
 import { MatchSubject } from './match-subject';
 

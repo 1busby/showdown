@@ -4,7 +4,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { ITournament } from '../../../../../../../shared/models';
+import { ITournament } from '@app/shared';
 
 @Component({
   selector: 'tournament-card',

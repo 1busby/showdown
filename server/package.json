@@ -11,7 +11,7 @@
     "start:dev": "concurrently --handle-input \"wait-on dist/server/src/main.js && nodemon\" \"tsc -w -p tsconfig.build.json\" ",
     "start:debug": "nodemon --config nodemon-debug.json",
     "prestart:prod": "rimraf dist && npm run build",
-    "start:prod": "pm2 dist/server/src/main.js",
+    "start:prod": "pm2 start dist/server/src/main.js",
     "preprod": "rimraf dist && npm run build",
     "prod": "node dist/server/src/main.js",
     "lint": "tslint -p tsconfig.json -c tslint.json",
@@ -57,6 +57,7 @@
     "type-graphql": "^0.17.6"
   },
   "devDependencies": {
+    "@nestjs/cli": "^7.4.1",
     "@nestjs/testing": "^6.10.13",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.2",

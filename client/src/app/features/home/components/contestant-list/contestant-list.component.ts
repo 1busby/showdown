@@ -6,7 +6,7 @@ import {
   SimpleChanges,
   OnChanges,
 } from '@angular/core';
-import { IContestant } from '../../../../../../../shared/models';
+import { IContestant } from '@app/shared';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({

@@ -1,4 +1,4 @@
-import { ITeam } from './';
+import { ITeam } from '../';
 import { IContestant } from './contestant.interface';
 
 export interface IUser extends IContestant {

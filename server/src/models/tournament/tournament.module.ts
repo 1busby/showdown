@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DateScalar } from '../../common/scalars/date.scalar';
+import { DateScalar } from '../../shared/scalars/date.scalar';
 import { TournamentsResolver } from './tournament.resolver';
 import { TournamentsService } from './tournament.service';
 import { TournamentSchema } from './tournament.schema';

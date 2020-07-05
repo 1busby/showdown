@@ -1,4 +1,4 @@
-import { IMatch, IUser, IContestant, IUpdate } from './';
+import { IMatch, IUser, IContestant, IUpdate } from '../';
 
 export interface ITournament {
   _id: string;
@@ -11,5 +11,5 @@ export interface ITournament {
   updatedOn?: Date;
   linkCode?: string;
   updates?: [IUpdate];
-  editAccessCode?: string; 
+  editAccessCode?: string;
 }

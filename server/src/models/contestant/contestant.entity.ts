@@ -1,5 +1,5 @@
 import { InterfaceType, Field, ID, Int } from '@nestjs/graphql';
-import { IContestant } from '../../../../shared/models';
+import { IContestant } from '@app/shared';
 import { User } from '../user/user.model';
 
 @InterfaceType({

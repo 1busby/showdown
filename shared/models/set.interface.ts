@@ -1,4 +1,4 @@
-import { IUser, IMatch } from './';
+import { IUser, IMatch } from '../';
 
 export interface ISet {
   id: string;
