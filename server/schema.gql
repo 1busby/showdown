@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 interface Contestant {
-  _id: ID
+  _id: ID!
   name: String
   seed: Int
   points: Int
@@ -26,13 +26,20 @@ type EditAccessRequest {
   canEdit: Boolean
 }
 
+"""The match model"""
+type Match {
+  _id: ID!
+  roundNumber: Int!
+  matchNumber: Int!
+}
+
 type Mutation {
-  addUser(newUserData: NewUserInput!): User!
-  removeUser(id: String!): Boolean!
   addTournament(newTournamentData: NewTournamentInput!): Tournament!
   updateTournament(updateTournamentData: UpdateTournamentInput!): Tournament!
   joinTournament(userId: ID, contestantName: String, id: ID!): Tournament!
   removeTournament(id: String!): Boolean!
+  addUser(newUserData: NewUserInput!): User!
+  removeUser(id: String!): Boolean!
 }
 
 input NewTournamentInput {
@@ -51,11 +58,11 @@ input NewUserInput {
 }
 
 type Query {
-  user(id: String!): User!
-  users(skip: Int = 0, take: Int = 25): [User!]!
   tournament(linkCode: String, id: String): Tournament!
   tournaments(skip: Int = 0, take: Int = 25): [Tournament!]!
   requestEditAccess(requestEditAccessInput: RequestEditAccessInput!): EditAccessRequest!
+  user(id: String!): User!
+  users(skip: Int = 0, take: Int = 25): [User!]!
 }
 
 input RequestEditAccessInput {
@@ -64,12 +71,12 @@ input RequestEditAccessInput {
 }
 
 type Subscription {
-  userAdded: User!
   tournamentAdded: Tournament!
+  userAdded: User!
 }
 
 type Team {
-  id: ID!
+  _id: ID!
   name: String!
   createdOn: Date!
   updatedOn: Date!
@@ -85,6 +92,7 @@ type Tournament {
   createdBy: User
   contestants: [Contestant]
   teams: [Team]
+  matches: [Match]
   createdOn: Date
   updatedOn: Date
   linkCode: String
@@ -102,7 +110,7 @@ input UpdateTournamentInput {
 
 """The user model"""
 type User implements Contestant {
-  _id: ID
+  _id: ID!
   name: String
   seed: Int
   points: Int

@@ -1,10 +1,11 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
-import { ITournament } from '../../../../shared';
+import { ITournament } from '@common/index';
 import { Team } from '../team/team.model';
 import { User } from '../user/user.model';
 import { Contestant } from '../contestant/contestant.entity';
+import { Match } from '../match/match.model';
 
 @ObjectType({ description: 'The tournament model' })
 export class Tournament extends Document implements ITournament {
@@ -25,6 +26,9 @@ export class Tournament extends Document implements ITournament {
 
   @Field(type => [Team], { nullable: 'itemsAndList' })
   teams?: Team[];
+
+  @Field(type => [Match], { nullable: 'itemsAndList' })
+  matches?: Match[];
 
   @Field({ nullable: true })
   createdOn?: Date;

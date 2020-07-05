@@ -1,13 +1,13 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 import { Team } from '../team/team.model';
-import { IUser } from '@app/shared';
+import { IUser } from '@common/index';
 import { Document } from 'mongoose';
 import { Contestant } from '../contestant/contestant.entity';
 
 @ObjectType({ implements: [Contestant], description: 'The user model' })
 export class User extends Document implements IUser, Contestant {
-  @Field(type => ID, { nullable: true })
+  @Field(type => ID)
   _id: string;
 
   @Field({ nullable: true })

@@ -12,6 +12,6 @@ import { Match } from './match.model';
 import { MatchService } from './match.service';
 
 @Resolver(of => Match)
-export class TournamentsResolver {
+export class MatchResolver {
   constructor(private readonly matchService: MatchService) {}
 }

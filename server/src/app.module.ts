@@ -3,12 +3,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import configuration from '../config/configuration';
+import configuration from './config/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './models/user/user.module';
-import { TournamentsModule } from './models/tournament/tournament.module';
 import { FrontendMiddleware } from './middleware/frontend.middleware';
+
+// Models
+import { TournamentsModule } from './models/tournament/tournament.module';
+import { UsersModule } from './models/user/user.module';
+import { MatchModule } from './models/match/match.module';
 
 @Module({
   imports: [
@@ -18,6 +21,7 @@ import { FrontendMiddleware } from './middleware/frontend.middleware';
     MongooseModule.forRoot(process.env.DATABASE_URL),
     UsersModule,
     TournamentsModule,
+    MatchModule,
     GraphQLModule.forRoot({
       debug: true,
       playground: true,

@@ -1,5 +1,5 @@
 import { Field, InputType, ID, Int } from '@nestjs/graphql';
-import { IContestant } from '@app/shared';
+import { IContestant } from '@common/index';
 
 @InputType()
 export class ContestantInput implements Partial<IContestant> {
@@ -16,5 +16,5 @@ export class ContestantInput implements Partial<IContestant> {
   points?: number;
 
   @Field(type => ID, { nullable: true })
-  isRegistered?: number;
+  isRegistered?: boolean;
 }

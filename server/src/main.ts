@@ -3,7 +3,7 @@ import { NestApplicationOptions } from '@nestjs/common';
 import * as fs from 'fs';
 
 import { AppModule } from './app.module';
-import { CustomLogger } from './shared';
+import { CustomLogger } from './common';
 
 const whitelist = ['http://localhost:4200'];
 const corsOptions = {

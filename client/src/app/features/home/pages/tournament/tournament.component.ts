@@ -4,10 +4,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject, of } from 'rxjs';
 import { switchMap, takeUntil, first, catchError } from 'rxjs/operators';
 
-import { TournamentGQL, JoinTournamentGQL, AlertService } from '@app/core';
+import {
+  TournamentGQL,
+  JoinTournamentGQL,
+  AlertService,
+  RequestEditAccessGQL,
+} from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
-import { RequestEditAccessGQL } from '@app/core/services/graphql/tournament/request-edit-access.gql.service';
 import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
 
 @Component({

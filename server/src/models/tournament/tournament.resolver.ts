@@ -10,7 +10,7 @@ import {
 import { PubSub } from 'apollo-server-express';
 
 import { NewTournamentInput } from './dto/new-tournament.input';
-import { TournamentsArgs } from './dto/tournaments.args';
+import { TournamentsArgs } from './dto/tournament.args';
 import { Tournament } from './tournament.model';
 import { TournamentsService } from './tournament.service';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
