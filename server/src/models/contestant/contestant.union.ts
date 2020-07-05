@@ -1,6 +1,6 @@
 import { createUnionType } from 'type-graphql';
 import { User } from '../user/user.model';
-import { Team } from '../team/team';
+import { Team } from '../team/team.model';
 
 export const ContestantUnion = createUnionType({
   name: 'Contestant', // the name of the GraphQL union

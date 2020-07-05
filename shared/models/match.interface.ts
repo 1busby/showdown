@@ -1,7 +1,7 @@
 import { IContestant, ITournament } from '../';
 
 export interface IMatch {
-  _id?: string;
+  _id: string;
   tournament?: ITournament;
   matchNumber?: number;
   roundNumber?: number;

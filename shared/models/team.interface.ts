@@ -1,8 +1,8 @@
 import { IUser, IContestant } from '../';
 
 export interface ITeam extends IContestant {
-  seed: number;
+  seed?: number;
   users?: IUser[];
-  createdOn: Date;
-  updatedOn: Date;
+  createdOn?: Date;
+  updatedOn?: Date;
 }
