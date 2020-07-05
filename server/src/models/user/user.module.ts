@@ -4,10 +4,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersResolver } from './user.resolver';
 import { UsersService } from './user.service';
 import { UserSchema } from './user.schema';
-import { SharedModule, DateScalar } from '@common/index';
+import { CommonModule } from '@common/index';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
-  providers: [UsersResolver, UsersService, DateScalar],
+  imports: [
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    CommonModule,
+  ],
+  providers: [UsersResolver, UsersService],
 })
 export class UsersModule {}

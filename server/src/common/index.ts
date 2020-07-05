@@ -1,4 +1,4 @@
-export * from './shared.module';
+export * from './common.module';
 
 export * from './shared';
 export * from './scalars/date.scalar';
