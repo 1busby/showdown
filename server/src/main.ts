@@ -1,6 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { NestApplicationOptions } from '@nestjs/common';
 import * as fs from 'fs';
+
+import { AppModule } from './app.module';
+import { CustomLogger } from './shared';
 
 const whitelist = ['http://localhost:4200'];
 const corsOptions = {
@@ -23,19 +26,20 @@ const corsOptions = {
 };
 
 async function bootstrap() {
-  let httpsOptions;
+  const options: NestApplicationOptions = {
+    logger: new CustomLogger(),
+  };
 
   if (process.env.ISPRODUCTION === 'true') {
-    httpsOptions = {
+    options.httpsOptions = {
       key: fs.readFileSync('./config/gamebrackets_app.key'),
       cert: fs.readFileSync('./config/gamebrackets_app.crt'),
       ca: fs.readFileSync('./config/gamebrackets_app.ca-bundle'),
     };
-  } else {
-    httpsOptions = {};
   }
 
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule, options);
+
   app.enableCors(corsOptions);
   await app.listen(process.env.PORT);
 }

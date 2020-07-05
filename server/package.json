@@ -54,6 +54,7 @@
     "rimraf": "^2.7.1",
     "rxjs": "^6.5.4",
     "shortid": "^2.2.15",
+    "tslog": "^2.5.0",
     "type-graphql": "^0.17.6"
   },
   "devDependencies": {

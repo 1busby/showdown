@@ -21,5 +21,5 @@ export abstract class Contestant implements Partial<IContestant> {
   points?: number;
 
   @Field({ nullable: true })
-  isRegistered: boolean;
+  isRegistered?: boolean;
 }

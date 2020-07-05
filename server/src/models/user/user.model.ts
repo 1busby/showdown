@@ -28,7 +28,7 @@ export class User extends Document implements IUser, Contestant {
   @Field({ nullable: true })
   updatedOn: Date;
 
-  isRegistered: boolean;
+  isRegistered?: boolean;
 
   // fields inherited from Contestant
   eventId?: string;
