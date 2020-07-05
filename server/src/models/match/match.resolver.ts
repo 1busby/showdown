@@ -9,25 +9,20 @@ import {
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
-import { NewTournamentInput } from './dto/new-tournament.input';
-import { TournamentsArgs } from './dto/tournaments.args';
-import { Tournament } from './tournament.model';
-import { TournamentsService } from './tournament.service';
-import { UpdateTournamentInput } from './dto/update-tournament.input';
-import { RequestEditAccessInput } from './dto/request-edit-access.input';
-import { EditAccessRequest } from './dto/edit-access-request';
+import { Match } from './match.model';
+import { TournamentsService } from './match.service';
 
 const pubSub = new PubSub();
 
-@Resolver(of => Tournament)
+@Resolver(of => Match)
 export class TournamentsResolver {
   constructor(private readonly tournamentsService: TournamentsService) {}
 
-  @Query(returns => Tournament)
+  @Query(returns => Match)
   async tournament(
     @Args('id', { nullable: true }) id?: string,
     @Args('linkCode', { nullable: true }) linkCode?: string,
-  ): Promise<Tournament> {
+  ): Promise<Match> {
 
     let tournament;
     if (id) {
@@ -46,8 +41,8 @@ export class TournamentsResolver {
     return tournament;
   }
 
-  @Query(returns => [Tournament])
-  tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+  @Query(returns => [Match])
+  tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Match[]> {
     return this.tournamentsService.findAll(tournamentsArgs);
   }
 
@@ -56,28 +51,28 @@ export class TournamentsResolver {
     return this.tournamentsService.handleEditAccessRequest(requestEditAccessInput);
   }
 
-  @Mutation(returns => Tournament)
+  @Mutation(returns => Match)
   async addTournament(
     @Args('newTournamentData') newTournamentData: NewTournamentInput,
-  ): Promise<Tournament> {
+  ): Promise<Match> {
     const tournament = await this.tournamentsService.create(newTournamentData);
     // pubSub.publish('tournamentAdded', { tournamentAdded: tournament });
     return tournament;
   }
 
-  @Mutation(returns => Tournament)
+  @Mutation(returns => Match)
   async updateTournament(
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
-  ): Promise<Tournament> {
+  ): Promise<Match> {
     return this.tournamentsService.updateOne(updateTournamentData);
   }
 
-  @Mutation(returns => Tournament)
+  @Mutation(returns => Match)
   joinTournament(
     @Args('id', { type: () => ID }) id: string,
     @Args('contestantName', { nullable: true }) contestantName?: string,
     @Args('userId', { nullable: true, type: () => ID }) userId?: string,
-  ): Promise<Tournament> {
+  ): Promise<Match> {
     return this.tournamentsService.addContestant(id, contestantName, userId);
   }
 
@@ -86,7 +81,7 @@ export class TournamentsResolver {
     return this.tournamentsService.remove(id);
   }
 
-  @Subscription(returns => Tournament)
+  @Subscription(returns => Match)
   tournamentAdded() {
     return pubSub.asyncIterator('tournamentAdded');
   }

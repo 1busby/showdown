@@ -23,11 +23,17 @@ const corsOptions = {
 };
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync('./config/gamebrackets_app.key'),
-    cert: fs.readFileSync('./config/gamebrackets_app.crt'),
-    ca: fs.readFileSync ('./config/gamebrackets_app.ca-bundle'),
-  };
+  let httpsOptions;
+
+  if (process.env.ISPRODUCTION === 'true') {
+    httpsOptions = {
+      key: fs.readFileSync('./config/gamebrackets_app.key'),
+      cert: fs.readFileSync('./config/gamebrackets_app.crt'),
+      ca: fs.readFileSync('./config/gamebrackets_app.ca-bundle'),
+    };
+  } else {
+    httpsOptions = {};
+  }
 
   const app = await NestFactory.create(AppModule, { httpsOptions });
   app.enableCors(corsOptions);

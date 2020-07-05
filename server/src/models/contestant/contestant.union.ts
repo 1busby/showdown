@@ -1,5 +1,5 @@
 import { createUnionType } from 'type-graphql';
-import { User } from '../user/user';
+import { User } from '../user/user.model';
 import { Team } from '../team/team';
 
 export const ContestantUnion = createUnionType({

@@ -3,7 +3,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Team } from '../team/team';
 import { IUser } from '../../../../shared/models/index';
 import { Document } from 'mongoose';
-import { Contestant } from '../contestant/contestant.interface';
+import { Contestant } from '../contestant/contestant.entity';
 
 @ObjectType({ implements: [Contestant], description: 'The user model' })
 export class User extends Document implements IUser, Contestant {

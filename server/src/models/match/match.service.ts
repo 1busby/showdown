@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { NewTournamentInput } from './dto/new-tournament.input';
-import { TournamentsArgs } from './dto/tournaments.args';
-import { Tournament } from './tournament.model';
+
+import { Match } from './match.model';
 import * as shortid from 'shortid';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
@@ -13,10 +12,10 @@ import { EditAccessRequest } from './dto/edit-access-request';
 export class TournamentsService {
   constructor(
     @InjectModel('Tournament')
-    private readonly tournamentModel: Model<Tournament>,
+    private readonly tournamentModel: Model<Match>,
   ) {}
 
-  async create(data: NewTournamentInput): Promise<Tournament> {
+  async create(data: NewTournamentInput): Promise<Match> {
     const anonymousContestants = [];
 
     // tslint:disable-next-line: prefer-for-of
@@ -36,11 +35,11 @@ export class TournamentsService {
     return await createdTournament.save();
   }
 
-  async findOneById(id: string): Promise<Tournament> {
+  async findOneById(id: string): Promise<Match> {
     return this.tournamentModel.findById(id).exec();
   }
 
-  findOneByLinkCode(linkCode: string): Promise<Tournament> {
+  findOneByLinkCode(linkCode: string): Promise<Match> {
     return this.tournamentModel
       .findOne({ linkCode })
       .populate('contestants')
@@ -55,11 +54,11 @@ export class TournamentsService {
       });
   }
 
-  async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+  async findAll(tournamentsArgs: TournamentsArgs): Promise<Match[]> {
     return await this.tournamentModel.find().exec();
   }
 
-  async updateOne(data: UpdateTournamentInput): Promise<Tournament> {
+  async updateOne(data: UpdateTournamentInput): Promise<Match> {
     // separate anonymous users from regular users
     const updateData: any = { ...data };
     if (data.contestants && data.contestants.length > 0) {

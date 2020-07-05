@@ -3,8 +3,8 @@ import { Document } from 'mongoose';
 
 import { ITournament } from '../../../../shared/models/index';
 import { Team } from '../team/team';
-import { User } from '../user/user';
-import { Contestant } from '../contestant/contestant.interface';
+import { User } from '../user/user.model';
+import { Contestant } from '../contestant/contestant.entity';
 
 @ObjectType({ description: 'The tournament model' })
 export class Tournament extends Document implements ITournament {

@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
-      "@config/*": ["./config/*"],
+      "@config/*": ["config/*"],
     }
   },
   "exclude": ["node_modules", "./dist"]

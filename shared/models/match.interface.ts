@@ -1,12 +1,13 @@
-import { IContestant, ITeam, ITournament } from './';
+import { IContestant, ITournament } from './';
 
 export interface IMatch {
-  id: string;
-  tournament: ITournament;
-  matchNumber: number;
+  _id?: string;
+  tournament?: ITournament;
+  matchNumber?: number;
+  roundNumber?: number;
   contestants?: IContestant[];
-  highSeed: IContestant;
-  lowSeed: IContestant;
-  winner: IContestant;
-  winnerSeed: string;
+  highSeed?: IContestant;
+  lowSeed?: IContestant;
+  winner?: IContestant;
+  winnerSeed?: string;
 }

@@ -1,6 +1,6 @@
 import { InterfaceType, Field, ID, Int } from '@nestjs/graphql';
 import { IContestant } from '../../../../shared/models';
-import { User } from '../user/user';
+import { User } from '../user/user.model';
 
 @InterfaceType({
   resolveType(contestant) {
