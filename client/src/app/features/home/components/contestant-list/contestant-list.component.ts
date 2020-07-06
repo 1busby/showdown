@@ -16,7 +16,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class ContestantListComponent implements OnChanges {
   @Input() interactionMode: 'view' | 'edit' = 'view';
-  @Input() isOrderedBySeed = false;
+  @Input() isOrderedBySeed = true;
   @Input() contestantCount = 0;
   @Input() contestants: Partial<IContestant>[] = [];
   @Output() newContestantEmitter = new EventEmitter<Partial<IContestant>>();
@@ -51,6 +51,7 @@ export class ContestantListComponent implements OnChanges {
     }
     const newContestant = {
       name: this.newContestantForm.value.name,
+      seed: this.localContestantList.length + 1
     };
     this.newContestantEmitter.emit(newContestant);
     this.newContestantForm.controls.name.setValue('');

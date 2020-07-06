@@ -25,15 +25,7 @@
     "db": "npm run docker-build",
     "docker-build": "cd .. && docker build -t mbusbydocker/brackets -f Dockerfile .",
     "dr": "npm run docker-run",
-    "docker-run": "docker run -p 3000:3000 mbusbydocker/brackets",
-    "hb": "npm run heroku-build",
-    "heroku-build": "cd .. && heroku container:push web -a busby-brackets --arg DATABASE_URL=\"mongodb+srv://alex:fdbCymPdDMntDfUT@cluster0-cez0a.mongodb.net/brackets?retryWrites=true&w=majority\"",
-    "hr": "npm run heroku-release",
-    "heroku-release": "heroku container:release web -a busby-brackets",
-    "ho": "npm run heroku-open",
-    "heroku-open": "heroku open -a busby-brackets",
-    "hl": "npm run heroku-logs",
-    "heroku-logs": "heroku logs --tail -a busby-brackets"
+    "docker-run": "docker run -p 3000:3000 mbusbydocker/brackets"
   },
   "dependencies": {
     "@nestjs/common": "^7.2.0",

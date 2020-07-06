@@ -3,12 +3,14 @@ import { FormBuilder, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 
-import { ITournament, IContestant } from '@app/shared';
+import { ITournament, IContestant, IMatch } from '@app/shared';
 import {
   CreateTournamentGQL,
   TournamentGQL,
   EditTournamentGQL,
+  AppStore,
 } from '@app/core';
+import { BracketHandler } from '@app/core/utils/bracket-handler.service';
 
 @Component({
   selector: 'app-create-tournament',
@@ -25,6 +27,7 @@ export class CreateTournamentComponent implements OnInit {
     contestantCount: [0],
     contestants: this.formBuilder.array([]),
     editAccessCode: '',
+    matches: this.formBuilder.array([]),
   });
 
   get contestants() {
@@ -39,11 +42,14 @@ export class CreateTournamentComponent implements OnInit {
     private router: Router,
     private createTournamentGql: CreateTournamentGQL,
     private editTournamentGql: EditTournamentGQL,
-    private tournamentGql: TournamentGQL
+    private tournamentGql: TournamentGQL,
+    private bracketHandlerService: BracketHandler,
+    private appStore: AppStore,
   ) {}
 
   ngOnInit() {
     const linkCode = this.route.snapshot.paramMap.get('linkCode');
+    // if link code is given, set edit and fetch tournament
     if (linkCode) {
       this.editMode = true;
       this.tournamentGql
@@ -62,6 +68,7 @@ export class CreateTournamentComponent implements OnInit {
         contestantCount: 0,
         contestants: [],
         editAccessCode: '123',
+        matches: [],
       });
     }
   }
@@ -93,8 +100,13 @@ export class CreateTournamentComponent implements OnInit {
           );
         });
     } else {
+      this.bracketHandlerService.createBracket(this.tournamentForm.value);
+      const matches: Partial<IMatch>[] = [];
+      this.appStore.getMatchContainers().value.forEach(matchContainer => {
+        matches.push(matchContainer.getData());
+      });
       this.createTournamentGql
-        .mutate(this.tournamentForm.value)
+        .mutate({ ...this.tournamentForm.value, matches })
         .pipe(first())
         .subscribe((result) => {
           localStorage.setItem(
@@ -107,7 +119,12 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   addContestant(contestant: Partial<IContestant>) {
-    this.contestants.push(this.formBuilder.control(contestant));
+    this.contestants.push(
+      this.formBuilder.control({
+        ...contestant,
+        seed: this.contestants.length + 1,
+      })
+    );
   }
 
   countChange(event) {

@@ -20,9 +20,57 @@
     <meta name="theme-color" content="#1976d2" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#1976d2" />
+
+    <style>
+      .load-wrapp {
+        width: 100vw;
+        height: 100vh;
+        text-align: center;
+        background-color: #303030;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+      .square {
+        width: 12px;
+        height: 12px;
+        border-radius: 4px;
+        background-color: #4b9cdb;
+        margin-left: -32px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        /* bring your own prefixes */
+        transform: translate(-50%, -50%);
+      }
+      .load-7 .square {
+        animation: loadingG 1.5s cubic-bezier(0.17, 0.37, 0.43, 0.67) infinite;
+      }
+      @keyframes loadingG {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        50% {
+          transform: translate(70px, 0) rotate(360deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+      }
+    </style>
   </head>
   <body class="mat-app-background">
-    <app-root></app-root>
+    <app-root>
+      <div class="load-wrapp">
+        <div class="load-7">
+          <div class="square-holder">
+            <div class="square"></div>
+          </div>
+        </div>
+      </div>
+    </app-root>
     <noscript
       >Please enable JavaScript to continue using this application.</noscript
     >

@@ -1,0 +1,38 @@
+.outer-container {
+
+  // border-style: solid;
+  // border-width: 0.5px;
+  // border-color: rgb(102, 102, 102);
+  // border-radius: 10px;
+}
+
+.list-container {
+  margin: 12px;
+  padding: 12px;
+  height: max-content;
+
+  border-style: solid;
+  border-width: 0.5px;
+  border-color: rgb(102, 102, 102);
+  border-radius: 10px;
+  
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+
+  overflow: scroll;
+}
+
+.options-container {
+  
+}
+
+.contestant-container {
+  // height: 50px;
+  margin-bottom: 6px;
+
+  border-style: solid;
+  border-width: 0.5px;
+  border-color: rgb(102, 102, 102);
+  border-radius: 5px;
+}

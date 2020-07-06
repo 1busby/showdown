@@ -4,7 +4,7 @@ import { ContestantInput } from '../../contestant/contestant.input';
 import { MatchInput } from '@models/match/dto/match.input';
 
 @InputType()
-export class NewTournamentInput {
+export class TournamentInput {
   @Field()
   @MaxLength(30)
   name: string;

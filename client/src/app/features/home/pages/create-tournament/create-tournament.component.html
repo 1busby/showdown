@@ -48,7 +48,10 @@
 
       <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
         <button mat-button matStepperPrevious type="button">Back</button>
-        <button type="submit" mat-raised-button color="primary">Create</button>
+        <button type="submit" mat-raised-button color="primary">
+          <ng-container *ngIf="!editMode">Create</ng-container>
+          <ng-container *ngIf="editMode">Save</ng-container>
+        </button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

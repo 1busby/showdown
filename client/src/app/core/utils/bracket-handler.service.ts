@@ -1,13 +1,11 @@
-import { DataService } from './data.service';
+import { AppStore } from '@app/core';
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
-
-import { Observable } from 'rxjs';
 
 import { MatchContainer } from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BracketHandler {
   activeTournament: Partial<ITournament>;
   activeContestants: Partial<IContestant>[] = [];
@@ -35,7 +33,7 @@ export class BracketHandler {
   matchHeight;
   padding = 16;
 
-  constructor(private data: DataService) {}
+  constructor(private appStore: AppStore) {}
 
   createBracket(bracket: Partial<ITournament>) {
     this.activeTournament = bracket;
@@ -46,14 +44,15 @@ export class BracketHandler {
     this.defineLayoutPlacements();
 
     // if this is a previously stored match, update the winners
-    if (this.activeTournament.matches) {
+    if (this.activeTournament.matches && this.activeTournament.matches.length > 1) {
       this.matchContainers.forEach((match, i) => {
         if (this.activeTournament.matches[i].winnerSeed) {
           match.updateWinner(this.activeTournament.matches[i].winnerSeed);
         }
       });
     }
-    this.data.setMatchContainers(this.matchContainers);
+
+    this.appStore.setMatchContainers(this.matchContainers);
   }
 
   createSeededBracket() {
@@ -65,23 +64,28 @@ export class BracketHandler {
 
     this.numRounds = Math.log(this.high2Power) / Math.log(2);
     this.matchesPerRound = [];
-    const numFirstRoundMatchesTops = this.high2Power / 2;
+    const maxNumFirstRoundMatches = this.high2Power / 2;
     for (let i = 0; i < this.numRounds; i++) {
       this.matchesPerRound[i] = [];
     }
 
     // Add the appropriate amount of matches per round.
     // Starts from the winner and moves back.
+    let matchNumber = 0;
     for (let i = 0; i < this.numRounds; i++) {
-      for (let j = 0; j < numFirstRoundMatchesTops / Math.pow(2, i); j++) {
-        this.matchesPerRound[i][j] = new MatchContainer();
+      for (let j = 0; j < maxNumFirstRoundMatches / Math.pow(2, i); j++) {
+        const newMatch = new MatchContainer();
+        newMatch.roundNumber = i + 1;
+        newMatch.matchNumber = matchNumber;
+        matchNumber++;
+        this.matchesPerRound[i][j] = newMatch;
         this.matchContainers.push(this.matchesPerRound[i][j]);
       }
     }
 
     // Subscribe each match to the appropriate preceding matches.
     for (let i = this.numRounds - 1; i > 0; i--) {
-      for (let j = 0; j < numFirstRoundMatchesTops / Math.pow(2, i); j++) {
+      for (let j = 0; j < maxNumFirstRoundMatches / Math.pow(2, i); j++) {
         this.matchesPerRound[i][j].setHighMatch(
           this.matchesPerRound[i - 1][j * 2]
         );
@@ -103,7 +107,6 @@ export class BracketHandler {
       if (numSeeded >= this.high2Power / 2) {
         break;
       }
-      console.log(this.activeContestants[i]);
       this.matchesPerRound[0][this.seedsByIndex[i] - 1].addContestant(
         this.activeContestants[i]
       );
@@ -199,7 +202,6 @@ export class BracketHandler {
 
     this.matchWidth = this.containerWidth / 3 - this.padding;
     this.matchHeight = this.containerHeight / 4 - this.padding;
-    debugger;
 
     const soonToBeRemovedMatches = [];
     for (let i = 0; i < this.matchesPerRound.length; i++) {
@@ -230,6 +232,10 @@ export class BracketHandler {
       return soonToBeRemovedMatches.indexOf(m) === -1;
     });
   }
+
+  // hydrateMatchContainers() {
+    
+  // }
 
   /**
    * Round down to next higher power of 2 (return x if it's already a power of 2).

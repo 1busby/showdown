@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType, Int, HideField } from '@nestjs/graphql';
+import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
 import { IMatch } from '@common/index';
@@ -10,29 +10,24 @@ export class Match extends Document implements IMatch {
   @Field(type => ID)
   _id: string;
 
-  tournament?: Tournament;
-
-  @Field(type => Int)
-  roundNumber?: number;
-
-  @Field(type => Int)
+  @Field(type => Int, { nullable: true })
   matchNumber?: number;
 
-  highSeedContestant?: Contestant;
+  @Field(type => Int, { nullable: true })
+  roundNumber?: number;
 
-  lowSeedContestant?: Contestant;
+  @Field({ nullable: true })
+  winnerSeed?: string;
 
-  winner?: Contestant;
-
-  winnerSeed?: 'HIGHSEED' | 'LOWSEED';
-
-  contestants?: Contestant[];
-
+  @Field({ nullable: true })
   createdOn?: Date;
 
+  @Field({ nullable: true })
   updatedOn?: Date;
 
+  @Field(type => Int, { nullable: true })
   highSeedNumber?: number;
 
+  @Field(type => Int, { nullable: true })
   lowSeedNumber?: number;
 }

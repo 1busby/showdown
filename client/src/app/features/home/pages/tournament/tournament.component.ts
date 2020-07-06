@@ -9,10 +9,12 @@ import {
   JoinTournamentGQL,
   AlertService,
   RequestEditAccessGQL,
+  AppStore,
 } from '@app/core';
-import { ITournament, IContestant } from '@app/shared';
+import { ITournament, IContestant, IMatch } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
+import { BracketHandler } from '@app/core/utils/bracket-handler.service';
 
 @Component({
   selector: 'app-tournament',
@@ -34,7 +36,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private joinTournamentGql: JoinTournamentGQL,
     private requestEditAccessGql: RequestEditAccessGQL,
     private alertService: AlertService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private bracketHelper: BracketHandler,
+    public appStore: AppStore,
   ) {}
 
   ngOnInit() {
@@ -62,6 +66,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         }
 
         this.tournament = result.data.tournament;
+        this.bracketHelper.createBracket(this.tournament);
       });
   }
 

@@ -11,6 +11,7 @@ import { CreateTournamentComponent } from './pages/create-tournament/create-tour
 import { TournamentCardComponent } from './components/tournament-card/tournament-card.component';
 import { QuickJoinDialogComponent } from './components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from './components/edit-access-dialog/edit-access-dialog.component';
+import { MatchListComponent } from './components/match-list/match-list.component';
 
 @NgModule({
   imports: [HomeRoutingModule, SharedModule, BracketModule],
@@ -22,7 +23,8 @@ import { EditAccessDialogComponent } from './components/edit-access-dialog/edit-
     ContestantListComponent,
     TournamentCardComponent,
     QuickJoinDialogComponent,
-    EditAccessDialogComponent
+    EditAccessDialogComponent,
+    MatchListComponent
   ],
   bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent]
 })

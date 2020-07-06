@@ -11,6 +11,7 @@ import { CommonModule } from '@common/index';
     CommonModule,
     MongooseModule.forFeature([{ name: 'Match', schema: MatchSchema }]),
   ],
+  exports: [MatchService],
   providers: [MatchResolver, MatchService],
 })
 export class MatchModule {}

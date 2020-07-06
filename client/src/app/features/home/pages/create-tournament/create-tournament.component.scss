@@ -1,9 +1,6 @@
-form {
-  height: 100%;
-}
-
 mat-horizontal-stepper {
-  height: 100%;
+  height: max-content;
+  min-height: calc(100vh - 56px);
 }
 
 button[matStepperPrevious] {

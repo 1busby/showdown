@@ -9,9 +9,8 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { BracketHandler } from '../bracket-handler.service';
-import { MatchContainer } from '@app/core';
-import { DataService } from '../data.service';
+import { BracketHandler } from '../../../core/utils/bracket-handler.service';
+import { MatchContainer, AppStore } from '@app/core';
 import { ITournament } from '@app/shared';
 
 @Component({
@@ -29,13 +28,13 @@ export class BracketViewComponent implements OnChanges, OnInit {
   constructor(
     @Self() private element: ElementRef,
     private bracketHandler: BracketHandler,
-    private data: DataService
+    private appStore: AppStore
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {}
 
   ngOnInit() {
-    this.matches = this.data.getMatchContainers();
+    this.matches = this.appStore.getMatchContainers();
     this.bracketHandler.setContainerDimensions(
       this.element.nativeElement.firstElementChild.offsetWidth,
       this.element.nativeElement.firstElementChild.offsetHeight
