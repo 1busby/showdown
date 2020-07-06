@@ -38,24 +38,7 @@
     </mat-tab>
 
     <mat-tab label="Matches">
-      <mat-card>
-        <mat-card-content>
-          Tournament created on
-          {{ this.tournament.createdOn | date: 'long' }}
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          Tournament created on
-          {{ this.tournament.createdOn | date: 'long' }}
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          Tournament created on
-          {{ this.tournament.createdOn | date: 'long' }}
-        </mat-card-content>
-      </mat-card>
+      <match-list [matches]="this.tournament?.matches"></match-list>
     </mat-tab>
 
     <mat-tab label="Updates">

@@ -105,9 +105,8 @@ export class CreateTournamentComponent implements OnInit {
       this.appStore.getMatchContainers().value.forEach(matchContainer => {
         matches.push(matchContainer.getData());
       });
-      debugger;
       this.createTournamentGql
-        .mutate(this.tournamentForm.value)
+        .mutate({ ...this.tournamentForm.value, matches })
         .pipe(first())
         .subscribe((result) => {
           localStorage.setItem(

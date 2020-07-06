@@ -61,6 +61,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
           return;
         }
 
+        this.linkContestantsToMatches();
         this.tournament = result.data.tournament;
       });
   }
@@ -141,5 +142,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
             }
           });
       });
+  }
+
+  linkContestantsToMatches() {
+    // this.tournament.
   }
 }

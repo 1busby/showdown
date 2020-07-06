@@ -2,8 +2,6 @@ import { AppStore } from '@app/core';
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
 
-import { Observable } from 'rxjs';
-
 import { MatchContainer } from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 
@@ -61,7 +59,6 @@ export class BracketHandler {
     this.bigSkip = this.high2Power / 4;
     this.seedsByIndex = [];
     this.seedMatcher(1);
-    console.log('seedsByIndex: ', this.seedsByIndex);
 
     this.numRounds = Math.log(this.high2Power) / Math.log(2);
     this.matchesPerRound = [];
