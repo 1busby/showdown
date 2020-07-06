@@ -38,7 +38,7 @@
     </mat-tab>
 
     <mat-tab label="Matches">
-      <match-list [matches]="this.tournament?.matches"></match-list>
+      <match-list [matches]="this.appStore.getMatchContainers() | async"></match-list>
     </mat-tab>
 
     <mat-tab label="Updates">

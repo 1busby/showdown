@@ -1,5 +1,6 @@
 import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { IMatch } from '@app/shared';
+
+import { MatchContainer } from '@app/core';
 
 @Component({
   selector: 'match-list',
@@ -7,9 +8,9 @@ import { IMatch } from '@app/shared';
   styleUrls: ['./match-list.component.scss'],
 })
 export class MatchListComponent implements OnChanges {
-  @Input() matches: Partial<IMatch>[] = [];
+  @Input() matches: Partial<MatchContainer>[] = [];
 
-  localMatchList: Partial<IMatch>[] = [];
+  localMatchList: Partial<MatchContainer>[] = [];
 
   constructor() {}
 
@@ -24,7 +25,7 @@ export class MatchListComponent implements OnChanges {
     });
   }
 
-  trackById(index: number, match: IMatch): string {
+  trackById(index: number, match: MatchContainer): string {
     return match._id;
   }
 }

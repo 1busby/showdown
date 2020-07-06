@@ -51,6 +51,7 @@ export class BracketHandler {
         }
       });
     }
+
     this.appStore.setMatchContainers(this.matchContainers);
   }
 
@@ -59,6 +60,7 @@ export class BracketHandler {
     this.bigSkip = this.high2Power / 4;
     this.seedsByIndex = [];
     this.seedMatcher(1);
+    console.log('seedsByIndex: ', this.seedsByIndex);
 
     this.numRounds = Math.log(this.high2Power) / Math.log(2);
     this.matchesPerRound = [];
@@ -230,6 +232,10 @@ export class BracketHandler {
       return soonToBeRemovedMatches.indexOf(m) === -1;
     });
   }
+
+  // hydrateMatchContainers() {
+    
+  // }
 
   /**
    * Round down to next higher power of 2 (return x if it's already a power of 2).

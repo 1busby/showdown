@@ -1,4 +1,4 @@
-import { ITeam, ISet, IMatch, IContestant } from '@app/shared';
+import { ISet, IMatch, IContestant } from '@app/shared';
 import { MatchObserver } from './match-observer';
 import { MatchSubject } from './match-subject';
 
@@ -6,6 +6,7 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   static HIGHSEED = 'HIGHSEED';
   static LOWSEED = 'LOWSEED';
 
+  _id: string;
   matchNumber: number;
   roundNumber: number;
 
@@ -176,8 +177,9 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
     };
   }
 
-  getData(): Partial<IMatch> {
+  getData(): IMatch {
     return {
+      _id: this._id,
       highSeedNumber: this.highSeed ? this.highSeed.seed : null,
       lowSeedNumber: this.lowSeed ? this.lowSeed.seed : null,
       matchNumber: this.matchNumber,

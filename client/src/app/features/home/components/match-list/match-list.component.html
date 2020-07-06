@@ -14,8 +14,8 @@
         class="contestant-container"
       >
         <mat-card-content>
-          {{ match.highSeedNumber || '---' }} <br>
-          {{ match.lowSeedNumber || '---' }}
+          {{ match.highSeed?.name || '---' }} <br>
+          {{ match.lowSeed?.name || '---' }}
         </mat-card-content>
       </mat-card>
     </ng-container>
