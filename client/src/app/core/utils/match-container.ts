@@ -178,8 +178,8 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
 
   getData(): Partial<IMatch> {
     return {
-      highSeedNumber: this.highSeed.seed,
-      lowSeedNumber: this.lowSeed.seed,
+      highSeedNumber: this.highSeed ? this.highSeed.seed : null,
+      lowSeedNumber: this.lowSeed ? this.lowSeed.seed : null,
       matchNumber: this.matchNumber,
       roundNumber: this.roundNumber,
       winnerSeed: this.winnerSeed,

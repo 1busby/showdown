@@ -65,23 +65,28 @@ export class BracketHandler {
 
     this.numRounds = Math.log(this.high2Power) / Math.log(2);
     this.matchesPerRound = [];
-    const numFirstRoundMatchesTops = this.high2Power / 2;
+    const maxNumFirstRoundMatches = this.high2Power / 2;
     for (let i = 0; i < this.numRounds; i++) {
       this.matchesPerRound[i] = [];
     }
 
     // Add the appropriate amount of matches per round.
     // Starts from the winner and moves back.
+    let matchNumber = 0;
     for (let i = 0; i < this.numRounds; i++) {
-      for (let j = 0; j < numFirstRoundMatchesTops / Math.pow(2, i); j++) {
-        this.matchesPerRound[i][j] = new MatchContainer();
+      for (let j = 0; j < maxNumFirstRoundMatches / Math.pow(2, i); j++) {
+        const newMatch = new MatchContainer();
+        newMatch.roundNumber = i + 1;
+        newMatch.matchNumber = matchNumber;
+        matchNumber++;
+        this.matchesPerRound[i][j] = newMatch;
         this.matchContainers.push(this.matchesPerRound[i][j]);
       }
     }
 
     // Subscribe each match to the appropriate preceding matches.
     for (let i = this.numRounds - 1; i > 0; i--) {
-      for (let j = 0; j < numFirstRoundMatchesTops / Math.pow(2, i); j++) {
+      for (let j = 0; j < maxNumFirstRoundMatches / Math.pow(2, i); j++) {
         this.matchesPerRound[i][j].setHighMatch(
           this.matchesPerRound[i - 1][j * 2]
         );
@@ -103,7 +108,6 @@ export class BracketHandler {
       if (numSeeded >= this.high2Power / 2) {
         break;
       }
-      console.log(this.activeContestants[i]);
       this.matchesPerRound[0][this.seedsByIndex[i] - 1].addContestant(
         this.activeContestants[i]
       );
