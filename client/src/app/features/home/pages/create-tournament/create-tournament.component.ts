@@ -25,6 +25,7 @@ export class CreateTournamentComponent implements OnInit {
     contestantCount: [0],
     contestants: this.formBuilder.array([]),
     editAccessCode: '',
+    matches: this.formBuilder.array([]),
   });
 
   get contestants() {
@@ -44,6 +45,7 @@ export class CreateTournamentComponent implements OnInit {
 
   ngOnInit() {
     const linkCode = this.route.snapshot.paramMap.get('linkCode');
+    // if link code is given, set edit and fetch tournament
     if (linkCode) {
       this.editMode = true;
       this.tournamentGql
@@ -62,6 +64,7 @@ export class CreateTournamentComponent implements OnInit {
         contestantCount: 0,
         contestants: [],
         editAccessCode: '123',
+        matches: []
       });
     }
   }
@@ -107,7 +110,7 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   addContestant(contestant: Partial<IContestant>) {
-    this.contestants.push(this.formBuilder.control(contestant));
+    this.contestants.push(this.formBuilder.control({ ...contestant, seed: this.contestants.length + 1 }));
   }
 
   countChange(event) {

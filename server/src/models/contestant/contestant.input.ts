@@ -15,6 +15,6 @@ export class ContestantInput implements Partial<IContestant> {
   @Field(type => Int, { nullable: true })
   points?: number;
 
-  @Field(type => ID, { nullable: true })
+  @Field({ nullable: true })
   isRegistered?: boolean;
 }

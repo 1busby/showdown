@@ -28,6 +28,8 @@ export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }
         _id
         linkCode
         createdOn
+        contestants
+        matches
       }
     }
   `;

@@ -1,4 +1,4 @@
-import { createUnionType } from 'type-graphql';
+import { createUnionType } from '@nestjs/graphql';
 import { User } from '../user/user.model';
 import { Team } from '../team/team.model';
 

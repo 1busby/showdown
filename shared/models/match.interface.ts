@@ -5,7 +5,6 @@ export interface IMatch {
   tournament?: ITournament;
   matchNumber?: number;
   roundNumber?: number;
-  contestants?: IContestant[];
   highSeedNumber?: number;
   lowSeedNumber?: number;
   highSeedContestant?: IContestant;

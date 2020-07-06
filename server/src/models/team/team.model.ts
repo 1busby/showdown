@@ -1,6 +1,7 @@
-import { User } from '../user/user.model';
-import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+
 import { ITeam, IUser } from '@common/index';
+import { User } from '../user/user.model';
 
 @ObjectType()
 export class Team implements ITeam {

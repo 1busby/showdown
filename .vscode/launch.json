@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Nest Framework",
-      "args": ["${workspaceFolder}/server/main.ts"],
+      "args": ["${workspaceFolder}/server/src/main.ts"],
       "runtimeArgs": [
         "--nolazy",
         "-r",

@@ -27,7 +27,7 @@ const corsOptions = {
 
 async function bootstrap() {
   const options: NestApplicationOptions = {
-    logger: new CustomLogger(),
+    logger: false,
   };
 
   if (process.env.ISPRODUCTION === 'true') {
@@ -40,6 +40,9 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, options);
 
+  app.useLogger(
+    new CustomLogger(),
+  );
   app.enableCors(corsOptions);
   await app.listen(process.env.PORT);
 }

@@ -33,7 +33,19 @@ export class TournamentsService {
       updatedOn: Date.now(),
       anonymousContestants,
     });
-    return await createdTournament.save();
+    return await createdTournament
+      .save()
+      .then(tournament => {
+        return tournament.populate('contestants');
+      })
+      .then(tournament => {
+        tournament = tournament.toJSON();
+        tournament.contestants = [
+          ...tournament.contestants,
+          ...tournament.anonymousContestants,
+        ];
+        return tournament;
+      });
   }
 
   async findOneById(id: string): Promise<Tournament> {
@@ -46,7 +58,6 @@ export class TournamentsService {
       .populate('contestants')
       .then(tournament => {
         tournament = tournament.toJSON();
-        tournament._id = tournament._id;
         tournament.contestants = [
           ...tournament.contestants,
           ...tournament.anonymousContestants,

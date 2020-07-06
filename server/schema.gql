@@ -15,7 +15,7 @@ input ContestantInput {
   name: String
   seed: Int
   points: Int
-  isRegistered: ID
+  isRegistered: Boolean
 }
 
 """Date custom scalar type"""
@@ -29,8 +29,29 @@ type EditAccessRequest {
 """The match model"""
 type Match {
   _id: ID!
-  roundNumber: Int!
-  matchNumber: Int!
+  tournament: Tournament
+  matchNumber: Int
+  roundNumber: Int
+  highSeedContestant: Contestant
+  lowSeedContestant: Contestant
+  winner: Contestant
+  winnerSeed: String
+  createdOn: Date
+  updatedOn: Date
+  highSeedNumber: Int
+  lowSeedNumber: Int
+}
+
+input MatchInput {
+  tournament: ID
+  matchNumber: Int
+  roundNumber: Int
+  highSeedContestant: ID
+  lowSeedContestant: ID
+  highSeedNumber: Int
+  lowSeedNumber: Int
+  winner: ID
+  winnerSeed: String
 }
 
 type Mutation {
@@ -47,6 +68,7 @@ input NewTournamentInput {
   contestantCount: Int
   createdBy: ID
   contestants: [ContestantInput]
+  matches: [MatchInput]
   editAccessCode: String
 }
 
@@ -92,7 +114,7 @@ type Tournament {
   createdBy: User
   contestants: [Contestant]
   teams: [Team]
-  matches: [Match]
+  matches: [Match!]!
   createdOn: Date
   updatedOn: Date
   linkCode: String

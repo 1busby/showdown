@@ -6,6 +6,8 @@ import {
   Resolver,
   Subscription,
   ID,
+  ResolveField,
+  Parent,
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
@@ -16,19 +18,25 @@ import { TournamentsService } from './tournament.service';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
+import { Match } from '@models/match/match.model';
+import { MatchService } from '@models/match/match.service';
+import { CustomLogger } from '@common/index';
 
 const pubSub = new PubSub();
 
 @Resolver(of => Tournament)
 export class TournamentsResolver {
-  constructor(private readonly tournamentsService: TournamentsService) {}
+  constructor(
+    private logger: CustomLogger,
+    private readonly tournamentsService: TournamentsService,
+    private readonly matchService: MatchService,
+  ) {}
 
   @Query(returns => Tournament)
   async tournament(
     @Args('id', { nullable: true }) id?: string,
     @Args('linkCode', { nullable: true }) linkCode?: string,
   ): Promise<Tournament> {
-
     let tournament;
     if (id) {
       tournament = await this.tournamentsService.findOneById(id);
@@ -52,17 +60,32 @@ export class TournamentsResolver {
   }
 
   @Query(returns => EditAccessRequest)
-  requestEditAccess(@Args('requestEditAccessInput') requestEditAccessInput: RequestEditAccessInput): Promise<EditAccessRequest> {
-    return this.tournamentsService.handleEditAccessRequest(requestEditAccessInput);
+  requestEditAccess(
+    @Args('requestEditAccessInput')
+    requestEditAccessInput: RequestEditAccessInput,
+  ): Promise<EditAccessRequest> {
+    return this.tournamentsService.handleEditAccessRequest(
+      requestEditAccessInput,
+    );
   }
 
   @Mutation(returns => Tournament)
   async addTournament(
     @Args('newTournamentData') newTournamentData: NewTournamentInput,
   ): Promise<Tournament> {
-    const tournament = await this.tournamentsService.create(newTournamentData);
+    const { matches, ...tournamentData } = newTournamentData;
+    let tournamentReturn: any = {};
+    await this.tournamentsService
+      .create(tournamentData)
+      .then(createdTournament => {
+        tournamentReturn = createdTournament;
+        return this.matchService.createMany(matches, createdTournament);
+      })
+      .then(createdMatches => {
+        tournamentReturn.matches = createdMatches;
+      });
     // pubSub.publish('tournamentAdded', { tournamentAdded: tournament });
-    return tournament;
+    return tournamentReturn;
   }
 
   @Mutation(returns => Tournament)
@@ -89,5 +112,11 @@ export class TournamentsResolver {
   @Subscription(returns => Tournament)
   tournamentAdded() {
     return pubSub.asyncIterator('tournamentAdded');
+  }
+
+  @ResolveField('matches', returns => [Match])
+  async getPosts(@Parent() tournament: Tournament) {
+    const { _id } = tournament;
+    return this.matchService.findAll(_id);
   }
 }

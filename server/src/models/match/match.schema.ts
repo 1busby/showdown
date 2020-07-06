@@ -9,29 +9,19 @@ export const MatchSchema = new mongoose.Schema({
   ],
   roundNumber: Number,
   matchNumber: Number,
-  highSeedContestant: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-  ],
-  lowSeedContestant: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-  ],
+  highSeedContestant: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  lowSeedContestant: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   winner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
   winnerSeed: Number,
-  contestants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-  ],
   createdOn: Date,
   updatedOn: Date,
   highSeedNumber: Number,
