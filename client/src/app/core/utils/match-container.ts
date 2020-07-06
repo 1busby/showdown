@@ -6,7 +6,8 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   static HIGHSEED = 'HIGHSEED';
   static LOWSEED = 'LOWSEED';
 
-  match: IMatch;
+  matchNumber: number;
+  roundNumber: number;
 
   highSeed: IContestant; // higher seeded contestant that will be shown at top
   lowSeed: IContestant; // lower seeded contestant that will be shown at bottom
@@ -175,17 +176,14 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
     };
   }
 
-  getData() {
+  getData(): Partial<IMatch> {
     return {
-      highSeed: this.highSeed._id,
-      lowSeed: this.lowSeed._id,
-      highMatch: this.highMatch,
-      lowMatch: this.lowMatch,
-
-      matchRounds: this.sets,
-
-      winner: this.winner._id,
-      winnerSeed: this.winnerSeed
+      highSeedNumber: this.highSeed.seed,
+      lowSeedNumber: this.lowSeed.seed,
+      matchNumber: this.matchNumber,
+      roundNumber: this.roundNumber,
+      winnerSeed: this.winnerSeed,
+      // matchRounds: this.sets,
     };
   }
 }

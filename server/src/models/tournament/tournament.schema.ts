@@ -1,11 +1,16 @@
 import * as mongoose from 'mongoose';
 import mongodb = require('mongodb');
 
+import { MatchSchema } from '@models/match/match.schema';
+
 const anonymousContestantSchema = new mongoose.Schema({
-  eventId: String,
   name: String,
   seed: Number,
   points: Number,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 
 export const TournamentSchema = new mongoose.Schema({
@@ -21,6 +26,7 @@ export const TournamentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  matches: [MatchSchema],
   createdOn: Date,
   updatedOn: Date,
   linkCode: String,

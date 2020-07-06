@@ -10,23 +10,11 @@ export class Match extends Document implements IMatch {
   @Field(type => ID)
   _id: string;
 
-  @Field(type => Tournament, { nullable: true })
-  tournament?: Tournament;
-
   @Field(type => Int, { nullable: true })
   matchNumber?: number;
 
   @Field(type => Int, { nullable: true })
   roundNumber?: number;
-
-  @Field(type => Contestant, { nullable: true })
-  highSeedContestant?: Contestant;
-
-  @Field(type => Contestant, { nullable: true })
-  lowSeedContestant?: Contestant;
-
-  @Field(type => Contestant, { nullable: true })
-  winner?: Contestant;
 
   @Field({ nullable: true })
   winnerSeed?: string;

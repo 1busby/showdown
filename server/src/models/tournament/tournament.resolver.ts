@@ -73,19 +73,9 @@ export class TournamentsResolver {
   async addTournament(
     @Args('newTournamentData') newTournamentData: NewTournamentInput,
   ): Promise<Tournament> {
-    const { matches, ...tournamentData } = newTournamentData;
-    let tournamentReturn: any = {};
-    await this.tournamentsService
-      .create(tournamentData)
-      .then(createdTournament => {
-        tournamentReturn = createdTournament;
-        return this.matchService.createMany(matches, createdTournament);
-      })
-      .then(createdMatches => {
-        tournamentReturn.matches = createdMatches;
-      });
+    const tournament = await this.tournamentsService.create(newTournamentData);
     // pubSub.publish('tournamentAdded', { tournamentAdded: tournament });
-    return tournamentReturn;
+    return tournament;
   }
 
   @Mutation(returns => Tournament)
@@ -112,11 +102,5 @@ export class TournamentsResolver {
   @Subscription(returns => Tournament)
   tournamentAdded() {
     return pubSub.asyncIterator('tournamentAdded');
-  }
-
-  @ResolveField('matches', returns => [Match])
-  async getPosts(@Parent() tournament: Tournament) {
-    const { _id } = tournament;
-    return this.matchService.findAll(_id);
   }
 }

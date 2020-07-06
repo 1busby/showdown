@@ -29,12 +29,8 @@ type EditAccessRequest {
 """The match model"""
 type Match {
   _id: ID!
-  tournament: Tournament
   matchNumber: Int
   roundNumber: Int
-  highSeedContestant: Contestant
-  lowSeedContestant: Contestant
-  winner: Contestant
   winnerSeed: String
   createdOn: Date
   updatedOn: Date
@@ -43,14 +39,10 @@ type Match {
 }
 
 input MatchInput {
-  tournament: ID
   matchNumber: Int
   roundNumber: Int
-  highSeedContestant: ID
-  lowSeedContestant: ID
   highSeedNumber: Int
   lowSeedNumber: Int
-  winner: ID
   winnerSeed: String
 }
 
@@ -114,7 +106,7 @@ type Tournament {
   createdBy: User
   contestants: [Contestant]
   teams: [Team]
-  matches: [Match!]!
+  matches: [Match]
   createdOn: Date
   updatedOn: Date
   linkCode: String
@@ -126,6 +118,7 @@ input UpdateTournamentInput {
   name: String
   contestantCount: Int
   contestants: [ContestantInput]
+  matches: [MatchInput]
   editAccessCode: String
   updatedBy: ID
 }

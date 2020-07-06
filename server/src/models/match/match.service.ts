@@ -13,33 +13,29 @@ export class MatchService {
     private readonly matchModel: Model<Match>,
   ) {}
 
-  createMany(matches: MatchInput[], tournament: Tournament): Promise<Match[]> {
-    const matchCreations = [];
-    matches.forEach(match => {
-      if (match.highSeedNumber) {
-        match.highSeedContestant = Types.ObjectId(tournament.contestants.find(
-          contesant => contesant.seed === match.highSeedNumber,
-        )._id) as any;
-      }
-      if (match.lowSeedNumber) {
-        match.lowSeedContestant = Types.ObjectId(tournament.contestants.find(
-          contesant => contesant.seed === match.lowSeedNumber,
-        )._id) as any;
-      }
-      const matchDocument = new this.matchModel({
-        tournament: tournament._id,
-        ...match,
-      });
-      const matchPromise = matchDocument.save().then(createdMatch => {
-        return createdMatch
-          .populate('highSeedContestant')
-          .populate('lowSeedContestant');
-      });
-      matchCreations.push(matchPromise);
-    });
+  // createMany(matches: MatchInput[], tournament: Tournament): Promise<Match[]> {
+  //   const matchCreations = [];
+  //   matches.forEach(match => {
+  //     if (match.highSeedNumber) {
+  //       match.highSeedContestant = Types.ObjectId(tournament.contestants.find(
+  //         contesant => contesant.seed === match.highSeedNumber,
+  //       )._id) as any;
+  //     }
+  //     if (match.lowSeedNumber) {
+  //       match.lowSeedContestant = Types.ObjectId(tournament.contestants.find(
+  //         contesant => contesant.seed === match.lowSeedNumber,
+  //       )._id) as any;
+  //     }
+  //     const matchDocument = new this.matchModel({
+  //       tournament: tournament._id,
+  //       ...match,
+  //     });
+  //     const matchPromise = matchDocument.save();
+  //     matchCreations.push(matchPromise);
+  //   });
 
-    return Promise.all(matchCreations);
-  }
+  //   return Promise.all(matchCreations);
+  // }
 
   findAll(tournamentId) {
     return [];

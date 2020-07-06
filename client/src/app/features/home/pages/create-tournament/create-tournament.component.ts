@@ -3,12 +3,14 @@ import { FormBuilder, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 
-import { ITournament, IContestant } from '@app/shared';
+import { ITournament, IContestant, IMatch } from '@app/shared';
 import {
   CreateTournamentGQL,
   TournamentGQL,
   EditTournamentGQL,
+  AppStore,
 } from '@app/core';
+import { BracketHandler } from '@app/core/utils/bracket-handler.service';
 
 @Component({
   selector: 'app-create-tournament',
@@ -40,7 +42,9 @@ export class CreateTournamentComponent implements OnInit {
     private router: Router,
     private createTournamentGql: CreateTournamentGQL,
     private editTournamentGql: EditTournamentGQL,
-    private tournamentGql: TournamentGQL
+    private tournamentGql: TournamentGQL,
+    private bracketHandlerService: BracketHandler,
+    private appStore: AppStore,
   ) {}
 
   ngOnInit() {
@@ -64,7 +68,7 @@ export class CreateTournamentComponent implements OnInit {
         contestantCount: 0,
         contestants: [],
         editAccessCode: '123',
-        matches: []
+        matches: [],
       });
     }
   }
@@ -96,6 +100,12 @@ export class CreateTournamentComponent implements OnInit {
           );
         });
     } else {
+      this.bracketHandlerService.createBracket(this.tournamentForm.value);
+      const matches: Partial<IMatch>[] = [];
+      this.appStore.getMatchContainers().value.forEach(matchContainer => {
+        matches.push(matchContainer.getData());
+      });
+      debugger;
       this.createTournamentGql
         .mutate(this.tournamentForm.value)
         .pipe(first())
@@ -110,7 +120,12 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   addContestant(contestant: Partial<IContestant>) {
-    this.contestants.push(this.formBuilder.control({ ...contestant, seed: this.contestants.length + 1 }));
+    this.contestants.push(
+      this.formBuilder.control({
+        ...contestant,
+        seed: this.contestants.length + 1,
+      })
+    );
   }
 
   countChange(event) {

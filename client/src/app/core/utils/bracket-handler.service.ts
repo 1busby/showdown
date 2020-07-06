@@ -1,4 +1,4 @@
-import { DataService } from './data.service';
+import { AppStore } from '@app/core';
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
 
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { MatchContainer } from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BracketHandler {
   activeTournament: Partial<ITournament>;
   activeContestants: Partial<IContestant>[] = [];
@@ -35,7 +35,7 @@ export class BracketHandler {
   matchHeight;
   padding = 16;
 
-  constructor(private data: DataService) {}
+  constructor(private appStore: AppStore) {}
 
   createBracket(bracket: Partial<ITournament>) {
     this.activeTournament = bracket;
@@ -46,14 +46,14 @@ export class BracketHandler {
     this.defineLayoutPlacements();
 
     // if this is a previously stored match, update the winners
-    if (this.activeTournament.matches) {
+    if (this.activeTournament.matches && this.activeTournament.matches.length > 1) {
       this.matchContainers.forEach((match, i) => {
         if (this.activeTournament.matches[i].winnerSeed) {
           match.updateWinner(this.activeTournament.matches[i].winnerSeed);
         }
       });
     }
-    this.data.setMatchContainers(this.matchContainers);
+    this.appStore.setMatchContainers(this.matchContainers);
   }
 
   createSeededBracket() {
@@ -199,7 +199,6 @@ export class BracketHandler {
 
     this.matchWidth = this.containerWidth / 3 - this.padding;
     this.matchHeight = this.containerHeight / 4 - this.padding;
-    debugger;
 
     const soonToBeRemovedMatches = [];
     for (let i = 0; i < this.matchesPerRound.length; i++) {
