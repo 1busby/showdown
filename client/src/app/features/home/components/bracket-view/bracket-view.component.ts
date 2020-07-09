@@ -9,8 +9,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { BracketHandler } from '../../../core/utils/bracket-handler.service';
-import { MatchContainer, AppStore } from '@app/core';
+import { MatchContainer, AppStore, BracketHandler } from '@app/core';
 import { ITournament } from '@app/shared';
 
 @Component({
@@ -36,42 +35,11 @@ export class BracketViewComponent implements OnChanges, OnInit {
   ngOnInit() {
     this.matches = this.appStore.getMatchContainers();
     this.bracketHandler.setContainerDimensions(
-      this.element.nativeElement.firstElementChild.offsetWidth,
-      this.element.nativeElement.firstElementChild.offsetHeight
+      998,
+      737
     );
-    this.bracketHandler.createBracket({
-      contestants: [
-        {
-          name: 'A',
-          seed: 0
-        },
-        {
-          name: 'B',
-          seed: 1
-        },
-        {
-          name: 'C',
-          seed: 2
-        },
-        {
-          name: 'D',
-          seed: 4
-        }
-      ]
-    });
+    this.bracketHandler.createBracket(this.tournament);
   }
-
-  // showEditModal() {
-  //   if (!this.showingModal) {
-  //     this.showingModal = true;
-  //     const editModal = this.modalCtrl.create('EditBracketPage');
-  //     editModal.present();
-  //     setTimeout(() => {
-  //       console.log('TIMEOUT OVER');
-  //       this.showingModal = false;
-  //     }, 2000);
-  //   }
-  // }
 
   showMatchDetails(match: MatchContainer) {
     // console.log('pushing MatchDetailsPage onto the stack');

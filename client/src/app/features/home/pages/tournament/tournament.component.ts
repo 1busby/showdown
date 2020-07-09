@@ -10,11 +10,11 @@ import {
   AlertService,
   RequestEditAccessGQL,
   AppStore,
+  BracketHandler
 } from '@app/core';
-import { ITournament, IContestant, IMatch } from '@app/shared';
+import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
-import { BracketHandler } from '@app/core/utils/bracket-handler.service';
 
 @Component({
   selector: 'app-tournament',

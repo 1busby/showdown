@@ -12,9 +12,11 @@
     <mat-spinner color="accent" diameter="30" *ngIf="isCheckingEditAccess"></mat-spinner>
   </div>
 
-  <!-- <bracket-view></bracket-view> -->
-
   <mat-tab-group>
+    <mat-tab label="Bracket">
+      <bracket-view [tournament]="this.tournament"></bracket-view>
+    </mat-tab>
+
     <mat-tab label="Contestants">
       <div>
         {{ this.tournament?.contestants?.length || 0 }} /

@@ -1,0 +1,11 @@
+<div class="bracket-view-container">
+  <ng-container *ngIf="matches | async">
+    <match-card
+      class="match-container"
+      *ngFor="let match of matches | async"
+      [ngStyle]="match.getStyleObject()"
+      (click)="showMatchDetails(match)"
+      [match]="match"
+    ></match-card>
+  </ng-container>
+</div>

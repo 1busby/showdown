@@ -9,8 +9,8 @@ import {
   TournamentGQL,
   EditTournamentGQL,
   AppStore,
+  BracketHandler
 } from '@app/core';
-import { BracketHandler } from '@app/core/utils/bracket-handler.service';
 
 @Component({
   selector: 'app-create-tournament',
