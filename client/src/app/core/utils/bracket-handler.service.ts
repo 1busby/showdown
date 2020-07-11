@@ -1,8 +1,8 @@
-import { AppStore } from '@app/core';
 import { Injectable } from '@angular/core';
 import _ from 'lodash';
 
-import { MatchContainer } from '@app/core';
+import { AppStore } from '../services/app.store.service';
+import { MatchContainer } from './match-container';
 import { ITournament, IContestant } from '@app/shared';
 
 @Injectable({ providedIn: 'root' })
@@ -44,7 +44,10 @@ export class BracketHandler {
     this.defineLayoutPlacements();
 
     // if this is a previously stored match, update the winners
-    if (this.activeTournament.matches && this.activeTournament.matches.length > 1) {
+    if (
+      this.activeTournament.matches &&
+      this.activeTournament.matches.length > 1
+    ) {
       this.matchContainers.forEach((match, i) => {
         if (this.activeTournament.matches[i].winnerSeed) {
           match.updateWinner(this.activeTournament.matches[i].winnerSeed);
@@ -234,7 +237,7 @@ export class BracketHandler {
   }
 
   // hydrateMatchContainers() {
-    
+
   // }
 
   /**

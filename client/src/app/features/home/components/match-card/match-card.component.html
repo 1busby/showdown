@@ -1,0 +1,11 @@
+<mat-card
+  [matBadge]="match.matchNumber + 1"
+  matBadgePosition="before"
+  matBadgeColor="accent"
+  class="container"
+>
+  <mat-card-content>
+    {{ match.highSeed?.name || '---' }} <br />
+    {{ match.lowSeed?.name || '---' }}
+  </mat-card-content>
+</mat-card>

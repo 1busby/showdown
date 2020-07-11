@@ -1,27 +1,11 @@
 <div class="outer-container">
   <div class="list-container">
     <ng-container
-      *ngFor="
-        let match of localMatchList;
-        let i = index;
-        trackBy: trackById
-      "
+      *ngFor="let match of localMatchList; let i = index; trackBy: trackById"
     >
-      <mat-card
-        [matBadge]="match.matchNumber"
-        matBadgePosition="before"
-        matBadgeColor="accent"
-        class="contestant-container"
-      >
-        <mat-card-content>
-          {{ match.highSeed?.name || '---' }} <br>
-          {{ match.lowSeed?.name || '---' }}
-        </mat-card-content>
-      </mat-card>
+      <match-card [match]="match"> </match-card>
     </ng-container>
   </div>
 
-  <div class="options-container" *ngIf="false">
-    
-  </div>
+  <div class="options-container" *ngIf="false"></div>
 </div>

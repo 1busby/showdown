@@ -9,8 +9,8 @@ import {
   TournamentGQL,
   EditTournamentGQL,
   AppStore,
+  BracketHandler
 } from '@app/core';
-import { BracketHandler } from '@app/core/utils/bracket-handler.service';
 
 @Component({
   selector: 'app-create-tournament',
@@ -92,7 +92,7 @@ export class CreateTournamentComponent implements OnInit {
         .pipe(first())
         .subscribe((result) => {
           localStorage.setItem(
-            'editAccessCode',
+            `editAccessCode-${result.data.updateTournament.linkCode}`,
             this.tournamentForm.value.editAccessCode
           );
           this.router.navigateByUrl(
@@ -110,7 +110,7 @@ export class CreateTournamentComponent implements OnInit {
         .pipe(first())
         .subscribe((result) => {
           localStorage.setItem(
-            'editAccessCode',
+            `editAccessCode-${result.data.addTournament.linkCode}`,
             this.tournamentForm.value.editAccessCode
           );
           this.router.navigateByUrl(`/${result.data.addTournament.linkCode}`);

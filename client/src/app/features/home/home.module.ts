@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@app/shared';
-import { BracketModule } from '../bracket/bracket.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './pages/home/home.component';
 import { LandingComponent } from './pages/landing/landing.component';
@@ -12,10 +11,13 @@ import { TournamentCardComponent } from './components/tournament-card/tournament
 import { QuickJoinDialogComponent } from './components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from './components/edit-access-dialog/edit-access-dialog.component';
 import { MatchListComponent } from './components/match-list/match-list.component';
+import { BracketViewComponent } from './components/bracket-view/bracket-view.component';
+import { MatchCardComponent } from './components/match-card/match-card.component';
 
 @NgModule({
-  imports: [HomeRoutingModule, SharedModule, BracketModule],
+  imports: [HomeRoutingModule, SharedModule],
   declarations: [
+    MatchCardComponent,
     HomeComponent,
     LandingComponent,
     TournamentComponent,
@@ -24,7 +26,8 @@ import { MatchListComponent } from './components/match-list/match-list.component
     TournamentCardComponent,
     QuickJoinDialogComponent,
     EditAccessDialogComponent,
-    MatchListComponent
+    MatchListComponent,
+    BracketViewComponent
   ],
   bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent]
 })

@@ -10,11 +10,11 @@ import {
   AlertService,
   RequestEditAccessGQL,
   AppStore,
+  BracketHandler
 } from '@app/core';
-import { ITournament, IContestant, IMatch } from '@app/shared';
+import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
-import { BracketHandler } from '@app/core/utils/bracket-handler.service';
 
 @Component({
   selector: 'app-tournament',
@@ -101,7 +101,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   editTournament() {
     this.isCheckingEditAccess = true;
-    const editAccessCode = localStorage.getItem('editAccessCode');
+    const editAccessCode = localStorage.getItem(`editAccessCode-${this.tournament.linkCode}`);
     if (editAccessCode) {
       this.requestEditAccessGql
         .fetch({
@@ -139,7 +139,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
           })
           .subscribe((result) => {
             if (result.data['requestEditAccess'].canEdit) {
-              localStorage.setItem('editAccessCode', editAccessCode);
+              localStorage.setItem(`editAccessCode-${this.tournament.linkCode}`, editAccessCode);
               this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
             } else {
               this.alertService.error('Something went wrong');
