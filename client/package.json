@@ -14,7 +14,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "jest": "jest --watch",
-    "analyzer": "webpack-bundle-analyzer dist/brackets-client/stats-es2015.json"
+    "analyze": "webpack-bundle-analyzer dist/brackets-client/stats-es2015.json"
   },
   "private": true,
   "dependencies": {

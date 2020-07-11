@@ -16,8 +16,16 @@
         matBadgeColor="accent"
         class="contestant-container"
       >
-        <mat-card-content>
+        <mat-card-content class="contestant-content">
           {{ contestant.name || '---' }}
+
+          <button
+            mat-icon-button
+            color="accent"
+            *ngIf="interactionMode === 'edit'"
+          >
+            <mat-icon>cancel</mat-icon>
+          </button>
         </mat-card-content>
       </mat-card>
     </ng-container>
@@ -27,9 +35,7 @@
     <ng-container [formGroup]="newContestantForm" (ngSubmit)="addContestant()">
       <mat-form-field
         appearance="outline"
-        *ngIf="
-          contestants?.length < contestantCount
-        "
+        *ngIf="contestants?.length < contestantCount"
       >
         <mat-label>New Contestant</mat-label>
         <input matInput formControlName="name" />
