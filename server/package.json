@@ -26,6 +26,7 @@
     "docker-build": "cd .. && docker build -t mbusbydocker/brackets -f Dockerfile .",
     "dr": "npm run docker-run",
     "docker-run": "docker run -p 3000:3000 mbusbydocker/brackets",
+    "setup-production": "pm2 deploy production setup",
     "deploy-production": "pm2 deploy ecosystem.config.js production --force",
     "reload-production": "pm2 deploy ecosystem.config.js production exec 'pm2 reload app'"
   },
