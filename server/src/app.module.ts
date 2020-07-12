@@ -11,7 +11,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 // Models
-import { HealthController } from 'health.controller';
+import { HealthController } from './health.controller';
 import { TournamentsModule } from './models/tournament/tournament.module';
 import { UsersModule } from './models/user/user.module';
 import { MatchModule } from './models/match/match.module';

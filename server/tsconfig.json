@@ -15,7 +15,8 @@
     "esModuleInterop": true,
     "paths": {
       "@common/*": ["common/*"],
-      "@models/*": ["models/*"]
+      "@models/*": ["models/*"],
+      "@utils/*": ["../utils/*"]
     }
   },
   "exclude": ["node_modules", "./dist"]

@@ -3,8 +3,9 @@ module.exports = {
   apps: [
     {
       name: 'brackets',
-      script: 'dist/main.js',
-      node_args: '-r ./tsconfig-paths-bootstrap.js',
+      script: 'npm',
+      args: 'run prod',
+      watch: false,
       env: {
         DATABASE_URL:
           'mongodb+srv://alex:keznH2XVg9efQtu4@cluster0-cez0a.mongodb.net/brackets?retryWrites=true&w=majority',
@@ -27,10 +28,11 @@ module.exports = {
       host: '54.204.160.247',
       ref: 'origin/master',
       repo: 'git@github.com:mbusbyHub/brackets.git',
-      path: '/home/ubuntu/brackets',
+      path: '/home/ubuntu/brackets/',
       'pre-deploy-local': '',
       'post-deploy':
         './startup.sh',
+      "post-setup": "ls -la",
     },
   },
 };
