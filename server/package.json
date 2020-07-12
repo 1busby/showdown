@@ -28,8 +28,8 @@
     "docker-run": "docker run -p 3000:3000 mbusbydocker/brackets",
     "setup-production": "pm2 deploy production setup",
     "deploy-production": "pm2 deploy ecosystem.config.js production --force",
-    "reload-production": "pm2 deploy ecosystem.config.js production exec 'pm2 reload brackets'",
-    "restart-production": "pm2 deploy ecosystem.config.js production exec 'pm2 restart brackets'"
+    "reload-production": "pm2 deploy ecosystem.config.js production exec 'pm2 reload brackets' --update-env",
+    "restart-production": "pm2 deploy ecosystem.config.js production exec 'pm2 restart brackets' --update-env"
   },
   "dependencies": {
     "@nestjs/common": "^7.2.0",
