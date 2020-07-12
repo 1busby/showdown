@@ -32,9 +32,9 @@ async function bootstrap() {
 
   if (process.env.ISPRODUCTION === 'true') {
     options.httpsOptions = {
-      key: fs.readFileSync('./config/gamebrackets_app.key'),
-      cert: fs.readFileSync('./config/gamebrackets_app.crt'),
-      ca: fs.readFileSync('./config/gamebrackets_app.ca-bundle'),
+      key: process.env.KEY,
+      cert: process.env.CERT,
+      ca: process.env.BUNDLE,
     };
   }
 

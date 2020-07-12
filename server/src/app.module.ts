@@ -18,13 +18,14 @@ import { MatchModule } from './models/match/match.module';
 
 @Module({
   imports: [
-    TerminusModule,
     ConfigModule.forRoot({
       load: [configuration],
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'public/brackets-client'),
+      exclude: ['/graphql*', '/health*'],
     }),
+    TerminusModule,
     MongooseModule.forRoot(process.env.DATABASE_URL),
     GraphQLModule.forRoot({
       debug: true,
