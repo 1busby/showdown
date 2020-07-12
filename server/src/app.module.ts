@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { TerminusModule } from '@nestjs/terminus';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule } from '@nestjs/config';
@@ -16,6 +17,7 @@ import { join } from 'path';
 
 @Module({
   imports: [
+    TerminusModule,
     ConfigModule.forRoot({
       load: [configuration],
     }),
