@@ -29,12 +29,14 @@ async function bootstrap() {
   const options: NestApplicationOptions = {
     logger: false,
   };
-
+  // key: fs.readFileSync(path.join(__dirname , 'config' , 'gamebrackets_app.key')),
+  // cert: fs.readFileSync(path.join(__dirname, 'config', 'gamebrackets_app.crt')),
+  // ca: fs.readFileSync(path.join(__dirname, 'config', 'gamebrackets_app.ca-bundle')),
   if (process.env.ISPRODUCTION === 'true') {
     options.httpsOptions = {
-      key: process.env.KEY,
-      cert: process.env.CERT,
-      ca: process.env.BUNDLE,
+      key: fs.readFileSync('../utils/keys/gamebrackets_app.key'),
+      cert: fs.readFileSync('../utils/keys/gamebrackets_app.crt'),
+      ca: fs.readFileSync('../utils/keys/gamebrackets_app.ca-bundle'),
     };
   }
 
