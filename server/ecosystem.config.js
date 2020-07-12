@@ -22,6 +22,7 @@ module.exports = {
 
   deploy: {
     production: {
+      key: '~/.ssh/brackets-0.pem',
       user: 'ubuntu',
       host: '54.204.160.247',
       ref: 'origin/master',
@@ -30,7 +31,7 @@ module.exports = {
       'pre-deploy-local': '',
       'post-deploy':
         'npm install && pm2 reload ecosystem.config.js --env production',
-      'pre-setup': '',
+      'pre-setup': 'apt-get install git',
     },
   },
 };
