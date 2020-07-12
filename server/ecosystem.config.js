@@ -20,10 +20,10 @@ module.exports = {
       host: '54.204.160.247',
       ref: 'origin/master',
       repo: 'git@github.com:mbusbyHub/brackets.git',
-      path: '~/brackets',
+      path: '/home/ubuntu/brackets',
       'pre-deploy-local': '',
       'post-deploy':
-        'npm install && pm2 reload ecosystem.config.js --env production',
+        './startup.sh',
     },
   },
 };
