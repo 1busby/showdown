@@ -19,7 +19,6 @@ import { MatchModule } from './models/match/match.module';
 @Module({
   imports: [
     TerminusModule,
-    HealthController,
     ConfigModule.forRoot({
       load: [configuration],
     }),
@@ -27,9 +26,6 @@ import { MatchModule } from './models/match/match.module';
       rootPath: join(__dirname, 'public/brackets-client'),
     }),
     MongooseModule.forRoot(process.env.DATABASE_URL),
-    UsersModule,
-    TournamentsModule,
-    MatchModule,
     GraphQLModule.forRoot({
       debug: true,
       playground: true,
@@ -37,8 +33,11 @@ import { MatchModule } from './models/match/match.module';
       context: ({ req }) => ({ req }),
       cors: false,
     }),
+    UsersModule,
+    TournamentsModule,
+    MatchModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [AppService],
 })
 export class AppModule {}
