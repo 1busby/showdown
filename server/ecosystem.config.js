@@ -31,8 +31,8 @@ module.exports = {
       path: '/home/ubuntu/brackets/',
       'pre-deploy-local': '',
       'post-deploy':
-        './startup.sh',
-      "post-setup": "ls -la",
+        'pm2 startOrRestart server/ecosystem.config.js --env production pm2 save',
+      "post-setup": "./startup.sh",
     },
   },
 };
