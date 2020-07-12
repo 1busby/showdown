@@ -5,6 +5,7 @@ module.exports = {
       name: 'brackets',
       script: 'dist/main.js',
       node_args: '-r ./tsconfig-paths-bootstrap.js',
+      exec_mode : "cluster",
       env_production: {
         DATABASE_URL:
           'mongodb+srv://alex:keznH2XVg9efQtu4@cluster0-cez0a.mongodb.net/brackets?retryWrites=true&w=majority',
