@@ -2,6 +2,7 @@ import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 import configuration from './config/configuration';
 import { AppController } from './app.controller';
@@ -12,11 +13,15 @@ import { FrontendMiddleware } from './middleware/frontend.middleware';
 import { TournamentsModule } from './models/tournament/tournament.module';
 import { UsersModule } from './models/user/user.module';
 import { MatchModule } from './models/match/match.module';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, 'public/brackets-client'),
     }),
     MongooseModule.forRoot(process.env.DATABASE_URL),
     UsersModule,
@@ -34,14 +39,14 @@ import { MatchModule } from './models/match/match.module';
   providers: [AppService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer): void {
-    consumer
-      .apply(FrontendMiddleware)
-      .forRoutes(
-        {
-          path: '/**', // For all routes
-          method: RequestMethod.ALL, // For all methods
-        },
-      );
-  }
+  // configure(consumer: MiddlewareConsumer): void {
+  //   consumer
+  //     .apply(FrontendMiddleware)
+  //     .forRoutes(
+  //       {
+  //         path: '/**', // For all routes
+  //         method: RequestMethod.ALL, // For all methods
+  //       },
+  //     );
+  // }
 }
