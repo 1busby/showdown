@@ -13,7 +13,7 @@ import {
 } from '@app/core';
 
 @Component({
-  selector: 'app-create-tournament',
+  selector: 'app-home-create-tournament',
   templateUrl: './create-tournament.component.html',
   styleUrls: ['./create-tournament.component.scss'],
 })

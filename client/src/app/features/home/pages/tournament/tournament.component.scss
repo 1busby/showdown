@@ -9,6 +9,10 @@
   height: 200px !important;
 }
 
+.mat-tab-group {
+  flex-grow: 1;
+}
+
 mat-card {
   margin: 10px;
 }
