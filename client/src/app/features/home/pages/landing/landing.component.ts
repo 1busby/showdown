@@ -6,7 +6,7 @@ import { TournamentsGQL } from '@app/core';
 import { ITournament } from '@app/shared';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-home-landing',
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss'],
 })

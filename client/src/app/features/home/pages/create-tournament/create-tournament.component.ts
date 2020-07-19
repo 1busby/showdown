@@ -13,7 +13,7 @@ import {
 } from '@app/core';
 
 @Component({
-  selector: 'app-create-tournament',
+  selector: 'app-home-create-tournament',
   templateUrl: './create-tournament.component.html',
   styleUrls: ['./create-tournament.component.scss'],
 })
@@ -30,7 +30,7 @@ export class CreateTournamentComponent implements OnInit {
     matches: this.formBuilder.array([]),
   });
 
-  get contestants() {
+  get contestants(): FormArray {
     return this.tournamentForm.get('contestants') as FormArray;
   }
 
@@ -78,7 +78,7 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   onSubmit() {
-    // TODO extra validation, maybe show a confirmation dialog
+    // TODO: extra validation, maybe show a confirmation dialog
     this.createTournament();
   }
 
@@ -118,6 +118,16 @@ export class CreateTournamentComponent implements OnInit {
     }
   }
 
+  contestantCountChange(event) {
+    const contestantSizeDifference =
+      this.contestants.length - event.target.value;
+    if (contestantSizeDifference > 0) {
+      for (let i = 0; i < contestantSizeDifference; i++) {
+        this.contestants.removeAt(this.contestants.length - 1 - i);
+      }
+    }
+  }
+
   addContestant(contestant: Partial<IContestant>) {
     this.contestants.push(
       this.formBuilder.control({
@@ -127,13 +137,9 @@ export class CreateTournamentComponent implements OnInit {
     );
   }
 
-  countChange(event) {
-    const contestantSizeDifference =
-      this.contestants.length - event.target.value;
-    if (contestantSizeDifference > 0) {
-      for (let i = 0; i < contestantSizeDifference; i++) {
-        this.contestants.removeAt(this.contestants.length - 1 - i);
-      }
-    }
+  removeContestant(data: { index: number, contestant: Partial<IContestant> }) {
+    // this.tou
+    this.contestants.removeAt(data.index);
   }
+
 }

@@ -17,7 +17,7 @@ import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/qui
 import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
 
 @Component({
-  selector: 'app-tournament',
+  selector: 'app-home-tournament',
   templateUrl: './tournament.component.html',
   styleUrls: ['./tournament.component.scss'],
 })

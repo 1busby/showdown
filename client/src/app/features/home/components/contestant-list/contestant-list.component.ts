@@ -20,6 +20,7 @@ export class ContestantListComponent implements OnChanges {
   @Input() contestantCount = 0;
   @Input() contestants: Partial<IContestant>[] = [];
   @Output() newContestantEmitter = new EventEmitter<Partial<IContestant>>();
+  @Output() removeContestantEmitter = new EventEmitter<{ index: number, contestant: Partial<IContestant> }>();
 
   newContestantForm = new FormGroup({
     name: new FormControl(''),
@@ -29,10 +30,12 @@ export class ContestantListComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('LOOK ContestantListComponent : ngOnChanges');
     this.buildList();
   }
 
   buildList() {
+    console.log('LOOK ContestantListComponent : buildList');
     this.localContestantList = [];
     this.contestants.forEach((contestant) => {
       this.localContestantList.push(contestant);
@@ -46,6 +49,7 @@ export class ContestantListComponent implements OnChanges {
   }
 
   addContestant() {
+    console.log('LOOK ContestantListComponent : addContestant');
     if (this.newContestantForm.value.name.length < 1) {
       return;
     }
@@ -57,7 +61,14 @@ export class ContestantListComponent implements OnChanges {
     this.newContestantForm.controls.name.setValue('');
   }
 
+  removeContestant(index: number, contestant: Partial<IContestant>) {
+    this.removeContestantEmitter.emit({
+      index,
+      contestant
+    });
+  }
+
   trackById(index: number, contestant: IContestant): string {
-    return contestant._id;
+    return contestant.name;
   }
 }

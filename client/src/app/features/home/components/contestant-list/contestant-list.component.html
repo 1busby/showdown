@@ -21,8 +21,10 @@
 
           <button
             mat-icon-button
+            type="button"
             color="accent"
             *ngIf="interactionMode === 'edit'"
+            (click)="removeContestant(i, contestant)"
           >
             <mat-icon>cancel</mat-icon>
           </button>

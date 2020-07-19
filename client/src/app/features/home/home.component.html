@@ -1,0 +1,24 @@
+<div class="home">
+  <mat-toolbar color="primary">
+    <span [routerLink]="'/'">Brackets</span>
+  
+    <span class="toolbar-remaining-space"></span>
+  
+    <span>
+      <button
+        *ngIf="!(appStore.loggedInUser | async)"
+        mat-button
+        (click)="login()"
+      >
+        Log In
+      </button>
+      <button *ngIf="appStore.loggedInUser | async" mat-button (click)="logout()">
+        Logout
+      </button>
+    </span>
+  </mat-toolbar>
+  
+  <div class="home__content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

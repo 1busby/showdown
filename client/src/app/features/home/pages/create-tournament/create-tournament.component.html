@@ -17,7 +17,7 @@
           type="number"
           required
           formControlName="contestantCount"
-          (change)="countChange($event)"
+          (change)="contestantCountChange($event)"
         />
       </mat-form-field>
 
@@ -33,6 +33,7 @@
         [contestantCount]="tournamentForm.value.contestantCount"
         [contestants]="contestants.value"
         (newContestantEmitter)="addContestant($event)"
+        (removeContestantEmitter)="removeContestant($event)"
       ></contestant-list>
 
       <mat-form-field appearance="outline">
@@ -42,7 +43,7 @@
           type="text"
           required
           formControlName="editAccessCode"
-          (change)="countChange($event)"
+          (change)="contestantCountChange($event)"
         />
       </mat-form-field>
 
