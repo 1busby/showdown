@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@app/shared';
 import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './pages/home/home.component';
+import { HomeComponent } from './home.component';
 import { LandingComponent } from './pages/landing/landing.component';
 import { TournamentComponent } from './pages/tournament/tournament.component';
 import { ContestantListComponent } from './components/contestant-list/contestant-list.component';
