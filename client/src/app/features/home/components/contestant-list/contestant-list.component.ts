@@ -54,8 +54,7 @@ export class ContestantListComponent implements OnChanges {
       return;
     }
     const newContestant = {
-      name: this.newContestantForm.value.name,
-      seed: this.localContestantList.length + 1
+      name: this.newContestantForm.value.name
     };
     this.newContestantEmitter.emit(newContestant);
     this.newContestantForm.controls.name.setValue('');

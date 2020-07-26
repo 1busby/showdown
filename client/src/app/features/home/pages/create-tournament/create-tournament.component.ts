@@ -56,7 +56,7 @@ export class CreateTournamentComponent implements OnInit {
       this.editMode = true;
       this.tournamentGql
         .fetch({ linkCode }, { fetchPolicy: 'cache-first' })
-        .subscribe(({ data: { tournament } }) => {
+        .subscribe(({ data: { tournament }, errors }) => {
           this._tournament = tournament;
           const editAccessCode = localStorage.getItem('editAccessCode');
           this.tournamentForm.patchValue({ ...tournament, editAccessCode });
@@ -134,7 +134,7 @@ export class CreateTournamentComponent implements OnInit {
     this.contestants.push(
       this.formBuilder.control({
         ...contestant,
-        seed: this.contestants.length + 1,
+        seed: contestant.seed || this.contestants.length + 1,
       })
     );
   }
