@@ -94,6 +94,14 @@ export class TournamentsResolver {
     return this.tournamentsService.addContestant(id, contestantName, userId);
   }
 
+  @Mutation(returns => Tournament)
+  removeContestant(
+    @Args('_id', { type: () => ID }) _id: string,
+    @Args('contestantId', { type: () => ID }) contestantId: string,
+  ): Promise<Tournament> {
+    return this.tournamentsService.removeContestant(_id, contestantId);
+  }
+
   @Mutation(returns => Boolean)
   removeTournament(@Args('id') id: string) {
     return this.tournamentsService.remove(id);

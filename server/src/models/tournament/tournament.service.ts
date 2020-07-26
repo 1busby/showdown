@@ -111,6 +111,12 @@ export class TournamentsService {
       .exec();
   }
 
+  removeContestant(_id, contestantId) {
+    return this.tournamentModel
+      .updateOne({ _id }, { $pull: contestantId })
+      .exec();
+  }
+
   remove(id: string): Promise<boolean> {
     return this.tournamentModel
       .deleteOne({ _id: id })

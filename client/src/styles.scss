@@ -4,25 +4,32 @@
 a {
   cursor: pointer;
 }
-html,
-body {
-  height: 100%;
+html {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   overflow: auto;
-}
-
-router-outlet + * {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+  height: 100%;
+  width: 100%;
 }
 
 .mat-tab-body-wrapper {
   flex-grow: 1;
   padding: 12px;
+}
+
+.mat-tab-body-content {
+  // height: 100%;
+  // width: 100%;
+  // position: absolute;
+  // overflow: hidden;
+  // display: flex;
+  // flex-direction: column;
 }
 
 .error-snackbar {
