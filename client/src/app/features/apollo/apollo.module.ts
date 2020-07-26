@@ -21,6 +21,7 @@ export class BracketsApolloModule {
       link,
       cache: new InMemoryCache(),
       typeDefs,
+      connectToDevTools: true,
     });
   }
 }

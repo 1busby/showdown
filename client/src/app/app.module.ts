@@ -36,6 +36,7 @@ export class AppModule {
       link,
       cache: new InMemoryCache(),
       typeDefs,
+      connectToDevTools: true
     });
   }
 }

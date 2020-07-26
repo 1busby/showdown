@@ -10,7 +10,7 @@ import {
   AlertService,
   RequestEditAccessGQL,
   AppStore,
-  BracketHandler
+  BracketHandler,
 } from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
@@ -38,7 +38,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     public dialog: MatDialog,
     private bracketHelper: BracketHandler,
-    public appStore: AppStore,
+    public appStore: AppStore
   ) {}
 
   ngOnInit() {
@@ -101,7 +101,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   editTournament() {
     this.isCheckingEditAccess = true;
-    const editAccessCode = localStorage.getItem(`editAccessCode-${this.tournament.linkCode}`);
+    const editAccessCode = localStorage.getItem(
+      `editAccessCode-${this.tournament.linkCode}`
+    );
     if (editAccessCode) {
       this.requestEditAccessGql
         .fetch({
@@ -139,7 +141,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
           })
           .subscribe((result) => {
             if (result.data['requestEditAccess'].canEdit) {
-              localStorage.setItem(`editAccessCode-${this.tournament.linkCode}`, editAccessCode);
+              localStorage.setItem(
+                `editAccessCode-${this.tournament.linkCode}`,
+                editAccessCode
+              );
               this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
             } else {
               this.alertService.error('Something went wrong');

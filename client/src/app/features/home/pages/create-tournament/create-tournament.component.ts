@@ -9,7 +9,8 @@ import {
   TournamentGQL,
   EditTournamentGQL,
   AppStore,
-  BracketHandler
+  BracketHandler,
+  RemoveContestantGQL,
 } from '@app/core';
 
 @Component({
@@ -43,8 +44,9 @@ export class CreateTournamentComponent implements OnInit {
     private createTournamentGql: CreateTournamentGQL,
     private editTournamentGql: EditTournamentGQL,
     private tournamentGql: TournamentGQL,
+    private removeContestantGql: RemoveContestantGQL,
     private bracketHandlerService: BracketHandler,
-    private appStore: AppStore,
+    private appStore: AppStore
   ) {}
 
   ngOnInit() {
@@ -54,7 +56,7 @@ export class CreateTournamentComponent implements OnInit {
       this.editMode = true;
       this.tournamentGql
         .fetch({ linkCode }, { fetchPolicy: 'cache-first' })
-        .subscribe(({ data: { tournament } }) => {
+        .subscribe(({ data: { tournament }, errors }) => {
           this._tournament = tournament;
           const editAccessCode = localStorage.getItem('editAccessCode');
           this.tournamentForm.patchValue({ ...tournament, editAccessCode });
@@ -102,7 +104,7 @@ export class CreateTournamentComponent implements OnInit {
     } else {
       this.bracketHandlerService.createBracket(this.tournamentForm.value);
       const matches: Partial<IMatch>[] = [];
-      this.appStore.getMatchContainers().value.forEach(matchContainer => {
+      this.appStore.getMatchContainers().value.forEach((matchContainer) => {
         matches.push(matchContainer.getData());
       });
       this.createTournamentGql
@@ -132,14 +134,21 @@ export class CreateTournamentComponent implements OnInit {
     this.contestants.push(
       this.formBuilder.control({
         ...contestant,
-        seed: this.contestants.length + 1,
+        seed: contestant.seed || this.contestants.length + 1,
       })
     );
   }
 
-  removeContestant(data: { index: number, contestant: Partial<IContestant> }) {
-    // this.tou
-    this.contestants.removeAt(data.index);
+  removeContestant(data: { index: number; contestant: Partial<IContestant> }) {
+    this.removeContestantGql
+    .mutate({
+      _id: this._tournament._id,
+      contestantId: data.contestant._id,
+    })
+    .pipe(first())
+    .subscribe(result => {
+      console.log('LOOK removeContestantGql result is ', result);
+      this.contestants.removeAt(data.index);
+    });
   }
-
 }
