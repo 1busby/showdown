@@ -12,7 +12,7 @@
     "start:dev": "concurrently --handle-input \"wait-on dist/main.js && nodemon\" \"tsc -w -p tsconfig.build.json\" ",
     "start:debug": "nodemon --config nodemon-debug.json",
     "start:prod": "pm2 startOrRestart ecosystem.config.js --env production",
-    "preprod": "rimraf dist && npm run build",
+    "preprod": "npm run build",
     "prod": "ts-node -r ./tsconfig-paths-bootstrap.js dist/main.js",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
