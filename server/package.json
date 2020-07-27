@@ -5,7 +5,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "get-shared": "rimraf src/common/shared && mkdir -p src/common/shared/models && cp -r ../shared src/common",
+    "get-shared": "rimraf src/common/shared && mkdir -p src/common/models && cp -r ../shared/models src/common",
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json && mkdir -p dist/public/brackets-client && cp -r ../client/dist/brackets-client dist/public",
     "format": "prettier --write \"src/**/*.ts\"",

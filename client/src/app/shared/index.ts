@@ -1,3 +1,3 @@
 export * from './shared.module';
 
-export * from '../../../../shared';
+export * from '../../../../server/src/common/models/index';
