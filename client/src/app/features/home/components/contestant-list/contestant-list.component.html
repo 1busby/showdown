@@ -2,7 +2,13 @@
   Clicking on a card will cause it to expand and allow it to be edited.
   Cards will also be drag and droppable, with seed on the side. -->
 <div class="outer-container">
-  <div class="list-container">
+  <div
+    cdkDropList
+    [cdkDropListDisabled]="interactionMode !== 'edit'"
+    [cdkDropListData]="localContestantList"
+    (cdkDropListDropped)="contestantDrop($event)"
+    class="list-container"
+  >
     <ng-container
       *ngFor="
         let contestant of localContestantList;
@@ -11,6 +17,10 @@
       "
     >
       <mat-card
+        cdkDrag
+        [cdkDragData]="contestant"
+        [cdkDragStartDelay]="300"
+        (cdkDragStarted)="dragStarted($event)"
         [matBadge]="contestant.seed"
         matBadgePosition="before"
         matBadgeColor="accent"
