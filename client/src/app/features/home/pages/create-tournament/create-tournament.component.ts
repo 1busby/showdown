@@ -60,6 +60,7 @@ export class CreateTournamentComponent implements OnInit {
           this._tournament = tournament;
           const editAccessCode = localStorage.getItem('editAccessCode');
           this.tournamentForm.patchValue({ ...tournament, editAccessCode });
+          tournament.contestants.sort((a, b) => a.seed - b.seed);
           tournament.contestants.forEach(({ __typename, ...contestant }: any) =>
             this.addContestant(contestant)
           );
@@ -85,11 +86,18 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   createTournament() {
+    this.bracketHandlerService.createBracket(this.tournamentForm.value);
+    const matches: Partial<IMatch>[] = [];
+    this.appStore.getMatchContainers().value.forEach((matchContainer) => {
+      matches.push(matchContainer.getData());
+    });
+
     if (this.editMode) {
       this.editTournamentGql
         .mutate({
           _id: this._tournament._id,
           ...this.tournamentForm.value,
+          matches
         })
         .pipe(first())
         .subscribe((result) => {
@@ -102,11 +110,6 @@ export class CreateTournamentComponent implements OnInit {
           );
         });
     } else {
-      this.bracketHandlerService.createBracket(this.tournamentForm.value);
-      const matches: Partial<IMatch>[] = [];
-      this.appStore.getMatchContainers().value.forEach((matchContainer) => {
-        matches.push(matchContainer.getData());
-      });
       this.createTournamentGql
         .mutate({ ...this.tournamentForm.value, matches })
         .pipe(first())
@@ -140,15 +143,6 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   removeContestant(data: { index: number; contestant: Partial<IContestant> }) {
-    this.removeContestantGql
-    .mutate({
-      _id: this._tournament._id,
-      contestantId: data.contestant._id,
-    })
-    .pipe(first())
-    .subscribe(result => {
-      console.log('LOOK removeContestantGql result is ', result);
-      this.contestants.removeAt(data.index);
-    });
+    this.contestants.removeAt(data.index);
   }
 }

@@ -102,8 +102,8 @@ type Team {
 """The tournament model"""
 type Tournament {
   _id: ID!
-  name: String!
-  contestantCount: Int!
+  name: String
+  contestantCount: Int
   createdBy: User
   contestants: [Contestant]
   teams: [Team]

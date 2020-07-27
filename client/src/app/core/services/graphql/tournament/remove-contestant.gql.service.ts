@@ -7,13 +7,13 @@ import gql from 'graphql-tag';
 })
 export class RemoveContestantGQL extends Mutation {
   document = gql`
-    mutation removeContestant($_id: ID!, $contestantId: ID) {
+    mutation removeContestant($_id: ID!, $contestantId: ID!) {
       removeContestant(
-        _id: $id
+        _id: $_id
         contestantId: $contestantId
       ) {
         _id
-        contestants
+        name
       }
     }
   `;
