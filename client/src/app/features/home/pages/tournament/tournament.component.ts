@@ -66,7 +66,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         }
 
         this.tournament = result.data.tournament;
-        this.bracketHelper.createBracket(this.tournament);
+        this.tournament.contestants.sort((a, b) => a.seed - b.seed);
       });
   }
 

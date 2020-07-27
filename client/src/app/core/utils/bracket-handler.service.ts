@@ -39,7 +39,7 @@ export class BracketHandler {
     this.activeTournament = bracket;
     this.activeContestants = bracket.contestants;
     this.matchContainers = [];
-    this.numContestants = this.activeContestants.length;
+    this.numContestants = bracket.contestantCount;
     this.createSeededBracket();
     this.defineLayoutPlacements();
 
@@ -104,8 +104,9 @@ export class BracketHandler {
       }
     }
 
-    let numSeeded = 0;
     // place contestants in the correct match based on their seed
+    // assumes this.activeContestants is sorted by seed
+    let numSeeded = 0;
     for (let i = 0; i < this.high2Power / 2; i++) {
       if (numSeeded >= this.high2Power / 2) {
         break;
