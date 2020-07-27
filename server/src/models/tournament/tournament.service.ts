@@ -1,19 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as shortid from 'shortid';
+
 import { NewTournamentInput } from './dto/new-tournament.input';
 import { TournamentsArgs } from './dto/tournament.args';
 import { Tournament } from './tournament.model';
-import * as shortid from 'shortid';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
+import { CustomLogger } from '@common/index';
 
 @Injectable()
 export class TournamentsService {
   constructor(
     @InjectModel('Tournament')
     private readonly tournamentModel: Model<Tournament>,
+    private logger: CustomLogger,
   ) {}
 
   async create(data: NewTournamentInput): Promise<Tournament> {
@@ -112,8 +115,9 @@ export class TournamentsService {
   }
 
   removeContestant(_id, contestantId) {
+    this.logger.debug('LOOK removing contestant _id = ', _id, ' contestantId = ', contestantId);
     return this.tournamentModel
-      .updateOne({ _id }, { $pull: contestantId })
+      .updateOne({ _id }, { $pull: { anonymousContestants: { _id: contestantId } as never } })
       .exec();
   }
 

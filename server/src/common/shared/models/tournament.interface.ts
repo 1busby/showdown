@@ -2,8 +2,8 @@ import { IMatch, IUser, IContestant, IUpdate } from '../';
 
 export interface ITournament {
   _id: string;
-  name: string;
-  contestantCount: number;
+  name?: string;
+  contestantCount?: number;
   matches?: IMatch[];
   contestants?: Partial<IUser>[];
   createdBy?: Partial<IUser>;

@@ -12,11 +12,11 @@ export class Tournament extends Document implements ITournament {
   @Field(type => ID)
   _id: string;
 
-  @Field()
-  name: string;
+  @Field({ nullable: true })
+  name?: string;
 
-  @Field(type => Int)
-  contestantCount: number;
+  @Field(type => Int, { nullable: true })
+  contestantCount?: number;
 
   @Field(type => User, { nullable: true })
   createdBy?: User;
