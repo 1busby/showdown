@@ -35,8 +35,8 @@ export class BracketViewComponent implements OnChanges, OnInit {
   ngOnInit() {
     this.matches = this.appStore.getMatchContainers();
     this.bracketHandler.setContainerDimensions(
-      998,
-      737
+      586,
+      619
     );
     this.bracketHandler.createBracket(this.tournament);
   }
