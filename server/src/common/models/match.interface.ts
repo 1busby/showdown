@@ -1,4 +1,4 @@
-import { IContestant, ITournament } from '../';
+import { IContestant, ITournament } from './';
 
 export interface IMatch {
   _id: string;
