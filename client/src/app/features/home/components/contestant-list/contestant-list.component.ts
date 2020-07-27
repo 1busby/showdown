@@ -74,7 +74,7 @@ export class ContestantListComponent implements OnChanges {
   }
 
   dragStarted(event) {
-    navigator.vibrate(500);
+    navigator.vibrate(25);
   }
 
   contestantDrop(event: CdkDragDrop<IContestant[]>) {
