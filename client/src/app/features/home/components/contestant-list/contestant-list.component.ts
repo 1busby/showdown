@@ -6,8 +6,10 @@ import {
   SimpleChanges,
   OnChanges,
 } from '@angular/core';
-import { IContestant } from '@app/shared';
 import { FormGroup, FormControl } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
+import { IContestant } from '@app/shared';
 
 @Component({
   selector: 'contestant-list',
@@ -69,5 +71,14 @@ export class ContestantListComponent implements OnChanges {
 
   trackById(index: number, contestant: IContestant): string {
     return contestant.name;
+  }
+
+  dragStarted(event) {
+    navigator.vibrate(500);
+  }
+
+  contestantDrop(event: CdkDragDrop<IContestant[]>) {
+    console.log('drop event is ', event);
+    moveItemInArray(this.localContestantList, event.previousIndex, event.currentIndex);
   }
 }

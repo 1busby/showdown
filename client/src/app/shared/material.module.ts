@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   exports: [
+    DragDropModule,
     MatButtonModule,
     MatGridListModule,
     MatIconModule,
@@ -27,7 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatStepperModule,
     MatSnackBarModule,
     MatBadgeModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
 })
 export class MaterialModule {}
