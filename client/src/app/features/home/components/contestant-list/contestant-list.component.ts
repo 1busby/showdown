@@ -32,12 +32,10 @@ export class ContestantListComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('LOOK ContestantListComponent : ngOnChanges');
     this.buildList();
   }
 
   buildList() {
-    console.log('LOOK ContestantListComponent : buildList');
     this.localContestantList = [];
     this.contestants.forEach((contestant) => {
       this.localContestantList.push(contestant);
