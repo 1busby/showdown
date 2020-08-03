@@ -22,8 +22,13 @@ export class ContestantListComponent implements OnChanges {
   @Input() contestantCount = 0;
   @Input() contestants: Partial<IContestant>[] = [];
   @Output() newContestantEmitter = new EventEmitter<Partial<IContestant>>();
-  @Output() removeContestantEmitter = new EventEmitter<{ index: number, contestant: Partial<IContestant> }>();
-  @Output() rearrangedContestantsEmitter = new EventEmitter<Partial<IContestant>[]>();
+  @Output() removeContestantEmitter = new EventEmitter<{
+    index: number;
+    contestant: Partial<IContestant>;
+  }>();
+  @Output() rearrangedContestantsEmitter = new EventEmitter<
+    Partial<IContestant>[]
+  >();
 
   newContestantForm = new FormGroup({
     name: new FormControl(''),
@@ -54,7 +59,7 @@ export class ContestantListComponent implements OnChanges {
       return;
     }
     const newContestant = {
-      name: this.newContestantForm.value.name
+      name: this.newContestantForm.value.name,
     };
     this.newContestantEmitter.emit(newContestant);
     this.newContestantForm.controls.name.setValue('');
@@ -63,7 +68,7 @@ export class ContestantListComponent implements OnChanges {
   removeContestant(index: number, contestant: Partial<IContestant>) {
     this.removeContestantEmitter.emit({
       index,
-      contestant
+      contestant,
     });
   }
 
@@ -77,7 +82,11 @@ export class ContestantListComponent implements OnChanges {
 
   contestantDrop(event: CdkDragDrop<IContestant[]>) {
     console.log('drop event is ', event);
-    moveItemInArray(this.localContestantList, event.previousIndex, event.currentIndex);
+    moveItemInArray(
+      this.localContestantList,
+      event.previousIndex,
+      event.currentIndex
+    );
     this.rearrangeSeeds(this.localContestantList);
     this.rearrangedContestantsEmitter.emit(this.localContestantList);
   }
@@ -86,5 +95,28 @@ export class ContestantListComponent implements OnChanges {
     contestants.forEach((contestant, index) => {
       contestant.seed = index + 1;
     });
+  }
+
+  shuffleSeeds() {
+    let currentIndex = this.localContestantList.length;
+    let temporaryValue;
+    let randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = this.localContestantList[currentIndex];
+      this.localContestantList[currentIndex] = this.localContestantList[
+        randomIndex
+      ];
+      this.localContestantList[randomIndex] = temporaryValue;
+    }
+
+    this.rearrangeSeeds(this.localContestantList);
+    this.rearrangedContestantsEmitter.emit(this.localContestantList);
   }
 }
