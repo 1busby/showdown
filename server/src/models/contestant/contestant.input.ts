@@ -1,5 +1,5 @@
 import { Field, InputType, ID, Int } from '@nestjs/graphql';
-import { IContestant } from '@common/index';
+import { IContestant } from '@shared/index';
 
 @InputType()
 export class ContestantInput implements Partial<IContestant> {

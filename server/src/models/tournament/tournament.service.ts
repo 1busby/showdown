@@ -9,7 +9,7 @@ import { Tournament } from './tournament.model';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
-import { CustomLogger } from '@common/index';
+import { CustomLogger } from '@shared/index';
 
 @Injectable()
 export class TournamentsService {

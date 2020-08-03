@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { AppModule } from './app.module';
-import { CustomLogger } from './common';
+import { CustomLogger } from './shared';
 
 const whitelist = ['http://localhost:4200'];
 const corsOptions = {

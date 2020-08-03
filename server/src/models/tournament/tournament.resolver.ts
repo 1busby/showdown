@@ -20,7 +20,7 @@ import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
 import { Match } from '@models/match/match.model';
 import { MatchService } from '@models/match/match.service';
-import { CustomLogger } from '@common/index';
+import { CustomLogger } from '@shared/index';
 
 const pubSub = new PubSub();
 

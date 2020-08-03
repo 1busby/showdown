@@ -4,11 +4,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MatchResolver } from './match.resolver';
 import { MatchService } from './match.service';
 import { MatchSchema } from './match.schema';
-import { CommonModule } from '@common/index';
+import { SharedModule } from '@shared/index';
 
 @Module({
   imports: [
-    CommonModule,
+    SharedModule,
     MongooseModule.forFeature([{ name: 'Match', schema: MatchSchema }]),
   ],
   exports: [MatchService],
