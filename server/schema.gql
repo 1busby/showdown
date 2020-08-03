@@ -63,6 +63,7 @@ input NewTournamentInput {
   contestants: [ContestantInput]
   matches: [MatchInput]
   editAccessCode: String
+  setCount: Int
 }
 
 input NewUserInput {
@@ -112,6 +113,7 @@ type Tournament {
   updatedOn: Date
   linkCode: String
   editAccessCode: String
+  setCount: Int
 }
 
 input UpdateTournamentInput {
@@ -122,6 +124,7 @@ input UpdateTournamentInput {
   matches: [MatchInput]
   editAccessCode: String
   updatedBy: ID
+  setCount: Int
 }
 
 """The user model"""

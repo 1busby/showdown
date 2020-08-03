@@ -23,4 +23,7 @@ export class NewTournamentInput {
 
   @Field({ nullable: true })
   editAccessCode?: string;
+
+  @Field(type => Int, { nullable: true })
+  setCount?: number;
 }

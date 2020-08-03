@@ -31,5 +31,6 @@ export const TournamentSchema = new mongoose.Schema({
   updatedOn: Date,
   linkCode: String,
   editAccessCode: String,
+  setCount: Number,
   anonymousContestants: [anonymousContestantSchema],
 });

@@ -37,21 +37,25 @@ export class TournamentsResolver {
     @Args('id', { nullable: true }) id?: string,
     @Args('linkCode', { nullable: true }) linkCode?: string,
   ): Promise<Tournament> {
-    let tournament;
-    if (id) {
-      tournament = await this.tournamentsService.findOneById(id);
-    } else if (linkCode) {
-      tournament = await this.tournamentsService.findOneByLinkCode(linkCode);
-    } else {
-      throw new NotAcceptableException(
-        null,
-        'No link code or description found.',
-      );
+    try {
+      let tournament;
+      if (id) {
+        tournament = await this.tournamentsService.findOneById(id);
+      } else if (linkCode) {
+        tournament = await this.tournamentsService.findOneByLinkCode(linkCode);
+      } else {
+        throw new NotAcceptableException(
+          null,
+          'No link code or description found.',
+        );
+      }
+      if (!tournament) {
+        throw new NotFoundException('Tournament Not Found');
+      }
+      return tournament;
+    } catch (e) {
+      this.logger.error('Error getting tournament becuase ', e);
     }
-    if (!tournament) {
-      throw new NotFoundException('Tournament Not Found');
-    }
-    return tournament;
   }
 
   @Query(returns => [Tournament])

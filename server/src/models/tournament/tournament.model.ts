@@ -42,5 +42,8 @@ export class Tournament extends Document implements ITournament {
   @Field({ nullable: true })
   editAccessCode?: string;
 
+  @Field(type => Int, { nullable: true })
+  setCount?: number;
+
   anonymousContestants?: [];
 }

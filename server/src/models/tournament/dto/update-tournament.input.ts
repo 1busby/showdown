@@ -26,4 +26,7 @@ export class UpdateTournamentInput {
 
   @Field(type => ID, { nullable: true })
   updatedBy?: string;
+
+  @Field(type => Int, { nullable: true })
+  setCount?: number;
 }

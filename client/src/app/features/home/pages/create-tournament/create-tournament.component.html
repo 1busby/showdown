@@ -50,6 +50,24 @@
 
       <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
         <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button matStepperNext type="button">Next</button>
+      </div>
+    </mat-step>
+
+    <!-- Step 3 -->
+    <mat-step class="height-100">
+      <mat-form-field appearance="outline">
+        <mat-label>Sets per Match</mat-label>
+        <input
+          matInput
+          type="number"
+          required
+          formControlName="setCount"
+        />
+      </mat-form-field>
+
+      <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
+        <button mat-button matStepperPrevious type="button">Back</button>
         <button type="submit" mat-raised-button color="primary">
           <ng-container *ngIf="!editMode">Create</ng-container>
           <ng-container *ngIf="editMode">Save</ng-container>
