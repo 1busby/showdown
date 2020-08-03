@@ -36,8 +36,6 @@ type Match {
   updatedOn: Date
   highSeedNumber: Int
   lowSeedNumber: Int
-  matches: [Match]
-  sets: [Set]
 }
 
 input MatchInput {
@@ -65,7 +63,6 @@ input NewTournamentInput {
   contestants: [ContestantInput]
   matches: [MatchInput]
   editAccessCode: String
-  setCount: Int
 }
 
 input NewUserInput {
@@ -86,17 +83,6 @@ type Query {
 input RequestEditAccessInput {
   tournamentId: String
   editAccessCode: String
-}
-
-"""A set for a match"""
-type Set {
-  _id: ID!
-  highSeedScore: Int
-  lowSeedScore: Int
-  outcome: String
-  startedOn: Date
-  completedOn: Date
-  notes: String
 }
 
 type Subscription {
@@ -126,7 +112,6 @@ type Tournament {
   updatedOn: Date
   linkCode: String
   editAccessCode: String
-  setCount: Int
 }
 
 input UpdateTournamentInput {
@@ -137,7 +122,6 @@ input UpdateTournamentInput {
   matches: [MatchInput]
   editAccessCode: String
   updatedBy: ID
-  setCount: Int
 }
 
 """The user model"""

@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
-import { ITournament } from '@common/index';
+import { ITournament } from '@shared/index';
 import { Team } from '../team/team.model';
 import { User } from '../user/user.model';
 import { Contestant } from '../contestant/contestant.entity';
@@ -41,6 +41,9 @@ export class Tournament extends Document implements ITournament {
 
   @Field({ nullable: true })
   editAccessCode?: string;
+
+  @Field(type => Int, { nullable: true })
+  setCount?: number;
 
   anonymousContestants?: [];
 }

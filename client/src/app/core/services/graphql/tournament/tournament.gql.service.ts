@@ -16,6 +16,7 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         contestantCount
         linkCode
         createdOn
+        setCount
         contestants {
           _id
           name
@@ -29,6 +30,15 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           roundNumber
           highSeedNumber
           lowSeedNumber
+          sets {
+            _id
+            highSeedScore
+            lowSeedScore
+            outcome
+            startedOn
+            completedOn
+            notes
+          }
         }
       }
     }

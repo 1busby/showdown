@@ -1,6 +1,6 @@
 import { Field, Int, InputType } from '@nestjs/graphql';
 
-import { IMatch } from '@common/index';
+import { IMatch } from '@shared/index';
 
 @InputType()
 export class MatchInput implements Partial<IMatch> {

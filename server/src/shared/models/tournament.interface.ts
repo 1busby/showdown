@@ -5,11 +5,12 @@ export interface ITournament {
   name?: string;
   contestantCount?: number;
   matches?: IMatch[];
-  contestants?: Partial<IUser>[];
+  contestants?: Array<Partial<IUser>>;
   createdBy?: Partial<IUser>;
   createdOn?: Date;
   updatedOn?: Date;
   linkCode?: string;
-  updates?: [IUpdate];
+  updates?: IUpdate[];
   editAccessCode?: string;
+  setCount?: number;
 }

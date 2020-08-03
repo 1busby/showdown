@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 import { Team } from '../team/team.model';
-import { IUser } from '@common/index';
+import { IUser } from '@shared/index';
 import { Document } from 'mongoose';
 import { Contestant } from '../contestant/contestant.entity';
 

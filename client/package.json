@@ -38,6 +38,7 @@
     "core-js": "^2.5.4",
     "graphql": "^14.5.0",
     "graphql-tag": "^2.10.0",
+    "ngx-gravatar": "^9.1.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

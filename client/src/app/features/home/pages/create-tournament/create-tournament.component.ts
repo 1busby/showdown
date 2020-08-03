@@ -29,6 +29,7 @@ export class CreateTournamentComponent implements OnInit {
     contestants: this.formBuilder.array([]),
     editAccessCode: '',
     matches: this.formBuilder.array([]),
+    setCount: [0],
   });
 
   get contestants(): FormArray {
@@ -72,6 +73,7 @@ export class CreateTournamentComponent implements OnInit {
         contestants: [],
         editAccessCode: '123',
         matches: [],
+        setCount: 0
       });
     }
   }
@@ -144,5 +146,9 @@ export class CreateTournamentComponent implements OnInit {
 
   removeContestant(data: { index: number; contestant: Partial<IContestant> }) {
     this.contestants.removeAt(data.index);
+  }
+
+  rearrangeContestants(contestants) {
+    this.contestants.patchValue(contestants);
   }
 }

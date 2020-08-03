@@ -16,6 +16,7 @@ export class EditTournamentGQL extends Mutation<{ updateTournament: ITournament 
       $contestants: [ContestantInput]
       $matches: [MatchInput]
       $editAccessCode: String
+      $setCount: Int
     ) {
       updateTournament(
         updateTournamentData: {
@@ -25,6 +26,7 @@ export class EditTournamentGQL extends Mutation<{ updateTournament: ITournament 
           contestants: $contestants
           matches: $matches
           editAccessCode: $editAccessCode
+          setCount: $setCount
         }
       ) {
         _id

@@ -22,7 +22,13 @@ export class ContestantListComponent implements OnChanges {
   @Input() contestantCount = 0;
   @Input() contestants: Partial<IContestant>[] = [];
   @Output() newContestantEmitter = new EventEmitter<Partial<IContestant>>();
-  @Output() removeContestantEmitter = new EventEmitter<{ index: number, contestant: Partial<IContestant> }>();
+  @Output() removeContestantEmitter = new EventEmitter<{
+    index: number;
+    contestant: Partial<IContestant>;
+  }>();
+  @Output() rearrangedContestantsEmitter = new EventEmitter<
+    Partial<IContestant>[]
+  >();
 
   newContestantForm = new FormGroup({
     name: new FormControl(''),
@@ -32,12 +38,10 @@ export class ContestantListComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('LOOK ContestantListComponent : ngOnChanges');
     this.buildList();
   }
 
   buildList() {
-    console.log('LOOK ContestantListComponent : buildList');
     this.localContestantList = [];
     this.contestants.forEach((contestant) => {
       this.localContestantList.push(contestant);
@@ -51,12 +55,11 @@ export class ContestantListComponent implements OnChanges {
   }
 
   addContestant() {
-    console.log('LOOK ContestantListComponent : addContestant');
     if (this.newContestantForm.value.name.length < 1) {
       return;
     }
     const newContestant = {
-      name: this.newContestantForm.value.name
+      name: this.newContestantForm.value.name,
     };
     this.newContestantEmitter.emit(newContestant);
     this.newContestantForm.controls.name.setValue('');
@@ -65,7 +68,7 @@ export class ContestantListComponent implements OnChanges {
   removeContestant(index: number, contestant: Partial<IContestant>) {
     this.removeContestantEmitter.emit({
       index,
-      contestant
+      contestant,
     });
   }
 
@@ -79,6 +82,41 @@ export class ContestantListComponent implements OnChanges {
 
   contestantDrop(event: CdkDragDrop<IContestant[]>) {
     console.log('drop event is ', event);
-    moveItemInArray(this.localContestantList, event.previousIndex, event.currentIndex);
+    moveItemInArray(
+      this.localContestantList,
+      event.previousIndex,
+      event.currentIndex
+    );
+    this.rearrangeSeeds(this.localContestantList);
+    this.rearrangedContestantsEmitter.emit(this.localContestantList);
+  }
+
+  rearrangeSeeds(contestants: Partial<IContestant>[]) {
+    contestants.forEach((contestant, index) => {
+      contestant.seed = index + 1;
+    });
+  }
+
+  shuffleSeeds() {
+    let currentIndex = this.localContestantList.length;
+    let temporaryValue;
+    let randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = this.localContestantList[currentIndex];
+      this.localContestantList[currentIndex] = this.localContestantList[
+        randomIndex
+      ];
+      this.localContestantList[randomIndex] = temporaryValue;
+    }
+
+    this.rearrangeSeeds(this.localContestantList);
+    this.rearrangedContestantsEmitter.emit(this.localContestantList);
   }
 }

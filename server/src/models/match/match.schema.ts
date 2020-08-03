@@ -1,5 +1,7 @@
 import * as mongoose from 'mongoose';
 
+import { setSchema } from '../set/set.schema';
+
 export const MatchSchema = new mongoose.Schema({
   roundNumber: Number,
   matchNumber: Number,
@@ -8,4 +10,5 @@ export const MatchSchema = new mongoose.Schema({
   updatedOn: Date,
   highSeedNumber: Number,
   lowSeedNumber: Number,
+  sets: [setSchema],
 });

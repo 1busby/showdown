@@ -1,4 +1,5 @@
 import { IContestant, ITournament } from './';
+import { ISet } from './set.interface';
 
 export interface IMatch {
   _id: string;
@@ -11,5 +12,6 @@ export interface IMatch {
   lowSeedContestant?: IContestant;
   winner?: IContestant;
   winnerSeed?: string;
-  matchRounds?: number
+  matchRounds?: number;
+  sets?: ISet[];
 }

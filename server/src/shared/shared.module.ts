@@ -8,4 +8,4 @@ import { LoggerModule } from './logger/logger.module';
   exports: [LoggerModule],
   providers: [DateScalar],
 })
-export class CommonModule {}
+export class SharedModule {}
