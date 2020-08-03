@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { GravatarModule, GravatarConfig, FALLBACK, RATING } from 'ngx-gravatar';
 
 import { SharedModule } from '@app/shared';
 import { HomeRoutingModule } from './home-routing.module';
@@ -14,8 +15,16 @@ import { MatchListComponent } from './components/match-list/match-list.component
 import { BracketViewComponent } from './components/bracket-view/bracket-view.component';
 import { MatchCardComponent } from './components/match-card/match-card.component';
 
+const gravatarConfig: GravatarConfig = {
+  fallback: FALLBACK.robohash,
+  rating: RATING.x,
+  backgroundColor: 'rgba(0, 0, 0, 0.1)',
+  borderColor: 'rgba(0, 0, 0, 0.1)',
+  hasBorder: true // Set this flag to true to have a border by default
+};
+
 @NgModule({
-  imports: [HomeRoutingModule, SharedModule],
+  imports: [GravatarModule.forRoot(gravatarConfig), HomeRoutingModule, SharedModule],
   declarations: [
     MatchCardComponent,
     HomeComponent,

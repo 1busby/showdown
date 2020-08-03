@@ -2,8 +2,7 @@ import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
 import { IMatch } from '@shared/index';
-import { Contestant } from '../contestant/contestant.entity';
-import { Tournament } from '../tournament/tournament.model';
+import { Set } from '../set/set.model';
 
 @ObjectType({ description: 'The match model' })
 export class Match extends Document implements IMatch {
@@ -30,4 +29,10 @@ export class Match extends Document implements IMatch {
 
   @Field(type => Int, { nullable: true })
   lowSeedNumber?: number;
+
+  @Field(type => [Match], { nullable: 'itemsAndList' })
+  matches?: Match[];
+
+  @Field(type => [Set], { nullable: 'itemsAndList' })
+  sets?: Set[];
 }

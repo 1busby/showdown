@@ -36,6 +36,8 @@ type Match {
   updatedOn: Date
   highSeedNumber: Int
   lowSeedNumber: Int
+  matches: [Match]
+  sets: [Set]
 }
 
 input MatchInput {
@@ -84,6 +86,17 @@ type Query {
 input RequestEditAccessInput {
   tournamentId: String
   editAccessCode: String
+}
+
+"""A set for a match"""
+type Set {
+  _id: ID!
+  highSeedScore: Int
+  lowSeedScore: Int
+  outcome: String
+  startedOn: Date
+  completedOn: Date
+  notes: String
 }
 
 type Subscription {

@@ -13,5 +13,5 @@ export interface IMatch {
   winner?: IContestant;
   winnerSeed?: string;
   matchRounds?: number;
-  sets?: [ISet];
+  sets?: ISet[];
 }

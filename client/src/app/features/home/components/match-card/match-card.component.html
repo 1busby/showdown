@@ -4,8 +4,25 @@
   matBadgeColor="accent"
   class="container"
 >
-  <mat-card-content>
-    {{ match.highSeed?.name || '---' }} <br />
-    {{ match.lowSeed?.name || '---' }}
-  </mat-card-content>
+  <div class="high">
+    <div class="high__left">
+      <img
+        ngxGravatar
+        [email]="match.highSeed?.name || '---'"
+        size="30"
+      />
+      {{ match.highSeed?.name || '---' }}
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="low">
+    <div class="low__left">
+      <img
+        ngxGravatar
+        [email]="match.lowSeed?.name || '---'"
+        size="30"
+      />
+      {{ match.lowSeed?.name || '---' }}
+    </div>
+  </div>
 </mat-card>

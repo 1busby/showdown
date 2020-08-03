@@ -10,7 +10,7 @@ export interface ITournament {
   createdOn?: Date;
   updatedOn?: Date;
   linkCode?: string;
-  updates?: [IUpdate];
+  updates?: IUpdate[];
   editAccessCode?: string;
   setCount?: number;
 }
