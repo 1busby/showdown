@@ -34,6 +34,7 @@
         [contestants]="contestants.value"
         (newContestantEmitter)="addContestant($event)"
         (removeContestantEmitter)="removeContestant($event)"
+        (rearrangedContestantsEmitter)="rearrangeContestants($event)"
       ></contestant-list>
 
       <mat-form-field appearance="outline">

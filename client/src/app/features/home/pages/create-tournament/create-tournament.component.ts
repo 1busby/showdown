@@ -145,4 +145,8 @@ export class CreateTournamentComponent implements OnInit {
   removeContestant(data: { index: number; contestant: Partial<IContestant> }) {
     this.contestants.removeAt(data.index);
   }
+
+  rearrangeContestants(contestants) {
+    this.contestants.patchValue(contestants);
+  }
 }

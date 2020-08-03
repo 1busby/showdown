@@ -23,6 +23,7 @@ export class ContestantListComponent implements OnChanges {
   @Input() contestants: Partial<IContestant>[] = [];
   @Output() newContestantEmitter = new EventEmitter<Partial<IContestant>>();
   @Output() removeContestantEmitter = new EventEmitter<{ index: number, contestant: Partial<IContestant> }>();
+  @Output() rearrangedContestantsEmitter = new EventEmitter<Partial<IContestant>[]>();
 
   newContestantForm = new FormGroup({
     name: new FormControl(''),
@@ -49,7 +50,6 @@ export class ContestantListComponent implements OnChanges {
   }
 
   addContestant() {
-    console.log('LOOK ContestantListComponent : addContestant');
     if (this.newContestantForm.value.name.length < 1) {
       return;
     }
@@ -78,5 +78,13 @@ export class ContestantListComponent implements OnChanges {
   contestantDrop(event: CdkDragDrop<IContestant[]>) {
     console.log('drop event is ', event);
     moveItemInArray(this.localContestantList, event.previousIndex, event.currentIndex);
+    this.rearrangeSeeds(this.localContestantList);
+    this.rearrangedContestantsEmitter.emit(this.localContestantList);
+  }
+
+  rearrangeSeeds(contestants: Partial<IContestant>[]) {
+    contestants.forEach((contestant, index) => {
+      contestant.seed = index + 1;
+    });
   }
 }
