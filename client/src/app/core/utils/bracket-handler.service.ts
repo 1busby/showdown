@@ -42,8 +42,17 @@ export class BracketHandler {
     this.numContestants = bracket.contestantCount;
     this.createSeededBracket();
     this.matchContainers = this.defineLayoutPlacements();
+
+    const sets = [];
+    for (let i = 1; i <= this.activeTournament.setCount; i++) {
+      sets.push({
+        orderNumber: i
+      });
+    }
+
     this.matchContainers.forEach((matchContainer, index) => {
       matchContainer.matchNumber = index;
+      matchContainer.sets = [ ...sets ];
     });
 
     // if this is a previously stored match, update the winners

@@ -185,7 +185,7 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
       matchNumber: this.matchNumber,
       roundNumber: this.roundNumber,
       winnerSeed: this.winnerSeed,
-      // matchRounds: this.sets,
+      sets: this.sets,
     };
   }
 }

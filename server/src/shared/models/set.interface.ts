@@ -1,5 +1,6 @@
 export interface ISet {
   _id?: string;
+  orderNumber?: number;
   highSeedScore?: number;
   lowSeedScore?: number;
   outcome?: 'high' | 'low' | 'tie';
