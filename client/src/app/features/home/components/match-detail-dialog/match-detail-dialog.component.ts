@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IMatch } from '@app/shared';
+
 import { MatchContainer } from '@app/core';
 
 export interface DialogData {
@@ -10,6 +10,7 @@ export interface DialogData {
 @Component({
   selector: 'match-detail-dialog',
   templateUrl: 'match-detail-dialog.component.html',
+  styleUrls: ['match-detail-dialog.component.scss']
 })
 export class MatchDetailDialogComponent {
   constructor(
