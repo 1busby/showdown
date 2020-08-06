@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { GravatarModule, GravatarConfig, FALLBACK, RATING } from 'ngx-gravatar';
 
 import { SharedModule } from '@app/shared';
+import { MatchService } from './services/match.service';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { LandingComponent } from './pages/landing/landing.component';
@@ -40,6 +41,7 @@ const gravatarConfig: GravatarConfig = {
     MatchListComponent,
     BracketViewComponent
   ],
+  providers: [MatchService],
   bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent, MatchDetailDialogComponent]
 })
 export class HomeModule {}

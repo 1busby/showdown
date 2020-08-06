@@ -11,9 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { MatchContainer, AppStore, BracketHandler } from '@app/core';
 import { ITournament } from '@app/shared';
-import { MatDialog } from '@angular/material/dialog';
-import { MatchDetailDialogComponent } from '../match-detail-dialog/match-detail-dialog.component';
-import { first } from 'rxjs/operators';
+import { MatchService } from '../../services/match.service';
 
 @Component({
   selector: 'bracket-view',
@@ -31,7 +29,7 @@ export class BracketViewComponent implements OnChanges, OnInit {
     @Self() private element: ElementRef,
     private bracketHandler: BracketHandler,
     private appStore: AppStore,
-    public dialog: MatDialog,
+    public matchService: MatchService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {}
@@ -46,17 +44,6 @@ export class BracketViewComponent implements OnChanges, OnInit {
   }
 
   showMatchDetails(match: MatchContainer) {
-    const dialogRef = this.dialog.open(MatchDetailDialogComponent, {
-      data: {
-        match,
-      },
-    });
-
-    dialogRef
-      .afterClosed()
-      .pipe(first())
-      .subscribe((match) => {
-        console.log('Match Dialog ');
-      });
+    this.matchService.showMatchDetails(match, this.tournament._id);
   }
 }

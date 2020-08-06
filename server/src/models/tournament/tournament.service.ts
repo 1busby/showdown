@@ -75,7 +75,7 @@ export class TournamentsService {
 
   async updateOne(data: UpdateTournamentInput): Promise<Tournament> {
     // separate anonymous users from regular users
-    const updateData: any = { ...data };
+    const { matches, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
       const anonymousContestants = [];
       // tslint:disable-next-line: prefer-for-of
@@ -85,16 +85,67 @@ export class TournamentsService {
           data.contestants.splice(i, 1);
         }
       }
-      updateData.anonymousContestants = anonymousContestants;
+      updateData['anonymousContestants'] = anonymousContestants;
+    }
+
+    const matchAggregates = [];
+    if (data.matches && data.matches.length > 0) {
+      data.matches.forEach(newMatch => {
+        // matchAggregates.push({ $set:  })
+      });
     }
     return this.tournamentModel
-      .findByIdAndUpdate({ _id: data._id }, updateData, { new: true })
+      .aggregate([
+        { $match: { _id: data._id } },
+        { $set: updateData },
+        {
+          $set: {
+            matches: {
+              $map: {
+                input: '$$Root.matches',
+                as: 'match',
+                cond: {
+                  $mergeObject: [
+                    '$$match',
+                    {
+                      $arrayElemAt: [
+                        matches,
+                        {
+                          $indexOfArray: [
+                            {
+                              $map: {
+                                input: matches,
+                                as: 'matches',
+                                in: '&&matches._id',
+                              }
+                            },
+                            '&&match._id',
+                          ]
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      ])
+      .exec()
       .then(result => {
         return result;
       })
       .catch(error => {
         throw new Error('Error updating tournament >>> ' + error);
       });
+    // return this.tournamentModel
+    //   .findByIdAndUpdate({ _id: data._id }, updateData, { new: true })
+    //   .then(result => {
+    //     return result;
+    //   })
+    //   .catch(error => {
+    //     throw new Error('Error updating tournament >>> ' + error);
+    //   });
   }
 
   addContestant(id, contestantName?, userId?) {
@@ -115,9 +166,17 @@ export class TournamentsService {
   }
 
   removeContestant(_id, contestantId) {
-    this.logger.debug('LOOK removing contestant _id = ', _id, ' contestantId = ', contestantId);
+    this.logger.debug(
+      'LOOK removing contestant _id = ',
+      _id,
+      ' contestantId = ',
+      contestantId,
+    );
     return this.tournamentModel
-      .updateOne({ _id }, { $pull: { anonymousContestants: { _id: contestantId } as never } })
+      .updateOne(
+        { _id },
+        { $pull: { anonymousContestants: { _id: contestantId } as never } },
+      )
       .exec();
   }
 

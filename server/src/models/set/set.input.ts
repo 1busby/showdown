@@ -4,8 +4,8 @@ import { ISet } from '@shared/index';
 
 @InputType()
 export class SetInput implements Partial<ISet> {
-  @Field(type => ID)
-  _id: string;
+  @Field(type => ID, { nullable: true })
+  _id?: string;
 
   @Field(type => Int, { nullable: true })
   orderNumber?: number;

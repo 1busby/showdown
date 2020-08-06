@@ -18,4 +18,8 @@ export class MatchDetailDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
   }
+
+  save() {
+    this.dialogRef.close(this.data.match);
+  }
 }
