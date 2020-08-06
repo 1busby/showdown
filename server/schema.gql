@@ -41,6 +41,7 @@ type Match {
 }
 
 input MatchInput {
+  _id: ID
   matchNumber: Int
   roundNumber: Int
   highSeedNumber: Int

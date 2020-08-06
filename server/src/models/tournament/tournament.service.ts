@@ -10,6 +10,7 @@ import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
 import { CustomLogger } from '@shared/index';
+import { merge } from 'rxjs';
 
 @Injectable()
 export class TournamentsService {
@@ -75,7 +76,7 @@ export class TournamentsService {
 
   async updateOne(data: UpdateTournamentInput): Promise<Tournament> {
     // separate anonymous users from regular users
-    const { matches, ...updateData } = data;
+    const { _id, matches, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
       const anonymousContestants = [];
       // tslint:disable-next-line: prefer-for-of
@@ -88,56 +89,60 @@ export class TournamentsService {
       updateData['anonymousContestants'] = anonymousContestants;
     }
 
-    const matchAggregates = [];
-    if (data.matches && data.matches.length > 0) {
-      data.matches.forEach(newMatch => {
-        // matchAggregates.push({ $set:  })
-      });
-    }
-    return this.tournamentModel
-      .aggregate([
-        { $match: { _id: data._id } },
-        { $set: updateData },
-        {
-          $set: {
-            matches: {
-              $map: {
-                input: '$$Root.matches',
-                as: 'match',
-                cond: {
-                  $mergeObject: [
-                    '$$match',
-                    {
-                      $arrayElemAt: [
-                        matches,
-                        {
-                          $indexOfArray: [
-                            {
-                              $map: {
-                                input: matches,
-                                as: 'matches',
-                                in: '&&matches._id',
-                              }
-                            },
-                            '&&match._id',
-                          ]
-                        },
-                      ],
-                    },
-                  ],
-                },
+    // const matchAggregates = [];
+    if (matches && matches.length > 0) {
+      updateData['matches'] = {
+        $map: {
+          input: '$$ROOT.matches',
+          as: 'match',
+          in: {
+            $cond: {
+              if: {
+                $gte: [
+                  {
+                    $indexOfArray: [
+                      matches.map(match => match._id),
+                      '$$match._id',
+                    ],
+                  },
+                  0,
+                ],
               },
+              then: {
+                $arrayElemAt: [
+                  matches,
+                  {
+                    $indexOfArray: [
+                      matches.map(match => match._id),
+                      '$$match._id',
+                    ],
+                  },
+                ],
+              },
+              else: '$$match',
             },
           },
         },
-      ])
-      .exec()
-      .then(result => {
-        return result;
-      })
-      .catch(error => {
-        throw new Error('Error updating tournament >>> ' + error);
-      });
+      };
+    }
+    return (
+      this.tournamentModel
+        .findOneAndUpdate({ _id }, [
+          {
+            $set: {
+              ...updateData,
+            },
+          },
+        ])
+        // .exec()
+        .then(result => {
+          console.log('LOOK edit aggregate result matches is ', result.matches);
+          return result;
+        })
+        .catch(error => {
+          throw new Error('Error updating tournament >>> ' + error);
+        })
+    );
     // return this.tournamentModel
     //   .findByIdAndUpdate({ _id: data._id }, updateData, { new: true })
     //   .then(result => {
