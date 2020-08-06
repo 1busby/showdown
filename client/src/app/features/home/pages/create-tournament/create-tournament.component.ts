@@ -73,7 +73,7 @@ export class CreateTournamentComponent implements OnInit {
         contestants: [],
         editAccessCode: '123',
         matches: [],
-        setCount: 0
+        setCount: 0,
       });
     }
   }
@@ -88,9 +88,20 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   createTournament() {
-    this.bracketHandlerService.createBracket(this.tournamentForm.value);
+    this.bracketHandlerService.createBracket({ ...this.tournamentForm.value, matches: this._tournament.matches });
     const matches: Partial<IMatch>[] = [];
     this.appStore.getMatchContainers().value.forEach((matchContainer) => {
+      if (matchContainer.sets.length < this.tournamentForm.value.setCount) {
+        for (
+          let i = matchContainer.sets.length;
+          i <= this.tournamentForm.value.setCount;
+          i++
+        ) {
+          matchContainer.sets.push({
+            orderNumber: i,
+          });
+        }
+      }
       matches.push(matchContainer.getData());
     });
 
@@ -99,7 +110,7 @@ export class CreateTournamentComponent implements OnInit {
         .mutate({
           _id: this._tournament._id,
           ...this.tournamentForm.value,
-          matches
+          matches,
         })
         .pipe(first())
         .subscribe((result) => {

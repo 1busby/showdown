@@ -74,7 +74,7 @@ export class TournamentsService {
     return await this.tournamentModel.find().exec();
   }
 
-  async updateOne(data: UpdateTournamentInput): Promise<Tournament> {
+  async updateOne(data: any): Promise<Tournament> {
     // separate anonymous users from regular users
     const { _id, matches, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
@@ -86,14 +86,15 @@ export class TournamentsService {
           data.contestants.splice(i, 1);
         }
       }
-      updateData['anonymousContestants'] = anonymousContestants;
+      updateData.anonymousContestants = anonymousContestants;
     }
 
-    // const matchAggregates = [];
+    this.logger.info('LOOK matches ', matches);
     if (matches && matches.length > 0) {
-      updateData['matches'] = {
+      let matchIds = matches.map(match => match._id);
+      updateData.matches = {
         $map: {
-          input: '$$ROOT.matches',
+          input: '$matches',
           as: 'match',
           in: {
             $cond: {
@@ -101,7 +102,7 @@ export class TournamentsService {
                 $gte: [
                   {
                     $indexOfArray: [
-                      matches.map(match => match._id),
+                      matchIds,
                       '$$match._id',
                     ],
                   },
@@ -113,7 +114,7 @@ export class TournamentsService {
                   matches,
                   {
                     $indexOfArray: [
-                      matches.map(match => match._id),
+                      matchIds,
                       '$$match._id',
                     ],
                   },
@@ -125,6 +126,8 @@ export class TournamentsService {
         },
       };
     }
+
+    this.logger.info('LOOK update data is ', updateData);
     return (
       this.tournamentModel
         .findOneAndUpdate({ _id }, [
@@ -133,10 +136,12 @@ export class TournamentsService {
               ...updateData,
             },
           },
-        ])
-        // .exec()
+        ], {
+          new: true,
+        })
+        .exec()
         .then(result => {
-          console.log('LOOK edit aggregate result matches is ', result.matches);
+          this.logger.info('LOOK edit aggregate result matches is ', result);
           return result;
         })
         .catch(error => {

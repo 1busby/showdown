@@ -173,8 +173,15 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
       'top.px': this.top,
       'left.px': this.left,
       'width.px': this.width,
-      'height.px': this.height
+      'height.px': this.height,
     };
+  }
+
+  setData(matchData: IMatch) {
+    // tslint:disable-next-line: forin
+    for (const key in matchData) {
+      this[key] = matchData[key];
+    }
   }
 
   getData(): IMatch {
