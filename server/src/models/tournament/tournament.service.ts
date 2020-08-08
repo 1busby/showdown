@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as shortid from 'shortid';
+import { ObjectId } from 'mongodb';
 
 import { NewTournamentInput } from './dto/new-tournament.input';
 import { TournamentsArgs } from './dto/tournament.args';
@@ -89,9 +90,8 @@ export class TournamentsService {
       updateData.anonymousContestants = anonymousContestants;
     }
 
-    this.logger.info('LOOK matches ', matches);
     if (matches && matches.length > 0) {
-      let matchIds = matches.map(match => match._id);
+      const matchIds = matches.map(match => new ObjectId(match._id));
       updateData.matches = {
         $map: {
           input: '$matches',
@@ -99,24 +99,13 @@ export class TournamentsService {
           in: {
             $cond: {
               if: {
-                $gte: [
-                  {
-                    $indexOfArray: [
-                      matchIds,
-                      '$$match._id',
-                    ],
-                  },
-                  0,
-                ],
+                $in: ['$$match._id', matchIds],
               },
               then: {
                 $arrayElemAt: [
                   matches,
                   {
-                    $indexOfArray: [
-                      matchIds,
-                      '$$match._id',
-                    ],
+                    $indexOfArray: [matchIds, '$$match._id'],
                   },
                 ],
               },
@@ -128,26 +117,31 @@ export class TournamentsService {
     }
 
     this.logger.info('LOOK update data is ', updateData);
-    return (
-      this.tournamentModel
-        .findOneAndUpdate({ _id }, [
+    return this.tournamentModel
+      .findOneAndUpdate(
+        { _id },
+        [
           {
             $set: {
               ...updateData,
             },
           },
-        ], {
+        ],
+        {
           new: true,
-        })
-        .exec()
-        .then(result => {
-          this.logger.info('LOOK edit aggregate result matches is ', result);
-          return result;
-        })
-        .catch(error => {
-          throw new Error('Error updating tournament >>> ' + error);
-        })
-    );
+        },
+      )
+      .exec()
+      .then(result => {
+        this.logger.info(
+          'LOOK edit aggregate result matches is ',
+          result.matches,
+        );
+        return result;
+      })
+      .catch(error => {
+        throw new Error('Error updating tournament >>> ' + error);
+      });
     // return this.tournamentModel
     //   .findByIdAndUpdate({ _id: data._id }, updateData, { new: true })
     //   .then(result => {

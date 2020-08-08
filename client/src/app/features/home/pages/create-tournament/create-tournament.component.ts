@@ -19,7 +19,7 @@ import {
   styleUrls: ['./create-tournament.component.scss'],
 })
 export class CreateTournamentComponent implements OnInit {
-  private _tournament: ITournament;
+  private _tournament: ITournament = {} as ITournament;
 
   stepperIsInTransition = true;
 
