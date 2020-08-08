@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import mongodb = require('mongodb');
 
 import { MatchSchema } from '@models/match/match.schema';
 
@@ -32,5 +31,6 @@ export const TournamentSchema = new mongoose.Schema({
   linkCode: String,
   editAccessCode: String,
   setCount: Number,
+  hasStarted: Boolean,
   anonymousContestants: [anonymousContestantSchema],
 });

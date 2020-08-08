@@ -10,7 +10,6 @@ import {
   AlertService,
   RequestEditAccessGQL,
   AppStore,
-  BracketHandler,
   MatchContainer,
   EditTournamentGQL,
 } from '@app/core';
@@ -40,7 +39,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private requestEditAccessGql: RequestEditAccessGQL,
     private alertService: AlertService,
     public dialog: MatDialog,
-    private bracketHelper: BracketHandler,
     private appStore: AppStore,
     private matchService: MatchService,
     private editTournamentGql: EditTournamentGQL
@@ -104,7 +102,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
       });
   }
 
-  editTournament() {
+  editTournament(runTournament?: boolean) {
     this.isCheckingEditAccess = true;
     const editAccessCode = localStorage.getItem(
       `editAccessCode-${this.tournament.linkCode}`
@@ -117,7 +115,15 @@ export class TournamentComponent implements OnInit, OnDestroy {
         })
         .subscribe((result) => {
           if (result.data['requestEditAccess'].canEdit) {
-            this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+            this.isCheckingEditAccess = false;
+            if (runTournament) {
+              this.editTournamentGql
+                .mutate({ _id: this.tournament._id, hasStarted: true })
+                .pipe(first())
+                .subscribe();
+            } else {
+              this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+            }
           } else {
             this.showEditAccessDialog();
           }
@@ -139,6 +145,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(first())
       .subscribe((editAccessCode: string) => {
+        if (!editAccessCode) {
+          this.isCheckingEditAccess = false;
+        }
         this.requestEditAccessGql
           .fetch({
             tournamentId: this.tournament._id,
@@ -189,7 +198,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
             } else if (lowSeedScore > highSeedScore) {
               updatedMatch.updateWinner(MatchContainer.LOWSEED);
             }
-            matchesToBeSaved.push((updatedMatch.observers[0] as MatchContainer).getData());
+            matchesToBeSaved.push(
+              (updatedMatch.observers[0] as MatchContainer).getData()
+            );
           }
           matchesToBeSaved.push(updatedMatch.getData());
 

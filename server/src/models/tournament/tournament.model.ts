@@ -45,5 +45,8 @@ export class Tournament extends Document implements ITournament {
   @Field(type => Int, { nullable: true })
   setCount?: number;
 
+  @Field({ nullable: true })
+  hasStarted?: boolean;
+
   anonymousContestants?: [];
 }

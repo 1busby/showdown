@@ -139,6 +139,7 @@ type Tournament {
   linkCode: String
   editAccessCode: String
   setCount: Int
+  hasStarted: Boolean
 }
 
 input UpdateTournamentInput {
@@ -150,6 +151,7 @@ input UpdateTournamentInput {
   editAccessCode: String
   updatedBy: ID
   setCount: Int
+  hasStarted: Boolean
 }
 
 """The user model"""

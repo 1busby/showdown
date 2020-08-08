@@ -29,4 +29,7 @@ export class UpdateTournamentInput {
 
   @Field(type => Int, { nullable: true })
   setCount?: number;
+
+  @Field({ nullable: true })
+  hasStarted?: boolean;
 }

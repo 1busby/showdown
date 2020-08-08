@@ -13,4 +13,5 @@ export interface ITournament {
   updates?: IUpdate[];
   editAccessCode?: string;
   setCount?: number;
+  hasStarted?: boolean;
 }

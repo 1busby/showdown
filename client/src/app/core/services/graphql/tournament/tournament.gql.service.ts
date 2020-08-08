@@ -17,6 +17,7 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         linkCode
         createdOn
         setCount
+        hasStarted
         contestants {
           _id
           name

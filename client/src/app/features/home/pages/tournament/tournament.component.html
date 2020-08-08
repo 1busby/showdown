@@ -4,12 +4,20 @@
     <button
       mat-raised-button
       color="primary"
-      (click)="editTournament(tournament.linkCode)"
-      *ngIf="!isCheckingEditAccess"
+      (click)="editTournament()"
+      *ngIf="!isCheckingEditAccess && !tournament.hasStarted"
     >
-      Edit Tournament
+      Edit
     </button>
     <mat-spinner color="accent" diameter="30" *ngIf="isCheckingEditAccess"></mat-spinner>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="editTournament(true)"
+      *ngIf="!isCheckingEditAccess && !tournament.hasStarted"
+    >
+      Run
+    </button>
   </div>
 
   <mat-tab-group>
