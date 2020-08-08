@@ -14,7 +14,7 @@
 
   <mat-tab-group>
     <mat-tab label="Bracket">
-      <bracket-view [tournament]="this.tournament"></bracket-view>
+      <bracket-view [tournament]="this.tournament" (showMatchDetailsEmitter)="showMatchDetails($event)"></bracket-view>
     </mat-tab>
 
     <mat-tab label="Contestants">
@@ -40,7 +40,7 @@
     </mat-tab>
 
     <mat-tab label="Matches">
-      <match-list [matches]="this.appStore.getMatchContainers() | async"></match-list>
+      <match-list [matches]="this.appStore.getMatchContainers() | async" (showMatchDetailsEmitter)="showMatchDetails($event)"></match-list>
     </mat-tab>
 
     <mat-tab label="Updates">

@@ -5,7 +5,9 @@ import {
   SimpleChanges,
   OnChanges,
   ElementRef,
-  Self
+  Self,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -24,12 +26,12 @@ export class BracketViewComponent implements OnChanges, OnInit {
   matches: BehaviorSubject<MatchContainer[]>;
 
   @Input() tournament: ITournament;
+  @Output() showMatchDetailsEmitter: EventEmitter<MatchContainer> = new EventEmitter<MatchContainer>();
 
   constructor(
     @Self() private element: ElementRef,
     private bracketHandler: BracketHandler,
-    private appStore: AppStore,
-    public matchService: MatchService
+    private appStore: AppStore
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {}
@@ -41,9 +43,5 @@ export class BracketViewComponent implements OnChanges, OnInit {
       619
     );
     this.bracketHandler.createBracket(this.tournament);
-  }
-
-  showMatchDetails(match: MatchContainer) {
-    this.matchService.showMatchDetails(match, this.tournament._id);
   }
 }

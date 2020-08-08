@@ -4,7 +4,7 @@
       class="match-container"
       *ngFor="let match of matches | async"
       [ngStyle]="match.getStyleObject()"
-      (click)="showMatchDetails(match)"
+      (click)="showMatchDetailsEmitter.emit(match)"
       [match]="match"
     ></match-card>
   </ng-container>

@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 
 import { MatchContainer } from '@app/core';
 
@@ -9,6 +9,7 @@ import { MatchContainer } from '@app/core';
 })
 export class MatchListComponent implements OnChanges {
   @Input() matches: Partial<MatchContainer>[] = [];
+  @Output() showMatchDetailsEmitter: EventEmitter<MatchContainer> = new EventEmitter<MatchContainer>();
 
   localMatchList: Partial<MatchContainer>[] = [];
 
