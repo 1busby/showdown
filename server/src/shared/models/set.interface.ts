@@ -7,4 +7,5 @@ export interface ISet {
   startedOn?: Date;
   completedOn?: Date;
   notes?: string;
+  __typename?: string;
 }

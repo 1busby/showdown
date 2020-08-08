@@ -22,9 +22,11 @@ export class MatchService {
     dialogRef
       .afterClosed()
       .pipe(first())
-      .subscribe((updatedMatch) => {
+      .subscribe((updatedMatch: MatchContainer) => {
         console.log('LOOK updated match is ', updatedMatch);
-        this.editTournamentGql.mutate({ _id, matches: [updatedMatch.getData()] }).pipe(first()).subscribe();
+        if (updatedMatch) {
+          this.editTournamentGql.mutate({ _id, matches: [updatedMatch.getData()] }).pipe(first()).subscribe();
+        }
       });
   }
 }

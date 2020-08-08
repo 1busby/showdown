@@ -116,7 +116,6 @@ export class TournamentsService {
       };
     }
 
-    this.logger.info('LOOK update data is ', updateData);
     return this.tournamentModel
       .findOneAndUpdate(
         { _id },
@@ -133,23 +132,11 @@ export class TournamentsService {
       )
       .exec()
       .then(result => {
-        this.logger.info(
-          'LOOK edit aggregate result matches is ',
-          result.matches,
-        );
         return result;
       })
       .catch(error => {
         throw new Error('Error updating tournament >>> ' + error);
       });
-    // return this.tournamentModel
-    //   .findByIdAndUpdate({ _id: data._id }, updateData, { new: true })
-    //   .then(result => {
-    //     return result;
-    //   })
-    //   .catch(error => {
-    //     throw new Error('Error updating tournament >>> ' + error);
-    //   });
   }
 
   addContestant(id, contestantName?, userId?) {
@@ -170,12 +157,6 @@ export class TournamentsService {
   }
 
   removeContestant(_id, contestantId) {
-    this.logger.debug(
-      'LOOK removing contestant _id = ',
-      _id,
-      ' contestantId = ',
-      contestantId,
-    );
     return this.tournamentModel
       .updateOne(
         { _id },
@@ -188,7 +169,6 @@ export class TournamentsService {
     return this.tournamentModel
       .deleteOne({ _id: id })
       .then(result => {
-        console.log('Remove tournament result >>> ' + JSON.stringify(result));
         return true;
       })
       .catch(error => {

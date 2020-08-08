@@ -192,7 +192,10 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
       matchNumber: this.matchNumber,
       roundNumber: this.roundNumber,
       winnerSeed: this.winnerSeed,
-      sets: this.sets,
+      sets: this.sets.map(set => {
+        const { __typename, completedOn, startedOn, ...setData} = set;
+        return setData;
+      }),
     };
   }
 }
