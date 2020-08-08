@@ -20,9 +20,16 @@
       "esnext.asynciterable"
     ],
     "paths": {
-      "@app/*": ["app/*"],
-      "@env/*": ["environments/*"],
-      "@assets/*": ["assets/*"]
-    }
+      "@app/*": [
+        "app/*"
+      ],
+      "@env/*": [
+        "environments/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ]
+    },
+    "allowSyntheticDefaultImports": true
   }
 }

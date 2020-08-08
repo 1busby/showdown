@@ -1,8 +1,11 @@
+import {ApolloModule, Apollo} from 'apollo-angular';
+import {HttpLinkModule, HttpLink} from 'apollo-angular/http';
+import {InMemoryCache} from '@apollo/client/core';
 import { NgModule } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { ApolloModule, Apollo } from 'apollo-angular';
-import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+
+
+
 
 import { CoreModule, typeDefs } from '@app/core';
 import { AppRoutingModule } from './app-routing.module';
