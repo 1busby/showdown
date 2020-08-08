@@ -164,6 +164,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe((updatedMatch: MatchContainer) => {
         if (updatedMatch) {
+          const matchesToBeSaved = [];
+
           const numSets = updatedMatch.sets.length;
           let highSeedScore = 0;
           let lowSeedScore = 0;
@@ -187,12 +189,14 @@ export class TournamentComponent implements OnInit, OnDestroy {
             } else if (lowSeedScore > highSeedScore) {
               updatedMatch.updateWinner(MatchContainer.LOWSEED);
             }
+            matchesToBeSaved.push((updatedMatch.observers[0] as MatchContainer).getData());
           }
+          matchesToBeSaved.push(updatedMatch.getData());
 
           this.editTournamentGql
             .mutate({
               _id: this.tournament._id,
-              matches: [updatedMatch.getData()],
+              matches: matchesToBeSaved,
             })
             .pipe(first())
             .subscribe();

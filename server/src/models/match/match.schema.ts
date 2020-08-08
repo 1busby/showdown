@@ -5,7 +5,7 @@ import { setSchema } from '../set/set.schema';
 export const MatchSchema = new mongoose.Schema({
   roundNumber: Number,
   matchNumber: Number,
-  winnerSeed: Number,
+  winnerSeed: String,
   createdOn: Date,
   updatedOn: Date,
   highSeedNumber: Number,
