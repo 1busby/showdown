@@ -1,12 +1,11 @@
-import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
-import { Document } from 'mongoose';
+import { Field, Int, InputType, ID } from '@nestjs/graphql';
 
 import { ISet } from '@shared/index';
 
-@ObjectType({ description: 'A set for a match' })
-export class Set extends Document implements ISet {
-  @Field(type => ID)
-  _id: string;
+@InputType()
+export class SetInput implements Partial<ISet> {
+  @Field(type => ID, { nullable: true })
+  _id?: string;
 
   @Field(type => Int, { nullable: true })
   orderNumber?: number;
@@ -19,12 +18,6 @@ export class Set extends Document implements ISet {
 
   @Field({ nullable: true })
   outcome?: 'high' | 'low' | 'tie';
-
-  @Field({ nullable: true })
-  startedOn?: Date;
-
-  @Field({ nullable: true })
-  completedOn?: Date;
 
   @Field({ nullable: true })
   notes?: string;

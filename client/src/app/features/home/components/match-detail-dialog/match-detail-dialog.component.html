@@ -1,0 +1,26 @@
+<div class="top">
+  <div class="top__high">
+    <img ngxGravatar [email]="data.match.highSeed?.name || '---'" size="45" />
+    <br />
+    {{ data.match.highSeed.name }}
+  </div>
+  <div class="top__low">
+    <img ngxGravatar [email]="data.match.lowSeed?.name || '---'" size="45" />
+    <br />
+    {{ data.match.lowSeed.name }}
+  </div>
+</div>
+<div>
+  <mat-list>
+    <mat-list-item *ngFor="let set of data.match.sets">
+      <mat-radio-group [(ngModel)]="set.outcome">
+        <mat-radio-button value="high"></mat-radio-button>
+        {{ set.orderNumber }}
+        <mat-radio-button value="low"></mat-radio-button>
+      </mat-radio-group>
+    </mat-list-item>
+  </mat-list>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" [mat-dialog-close]="data.match">Done</button>
+</mat-dialog-actions>

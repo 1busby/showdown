@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { GravatarModule, GravatarConfig, FALLBACK, RATING } from 'ngx-gravatar';
 
 import { SharedModule } from '@app/shared';
+import { MatchService } from './services/match.service';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { LandingComponent } from './pages/landing/landing.component';
@@ -11,6 +12,7 @@ import { CreateTournamentComponent } from './pages/create-tournament/create-tour
 import { TournamentCardComponent } from './components/tournament-card/tournament-card.component';
 import { QuickJoinDialogComponent } from './components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from './components/edit-access-dialog/edit-access-dialog.component';
+import { MatchDetailDialogComponent } from './components/match-detail-dialog/match-detail-dialog.component';
 import { MatchListComponent } from './components/match-list/match-list.component';
 import { BracketViewComponent } from './components/bracket-view/bracket-view.component';
 import { MatchCardComponent } from './components/match-card/match-card.component';
@@ -35,9 +37,11 @@ const gravatarConfig: GravatarConfig = {
     TournamentCardComponent,
     QuickJoinDialogComponent,
     EditAccessDialogComponent,
+    MatchDetailDialogComponent,
     MatchListComponent,
     BracketViewComponent
   ],
-  bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent]
+  providers: [MatchService],
+  bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent, MatchDetailDialogComponent]
 })
 export class HomeModule {}

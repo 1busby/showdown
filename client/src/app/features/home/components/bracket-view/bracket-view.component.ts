@@ -11,6 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { MatchContainer, AppStore, BracketHandler } from '@app/core';
 import { ITournament } from '@app/shared';
+import { MatchService } from '../../services/match.service';
 
 @Component({
   selector: 'bracket-view',
@@ -27,7 +28,8 @@ export class BracketViewComponent implements OnChanges, OnInit {
   constructor(
     @Self() private element: ElementRef,
     private bracketHandler: BracketHandler,
-    private appStore: AppStore
+    private appStore: AppStore,
+    public matchService: MatchService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {}
@@ -42,7 +44,6 @@ export class BracketViewComponent implements OnChanges, OnInit {
   }
 
   showMatchDetails(match: MatchContainer) {
-    // console.log('pushing MatchDetailsPage onto the stack');
-    // this.navCtrl.push('MatchDetailPage', { match });
+    this.matchService.showMatchDetails(match, this.tournament._id);
   }
 }

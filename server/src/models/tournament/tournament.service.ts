@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as shortid from 'shortid';
+import { ObjectId } from 'mongodb';
 
 import { NewTournamentInput } from './dto/new-tournament.input';
 import { TournamentsArgs } from './dto/tournament.args';
@@ -10,6 +11,7 @@ import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
 import { CustomLogger } from '@shared/index';
+import { merge } from 'rxjs';
 
 @Injectable()
 export class TournamentsService {
@@ -73,9 +75,9 @@ export class TournamentsService {
     return await this.tournamentModel.find().exec();
   }
 
-  async updateOne(data: UpdateTournamentInput): Promise<Tournament> {
+  async updateOne(data: any): Promise<Tournament> {
     // separate anonymous users from regular users
-    const updateData: any = { ...data };
+    const { _id, matches, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
       const anonymousContestants = [];
       // tslint:disable-next-line: prefer-for-of
@@ -87,8 +89,48 @@ export class TournamentsService {
       }
       updateData.anonymousContestants = anonymousContestants;
     }
+
+    if (matches && matches.length > 0) {
+      const matchIds = matches.map(match => new ObjectId(match._id));
+      updateData.matches = {
+        $map: {
+          input: '$matches',
+          as: 'match',
+          in: {
+            $cond: {
+              if: {
+                $in: ['$$match._id', matchIds],
+              },
+              then: {
+                $arrayElemAt: [
+                  matches,
+                  {
+                    $indexOfArray: [matchIds, '$$match._id'],
+                  },
+                ],
+              },
+              else: '$$match',
+            },
+          },
+        },
+      };
+    }
+
     return this.tournamentModel
-      .findByIdAndUpdate({ _id: data._id }, updateData, { new: true })
+      .findOneAndUpdate(
+        { _id },
+        [
+          {
+            $set: {
+              ...updateData,
+            },
+          },
+        ],
+        {
+          new: true,
+        },
+      )
+      .exec()
       .then(result => {
         return result;
       })
@@ -115,9 +157,11 @@ export class TournamentsService {
   }
 
   removeContestant(_id, contestantId) {
-    this.logger.debug('LOOK removing contestant _id = ', _id, ' contestantId = ', contestantId);
     return this.tournamentModel
-      .updateOne({ _id }, { $pull: { anonymousContestants: { _id: contestantId } as never } })
+      .updateOne(
+        { _id },
+        { $pull: { anonymousContestants: { _id: contestantId } as never } },
+      )
       .exec();
   }
 
@@ -125,7 +169,6 @@ export class TournamentsService {
     return this.tournamentModel
       .deleteOne({ _id: id })
       .then(result => {
-        console.log('Remove tournament result >>> ' + JSON.stringify(result));
         return true;
       })
       .catch(error => {

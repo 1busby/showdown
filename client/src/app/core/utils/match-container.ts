@@ -92,18 +92,15 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   addContestant(contestant) {
     if (!this.highSeed && !this.lowSeed) {
       // if both high and low seeds are empty
-      console.log('New high seed by default.');
       this.highSeed = contestant; // store in high seed
       return null;
     } else if (!this.lowSeed) {
       // if only low seed is empty
       if (this.highSeed.seed <= contestant.seed || !contestant.seed) {
         // if the current higher seed has better or equal seed
-        console.log('New low seed.');
         this.lowSeed = contestant; // store in low seed
         return null;
       } else {
-        console.log('New high seed, demoted prev to low seed.');
         this.lowSeed = this.highSeed; // move current high seed to low
         this.highSeed = contestant; // store new contestant in high seed
         return null;
@@ -112,11 +109,9 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
       // if only the high seed is empty
       if (contestant.seed && this.lowSeed.seed > contestant.seed) {
         // if the current lower seed has worse seed
-        console.log('New high seed.');
         this.highSeed = contestant; // sotre in high seed
         return null;
       } else {
-        console.log('New low seed, promoted prev to high seed.');
         this.highSeed = this.lowSeed; // move current low seed to high seed
         this.lowSeed = contestant; // store new contestant in high seed
         return null;
@@ -127,13 +122,11 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
         this.highSeed.seed <= contestant.seed &&
         contestant.seed > this.lowSeed.seed
       ) {
-        console.log('New low seed, returned old low seed.');
         const temp = this.lowSeed;
         this.lowSeed = contestant; // save newbie to low seed
         return temp; // and return the removed contestant
         // the new contestant had more than the high seed
       } else if (this.highSeed.seed > contestant.seed) {
-        console.log('New high seed, returned old low seed.');
         const temp = this.lowSeed;
         this.lowSeed = this.highSeed;
         this.highSeed = contestant;
@@ -173,8 +166,15 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
       'top.px': this.top,
       'left.px': this.left,
       'width.px': this.width,
-      'height.px': this.height
+      'height.px': this.height,
     };
+  }
+
+  setData(matchData: IMatch) {
+    // tslint:disable-next-line: forin
+    for (const key in matchData) {
+      this[key] = matchData[key];
+    }
   }
 
   getData(): IMatch {
@@ -185,7 +185,10 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
       matchNumber: this.matchNumber,
       roundNumber: this.roundNumber,
       winnerSeed: this.winnerSeed,
-      // matchRounds: this.sets,
+      sets: this.sets.map(set => {
+        const { __typename, completedOn, startedOn, ...setData} = set;
+        return setData;
+      }),
     };
   }
 }

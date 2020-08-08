@@ -41,11 +41,13 @@ type Match {
 }
 
 input MatchInput {
+  _id: ID
   matchNumber: Int
   roundNumber: Int
   highSeedNumber: Int
   lowSeedNumber: Int
   winnerSeed: String
+  sets: [SetInput]
 }
 
 type Mutation {
@@ -91,11 +93,21 @@ input RequestEditAccessInput {
 """A set for a match"""
 type Set {
   _id: ID!
+  orderNumber: Int
   highSeedScore: Int
   lowSeedScore: Int
   outcome: String
   startedOn: Date
   completedOn: Date
+  notes: String
+}
+
+input SetInput {
+  _id: ID
+  orderNumber: Int
+  highSeedScore: Int
+  lowSeedScore: Int
+  outcome: String
   notes: String
 }
 

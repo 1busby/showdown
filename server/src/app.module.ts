@@ -26,7 +26,9 @@ import { MatchModule } from './models/match/match.module';
       exclude: ['/graphql*', '/health*'],
     }),
     TerminusModule,
-    MongooseModule.forRoot(process.env.DATABASE_URL),
+    MongooseModule.forRoot(process.env.DATABASE_URL, {
+      useFindAndModify: false,
+    }),
     GraphQLModule.forRoot({
       debug: true,
       playground: true,

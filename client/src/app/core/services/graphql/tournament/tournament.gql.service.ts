@@ -32,6 +32,7 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           lowSeedNumber
           sets {
             _id
+            orderNumber
             highSeedScore
             lowSeedScore
             outcome

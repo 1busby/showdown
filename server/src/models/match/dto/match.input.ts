@@ -1,9 +1,13 @@
-import { Field, Int, InputType } from '@nestjs/graphql';
+import { Field, Int, InputType, ID } from '@nestjs/graphql';
 
 import { IMatch } from '@shared/index';
+import { SetInput } from '@models/set/set.input';
 
 @InputType()
 export class MatchInput implements Partial<IMatch> {
+  @Field(type => ID, { nullable: true })
+  _id?: string;
+
   @Field(type => Int, { nullable: true })
   matchNumber?: number;
 
@@ -18,4 +22,7 @@ export class MatchInput implements Partial<IMatch> {
 
   @Field({ nullable: true })
   winnerSeed?: string;
+
+  @Field(type => [SetInput], { nullable: 'itemsAndList' })
+  sets?: SetInput[];
 }

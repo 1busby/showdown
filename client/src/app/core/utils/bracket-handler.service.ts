@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import { AppStore } from '../services/app.store.service';
 import { MatchContainer } from './match-container';
-import { ITournament, IContestant } from '@app/shared';
+import { ITournament, IContestant, IMatch } from '@app/shared';
 
 @Injectable({ providedIn: 'root' })
 export class BracketHandler {
@@ -42,19 +42,18 @@ export class BracketHandler {
     this.numContestants = bracket.contestantCount;
     this.createSeededBracket();
     this.matchContainers = this.defineLayoutPlacements();
-    this.matchContainers.forEach((matchContainer, index) => {
-      matchContainer.matchNumber = index;
-    });
 
-    // if this is a previously stored match, update the winners
-    if (
-      this.activeTournament.matches &&
-      this.activeTournament.matches.length > 1
-    ) {
+
+    if (this.activeTournament.matches && this.activeTournament.matches.length > 0) {
       this.matchContainers.forEach((match, i) => {
+        match.setData(this.activeTournament.matches[i]);
         if (this.activeTournament.matches[i].winnerSeed) {
           match.updateWinner(this.activeTournament.matches[i].winnerSeed);
         }
+      });
+    } else {
+      this.matchContainers.forEach((matchContainer, index) => {
+        matchContainer.matchNumber = index;
       });
     }
 
@@ -62,22 +61,26 @@ export class BracketHandler {
   }
 
   createSeededBracket() {
-    this.high2Power = this.pow2RoundUp(this.numContestants);
+    this.high2Power = this._pow2RoundUp(this.numContestants);
     this.bigSkip = this.high2Power / 4;
     this.seedsByIndex = [];
-    this.seedMatcher(1);
-    console.log('seedsByIndex: ', this.seedsByIndex);
-
+    this._seedMatcher(1);
     this.numRounds = Math.log(this.high2Power) / Math.log(2);
-    this.matchesPerRound = [];
     const maxNumFirstRoundMatches = this.high2Power / 2;
-    for (let i = 0; i < this.numRounds; i++) {
+
+    this._createMatchContainers(this.numRounds, maxNumFirstRoundMatches);
+    this._populateContestants(this.activeContestants, this.numContestants);
+  }
+
+  private _createMatchContainers(numRounds: number, maxNumFirstRoundMatches: number) {
+    this.matchesPerRound = [];
+    for (let i = 0; i < numRounds; i++) {
       this.matchesPerRound[i] = [];
     }
 
     // Add the appropriate amount of matches per round.
     // Starts from the winner and moves back.
-    for (let i = 0; i < this.numRounds; i++) {
+    for (let i = 0; i < numRounds; i++) {
       for (let j = 0; j < maxNumFirstRoundMatches / Math.pow(2, i); j++) {
         const newMatch = new MatchContainer();
         newMatch.roundNumber = i + 1;
@@ -86,31 +89,8 @@ export class BracketHandler {
       }
     }
 
-    // place contestants in the correct match based on their seed
-    // assumes this.activeContestants is sorted by seed
-    let numSeeded = 0;
-    for (let i = 0; i < this.high2Power / 2; i++) {
-      if (numSeeded >= this.high2Power / 2) {
-        break;
-      }
-      this.matchesPerRound[0][this.seedsByIndex[i] - 1].addContestant(
-        this.activeContestants[i]
-      );
-      numSeeded++;
-    }
-    // loop backwards the other way for the second half
-    for (let i = 0; i < this.activeContestants.length - this.bigSkip * 2; i++) {
-      if (numSeeded >= this.numContestants) {
-        break;
-      }
-      this.matchesPerRound[0][
-        this.seedsByIndex[this.seedsByIndex.length - 1 - i] - 1
-      ].addContestant(this.activeContestants[this.bigSkip * 2 + i]);
-      numSeeded++;
-    }
-
     // Subscribe each match to the appropriate preceding matches.
-    for (let i = this.numRounds - 1; i > 0; i--) {
+    for (let i = numRounds - 1; i > 0; i--) {
       for (let j = 0; j < maxNumFirstRoundMatches / Math.pow(2, i); j++) {
         this.matchesPerRound[i][j].setHighMatch(
           this.matchesPerRound[i - 1][j * 2]
@@ -128,6 +108,31 @@ export class BracketHandler {
     }
   }
 
+  private _populateContestants(contestants, contestantLimit) {
+    // place contestants in the correct match based on their seed
+    // assumes this.activeContestants is sorted by seed
+    let numSeeded = 0;
+    for (let i = 0; i < this.high2Power / 2; i++) {
+      if (numSeeded >= this.high2Power / 2) {
+        break;
+      }
+      this.matchesPerRound[0][this.seedsByIndex[i] - 1].addContestant(
+        contestants[i]
+      );
+      numSeeded++;
+    }
+    // loop backwards the other way for the second half
+    for (let i = 0; i < contestants.length - this.bigSkip * 2; i++) {
+      if (numSeeded >= contestantLimit) {
+        break;
+      }
+      this.matchesPerRound[0][
+        this.seedsByIndex[this.seedsByIndex.length - 1 - i] - 1
+      ].addContestant(contestants[this.bigSkip * 2 + i]);
+      numSeeded++;
+    }
+  }
+
   /**
    * Recursive function that seeds first round matches
    * depending on the number of matchSlots
@@ -141,12 +146,12 @@ export class BracketHandler {
    * @param moveSpaces  The amount of matches to move
    * @return            New indexes to apply algorithm to
    */
-  seedMatcher(moveSpaces) {
+  private _seedMatcher(moveSpaces) {
     moveSpaces *= 2;
     let indexes;
 
     if (moveSpaces < this.bigSkip) {
-      indexes = this.seedMatcher(moveSpaces);
+      indexes = this._seedMatcher(moveSpaces);
     } else {
       // First 2 seed are anomalous to the pattern
       if (this.bigSkip === 1) {
@@ -237,9 +242,27 @@ export class BracketHandler {
     });
   }
 
-  // hydrateMatchContainers() {
+  setupExistingBracket(tournament: Partial<ITournament>) {
+    this.high2Power = this._pow2RoundUp(tournament.contestantCount);
+    this.bigSkip = this.high2Power / 4;
+    this._createMatchContainers(
+      tournament.matches[tournament.matches.length - 1].roundNumber,
+      this.high2Power / 2
+    );
 
-  // }
+    this._populateContestants(tournament.contestants, tournament.contestantCount);
+
+    const matchContainers = this.defineLayoutPlacements();
+
+    matchContainers.forEach((match, i) => {
+      match.setData(tournament.matches[i]);
+      if (tournament.matches[i].winnerSeed) {
+        match.updateWinner(tournament.matches[i].winnerSeed);
+      }
+    });
+
+    this.appStore.setMatchContainers(matchContainers);
+  }
 
   /**
    * Round up to next highest power of 2 (return x if it's already a power of 2).
@@ -247,7 +270,7 @@ export class BracketHandler {
    * @param x  The number in question
    * @return   The next highest power of 2
    */
-  pow2RoundUp(x) {
+  _pow2RoundUp(x) {
     if (x < 0) {
       return 0;
     }

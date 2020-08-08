@@ -12,7 +12,15 @@ mat-card {
   display: flex;
 }
 
+.high__left {
+  flex-grow: 1;
+}
+
 .low {
   // flex-grow: 1;
   display: flex;
+}
+
+.low__left {
+  flex-grow: 1;
 }
