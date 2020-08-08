@@ -7,8 +7,9 @@
   <div class="high">
     <div class="high__left">
       <img
+        *ngIf="match.highSeed?.name"
         ngxGravatar
-        [email]="match.highSeed?.name || '---'"
+        [email]="match.highSeed?.name"
         size="30"
       />
       {{ match.highSeed?.name || '---' }}
@@ -21,6 +22,7 @@
   <div class="low">
     <div class="low__left">
       <img
+      *ngIf="match.lowSeed?.name"
         ngxGravatar
         [email]="match.lowSeed?.name || '---'"
         size="30"
