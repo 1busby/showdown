@@ -30,6 +30,7 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           roundNumber
           highSeedNumber
           lowSeedNumber
+          winnerSeed
           sets {
             _id
             orderNumber

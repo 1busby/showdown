@@ -88,18 +88,34 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   createTournament() {
-    this.bracketHandlerService.createBracket({ ...this.tournamentForm.value, matches: this._tournament.matches });
+    this.bracketHandlerService.createBracket({
+      ...this.tournamentForm.value,
+      matches: this._tournament.matches,
+    });
     const matches: Partial<IMatch>[] = [];
     this.appStore.getMatchContainers().value.forEach((matchContainer) => {
       if (matchContainer.sets.length < this.tournamentForm.value.setCount) {
+        // add new sets
         for (
           let i = matchContainer.sets.length;
-          i <= this.tournamentForm.value.setCount;
+          i < this.tournamentForm.value.setCount;
           i++
         ) {
           matchContainer.sets.push({
-            orderNumber: i,
+            orderNumber: i + 1,
           });
+        }
+      } else if (
+        matchContainer.sets.length > this.tournamentForm.value.setCount
+      ) {
+        // remove extra sets
+        const setRemoveCount = matchContainer.sets.length - this.tournamentForm.value.setCount;
+        for (
+          let i = 0;
+          i < setRemoveCount;
+          i++
+        ) {
+          matchContainer.sets.pop();
         }
       }
       matches.push(matchContainer.getData());

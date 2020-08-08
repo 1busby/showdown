@@ -3,7 +3,7 @@
     <ng-container
       *ngFor="let match of localMatchList; let i = index; trackBy: trackById"
     >
-      <match-card [match]="match"> </match-card>
+      <match-card [match]="match" (click)="showMatchDetailsEmitter.emit(match)"> </match-card>
     </ng-container>
   </div>
 

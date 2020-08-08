@@ -11,10 +11,13 @@ import {
   RequestEditAccessGQL,
   AppStore,
   BracketHandler,
+  MatchContainer,
+  EditTournamentGQL,
 } from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
+import { MatchService } from '../../services/match.service';
 
 @Component({
   selector: 'app-home-tournament',
@@ -38,7 +41,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     public dialog: MatDialog,
     private bracketHelper: BracketHandler,
-    public appStore: AppStore
+    private appStore: AppStore,
+    private matchService: MatchService,
+    private editTournamentGql: EditTournamentGQL
   ) {}
 
   ngOnInit() {
@@ -150,6 +155,52 @@ export class TournamentComponent implements OnInit, OnDestroy {
               this.alertService.error('Something went wrong');
             }
           });
+      });
+  }
+
+  showMatchDetails(match: MatchContainer) {
+    this.matchService
+      .showMatchDetails(match, this.tournament._id)
+      .pipe(first())
+      .subscribe((updatedMatch: MatchContainer) => {
+        if (updatedMatch) {
+          const matchesToBeSaved = [];
+
+          const numSets = updatedMatch.sets.length;
+          let highSeedScore = 0;
+          let lowSeedScore = 0;
+          let isMatchComplete = true;
+          for (let i = numSets - 1; i >= 0; i--) {
+            const setOutcome = updatedMatch.sets[i].outcome;
+            if (!setOutcome) {
+              // match not finished
+              isMatchComplete = false;
+              break;
+            } else if (setOutcome === 'high') {
+              highSeedScore++;
+            } else if (setOutcome === 'low') {
+              lowSeedScore++;
+            }
+          }
+
+          if (isMatchComplete) {
+            if (highSeedScore > lowSeedScore) {
+              updatedMatch.updateWinner(MatchContainer.HIGHSEED);
+            } else if (lowSeedScore > highSeedScore) {
+              updatedMatch.updateWinner(MatchContainer.LOWSEED);
+            }
+            matchesToBeSaved.push((updatedMatch.observers[0] as MatchContainer).getData());
+          }
+          matchesToBeSaved.push(updatedMatch.getData());
+
+          this.editTournamentGql
+            .mutate({
+              _id: this.tournament._id,
+              matches: matchesToBeSaved,
+            })
+            .pipe(first())
+            .subscribe();
+        }
       });
   }
 }
