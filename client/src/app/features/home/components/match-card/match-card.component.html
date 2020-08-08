@@ -13,6 +13,9 @@
       />
       {{ match.highSeed?.name || '---' }}
     </div>
+    <div class="high__right">
+      {{ highSetCount }}
+    </div>
   </div>
   <mat-divider></mat-divider>
   <div class="low">
@@ -23,6 +26,9 @@
         size="30"
       />
       {{ match.lowSeed?.name || '---' }}
+    </div>
+    <div class="low__right">
+      {{ lowSetCount }}
     </div>
   </div>
 </mat-card>

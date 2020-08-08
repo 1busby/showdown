@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, OnInit } from '@angular/core';
 
 import { MatchContainer } from '@app/core';
 
@@ -7,10 +7,25 @@ import { MatchContainer } from '@app/core';
   templateUrl: './match-card.component.html',
   styleUrls: ['./match-card.component.scss'],
 })
-export class MatchCardComponent implements OnChanges {
+export class MatchCardComponent implements OnInit, OnChanges {
   @Input() match: Partial<MatchContainer>;
 
+  highSetCount: number;
+  lowSetCount: number;
+
   constructor() {}
+
+  ngOnInit() {
+    this.highSetCount = 0;
+    this.lowSetCount = 0;
+    this.match.sets.forEach(set => {
+      if (set.outcome === 'high') {
+        this.highSetCount++;
+      } else if (set.outcome === 'low') {
+        this.lowSetCount++;
+      }
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {}
 }

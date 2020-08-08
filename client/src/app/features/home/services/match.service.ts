@@ -23,7 +23,6 @@ export class MatchService {
       .afterClosed()
       .pipe(first())
       .subscribe((updatedMatch: MatchContainer) => {
-        console.log('LOOK updated match is ', updatedMatch);
         if (updatedMatch) {
           this.editTournamentGql.mutate({ _id, matches: [updatedMatch.getData()] }).pipe(first()).subscribe();
         }
