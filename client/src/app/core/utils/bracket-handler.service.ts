@@ -87,120 +87,83 @@ export class BracketHandler {
 
     // Add the appropriate amount of matches per round.
     for (let i = 0; i < numRounds; i++) {
-      this.matchesPerRound.push([]);
-      this.losersMatchesPerRound.push([]);
-      if (i !== 0) {
-        this.losersMatchesPerRound.push([]);
+      this.matchesPerRound.push([] as MatchContainer[]);
+      this.losersMatchesPerRound.push([] as MatchContainer[]);
+      if (i > 1) {
+        this.losersMatchesPerRound.push([] as MatchContainer[]);
       }
       for (let j = 0; j < maxNumFirstRoundMatches / Math.pow(2, i); j++) {
         const newMatch = new MatchContainer();
         newMatch.roundNumber = i + 1;
         this.matchesPerRound[i][j] = newMatch;
         this.matchContainers.push(this.matchesPerRound[i][j]);
-
-        // if (this.activeTournament.structure === 'double-elim') {
-        //   let highSeedMatch;
-        //   let lowSeedMatch;
-
-        //   if (i === 0) {
-        //     if (j % 2 === 0) {
-        //       const losersMatch = new MatchContainer();
-        //       losersMatch.roundNumber = i + 1;
-        //     } else {
-        //       losers
-        //     }
-        //   } else {
-        //     highSeedMatch = this.matchesPerRound[i][j];
-        //     lowSeedMatch = new MatchContainer();
-        //     // this.losersMatchesPerRound[invertedRoundNumber - 1][
-        //     //   j
-        //     // ] = lowSeedMatch;
-        //   }
-
-        //   // losersMatch.setHighMatch(highSeedMatch);
-        //   // highSeedMatch.addObserver(losersMatch);
-        //   // losersMatch.setLowMatch(lowSeedMatch);
-        //   // lowSeedMatch.addObserver(losersMatch);
-
-        //   // if (invertedRoundNumber !== 2) {
-        //   //   const nextMatch: MatchContainer =
-        //   //     this.losersMatchesPerRound[invertedRoundNumber - 3][Math.floor(j / 2)];
-        //   //   nextMatch.setLowMatch(highSeedMatch);
-        //   //   losersMatch.addObserver(nextMatch);
-        //   // }
-
-        //   // losersMatchesPerRound[invertedRoundNumber - 2][j] = losersMatch;
-        //   // losersMatchContainers.push(losersMatch);
-        // }
-      }
-    }
-
-    // Subscribe each match to the appropriate preceding matches.
-    // Starts from the winner and moves back.
-    for (let i = numRounds - 1; i > 0; i--) {
-      for (let j = 0; j < maxNumFirstRoundMatches / Math.pow(2, i); j++) {
-        this.matchesPerRound[i][j].setHighMatch(
-          this.matchesPerRound[i - 1][j * 2]
-        );
-        this.matchesPerRound[i][j].setLowMatch(
-          this.matchesPerRound[i - 1][j * 2 + 1]
-        );
-        this.matchesPerRound[i - 1][j * 2].addObserver(
-          this.matchesPerRound[i][j]
-        );
-        this.matchesPerRound[i - 1][j * 2 + 1].addObserver(
-          this.matchesPerRound[i][j]
-        );
-      }
-    }
-
-    // if (this.activeTournament.structure === 'double-elim') {
-    //   this._createLosersBracket();
-    // }
-  }
-
-  private _createLosersBracket() {
-    const losersMatchContainers: MatchContainer[] = [];
-    const losersMatchesPerRound = [];
-    // debugger
-    for (let i = this.matchesPerRound.length - 1; i > 0; i--) {
-      losersMatchesPerRound.push([]);
-      losersMatchesPerRound.push([]);
-      for (let j = 0; j < this.matchesPerRound[i].length; j++) {
-        const invertedRoundNumber = losersMatchesPerRound.length;
-
-        const losersMatch = new MatchContainer();
-        let highSeedMatch;
-        let lowSeedMatch;
-
-        if (i === 1) {
-          highSeedMatch = this.matchesPerRound[i][j];
-          lowSeedMatch = this.matchesPerRound[i][j + 1];
-          j++;
-        } else {
-          highSeedMatch = this.matchesPerRound[i][j];
-          lowSeedMatch = new MatchContainer();
-          losersMatchesPerRound[invertedRoundNumber - 1][j] = lowSeedMatch;
+        if (i > 0) {
+          this.matchesPerRound[i][j].setHighMatch(
+            this.matchesPerRound[i - 1][j * 2]
+          );
+          this.matchesPerRound[i][j].setLowMatch(
+            this.matchesPerRound[i - 1][j * 2 + 1]
+          );
+          this.matchesPerRound[i - 1][j * 2].addObserver(
+            this.matchesPerRound[i][j]
+          );
+          this.matchesPerRound[i - 1][j * 2 + 1].addObserver(
+            this.matchesPerRound[i][j]
+          );
         }
 
-        losersMatch.setHighMatch(highSeedMatch);
-        highSeedMatch.addObserver(losersMatch);
-        losersMatch.setLowMatch(lowSeedMatch);
-        lowSeedMatch.addObserver(losersMatch);
+        if (this.activeTournament.structure === 'double-elim') {
+          if (i === 0) {
+            if (j % 2 === 0) {
+              const losersMatch = new MatchContainer();
+              losersMatch.roundNumber = i + 1;
+              losersMatch.setHighMatch(newMatch, 'loser');
+              newMatch.addObserver(losersMatch);
+              this.losersMatchesPerRound[i][Math.floor(j / 2)] = losersMatch;
+            } else {
+              const losersMatch = this.losersMatchesPerRound[i][
+                Math.floor(j / 2)
+              ];
+              losersMatch.setLowMatch(newMatch, 'loser');
+              newMatch.addObserver(losersMatch);
+            }
+          } else if (i === 1) {
+            const losersMatch = new MatchContainer();
+            const lowMatch = this.losersMatchesPerRound[0][j];
+            losersMatch.roundNumber = i + 1;
+            losersMatch.setHighMatch(newMatch, 'loser');
+            newMatch.addObserver(losersMatch);
+            losersMatch.setLowMatch(lowMatch);
+            lowMatch.addObserver(losersMatch);
+            this.losersMatchesPerRound[i][j] = losersMatch;
+          } else {
+            const losersRound = this.losersMatchesPerRound.length - 1;
 
-        if (invertedRoundNumber !== 2) {
-          const nextMatch: MatchContainer =
-            losersMatchesPerRound[invertedRoundNumber - 3][Math.floor(j / 2)];
-          nextMatch.setLowMatch(highSeedMatch);
-          losersMatch.addObserver(nextMatch);
+            const losersMatch1 = new MatchContainer();
+            const parentBase = Math.floor(j / 2);
+            const highSeedMatch = this.losersMatchesPerRound[losersRound - 2][
+              parentBase
+            ];
+            const lowSeedMatch = this.losersMatchesPerRound[losersRound - 2][
+              parentBase + 1
+            ];
+            losersMatch1.roundNumber = losersRound;
+            losersMatch1.setHighMatch(highSeedMatch);
+            highSeedMatch.addObserver(losersMatch1);
+            losersMatch1.setLowMatch(lowSeedMatch);
+            lowSeedMatch.addObserver(losersMatch1);
+            this.losersMatchesPerRound[losersRound - 1][j] = losersMatch1;
+
+            const losersMatch2 = new MatchContainer();
+            losersMatch2.setHighMatch(newMatch);
+            newMatch.addObserver(losersMatch2);
+            losersMatch2.setLowMatch(losersMatch1);
+            losersMatch1.addObserver(losersMatch1);
+            this.losersMatchesPerRound[losersRound][j] = losersMatch2;
+          }
         }
-
-        losersMatchesPerRound[invertedRoundNumber - 2][j] = losersMatch;
-        losersMatchContainers.push(losersMatch);
       }
     }
-
-    debugger;
   }
 
   private _populateContestants(contestants, contestantLimit) {

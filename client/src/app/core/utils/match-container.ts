@@ -149,7 +149,6 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   setHighMatch(match: MatchContainer, source: 'winner' | 'loser' = 'winner') {
     this.highSeedSource = source;
     this.highMatch = match;
-    this.highSeed = match[source];
   }
 
   getHighMatch() {
@@ -161,7 +160,6 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   setLowMatch(match: MatchContainer, source: 'winner' | 'loser' = 'winner') {
     this.lowSeedSource = source;
     this.lowMatch = match;
-    this.lowSeed = match[source];
   }
 
   getLowMatch() {

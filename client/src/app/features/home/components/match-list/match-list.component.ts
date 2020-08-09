@@ -20,10 +20,12 @@ export class MatchListComponent implements OnChanges {
   }
 
   buildList(): void {
-    this.localMatchList = [];
-    this.matches.forEach((match) => {
-      this.localMatchList.push(match);
-    });
+    if (this.matches) {
+      this.localMatchList = [];
+      this.matches.forEach((match) => {
+        this.localMatchList.push(match);
+      });
+    }
   }
 
   trackById(index: number, match: MatchContainer): string {
