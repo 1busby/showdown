@@ -23,14 +23,32 @@ export class CreateTournamentComponent implements OnInit {
 
   stepperIsInTransition = true;
   editMode = false;
+  structureOptions = [
+    {
+      viewLabel: 'Single Elimination',
+      value: 'single-elim',
+    },
+    {
+      viewLabel: 'Double Elimination',
+      value: 'double-elim',
+    },
+    {
+      viewLabel: 'Round Robin',
+      value: 'round-robin',
+    },
+  ];
 
   tournamentForm = this.formBuilder.group({
     name: [''],
+    description: [''],
     contestantCount: [0],
     contestants: this.formBuilder.array([]),
     editAccessCode: '',
     matches: this.formBuilder.array([]),
     setCount: [0],
+    allowRegistration: [false],
+    allowSelfScoring: [false],
+    structure: ['single-elim'],
   });
 
   get contestants(): FormArray {
@@ -72,11 +90,15 @@ export class CreateTournamentComponent implements OnInit {
     } else {
       this.tournamentForm.patchValue({
         name: '',
+        description: '',
         contestantCount: 0,
         contestants: [],
         editAccessCode: '123',
         matches: [],
         setCount: 0,
+        allowRegistration: false,
+        allowSelfScoring: false,
+        structure: 'single-elim',
       });
     }
   }

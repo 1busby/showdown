@@ -12,6 +12,10 @@ export class UpdateTournamentInput {
   @MaxLength(30)
   name?: string;
 
+  @Field({ nullable: true })
+  @MaxLength(30)
+  description?: string;
+
   @Field(type => Int, { nullable: true })
   contestantCount?: number;
 
@@ -32,4 +36,13 @@ export class UpdateTournamentInput {
 
   @Field({ nullable: true })
   hasStarted?: boolean;
+
+  @Field({ nullable: true })
+  allowRegistration?: boolean;
+
+  @Field({ nullable: true })
+  allowSelfScoring?: boolean;
+
+  @Field({ nullable: true })
+  structure?: 'single-elim' | 'double-elim' | 'round-robin';
 }

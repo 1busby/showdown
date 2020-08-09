@@ -62,12 +62,16 @@ type Mutation {
 
 input NewTournamentInput {
   name: String!
+  description: String
   contestantCount: Int
   createdBy: ID
   contestants: [ContestantInput]
   matches: [MatchInput]
   editAccessCode: String
   setCount: Int
+  allowRegistration: Boolean
+  allowSelfScoring: Boolean
+  structure: String
 }
 
 input NewUserInput {
@@ -129,6 +133,7 @@ type Team {
 type Tournament {
   _id: ID!
   name: String
+  description: String
   contestantCount: Int
   createdBy: User
   contestants: [Contestant]
@@ -140,11 +145,15 @@ type Tournament {
   editAccessCode: String
   setCount: Int
   hasStarted: Boolean
+  allowRegistration: Boolean
+  allowSelfScoring: Boolean
+  structure: String
 }
 
 input UpdateTournamentInput {
   _id: ID!
   name: String
+  description: String
   contestantCount: Int
   contestants: [ContestantInput]
   matches: [MatchInput]
@@ -152,6 +161,9 @@ input UpdateTournamentInput {
   updatedBy: ID
   setCount: Int
   hasStarted: Boolean
+  allowRegistration: Boolean
+  allowSelfScoring: Boolean
+  structure: String
 }
 
 """The user model"""

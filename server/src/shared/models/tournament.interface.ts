@@ -3,6 +3,7 @@ import { IMatch, IUser, IUpdate } from './';
 export interface ITournament {
   _id: string;
   name?: string;
+  description?: string;
   contestantCount?: number;
   matches?: IMatch[];
   contestants?: Array<Partial<IUser>>;
@@ -14,4 +15,7 @@ export interface ITournament {
   editAccessCode?: string;
   setCount?: number;
   hasStarted?: boolean;
+  allowRegistration?: boolean;
+  allowSelfScoring?: boolean;
+  structure?: 'single-elim' | 'double-elim' | 'round-robin';
 }

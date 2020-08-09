@@ -14,11 +14,15 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
       tournament(id: $id, linkCode: $linkCode) {
         _id
         name
+        description
         contestantCount
         linkCode
         createdOn
         setCount
         hasStarted
+        allowRegistration
+        allowSelfScoring
+        structure
         contestants {
           _id
           name

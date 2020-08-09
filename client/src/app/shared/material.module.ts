@@ -15,6 +15,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   exports: [
@@ -34,6 +36,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatRadioModule,
+    MatSlideToggleModule,
+    MatSelectModule,
   ],
 })
 export class MaterialModule {}

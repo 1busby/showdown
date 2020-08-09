@@ -15,6 +15,9 @@ export class Tournament extends Document implements ITournament {
   @Field({ nullable: true })
   name?: string;
 
+  @Field({ nullable: true })
+  description?: string;
+
   @Field(type => Int, { nullable: true })
   contestantCount?: number;
 
@@ -47,6 +50,15 @@ export class Tournament extends Document implements ITournament {
 
   @Field({ nullable: true })
   hasStarted?: boolean;
+
+  @Field({ nullable: true })
+  allowRegistration?: boolean;
+
+  @Field({ nullable: true })
+  allowSelfScoring?: boolean;
+
+  @Field({ nullable: true })
+  structure?: 'single-elim' | 'double-elim' | 'round-robin';
 
   anonymousContestants?: [];
 }

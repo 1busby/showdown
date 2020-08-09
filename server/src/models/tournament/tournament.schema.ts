@@ -14,6 +14,7 @@ const anonymousContestantSchema = new mongoose.Schema({
 
 export const TournamentSchema = new mongoose.Schema({
   name: String,
+  description: String,
   contestantCount: Number,
   contestants: [
     {
@@ -32,5 +33,8 @@ export const TournamentSchema = new mongoose.Schema({
   editAccessCode: String,
   setCount: Number,
   hasStarted: Boolean,
+  allowRegistration: Boolean,
+  allowSelfScoring: Boolean,
+  structure: String,
   anonymousContestants: [anonymousContestantSchema],
 });
