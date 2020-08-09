@@ -7,20 +7,21 @@ import {
   ElementRef,
   Self,
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { MatchContainer, AppStore, BracketHandler } from '@app/core';
 import { ITournament } from '@app/shared';
-import { MatchService } from '../../services/match.service';
 
 @Component({
   selector: 'bracket-view',
   templateUrl: './bracket-view.component.html',
   styleUrls: ['./bracket-view.component.scss']
 })
-export class BracketViewComponent implements OnChanges, OnInit {
+export class BracketViewComponent implements OnChanges, AfterViewInit {
   showingModal = false;
 
   matches: BehaviorSubject<MatchContainer[]>;
@@ -28,20 +29,25 @@ export class BracketViewComponent implements OnChanges, OnInit {
   @Input() tournament: ITournament;
   @Output() showMatchDetailsEmitter: EventEmitter<MatchContainer> = new EventEmitter<MatchContainer>();
 
+  @ViewChild('bracketViewContainer') bracketViewContainer: ElementRef;
+
   constructor(
-    @Self() private element: ElementRef,
     private bracketHandler: BracketHandler,
-    private appStore: AppStore
+    private appStore: AppStore,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.matches = this.appStore.getMatchContainers();
     this.bracketHandler.setContainerDimensions(
-      586,
-      619
+      this.bracketViewContainer.nativeElement.offsetWidth,
+      this.bracketViewContainer.nativeElement.offsetHeight,
     );
     this.bracketHandler.createBracket(this.tournament);
+  }
+
+  changeBracketSide(side: 'winners' | 'losers') {
+    console.log('Changed bracket view to side ', side);
   }
 }

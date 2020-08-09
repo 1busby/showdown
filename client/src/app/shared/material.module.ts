@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   exports: [
@@ -38,6 +39,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatRadioModule,
     MatSlideToggleModule,
     MatSelectModule,
+    MatButtonToggleModule,
   ],
 })
 export class MaterialModule {}

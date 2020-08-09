@@ -1,4 +1,4 @@
-<div class="bracket-view-container">
+<div class="bracket-view-container" #bracketViewContainer>
   <ng-container *ngIf="matches | async">
     <match-card
       class="match-container"
@@ -8,4 +8,9 @@
       [match]="match"
     ></match-card>
   </ng-container>
+
+  <mat-button-toggle-group *ngIf="tournament.structure === 'double-elim'" name="bracketSide" (change)="changeBracketSide($event.value)" aria-label="Bracket Side">
+    <mat-button-toggle checked="true" value="winners">Winners</mat-button-toggle>
+    <mat-button-toggle value="losers">Losers</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>

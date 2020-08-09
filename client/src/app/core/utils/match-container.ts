@@ -9,15 +9,20 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   _id: string;
   matchNumber: number;
   roundNumber: number;
+  // optional label for displaying extra information about this match
+  viewLabel: string;
+  highSeedSource: 'winner' | 'loser';
+  lowSeedSource: 'winner' | 'loser';
 
   highSeed: IContestant; // higher seeded contestant that will be shown at top
   lowSeed: IContestant; // lower seeded contestant that will be shown at bottom
-  highMatch: IMatch; // match from previous round that will determine our high seed
-  lowMatch: IMatch; // match from previous round that will determine our low seed
+  highMatch: MatchContainer; // match from previous round that will determine our high seed
+  lowMatch: MatchContainer; // match from previous round that will determine our low seed
 
   sets: ISet[] = [];
 
   winner: IContestant; // the winner of this match;
+  loser: IContestant; // the winner of this match;
   winnerSeed: string;
 
   width;
@@ -26,21 +31,22 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   left;
 
   update() {
-    this.highSeed = this.highMatch.winner;
-    this.lowSeed = this.lowMatch.winner;
+    this.highSeed = this.highMatch[this.highSeedSource];
+    this.lowSeed = this.lowMatch[this.lowSeedSource];
   }
 
   updateWinner(seed: string) {
     if (seed === MatchContainer.HIGHSEED) {
       this.winner = this.highSeed;
+      this.loser = this.lowSeed;
       this.winnerSeed = MatchContainer.HIGHSEED;
     }
     if (seed === MatchContainer.LOWSEED) {
       this.winner = this.lowSeed;
+      this.loser = this.highSeed;
       this.winnerSeed = MatchContainer.LOWSEED;
     }
     this.notifyObservers();
-    // this.next(this.match);
   }
 
   /**
@@ -140,9 +146,10 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
 
   // save a reference to the high match so we can
   // try to grab the winner in our update function
-  setHighMatch(match: IMatch) {
+  setHighMatch(match: MatchContainer, source: 'winner' | 'loser' = 'winner') {
+    this.highSeedSource = source;
     this.highMatch = match;
-    this.highSeed = match.winner;
+    this.highSeed = match[source];
   }
 
   getHighMatch() {
@@ -151,9 +158,10 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
 
   // save a reference to the low match so we can
   // try to grab the winner in our update function
-  setLowMatch(match: IMatch) {
+  setLowMatch(match: MatchContainer, source: 'winner' | 'loser' = 'winner') {
+    this.lowSeedSource = source;
     this.lowMatch = match;
-    this.lowSeed = match.winner;
+    this.lowSeed = match[source];
   }
 
   getLowMatch() {
@@ -185,8 +193,8 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
       matchNumber: this.matchNumber,
       roundNumber: this.roundNumber,
       winnerSeed: this.winnerSeed,
-      sets: this.sets.map(set => {
-        const { __typename, completedOn, startedOn, ...setData} = set;
+      sets: this.sets.map((set) => {
+        const { __typename, completedOn, startedOn, ...setData } = set;
         return setData;
       }),
     };
