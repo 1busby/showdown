@@ -173,7 +173,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   showMatchDetails(match: MatchContainer) {
     this.matchService
-      .showMatchDetails(match, this.tournament._id)
+      .showMatchDetails(match, this.tournament.hasStarted)
       .pipe(first())
       .subscribe((updatedMatch: MatchContainer) => {
         if (updatedMatch) {

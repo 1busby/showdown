@@ -10,11 +10,12 @@ export class MatchService {
     private dialog: MatDialog
   ) {}
 
-  showMatchDetails(match: MatchContainer, _id) {
+  showMatchDetails(match: MatchContainer, allowEdit: boolean) {
     const dialogRef = this.dialog.open(MatchDetailDialogComponent, {
       autoFocus: false,
       data: {
         match,
+        allowEdit
       },
     });
 

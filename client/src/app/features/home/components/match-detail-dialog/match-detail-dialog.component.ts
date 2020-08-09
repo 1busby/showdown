@@ -5,6 +5,7 @@ import { MatchContainer } from '@app/core';
 
 export interface DialogData {
   match: MatchContainer;
+  allowEdit: boolean;
 }
 
 @Component({

@@ -11,7 +11,7 @@
   </div>
 </div>
 <div>
-  <mat-list>
+  <mat-list *ngIf="this.data.allowEdit">
     <mat-list-item *ngFor="let set of data.match.sets">
       <mat-radio-group [(ngModel)]="set.outcome">
         <mat-radio-button value="high"></mat-radio-button>
