@@ -22,6 +22,7 @@ export class CreateTournamentComponent implements OnInit {
   private _tournament: ITournament = {} as ITournament;
 
   stepperIsInTransition = true;
+  editMode = false;
 
   tournamentForm = this.formBuilder.group({
     name: [''],
@@ -35,8 +36,6 @@ export class CreateTournamentComponent implements OnInit {
   get contestants(): FormArray {
     return this.tournamentForm.get('contestants') as FormArray;
   }
-
-  editMode = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,10 +58,14 @@ export class CreateTournamentComponent implements OnInit {
         .fetch({ linkCode }, { fetchPolicy: 'cache-first' })
         .subscribe(({ data: { tournament }, errors }) => {
           this._tournament = tournament;
-          const editAccessCode = localStorage.getItem('editAccessCode');
+          const editAccessCode = localStorage.getItem(
+            `editAccessCode-${tournament.linkCode}`
+          );
           this.tournamentForm.patchValue({ ...tournament, editAccessCode });
-          tournament.contestants.sort((a, b) => a.seed - b.seed);
-          tournament.contestants.forEach(({ __typename, ...contestant }: any) =>
+          const contestants = tournament.contestants
+            .slice()
+            .sort((a, b) => a.seed - b.seed);
+          contestants.forEach(({ __typename, ...contestant }: any) =>
             this.addContestant(contestant)
           );
         });
@@ -109,12 +112,9 @@ export class CreateTournamentComponent implements OnInit {
         matchContainer.sets.length > this.tournamentForm.value.setCount
       ) {
         // remove extra sets
-        const setRemoveCount = matchContainer.sets.length - this.tournamentForm.value.setCount;
-        for (
-          let i = 0;
-          i < setRemoveCount;
-          i++
-        ) {
+        const setRemoveCount =
+          matchContainer.sets.length - this.tournamentForm.value.setCount;
+        for (let i = 0; i < setRemoveCount; i++) {
           matchContainer.sets.pop();
         }
       }

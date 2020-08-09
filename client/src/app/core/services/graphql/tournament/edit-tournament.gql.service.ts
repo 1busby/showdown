@@ -33,7 +33,12 @@ export class EditTournamentGQL extends Mutation<{ updateTournament: ITournament 
         }
       ) {
         _id
+        name
         linkCode
+        contestantCount
+        editAccessCode
+        setCount
+        hasStarted
       }
     }
   `;

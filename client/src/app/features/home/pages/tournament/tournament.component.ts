@@ -50,8 +50,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
         switchMap(
           (params: ParamMap) =>
-            this.tournamentGql.watch({ linkCode: params.get('linkCode') })
-              .valueChanges
+            this.tournamentGql.watch(
+              { linkCode: params.get('linkCode') }
+            ).valueChanges
         ),
         catchError((error) => {
           this.router.navigateByUrl('/');
@@ -69,7 +70,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
         }
 
         this.tournament = result.data.tournament;
-        this.tournament.contestants.sort((a, b) => a.seed - b.seed);
+        // this.tournament.contestants = this.tournament.contestants
+        //   .slice()
+        //   .sort((a, b) => a.seed - b.seed);
       });
   }
 
@@ -154,6 +157,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
             editAccessCode,
           })
           .subscribe((result) => {
+            this.isCheckingEditAccess = false;
             if (result.data['requestEditAccess'].canEdit) {
               localStorage.setItem(
                 `editAccessCode-${this.tournament.linkCode}`,

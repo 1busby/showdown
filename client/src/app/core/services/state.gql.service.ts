@@ -14,7 +14,7 @@ export class StateGQL extends Query<any> {
   `;
 
   setIsDark(isDark: boolean) {
-    this.apollo.getClient().writeData({ data: { isDark } });
+    // this.apollo.getClient().writeData({ data: { isDark } });
   }
 }
 
