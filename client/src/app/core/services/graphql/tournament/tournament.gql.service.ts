@@ -1,7 +1,5 @@
-import {Query, gql} from 'apollo-angular';
+import { Query, gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-
-
 
 import { ITournament } from '@app/shared';
 
@@ -31,23 +29,27 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           isRegistered
         }
         matches {
-          _id
-          matchNumber
-          roundNumber
-          highSeedNumber
-          lowSeedNumber
-          winnerSeed
-          sets {
-            _id
-            orderNumber
-            highSeedScore
-            lowSeedScore
-            outcome
-            startedOn
-            completedOn
-            notes
-          }
+          ...allFields
         }
+      }
+    }
+
+    fragment allFields on Match {
+      _id
+      matchNumber
+      roundNumber
+      highSeedNumber
+      lowSeedNumber
+      winnerSeed
+      sets {
+        _id
+        orderNumber
+        highSeedScore
+        lowSeedScore
+        outcome
+        startedOn
+        completedOn
+        notes
       }
     }
   `;

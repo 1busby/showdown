@@ -38,7 +38,7 @@ export class TournamentsResolver {
     @Args('linkCode', { nullable: true }) linkCode?: string,
   ): Promise<Tournament> {
     try {
-      let tournament;
+      let tournament: Tournament;
       if (id) {
         tournament = await this.tournamentsService.findOneById(id);
       } else if (linkCode) {
@@ -52,6 +52,9 @@ export class TournamentsResolver {
       if (!tournament) {
         throw new NotFoundException('Tournament Not Found');
       }
+
+      tournament.contestants.sort((a, b) => a.seed - b.seed);
+
       return tournament;
     } catch (e) {
       this.logger.error('Error getting tournament becuase ', e);

@@ -22,7 +22,7 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   sets: ISet[] = [];
 
   winner: IContestant; // the winner of this match;
-  loser: IContestant; // the winner of this match;
+  loser: IContestant; // the loser of this match;
   winnerSeed: string;
 
   width;
@@ -38,7 +38,7 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   updateWinner(seed: string) {
     if (seed === MatchContainer.HIGHSEED) {
       this.winner = this.highSeed;
-      this.loser = this.lowSeed;
+      this.loser = this.lowSeed ? this.lowSeed : null;
       this.winnerSeed = MatchContainer.HIGHSEED;
     }
     if (seed === MatchContainer.LOWSEED) {
