@@ -43,6 +43,7 @@ export class BracketHandler {
     this.createSeededBracket();
     this.matchContainers = this.defineLayoutPlacements();
     this.losersMatchContainers = this.defineLosersLayoutPlacements();
+    debugger;
 
     if (
       this.activeTournament.matches &&
@@ -50,7 +51,10 @@ export class BracketHandler {
     ) {
       this.matchContainers.forEach((match, i) => {
         match.setData(this.activeTournament.matches[i]);
-        if (this.activeTournament.matches[i] && this.activeTournament.matches[i].winnerSeed) {
+        if (
+          this.activeTournament.matches[i] &&
+          this.activeTournament.matches[i].winnerSeed
+        ) {
           match.updateWinner(this.activeTournament.matches[i].winnerSeed);
         }
       });
@@ -60,7 +64,10 @@ export class BracketHandler {
       });
     }
 
-    this.appStore.setMatchContainers(this.matchContainers, this.losersMatchContainers);
+    this.appStore.setMatchContainers(
+      this.matchContainers,
+      this.losersMatchContainers
+    );
   }
 
   createSeededBracket() {
@@ -157,7 +164,8 @@ export class BracketHandler {
 
             const losersMatch1 = new MatchContainer();
             losersMatch1.matchNumber = matchNumber1;
-            const parentBase = this.losersMatchesPerRound[losersRound - 1].length * 2;
+            const parentBase =
+              this.losersMatchesPerRound[losersRound - 1].length * 2;
             const highSeedMatch = this.losersMatchesPerRound[losersRound - 2][
               parentBase
             ];
@@ -332,8 +340,12 @@ export class BracketHandler {
     this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 200);
     this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 75);
 
+    // create an offest bracket to the left if
+    // entire first round moves forward
     let leftOffset = 0;
-    if (this.matchesPerRound[0].length === this.losersMatchesPerRound[0].length) {
+    if (
+      this.matchesPerRound[0].length === this.losersMatchesPerRound[0].length
+    ) {
       leftOffset += this.matchWidth + this.margin;
     }
 
@@ -346,34 +358,47 @@ export class BracketHandler {
         // first round
         if (i === 0) {
           if (thisMatch.highSeed === null) {
+            // debugger
             soonToBeRemovedMatches.push(thisMatch);
             const byeMatch = thisMatch.observers[0] as MatchContainer;
             thisMatch.lowMatch.addObserver(byeMatch);
-            byeMatch.setLowMatch(thisMatch.lowMatch);
+            byeMatch.setLowMatch(thisMatch.lowMatch, 'loser');
+            // debugger
           }
           thisMatch.top =
             (this.matchHeight + this.margin) * j + this.margin * (j + 1) + 200;
           thisMatch.left = this.margin;
         } else {
-          let matchGap;
+          let matchSpace =
+            this.losersMatchesPerRound[0][0].top -
+            this.losersMatchesPerRound[0][1].top;
+          let matchTop = 0;
+          // debugger
           if (i % 2 === 0) {
-            matchGap =
+            const losersMatchIndex = (j + 1) * 2 - 1;
+            matchSpace =
               this.losersMatchesPerRound[i - 1][0].top -
               this.losersMatchesPerRound[i - 1][1].top;
+            matchTop =
+              this.losersMatchesPerRound[i - 1][losersMatchIndex].top +
+              matchSpace / 2;
           } else {
-            matchGap =
-              this.losersMatchesPerRound[0][0].top -
-              this.losersMatchesPerRound[0][1].top;
+            matchTop =
+              this.losersMatchesPerRound[i - 1][j].top + matchSpace / 2;
           }
 
-          thisMatch.top = thisMatch.lowMatch.top + matchGap / 2;
+          thisMatch.top = matchTop;
           thisMatch.left =
-            thisMatch.lowMatch.left + this.matchWidth + this.margin * (i + 1) - leftOffset;
+            thisMatch.lowMatch.left +
+            this.matchWidth +
+            this.margin * (i + 1) -
+            leftOffset;
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
       }
 
+      // 0 left offset because we use previous round as reference point
       if (i === 1) {
         leftOffset = 0;
       }
