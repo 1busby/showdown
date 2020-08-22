@@ -25,6 +25,9 @@ export class BracketViewComponent implements OnChanges, AfterViewInit {
   showingModal = false;
 
   matches: BehaviorSubject<MatchContainer[]>;
+  losersMatches: BehaviorSubject<MatchContainer[]>;
+
+  bracketSide: 'winners' | 'losers' = 'losers';
 
   @Input() tournament: ITournament;
   @Output() showMatchDetailsEmitter: EventEmitter<MatchContainer> = new EventEmitter<MatchContainer>();
@@ -40,6 +43,7 @@ export class BracketViewComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.matches = this.appStore.getMatchContainers();
+    this.losersMatches = this.appStore.getLosersMatchContainers();
     this.bracketHandler.setContainerDimensions(
       this.bracketViewContainer.nativeElement.offsetWidth,
       this.bracketViewContainer.nativeElement.offsetHeight,
@@ -48,6 +52,6 @@ export class BracketViewComponent implements OnChanges, AfterViewInit {
   }
 
   changeBracketSide(side: 'winners' | 'losers') {
-    console.log('Changed bracket view to side ', side);
+    this.bracketSide = side;
   }
 }

@@ -1,8 +1,18 @@
 <div class="bracket-view-container" #bracketViewContainer>
-  <ng-container *ngIf="matches | async">
+  <ng-container *ngIf="bracketSide === 'winners'">
     <match-card
       class="match-container"
       *ngFor="let match of matches | async"
+      [ngStyle]="match.getStyleObject()"
+      (click)="showMatchDetailsEmitter.emit(match)"
+      [match]="match"
+    ></match-card>
+  </ng-container>
+  
+  <ng-container *ngIf="bracketSide === 'losers'">
+    <match-card
+      class="match-container"
+      *ngFor="let match of losersMatches | async"
       [ngStyle]="match.getStyleObject()"
       (click)="showMatchDetailsEmitter.emit(match)"
       [match]="match"

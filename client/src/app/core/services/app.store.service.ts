@@ -18,11 +18,23 @@ export class AppStore {
     MatchContainer[]
   >(null);
 
-  setMatchContainers(matchContainers: MatchContainer[]) {
+  losersMatchContainers: BehaviorSubject<MatchContainer[]> = new BehaviorSubject<
+    MatchContainer[]
+  >(null);
+
+  setMatchContainers(matchContainers: MatchContainer[], losersMatchContainers?: MatchContainer[]) {
     this.matchContainers.next(matchContainers);
+
+    if (losersMatchContainers) {
+      this.losersMatchContainers.next(losersMatchContainers);
+    }
   }
 
   getMatchContainers() {
     return this.matchContainers;
+  }
+
+  getLosersMatchContainers() {
+    return this.losersMatchContainers;
   }
 }

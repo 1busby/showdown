@@ -50,7 +50,7 @@ export class BracketHandler {
     ) {
       this.matchContainers.forEach((match, i) => {
         match.setData(this.activeTournament.matches[i]);
-        if (this.activeTournament.matches[i].winnerSeed) {
+        if (this.activeTournament.matches[i] && this.activeTournament.matches[i].winnerSeed) {
           match.updateWinner(this.activeTournament.matches[i].winnerSeed);
         }
       });
@@ -60,7 +60,7 @@ export class BracketHandler {
       });
     }
 
-    this.appStore.setMatchContainers(this.losersMatchContainers);
+    this.appStore.setMatchContainers(this.matchContainers, this.losersMatchContainers);
   }
 
   createSeededBracket() {
@@ -86,7 +86,7 @@ export class BracketHandler {
     this.losersMatchesPerRound = [];
 
     let losersMatchNumber = 0;
-    let losersMatchNumberOffset = -12;
+    let losersMatchNumberOffset = -(maxNumFirstRoundMatches * 1.5);
 
     // Add the appropriate amount of matches per round.
     for (let roundNumber = 0; roundNumber < numRounds; roundNumber++) {
@@ -131,7 +131,6 @@ export class BracketHandler {
               this.losersMatchesPerRound[roundNumber][
                 Math.floor(j / 2)
               ] = losersMatch;
-              // this.losersMatchContainers.push(losersMatch);
             } else {
               losersMatch = this.losersMatchesPerRound[roundNumber][
                 Math.floor(j / 2)
@@ -150,7 +149,6 @@ export class BracketHandler {
             losersMatch.setLowMatch(lowMatch);
             lowMatch.addObserver(losersMatch);
             this.losersMatchesPerRound[roundNumber][j] = losersMatch;
-            // this.losersMatchContainers.push(losersMatch);
           } else {
             const losersRound: number = this.losersMatchesPerRound.length - 1;
             const matchNumber1 = losersMatchNumber + losersMatchNumberOffset;
@@ -160,7 +158,6 @@ export class BracketHandler {
             const losersMatch1 = new MatchContainer();
             losersMatch1.matchNumber = matchNumber1;
             const parentBase = this.losersMatchesPerRound[losersRound - 1].length * 2;
-            // debugger
             const highSeedMatch = this.losersMatchesPerRound[losersRound - 2][
               parentBase
             ];
@@ -173,7 +170,6 @@ export class BracketHandler {
             highSeedMatch.addObserver(losersMatch1);
             lowSeedMatch.addObserver(losersMatch1);
             this.losersMatchesPerRound[losersRound - 1][j] = losersMatch1;
-            // this.losersMatchContainers.push(losersMatch1);
 
             const losersMatch2 = new MatchContainer();
             losersMatch2.matchNumber = matchNumber2;
@@ -183,11 +179,10 @@ export class BracketHandler {
             newMatch.addObserver(losersMatch2);
             losersMatch1.addObserver(losersMatch2);
             this.losersMatchesPerRound[losersRound][j] = losersMatch2;
-            // this.losersMatchContainers.push(losersMatch2);
           }
         }
       }
-      
+
       losersMatchNumberOffset += matchCountThisRound;
     }
   }
@@ -298,6 +293,7 @@ export class BracketHandler {
 
     const matches: MatchContainer[] = [];
     const soonToBeRemovedMatches: MatchContainer[] = [];
+    const soonToBeRemovedIndexes: number[] = [];
     for (let i = 0; i < this.matchesPerRound.length; i++) {
       for (let j = 0; j < this.matchesPerRound[i].length; j++) {
         const thisMatch: MatchContainer = this.matchesPerRound[i][j];
@@ -306,6 +302,7 @@ export class BracketHandler {
         if (i === 0) {
           if (!thisMatch.lowSeed) {
             soonToBeRemovedMatches.push(thisMatch);
+            soonToBeRemovedIndexes.push(j);
             thisMatch.updateWinner(MatchContainer.HIGHSEED);
           }
           thisMatch.top =
@@ -322,6 +319,10 @@ export class BracketHandler {
         thisMatch.height = this.matchHeight;
       }
     }
+
+    for (let index = soonToBeRemovedIndexes.length - 1; index >= 0; index--) {
+      this.matchesPerRound[0].splice(soonToBeRemovedIndexes[index], 1);
+    }
     return matches.filter((m) => {
       return soonToBeRemovedMatches.indexOf(m) === -1;
     });
@@ -330,6 +331,11 @@ export class BracketHandler {
   defineLosersLayoutPlacements() {
     this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 200);
     this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 75);
+
+    let leftOffset = 0;
+    if (this.matchesPerRound[0].length === this.losersMatchesPerRound[0].length) {
+      leftOffset += this.matchWidth + this.margin;
+    }
 
     const matches: MatchContainer[] = [];
     const soonToBeRemovedMatches: MatchContainer[] = [];
@@ -346,8 +352,8 @@ export class BracketHandler {
             byeMatch.setLowMatch(thisMatch.lowMatch);
           }
           thisMatch.top =
-            (this.matchHeight + this.margin) * j + this.margin * (j + 1) + 100;
-          thisMatch.left = 0 + this.margin;
+            (this.matchHeight + this.margin) * j + this.margin * (j + 1) + 200;
+          thisMatch.left = this.margin;
         } else {
           let matchGap;
           if (i % 2 === 0) {
@@ -362,13 +368,14 @@ export class BracketHandler {
 
           thisMatch.top = thisMatch.lowMatch.top + matchGap / 2;
           thisMatch.left =
-            thisMatch.lowMatch.left + this.matchWidth + this.margin * (i + 1);
-          if (i === 2) {
-            debugger;
-          }
+            thisMatch.lowMatch.left + this.matchWidth + this.margin * (i + 1) - leftOffset;
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
+      }
+
+      if (i === 1) {
+        leftOffset = 0;
       }
     }
     // debugger
