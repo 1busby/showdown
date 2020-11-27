@@ -43,7 +43,6 @@ export class BracketHandler {
     this.createSeededBracket();
     this.matchContainers = this.defineLayoutPlacements();
     this.losersMatchContainers = this.defineLosersLayoutPlacements();
-    debugger;
 
     if (
       this.activeTournament.matches &&
@@ -58,10 +57,28 @@ export class BracketHandler {
           match.updateWinner(this.activeTournament.matches[i].winnerSeed);
         }
       });
+
+      // if (this.losersMatchContainers.length > 0) {
+      //   this.losersMatchContainers.forEach((match, i) => {
+      //     match.setData(this.activeTournament.matches[i]);
+      //     if (
+      //       this.activeTournament.matches[i] &&
+      //       this.activeTournament.matches[i].winnerSeed
+      //     ) {
+      //       match.updateWinner(this.activeTournament.matches[i].winnerSeed);
+      //     }
+      //   });
+      // }
     } else {
       this.matchContainers.forEach((matchContainer, index) => {
         matchContainer.matchNumber = index;
       });
+
+      if (this.losersMatchContainers.length > 0) {
+        this.losersMatchContainers.forEach((matchContainer, index) => {
+          matchContainer.matchNumber = index;
+        });
+      }
     }
 
     this.appStore.setMatchContainers(
@@ -130,8 +147,8 @@ export class BracketHandler {
           if (roundNumber === 0) {
             if (j % 2 === 0) {
               losersMatch = new MatchContainer();
-              losersMatch.matchNumber = losersMatchNumber;
-              losersMatchNumber++;
+              // losersMatch.matchNumber = losersMatchNumber;
+              // losersMatchNumber++;
               losersMatch.roundNumber = 1;
               losersMatch.setHighMatch(newMatch, 'loser');
               newMatch.addObserver(losersMatch);
@@ -147,7 +164,7 @@ export class BracketHandler {
             }
           } else if (roundNumber === 1) {
             losersMatch = new MatchContainer();
-            losersMatch.matchNumber = losersMatchNumber;
+            // losersMatch.matchNumber = losersMatchNumber;
             losersMatchNumber++;
             const lowMatch = this.losersMatchesPerRound[0][j];
             losersMatch.roundNumber = roundNumber + 1;
@@ -158,12 +175,12 @@ export class BracketHandler {
             this.losersMatchesPerRound[roundNumber][j] = losersMatch;
           } else {
             const losersRound: number = this.losersMatchesPerRound.length - 1;
-            const matchNumber1 = losersMatchNumber + losersMatchNumberOffset;
-            const matchNumber2 = matchNumber1 + matchCountThisRound;
-            losersMatchNumber++;
+            // const matchNumber1 = losersMatchNumber + losersMatchNumberOffset;
+            // const matchNumber2 = matchNumber1 + matchCountThisRound;
+            // losersMatchNumber++;
 
             const losersMatch1 = new MatchContainer();
-            losersMatch1.matchNumber = matchNumber1;
+            // losersMatch1.matchNumber = matchNumber1;
             const parentBase =
               this.losersMatchesPerRound[losersRound - 1].length * 2;
             const highSeedMatch = this.losersMatchesPerRound[losersRound - 2][
@@ -180,7 +197,7 @@ export class BracketHandler {
             this.losersMatchesPerRound[losersRound - 1][j] = losersMatch1;
 
             const losersMatch2 = new MatchContainer();
-            losersMatch2.matchNumber = matchNumber2;
+            // losersMatch2.matchNumber = matchNumber2;
             losersMatch2.roundNumber = losersRound;
             losersMatch2.setHighMatch(newMatch, 'loser');
             losersMatch2.setLowMatch(losersMatch1);
@@ -358,12 +375,10 @@ export class BracketHandler {
         // first round
         if (i === 0) {
           if (thisMatch.highSeed === null) {
-            // debugger
             soonToBeRemovedMatches.push(thisMatch);
             const byeMatch = thisMatch.observers[0] as MatchContainer;
             thisMatch.lowMatch.addObserver(byeMatch);
             byeMatch.setLowMatch(thisMatch.lowMatch, 'loser');
-            // debugger
           }
           thisMatch.top =
             (this.matchHeight + this.margin) * j + this.margin * (j + 1) + 200;
@@ -373,7 +388,6 @@ export class BracketHandler {
             this.losersMatchesPerRound[0][0].top -
             this.losersMatchesPerRound[0][1].top;
           let matchTop = 0;
-          // debugger
           if (i % 2 === 0) {
             const losersMatchIndex = (j + 1) * 2 - 1;
             matchSpace =
@@ -403,7 +417,7 @@ export class BracketHandler {
         leftOffset = 0;
       }
     }
-    // debugger
+
     return matches.filter((m) => {
       return soonToBeRemovedMatches.indexOf(m) === -1;
     });
