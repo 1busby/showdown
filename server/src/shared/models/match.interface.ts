@@ -11,7 +11,7 @@ export interface IMatch {
   highSeedContestant?: IContestant;
   lowSeedContestant?: IContestant;
   winner?: IContestant;
-  winnerSeed?: string;
+  winnerSeed?: string; // HIGHSEED or LOWSEED
   matchRounds?: number;
   sets?: ISet[];
 }

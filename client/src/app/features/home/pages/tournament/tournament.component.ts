@@ -50,9 +50,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
         switchMap(
           (params: ParamMap) =>
-            this.tournamentGql.watch(
-              { linkCode: params.get('linkCode') }
-            ).valueChanges
+            this.tournamentGql.watch({ linkCode: params.get('linkCode') })
+              .valueChanges
         ),
         catchError((error) => {
           this.router.navigateByUrl('/');
@@ -172,8 +171,13 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   showMatchDetails(match: MatchContainer) {
+    const canEdit = localStorage.getItem(
+      `editAccessCode-${this.tournament.linkCode}`
+    )
+      ? true
+      : false;
     this.matchService
-      .showMatchDetails(match, this.tournament.hasStarted)
+      .showMatchDetails(match, canEdit, this.tournament)
       .pipe(first())
       .subscribe((updatedMatch: MatchContainer) => {
         if (updatedMatch) {

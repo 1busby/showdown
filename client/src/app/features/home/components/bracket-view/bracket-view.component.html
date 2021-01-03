@@ -20,7 +20,7 @@
   </ng-container>
 
   <mat-button-toggle-group *ngIf="tournament.structure === 'double-elim'" name="bracketSide" (change)="changeBracketSide($event.value)" aria-label="Bracket Side">
-    <mat-button-toggle checked="true" value="winners">Winners</mat-button-toggle>
-    <mat-button-toggle value="losers">Losers</mat-button-toggle>
+    <mat-button-toggle checked="true" value="winners">W</mat-button-toggle>
+    <mat-button-toggle value="losers">L</mat-button-toggle>
   </mat-button-toggle-group>
 </div>

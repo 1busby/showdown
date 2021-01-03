@@ -51,6 +51,10 @@ export class EditTournamentGQL extends Mutation<{
         allowRegistration
         allowSelfScoring
         structure
+        matches {
+          _id
+          winnerSeed
+        }
       }
     }
   `;

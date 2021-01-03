@@ -27,7 +27,7 @@ export class BracketViewComponent implements OnChanges, AfterViewInit {
   matches: BehaviorSubject<MatchContainer[]>;
   losersMatches: BehaviorSubject<MatchContainer[]>;
 
-  bracketSide: 'winners' | 'losers' = 'losers';
+  bracketSide: 'winners' | 'losers' = 'winners';
 
   @Input() tournament: ITournament;
   @Output() showMatchDetailsEmitter: EventEmitter<MatchContainer> = new EventEmitter<MatchContainer>();

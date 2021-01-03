@@ -81,7 +81,6 @@ export class TournamentsResolver {
     @Args('newTournamentData') newTournamentData: NewTournamentInput,
   ): Promise<Tournament> {
     const tournament = await this.tournamentsService.create(newTournamentData);
-    // pubSub.publish('tournamentAdded', { tournamentAdded: tournament });
     return tournament;
   }
 

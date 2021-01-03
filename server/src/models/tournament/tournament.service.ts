@@ -10,7 +10,7 @@ import { Tournament } from './tournament.model';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
-import { CustomLogger } from '@shared/index';
+import { CustomLogger, IContestant, ITournament } from '@shared/index';
 import { merge } from 'rxjs';
 
 @Injectable()
@@ -75,12 +75,11 @@ export class TournamentsService {
     return await this.tournamentModel.find().exec();
   }
 
-  async updateOne(data: any): Promise<Tournament> {
+  async updateOne(data: UpdateTournamentInput & { [key: string]: any; }): Promise<Tournament> {
     // separate anonymous users from regular users
     const { _id, matches, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
       const anonymousContestants = [];
-      // tslint:disable-next-line: prefer-for-of
       for (let i = data.contestants.length - 1; i >= 0; i--) {
         if (!data.contestants[i].isRegistered) {
           anonymousContestants.push(data.contestants[i]);
@@ -91,7 +90,32 @@ export class TournamentsService {
     }
 
     if (matches && matches.length > 0) {
-      const matchIds = matches.map(match => new ObjectId(match._id));
+      const matchIds = matches.map(match => {
+
+        // check if match has a winner
+        if (!match.winnerSeed) {
+          let highseedSetsWon = 0,
+            lowseedSetsWon = 0; 
+          match.sets.forEach(set => {
+            if (set.outcome === 'high') {
+              highseedSetsWon++;
+            } else if (set.outcome === 'low') {
+              lowseedSetsWon++;
+            }
+          });
+
+          if (highseedSetsWon + lowseedSetsWon >= match.sets.length) {
+            if (highseedSetsWon > lowseedSetsWon) {
+              match.winnerSeed = 'HIGHSEED';
+            } else {
+              match.winnerSeed = 'LOWSEED';
+            }
+          } 
+        }
+
+        match._id = new ObjectId(match._id) as any;
+        return match._id;
+      });
       updateData.matches = {
         $map: {
           input: '$matches',
@@ -132,6 +156,7 @@ export class TournamentsService {
       )
       .exec()
       .then(result => {
+        result.populate('matches');
         return result;
       })
       .catch(error => {

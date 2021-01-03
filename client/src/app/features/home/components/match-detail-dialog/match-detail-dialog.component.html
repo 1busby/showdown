@@ -11,8 +11,8 @@
   </div>
 </div>
 <div>
-  <mat-list *ngIf="this.data.allowEdit">
-    <mat-list-item *ngFor="let set of data.match.sets">
+  <mat-list *ngIf="this.data.allowEdit && this.data.hasStarted">
+    <mat-list-item *ngFor="let set of match.sets">
       <mat-radio-group [(ngModel)]="set.outcome">
         <mat-radio-button value="high"></mat-radio-button>
         {{ set.orderNumber }}
@@ -22,5 +22,6 @@
   </mat-list>
 </div>
 <mat-dialog-actions align="end">
-  <button mat-raised-button color="accent" [mat-dialog-close]="data.match">Done</button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="data.match">Close</button>
+  <button mat-raised-button color="accent" *ngIf="this.data.allowEdit && this.data.hasStarted" (click)="save()">Save</button>
 </mat-dialog-actions>
