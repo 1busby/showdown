@@ -56,10 +56,10 @@ export class AppStore {
       }
 
       matchContainer.setData(match);
-      this.losersMatchContainers.next(this.losersMatchContainers.value);
+      this.losersMatchContainers.next([...this.losersMatchContainers.value]);
     }
 
     matchContainer.setData(match);
-    this.matchContainers.next(this.matchContainers.value);
+    this.matchContainers.next([...this.matchContainers.value]);
   }
 }

@@ -9,7 +9,8 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -37,11 +38,15 @@ export class BracketViewComponent implements OnChanges, AfterViewInit {
   constructor(
     private bracketHandler: BracketHandler,
     private appStore: AppStore,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {}
 
   ngAfterViewInit() {
+    this.appStore.getMatchContainers().subscribe(asdf => {
+      this.changeDetectorRef.detectChanges();
+    })
     this.matches = this.appStore.getMatchContainers();
     this.losersMatches = this.appStore.getLosersMatchContainers();
     this.bracketHandler.setContainerDimensions(

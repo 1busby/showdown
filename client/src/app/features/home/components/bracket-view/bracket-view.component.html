@@ -2,7 +2,7 @@
   <ng-container *ngIf="bracketSide === 'winners'">
     <match-card
       class="match-container"
-      *ngFor="let match of matches"
+      *ngFor="let match of (matches | async)"
       [ngStyle]="match.getStyleObject()"
       (click)="showMatchDetailsEmitter.emit(match)"
       [match]="match"
@@ -12,7 +12,7 @@
   <ng-container *ngIf="bracketSide === 'losers'">
     <match-card
       class="match-container"
-      *ngFor="let match of losersMatches"
+      *ngFor="let match of (losersMatches | async)"
       [ngStyle]="match.getStyleObject()"
       (click)="showMatchDetailsEmitter.emit(match)"
       [match]="match"
