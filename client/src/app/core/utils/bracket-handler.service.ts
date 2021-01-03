@@ -43,7 +43,6 @@ export class BracketHandler {
     this.createSeededBracket();
     this.matchContainers = this.defineLayoutPlacements();
     this.losersMatchContainers = this.defineLosersLayoutPlacements();
-    debugger;
 
     if (
       this.activeTournament.matches &&
@@ -358,12 +357,10 @@ export class BracketHandler {
         // first round
         if (i === 0) {
           if (thisMatch.highSeed === null) {
-            // debugger
             soonToBeRemovedMatches.push(thisMatch);
             const byeMatch = thisMatch.observers[0] as MatchContainer;
             thisMatch.lowMatch.addObserver(byeMatch);
             byeMatch.setLowMatch(thisMatch.lowMatch, 'loser');
-            // debugger
           }
           thisMatch.top =
             (this.matchHeight + this.margin) * j + this.margin * (j + 1) + 200;
@@ -373,7 +370,6 @@ export class BracketHandler {
             this.losersMatchesPerRound[0][0].top -
             this.losersMatchesPerRound[0][1].top;
           let matchTop = 0;
-          // debugger
           if (i % 2 === 0) {
             const losersMatchIndex = (j + 1) * 2 - 1;
             matchSpace =
@@ -405,7 +401,6 @@ export class BracketHandler {
         leftOffset = 0;
       }
     }
-    // debugger
     return matches.filter((m) => {
       return soonToBeRemovedMatches.indexOf(m) === -1;
     });
