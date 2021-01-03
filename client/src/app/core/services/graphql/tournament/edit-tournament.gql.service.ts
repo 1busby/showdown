@@ -54,6 +54,20 @@ export class EditTournamentGQL extends Mutation<{
         matches {
           _id
           winnerSeed
+          matchNumber
+          roundNumber
+          highSeedNumber
+          lowSeedNumber
+          sets {
+            _id
+            orderNumber
+            highSeedScore
+            lowSeedScore
+            outcome
+            startedOn
+            completedOn
+            notes
+          }
         }
       }
     }

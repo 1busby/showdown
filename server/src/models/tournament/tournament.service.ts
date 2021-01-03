@@ -75,7 +75,9 @@ export class TournamentsService {
     return await this.tournamentModel.find().exec();
   }
 
-  async updateOne(data: UpdateTournamentInput & { [key: string]: any; }): Promise<Tournament> {
+  async updateOne(
+    data: UpdateTournamentInput & { [key: string]: any },
+  ): Promise<Tournament> {
     // separate anonymous users from regular users
     const { _id, matches, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
@@ -91,11 +93,10 @@ export class TournamentsService {
 
     if (matches && matches.length > 0) {
       const matchIds = matches.map(match => {
-
         // check if match has a winner
         if (!match.winnerSeed) {
           let highseedSetsWon = 0,
-            lowseedSetsWon = 0; 
+            lowseedSetsWon = 0;
           match.sets.forEach(set => {
             if (set.outcome === 'high') {
               highseedSetsWon++;
@@ -110,7 +111,7 @@ export class TournamentsService {
             } else {
               match.winnerSeed = 'LOWSEED';
             }
-          } 
+          }
         }
 
         match._id = new ObjectId(match._id) as any;
@@ -156,7 +157,7 @@ export class TournamentsService {
       )
       .exec()
       .then(result => {
-        result.populate('matches');
+        console.log('LOOK updated tournament result ', result);
         return result;
       })
       .catch(error => {

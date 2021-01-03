@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { EditTournamentGQL, MatchContainer } from '@app/core';
+import { AppStore, EditTournamentGQL, MatchContainer } from '@app/core';
 import { first } from 'rxjs/operators';
 
 import { IMatch } from '@app/shared';
@@ -23,7 +23,8 @@ export class MatchDetailDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<MatchDetailDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private editTournamentGql: EditTournamentGQL
+    private editTournamentGql: EditTournamentGQL,
+    private appStore: AppStore,
   ) {
     this.match = data.match.getData();
   }
@@ -43,8 +44,15 @@ export class MatchDetailDialogComponent {
         });
         if (updatedMatch.winnerSeed) {
           this.data.match.updateWinner(updatedMatch.winnerSeed);
+          this.appStore.updateMatchContainer(updatedMatch);
+
+          this.editTournamentGql
+            .mutate({ _id: this.data.tournamentId, matches: [this.data.match.getData()] })
+            .pipe(first())
+            .subscribe(() => {
+              this.dialogRef.close(this.data.match);
+            });
         }
-        this.dialogRef.close(this.data.match);
       });
   }
 }
