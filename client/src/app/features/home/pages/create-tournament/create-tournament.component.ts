@@ -118,7 +118,10 @@ export class CreateTournamentComponent implements OnInit {
       matches: this._tournament.matches,
     });
     const matches: Partial<IMatch>[] = [];
-    this.appStore.getMatchContainers().value.forEach((matchContainer) => {
+    [
+      ...this.appStore.getWinnersMatchContainers().value,
+      ...this.appStore.getLosersMatchContainers().value
+    ].forEach((matchContainer) => {
       if (matchContainer.sets.length < this.tournamentForm.value.setCount) {
         // add new sets
         for (

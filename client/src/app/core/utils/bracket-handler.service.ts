@@ -48,13 +48,14 @@ export class BracketHandler {
       this.activeTournament.matches &&
       this.activeTournament.matches.length > 0
     ) {
-      this.matchContainers.forEach((match, i) => {
-        match.setData(this.activeTournament.matches[i]);
-        if (
-          this.activeTournament.matches[i] &&
-          this.activeTournament.matches[i].winnerSeed
-        ) {
-          match.updateWinner(this.activeTournament.matches[i].winnerSeed);
+      [
+        ...this.matchContainers,
+        ...this.losersMatchContainers
+      ].forEach((match, i) => {
+        const matchData = this.activeTournament.matches[i];
+        match.setData(matchData);
+        if (matchData && matchData.winnerSeed) {
+          match.updateWinner(matchData.winnerSeed);
         }
       });
     } else {

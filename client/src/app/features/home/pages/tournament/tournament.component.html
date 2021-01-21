@@ -48,7 +48,7 @@
     </mat-tab>
 
     <mat-tab label="Matches">
-      <match-list [matches]="this.appStore.getMatchContainers() | async" (showMatchDetailsEmitter)="showMatchDetails($event)"></match-list>
+      <match-list [matches]="this.appStore.getWinnersMatchContainers() | async" (showMatchDetailsEmitter)="showMatchDetails($event)"></match-list>
     </mat-tab>
 
     <mat-tab label="Updates">

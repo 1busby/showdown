@@ -14,7 +14,7 @@ export class AppStore {
     Partial<ITournament>[]
   >(null);
 
-  matchContainers: BehaviorSubject<MatchContainer[]> = new BehaviorSubject<
+  winnersMatchContainers: BehaviorSubject<MatchContainer[]> = new BehaviorSubject<
     MatchContainer[]
   >(null);
 
@@ -26,15 +26,15 @@ export class AppStore {
     matchContainers: MatchContainer[],
     losersMatchContainers?: MatchContainer[]
   ) {
-    this.matchContainers.next(matchContainers);
+    this.winnersMatchContainers.next(matchContainers);
 
     if (losersMatchContainers) {
       this.losersMatchContainers.next(losersMatchContainers);
     }
   }
 
-  getMatchContainers() {
-    return this.matchContainers;
+  getWinnersMatchContainers() {
+    return this.winnersMatchContainers;
   }
 
   getLosersMatchContainers() {
@@ -42,7 +42,7 @@ export class AppStore {
   }
 
   updateMatchContainer(match: IMatch) {
-    let matchContainer = this.matchContainers.value.find(
+    let matchContainer = this.winnersMatchContainers.value.find(
       (container) => match._id === container._id
     );
 
@@ -60,6 +60,6 @@ export class AppStore {
     }
 
     matchContainer.setData(match);
-    this.matchContainers.next([...this.matchContainers.value]);
+    this.winnersMatchContainers.next([...this.winnersMatchContainers.value]);
   }
 }
