@@ -336,7 +336,6 @@ export class BracketHandler {
   }
 
   defineLosersLayoutPlacements() {
-    debugger;
     this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 200);
     this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 75);
 
