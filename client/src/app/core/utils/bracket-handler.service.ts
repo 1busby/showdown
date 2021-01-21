@@ -189,8 +189,24 @@ export class BracketHandler {
           }
         }
       }
-
       losersMatchNumberOffset += matchCountThisRound;
+    }
+
+    if (this.activeTournament.structure === 'double-elim') {
+      // Create extra macth for final showdown
+      const newMatch = new MatchContainer();
+      newMatch.roundNumber = this.matchesPerRound.length;
+      const numWinnersRound = this.matchesPerRound.length - 1;
+      const numLosersRound = this.losersMatchesPerRound.length - 1;
+      this.matchesPerRound.push([] as MatchContainer[]);
+      this.losersMatchesPerRound.push([] as MatchContainer[]);
+      const winnerMatch = this.matchesPerRound[numWinnersRound][0];
+      const loserMatch = this.losersMatchesPerRound[numLosersRound][0];
+      winnerMatch.addObserver(newMatch);
+      loserMatch.addObserver(newMatch);
+      newMatch.setHighMatch(winnerMatch);
+      newMatch.setLowMatch(loserMatch);
+      this.matchesPerRound[newMatch.roundNumber][0] = newMatch;
     }
   }
 
