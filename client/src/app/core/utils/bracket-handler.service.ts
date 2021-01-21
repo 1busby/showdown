@@ -48,16 +48,15 @@ export class BracketHandler {
       this.activeTournament.matches &&
       this.activeTournament.matches.length > 0
     ) {
-      [
-        ...this.matchContainers,
-        ...this.losersMatchContainers
-      ].forEach((match, i) => {
-        const matchData = this.activeTournament.matches[i];
-        match.setData(matchData);
-        if (matchData && matchData.winnerSeed) {
-          match.updateWinner(matchData.winnerSeed);
+      [...this.matchContainers, ...this.losersMatchContainers].forEach(
+        (match, i) => {
+          const matchData = this.activeTournament.matches[i];
+          match.setData(matchData);
+          if (matchData && matchData.winnerSeed) {
+            match.updateWinner(matchData.winnerSeed);
+          }
         }
-      });
+      );
     } else {
       this.matchContainers.forEach((matchContainer, index) => {
         matchContainer.matchNumber = index;
@@ -337,6 +336,7 @@ export class BracketHandler {
   }
 
   defineLosersLayoutPlacements() {
+    debugger;
     this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 200);
     this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 75);
 
@@ -367,9 +367,11 @@ export class BracketHandler {
             (this.matchHeight + this.margin) * j + this.margin * (j + 1) + 200;
           thisMatch.left = this.margin;
         } else {
-          let matchSpace =
-            this.losersMatchesPerRound[0][0].top -
-            this.losersMatchesPerRound[0][1].top;
+          // If there's only one match in the first round, just put the 2 matches next to each other
+          let matchSpace = this.losersMatchesPerRound[0][1]
+            ? this.losersMatchesPerRound[0][0].top -
+              this.losersMatchesPerRound[0][1].top
+            : 0;
           let matchTop = 0;
           if (i % 2 === 0) {
             const losersMatchIndex = (j + 1) * 2 - 1;
