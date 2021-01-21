@@ -1,42 +1,23 @@
 {
-  "contestants": [],
-  "_id": "5f0356e94a5358449db90456",
-  "name": "Test 4",
-  "contestantCount": 4,
+  "_id": "600989f33264a24a203966a4",
   "matches": [
     {
-      "sets": [],
-      "_id": "5f0356e94a5358449db90457",
-      "matchNumber": 0,
-      "roundNumber": 1,
-      "highSeedNumber": 1,
-      "lowSeedNumber": 4
-    },
-    {
-      "sets": [],
-      "_id": "5f0356e94a5358449db90458",
+      "_id": "600989f33264a24a203966a7",
       "matchNumber": 1,
       "roundNumber": 1,
-      "highSeedNumber": 2,
-      "lowSeedNumber": 3
-    },
-    {
-      "sets": [],
-      "_id": "5f0356e94a5358449db90459",
-      "matchNumber": 2,
-      "roundNumber": 2,
-      "highSeedNumber": null,
-      "lowSeedNumber": null
+      "highSeedNumber": 4,
+      "lowSeedNumber": 5,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "600989f33264a24a203966a8",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": "low",
+          "notes": null
+        }
+      ]
     }
-  ],
-  "editAccessCode": "123",
-  "linkCode": "2WepTBMnm",
-  "createdOn": "2020-07-06T16:52:57.908Z",
-  "updatedOn": "2020-07-06T16:52:57.908Z",
-  "anonymousContestants": [
-    { "_id": "5f0356e94a5358449db9045a", "name": "P4", "seed": 4 },
-    { "_id": "5f0356e94a5358449db9045b", "name": "P3", "seed": 3 },
-    { "_id": "5f0356e94a5358449db9045c", "name": "P2", "seed": 2 },
-    { "_id": "5f0356e94a5358449db9045d", "name": "P1", "seed": 1 }
   ]
 }

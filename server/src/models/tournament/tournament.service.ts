@@ -78,6 +78,7 @@ export class TournamentsService {
   async updateOne(
     data: UpdateTournamentInput & { [key: string]: any },
   ): Promise<Tournament> {
+    console.error('LOOK updateOne data ', JSON.stringify(data));
     // separate anonymous users from regular users
     const { _id, matches, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
@@ -91,8 +92,9 @@ export class TournamentsService {
       updateData.anonymousContestants = anonymousContestants;
     }
 
+    let matchIds: string[];
     if (matches && matches.length > 0) {
-      const matchIds = matches.map(match => {
+      matchIds = matches.map(match => {
         // check if match has a winner
         if (!match.winnerSeed) {
           let highseedSetsWon = 0,
@@ -150,14 +152,26 @@ export class TournamentsService {
               ...updateData,
             },
           },
+          {
+            $project: {
+              matches: {
+                $filter: {
+                  input: '$matches',
+                  as: 'match',
+                  cond: { $in: ['$$match._id', matchIds] },
+                },
+              },
+            },
+          },
         ],
         {
           new: true,
         },
       )
+      .populate('matches.sets')
       .exec()
       .then(result => {
-        console.log('LOOK updated tournament result ', result);
+        console.log('LOOK updated tournament result ', JSON.stringify(result));
         return result;
       })
       .catch(error => {

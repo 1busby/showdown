@@ -2,12 +2,12 @@
   <div class="top__high">
     <img ngxGravatar [email]="data.match.highSeed?.name || '---'" size="45" />
     <br />
-    {{ data.match.highSeed.name }}
+    {{ data.match.highSeed ? data.match.highSeed.name : 'TBD' }}
   </div>
   <div class="top__low">
     <img ngxGravatar [email]="data.match.lowSeed?.name || '---'" size="45" />
     <br />
-    {{ data.match.lowSeed.name }}
+    {{ data.match.lowSeed ? data.match.lowSeed.name : 'TBD' }}
   </div>
 </div>
 <div>

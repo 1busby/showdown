@@ -59,6 +59,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((result) => {
+        debugger
         if (typeof result === 'string') {
           console.error('Unexpected typeof ', result);
           return;
@@ -179,47 +180,53 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.matchService
       .showMatchDetails(match, canEdit, this.tournament)
       .pipe(first())
-      .subscribe((updatedMatch: MatchContainer) => {
-        if (updatedMatch) {
-          const matchesToBeSaved = [];
+      .subscribe(({ action, match }: { action: string, match: MatchContainer }) => {
+        // if (match && action === 'save') {
+        //   let matchesToBeSaved = [];
 
-          const numSets = updatedMatch.sets.length;
-          let highSeedScore = 0;
-          let lowSeedScore = 0;
-          let isMatchComplete = true;
-          for (let i = numSets - 1; i >= 0; i--) {
-            const setOutcome = updatedMatch.sets[i].outcome;
-            if (!setOutcome) {
-              // match not finished
-              isMatchComplete = false;
-              break;
-            } else if (setOutcome === 'high') {
-              highSeedScore++;
-            } else if (setOutcome === 'low') {
-              lowSeedScore++;
-            }
-          }
+        //   const numSets = match.sets.length;
+        //   let highSeedScore = 0;
+        //   let lowSeedScore = 0;
+        //   let isMatchComplete = true;
+        //   for (let i = numSets - 1; i >= 0; i--) {
+        //     const setOutcome = match.sets[i].outcome;
+        //     if (!setOutcome) {
+        //       // match not finished
+        //       isMatchComplete = false;
+        //       break;
+        //     } else if (setOutcome === 'high') {
+        //       highSeedScore++;
+        //     } else if (setOutcome === 'low') {
+        //       lowSeedScore++;
+        //     }
+        //   }
 
-          if (isMatchComplete) {
-            if (highSeedScore > lowSeedScore) {
-              updatedMatch.updateWinner(MatchContainer.HIGHSEED);
-            } else if (lowSeedScore > highSeedScore) {
-              updatedMatch.updateWinner(MatchContainer.LOWSEED);
-            }
-            matchesToBeSaved.push(
-              (updatedMatch.observers[0] as MatchContainer).getData()
-            );
-          }
-          matchesToBeSaved.push(updatedMatch.getData());
+        //   if (isMatchComplete) {
+        //     if (highSeedScore > lowSeedScore) {
+        //       match.updateWinner(MatchContainer.HIGHSEED);
+        //     } else if (lowSeedScore > highSeedScore) {
+        //       match.updateWinner(MatchContainer.LOWSEED);
+        //     }
 
-          this.editTournamentGql
-            .mutate({
-              _id: this.tournament._id,
-              matches: matchesToBeSaved,
-            })
-            .pipe(first())
-            .subscribe();
-        }
+        //     if(match.observers[0]) {
+        //       matchesToBeSaved = [
+        //         ...matchesToBeSaved,
+        //         ...match.observers.map((matchContainer: MatchContainer) => matchContainer.getData())
+        //       ];
+        //     }
+        //   }
+        //   matchesToBeSaved.push(match.getData());
+
+        //   // this.editTournamentGql
+        //   //   .mutate({
+        //   //     _id: this.tournament._id,
+        //   //     matches: matchesToBeSaved,
+        //   //   })
+        //   //   .pipe(first())
+        //   //   .subscribe(result => {
+        //   //     debugger
+        //   //   });
+        // }
       });
   }
 }

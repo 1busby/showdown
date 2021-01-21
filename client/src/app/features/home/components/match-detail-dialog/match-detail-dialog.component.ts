@@ -50,7 +50,10 @@ export class MatchDetailDialogComponent {
             .mutate({ _id: this.data.tournamentId, matches: [this.data.match.getData()] })
             .pipe(first())
             .subscribe(() => {
-              this.dialogRef.close(this.data.match);
+              this.dialogRef.close({
+                match: this.data.match,
+                action: 'save'
+              });
             });
         }
       });
