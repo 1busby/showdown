@@ -1,7 +1,12 @@
-<mat-toolbar color="primary">
-  <span [routerLink]="'/'">Brackets</span>
-
-  <span class="toolbar-remaining-space"></span>
+<div color="primary">
+  <span [routerLink]="'/'"
+    ><button
+      mat-fab
+      color="primary"
+    >
+      <mat-icon>home</mat-icon>
+    </button></span
+  >
 
   <span>
     <button
@@ -15,6 +20,6 @@
       Logout
     </button>
   </span>
-</mat-toolbar>
+</div>
 
 <router-outlet></router-outlet>

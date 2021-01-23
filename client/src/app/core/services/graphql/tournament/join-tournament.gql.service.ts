@@ -1,8 +1,6 @@
 import {Mutation, gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
 
-
-
 @Injectable({
   providedIn: 'root',
 })
