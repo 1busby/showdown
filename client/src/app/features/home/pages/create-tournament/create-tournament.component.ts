@@ -113,10 +113,14 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   createTournament() {
-    this.bracketHandlerService.createBracket({
+    const matchContainers = this.bracketHandlerService.createBracket({
       ...this.tournamentForm.value,
       matches: this._tournament.matches,
     });
+    this.appStore.setMatchContainers(
+      matchContainers.matches,
+      matchContainers.losersMatches
+    );
     const matches: Partial<IMatch>[] = [];
     [
       ...this.appStore.getWinnersMatchContainers().value,

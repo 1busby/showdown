@@ -33,7 +33,8 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
           fields: {
             sets: {
               merge(existing = [], incoming: any[]) {
-                return myMerge(existing, incoming);
+                const newItems = [];
+                
               },
             },
           },
@@ -57,25 +58,20 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
 export class GraphQLModule {}
 
 function myMerge(existing: any[] = [], incoming: any[]) {
-  const newItems = [];
-  const existingIndexesToIgnore = [];
+  const newItems = [
+    ...existing
+  ];
   incoming.forEach((a) => {
-    const existingItemIndex = existing.findIndex((b) => a._id == b._id);
-    if (!existing[existingItemIndex]) {
+    const existingItemIndex = newItems.findIndex((b) => a._id == b._id);
+    if (!newItems[existingItemIndex]) {
       newItems.push(a);
     } else {
-      existingIndexesToIgnore.push(existingItemIndex);
       newItems.push({
-        ...existing[existingItemIndex],
+        ...newItems[existingItemIndex],
         ...a,
       });
     }
   });
 
-  return [
-    ...newItems,
-    ...existing.filter((item, index) => {
-      return !existingIndexesToIgnore.includes(index);
-    }),
-  ];
+  return newItems;
 }

@@ -16,11 +16,11 @@ export class AppStore {
 
   private winnersMatchContainers: BehaviorSubject<MatchContainer[]> = new BehaviorSubject<
     MatchContainer[]
-  >(null);
+  >([]);
 
   private losersMatchContainers: BehaviorSubject<
     MatchContainer[]
-  > = new BehaviorSubject<MatchContainer[]>(null);
+  > = new BehaviorSubject<MatchContainer[]>([]);
 
   setMatchContainers(
     matchContainers: MatchContainer[],
