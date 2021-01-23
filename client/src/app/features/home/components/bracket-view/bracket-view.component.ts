@@ -48,14 +48,21 @@ export class BracketViewComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('LOOK BracketViewComponent ngOnChanges');
+    const matches = this.bracketHandler.createBracket(this.tournament);
+    this.appStore.setMatchContainers(
+      matches.matches,
+      matches.losersMatches
+    );
   }
 
   ngAfterViewInit() {
     this.appStore.getWinnersMatchContainers().subscribe(matches => {
+      this.matches = null;
       this.matches = matches;
       this.changeDetectorRef.detectChanges();
     });
     this.appStore.getLosersMatchContainers().subscribe(matches => {
+      this.losersMatches = null;
       this.losersMatches = matches;
       this.changeDetectorRef.detectChanges();
     });
@@ -63,7 +70,12 @@ export class BracketViewComponent
       this.bracketViewContainer.nativeElement.offsetWidth,
       this.bracketViewContainer.nativeElement.offsetHeight
     );
-    this.bracketHandler.createBracket(this.tournament);
+
+    const matches = this.bracketHandler.createBracket(this.tournament);
+    this.appStore.setMatchContainers(
+      matches.matches,
+      matches.losersMatches
+    );
   }
 
   ngOnDestroy(): void {

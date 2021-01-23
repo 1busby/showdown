@@ -28,7 +28,6 @@ const gravatarConfig: GravatarConfig = {
 @NgModule({
   imports: [GravatarModule.forRoot(gravatarConfig), HomeRoutingModule, SharedModule],
   declarations: [
-    MatchCardComponent,
     HomeComponent,
     LandingComponent,
     TournamentComponent,
@@ -39,7 +38,8 @@ const gravatarConfig: GravatarConfig = {
     EditAccessDialogComponent,
     MatchDetailDialogComponent,
     MatchListComponent,
-    BracketViewComponent
+    BracketViewComponent,
+    MatchCardComponent,
   ],
   providers: [MatchService],
   bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent, MatchDetailDialogComponent]

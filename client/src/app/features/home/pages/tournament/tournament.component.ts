@@ -182,7 +182,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.matchService
       .showMatchDetails(match, canEdit, this.tournament)
       .pipe(first())
-      .subscribe(({ action, match }: { action: string, match: MatchContainer }) => {
+      .subscribe()
         // if (match && action === 'save') {
         //   let matchesToBeSaved = [];
 
@@ -229,6 +229,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
         //   //     debugger
         //   //   });
         // }
-      });
+      // });
   }
 }

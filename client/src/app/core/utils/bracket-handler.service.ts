@@ -63,10 +63,10 @@ export class BracketHandler {
       });
     }
 
-    this.appStore.setMatchContainers(
-      this.matchContainers,
-      this.losersMatchContainers
-    );
+    return {
+      matches: this.matchContainers,
+      losersMatches: this.losersMatchContainers
+    }
   }
 
   createSeededBracket() {
@@ -447,7 +447,7 @@ export class BracketHandler {
       }
     });
 
-    this.appStore.setMatchContainers(matchContainers);
+    // this.appStore.setMatchContainers(matchContainers);
   }
 
   /**

@@ -47,11 +47,6 @@ export class MatchDetailDialogComponent {
           this.data.match.updateWinner(updatedMatch.winnerSeed);
           this.appStore.updateMatchContainer(updatedMatch);
           // this.changeDetector.detectChanges();
-
-          this.appStore.setMatchContainers(
-            this.appStore.getWinnersMatchContainers().value,
-            this.appStore.getLosersMatchContainers().value
-          );
           this.dialogRef.close({
             match: this.data.match,
           });

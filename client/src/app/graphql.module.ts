@@ -5,7 +5,7 @@ import { HttpLink } from 'apollo-angular/http';
 
 import { environment } from '../environments/environment';
 import { typeDefs } from '@app/core';
-import { ISet } from './shared';
+import { IContestant, IMatch, ISet } from './shared';
 
 const uri = environment.production
   ? '/graphql'
@@ -15,22 +15,30 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     link: httpLink.create({ uri }),
     cache: new InMemoryCache({
       typePolicies: {
-        Query: {
+        Tournament: {
+          fields: {
+            matches: {
+              merge(existing: any[] = [], incoming: any[]) {
+                return myMerge(existing, incoming);
+              },
+            },
+            contestants: {
+              merge(existing = [], incoming: any[]) {
+                return myMerge(existing, incoming);
+              },
+            },
+          },
+        },
+        Match: {
           fields: {
             sets: {
-              merge(existing: ISet[] = [], incoming: ISet[]) {
-                return existing.map(a => {
-                  let incomingSet = incoming.find(b => a._id == b._id);
-                  return !incomingSet ? a : {
-                    ...a,
-                    ...incomingSet
-                  }
-                });
-              }
-            }
-          }
-        }
-      }
+              merge(existing = [], incoming: any[]) {
+                return myMerge(existing, incoming);
+              },
+            },
+          },
+        },
+      },
     }),
     // typeDefs,
     connectToDevTools: true,
@@ -47,3 +55,27 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   ],
 })
 export class GraphQLModule {}
+
+function myMerge(existing: any[] = [], incoming: any[]) {
+  const newItems = [];
+  const existingIndexesToIgnore = [];
+  incoming.forEach((a) => {
+    const existingItemIndex = existing.findIndex((b) => a._id == b._id);
+    if (!existing[existingItemIndex]) {
+      newItems.push(a);
+    } else {
+      existingIndexesToIgnore.push(existingItemIndex);
+      newItems.push({
+        ...existing[existingItemIndex],
+        ...a,
+      });
+    }
+  });
+
+  return [
+    ...newItems,
+    ...existing.filter((item, index) => {
+      return !existingIndexesToIgnore.includes(index);
+    }),
+  ];
+}
