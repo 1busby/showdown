@@ -8,3 +8,9 @@ This is the monorepo for the tournament bracket management app, Brackets.
 DATABASE_URL=mongodb+srv://&lt;username>:&lt;userpassword>@cluster0-cez0a.mongodb.net/&lt;dbname>?retryWrites=true&w=majority  
 PORT=&lt;port>  
 ISPRODUCTION=&lt;boolean>
+
+## Deploy to Production
+
+Run the following command in ./server
+
+npm run deploy-production

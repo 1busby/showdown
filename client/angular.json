@@ -28,7 +28,9 @@
               "src/assets",
               "src/manifest.webmanifest",
               "src/manifest.webmanifest",
-              "src/health.html"
+              "src/health.html",
+              "src/OneSignalSDKUpdaterWorker.js",
+              "src/OneSignalSDKWorker.js"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
@@ -39,7 +41,9 @@
                 "src/styles"
               ]
             },
-            "scripts": []
+            "scripts": [
+              "src/assets/scripts/onesignal.js"
+            ]
           },
           "configurations": {
             "production": {
