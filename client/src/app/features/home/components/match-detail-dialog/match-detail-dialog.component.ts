@@ -24,7 +24,7 @@ export class MatchDetailDialogComponent {
     public dialogRef: MatDialogRef<MatchDetailDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private editTournamentGql: EditTournamentGQL,
-    private appStore: AppStore,
+    private appStore: AppStore
   ) {
     this.match = data.match.getData();
   }
@@ -46,15 +46,9 @@ export class MatchDetailDialogComponent {
           this.data.match.updateWinner(updatedMatch.winnerSeed);
           this.appStore.updateMatchContainer(updatedMatch);
 
-          this.editTournamentGql
-            .mutate({ _id: this.data.tournamentId, matches: [this.data.match.getData()] })
-            .pipe(first())
-            .subscribe(() => {
-              this.dialogRef.close({
-                match: this.data.match,
-                action: 'save'
-              });
-            });
+          this.dialogRef.close({
+            match: this.data.match,
+          });
         }
       });
   }

@@ -170,12 +170,9 @@ export class TournamentsService {
       )
       .exec()
       .then(result => {
-        const resultObject = result.toObject();
-        const returnObject: any = {
-          _id: resultObject._id,
-        };
+        const returnObject = result.toObject();
         Object.keys(data).forEach(path => {
-          const source = resultObject[path];
+          const source = returnObject[path];
           if (typeof source === 'object' && source.length) {
             returnObject[path] = data[path].filter(dataItem => {
               return (
@@ -186,7 +183,6 @@ export class TournamentsService {
             });
             return;
           }
-          returnObject[path] = source;
         });
         // console.log('LOOK updated tournament resultObject ', JSON.stringify(resultObject));
         console.log(
