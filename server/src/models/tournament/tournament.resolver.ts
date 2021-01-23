@@ -88,7 +88,10 @@ export class TournamentsResolver {
   async updateTournament(
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
   ): Promise<Tournament> {
-    return this.tournamentsService.updateOne(updateTournamentData);
+    return this.tournamentsService.updateOne(updateTournamentData).then(res => {
+      console.log('LOOK res ', res);
+      return res;
+    });
   }
 
   @Mutation(returns => Tournament)

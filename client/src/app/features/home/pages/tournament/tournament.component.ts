@@ -59,7 +59,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((result) => {
-        debugger
         if (typeof result === 'string') {
           console.error('Unexpected typeof ', result);
           return;

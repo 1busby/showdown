@@ -78,7 +78,7 @@ export class TournamentsService {
   async updateOne(
     data: UpdateTournamentInput & { [key: string]: any },
   ): Promise<Tournament> {
-    console.error('LOOK updateOne data ', JSON.stringify(data));
+    console.log('LOOK updateOne data ', JSON.stringify(data));
     // separate anonymous users from regular users
     const { _id, matches, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
@@ -92,7 +92,7 @@ export class TournamentsService {
       updateData.anonymousContestants = anonymousContestants;
     }
 
-    let matchIds: string[];
+    let matchIds: string[] = [];
     if (matches && matches.length > 0) {
       matchIds = matches.map(match => {
         // check if match has a winner
@@ -152,27 +152,50 @@ export class TournamentsService {
               ...updateData,
             },
           },
-          {
-            $project: {
-              matches: {
-                $filter: {
-                  input: '$matches',
-                  as: 'match',
-                  cond: { $in: ['$$match._id', matchIds] },
-                },
-              },
-            },
-          },
+          // {
+          //   $project: {
+          //     matches: {
+          //       $filter: {
+          //         input: '$matches',
+          //         as: 'match',
+          //         cond: { $in: [ "$$match._id", matchIds ] },
+          //       },
+          //     },
+          //   },
+          // },
         ],
         {
           new: true,
         },
       )
-      .populate('matches.sets')
       .exec()
       .then(result => {
-        console.log('LOOK updated tournament result ', JSON.stringify(result));
-        return result;
+        const resultObject = result.toObject();
+        const returnObject: any = {
+          _id: resultObject._id,
+        };
+        Object.keys(data).forEach(path => {
+          const source = resultObject[path];
+          if (typeof source === 'object' && source.length) {
+            returnObject[path] = data[path].filter(dataItem => {
+              return (
+                source.findIndex(
+                  docItem => dataItem._id == docItem._id.toString(),
+                ) >= 0
+              );
+            });
+            return;
+          }
+          returnObject[path] = source;
+        });
+        // console.log('LOOK updated tournament resultObject ', JSON.stringify(resultObject));
+        console.log(
+          'LOOK updated tournament returnObject ',
+          JSON.stringify(returnObject),
+        );
+
+        return this.clean(returnObject);
+        // return changedProperties as Tournament;
       })
       .catch(error => {
         throw new Error('Error updating tournament >>> ' + error);
@@ -230,5 +253,14 @@ export class TournamentsService {
           };
         });
     }
+  }
+
+  clean(obj) {
+    for (var propName in obj) {
+      if (obj[propName] === null || obj[propName] === undefined) {
+        delete obj[propName];
+      }
+    }
+    return obj;
   }
 }
