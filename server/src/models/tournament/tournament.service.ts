@@ -170,19 +170,21 @@ export class TournamentsService {
       )
       .exec()
       .then(result => {
-        const returnObject = result.toObject();
-        Object.keys(data).forEach(path => {
-          const source = returnObject[path];
-          if (typeof source === 'object' && source.length) {
-            returnObject[path] = data[path].filter(dataItem => {
-              return (
-                source.findIndex(
-                  docItem => dataItem._id == docItem._id.toString(),
-                ) >= 0
-              );
-            });
-            return;
-          }
+        result.populate('matches.sets');
+        const resultObject = result.toObject();
+        const returnObject: any = resultObject;
+
+        returnObject.matches = matches.map(updateDataMatch => {
+          // console.log('LOOK updatedDataMatch ', updateDataMatch);
+          // console.log('LOOK docMatch ', resultObject.matches.find(
+          //   docMatch => updateDataMatch._id == docMatch._id.toString(),
+          // ));
+          return {
+            ...resultObject.matches.find(
+              docMatch => updateDataMatch._id == docMatch._id.toString(),
+            ),
+            ...updateDataMatch,
+          };
         });
         // console.log('LOOK updated tournament resultObject ', JSON.stringify(resultObject));
         console.log(

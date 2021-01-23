@@ -1,23 +1,55 @@
 {
-  "_id": "600989f33264a24a203966a4",
+  "contestants": [],
+  "_id": "600b882f2e0442d4e4d8dadf",
+  "name": "d",
+  "description": "",
+  "contestantCount": 16,
   "matches": [
     {
-      "_id": "600989f33264a24a203966a7",
-      "matchNumber": 1,
-      "roundNumber": 1,
-      "highSeedNumber": 4,
-      "lowSeedNumber": 5,
-      "winnerSeed": null,
       "sets": [
         {
-          "_id": "600989f33264a24a203966a8",
+          "_id": "600b882f2e0442d4e4d8daf1",
           "orderNumber": 1,
           "highSeedScore": null,
           "lowSeedScore": null,
           "outcome": "low",
           "notes": null
         }
-      ]
+      ],
+      "_id": "600b882f2e0442d4e4d8daf0",
+      "matchNumber": 8,
+      "roundNumber": 2,
+      "highSeedNumber": 16,
+      "lowSeedNumber": 9,
+      "winnerSeed": "LOWSEED"
     }
-  ]
+  ],
+  "editAccessCode": "123",
+  "setCount": 1,
+  "allowRegistration": false,
+  "allowSelfScoring": false,
+  "structure": "double-elim",
+  "linkCode": "7u5vFCH9_",
+  "createdOn": "2021-01-23T02:21:35.463Z",
+  "updatedOn": "2021-01-23T02:21:35.463Z",
+  "anonymousContestants": [
+    { "_id": "600b882f2e0442d4e4d8db1c", "name": "15", "seed": 16 },
+    { "_id": "600b882f2e0442d4e4d8db1d", "name": "14", "seed": 15 },
+    { "_id": "600b882f2e0442d4e4d8db1e", "name": "13", "seed": 14 },
+    { "_id": "600b882f2e0442d4e4d8db1f", "name": "12", "seed": 13 },
+    { "_id": "600b882f2e0442d4e4d8db20", "name": "11", "seed": 12 },
+    { "_id": "600b882f2e0442d4e4d8db21", "name": "10", "seed": 11 },
+    { "_id": "600b882f2e0442d4e4d8db22", "name": "9", "seed": 10 },
+    { "_id": "600b882f2e0442d4e4d8db23", "name": "8", "seed": 9 },
+    { "_id": "600b882f2e0442d4e4d8db24", "name": "7", "seed": 8 },
+    { "_id": "600b882f2e0442d4e4d8db25", "name": "6", "seed": 7 },
+    { "_id": "600b882f2e0442d4e4d8db26", "name": "5", "seed": 6 },
+    { "_id": "600b882f2e0442d4e4d8db27", "name": "4", "seed": 5 },
+    { "_id": "600b882f2e0442d4e4d8db28", "name": "3", "seed": 4 },
+    { "_id": "600b882f2e0442d4e4d8db29", "name": "2", "seed": 3 },
+    { "_id": "600b882f2e0442d4e4d8db2a", "name": "1", "seed": 2 },
+    { "_id": "600b882f2e0442d4e4d8db2b", "name": "0", "seed": 1 }
+  ],
+  "__v": 0,
+  "hasStarted": true
 }

@@ -12,6 +12,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
@@ -23,13 +24,14 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'bracket-view',
   templateUrl: './bracket-view.component.html',
   styleUrls: ['./bracket-view.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BracketViewComponent
   implements OnChanges, AfterViewInit, OnDestroy {
   private ngUnsubscribe = new Subject<any>();
   showingModal = false;
-  matches: BehaviorSubject<MatchContainer[]>;
-  losersMatches: BehaviorSubject<MatchContainer[]>;
+  matches: any[];//BehaviorSubject<MatchContainer[]>;
+  losersMatches: any[];// BehaviorSubject<MatchContainer[]>;
   bracketSide: 'winners' | 'losers' = 'winners';
 
   @Input() tournament: ITournament;
@@ -44,23 +46,19 @@ export class BracketViewComponent
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('LOOK BracketViewComponent ngOnChanges');
+  }
 
   ngAfterViewInit() {
-    this.appStore
-      .getWinnersMatchContainers()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.changeDetectorRef.detectChanges();
-      });
-    this.appStore
-      .getLosersMatchContainers()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.changeDetectorRef.detectChanges();
-      });
-    this.matches = this.appStore.getWinnersMatchContainers();
-    this.losersMatches = this.appStore.getLosersMatchContainers();
+    this.appStore.getWinnersMatchContainers().subscribe(matches => {
+      this.matches = matches;
+      this.changeDetectorRef.detectChanges();
+    });
+    this.appStore.getLosersMatchContainers().subscribe(matches => {
+      this.losersMatches = matches;
+      this.changeDetectorRef.detectChanges();
+    });
     this.bracketHandler.setContainerDimensions(
       this.bracketViewContainer.nativeElement.offsetWidth,
       this.bracketViewContainer.nativeElement.offsetHeight
@@ -75,5 +73,9 @@ export class BracketViewComponent
 
   changeBracketSide(side: 'winners' | 'losers') {
     this.bracketSide = side;
+  }
+
+  public trackMatch (index: number, item: MatchContainer) {
+    return item._id;
   }
 }

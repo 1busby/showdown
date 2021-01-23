@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { AppStore, EditTournamentGQL, MatchContainer } from '@app/core';
@@ -24,7 +24,8 @@ export class MatchDetailDialogComponent {
     public dialogRef: MatDialogRef<MatchDetailDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private editTournamentGql: EditTournamentGQL,
-    private appStore: AppStore
+    private appStore: AppStore,
+    private changeDetector: ChangeDetectorRef
   ) {
     this.match = data.match.getData();
   }
@@ -45,7 +46,12 @@ export class MatchDetailDialogComponent {
         if (updatedMatch.winnerSeed) {
           this.data.match.updateWinner(updatedMatch.winnerSeed);
           this.appStore.updateMatchContainer(updatedMatch);
+          // this.changeDetector.detectChanges();
 
+          this.appStore.setMatchContainers(
+            this.appStore.getWinnersMatchContainers().value,
+            this.appStore.getLosersMatchContainers().value
+          );
           this.dialogRef.close({
             match: this.data.match,
           });

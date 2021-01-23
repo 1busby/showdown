@@ -50,7 +50,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
         switchMap(
           (params: ParamMap) =>
-            this.tournamentGql.watch({ linkCode: params.get('linkCode') })
+            this.tournamentGql.watch({ linkCode: params.get('linkCode') }, {
+              returnPartialData: true,
+            })
               .valueChanges
         ),
         catchError((error) => {
@@ -68,6 +70,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
           return;
         }
 
+        console.log('LOOK TournamentComponent new tournamet data ', result.data.tournament);
         this.tournament = result.data.tournament;
         // this.tournament.contestants = this.tournament.contestants
         //   .slice()
