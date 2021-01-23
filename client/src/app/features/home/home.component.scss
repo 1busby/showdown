@@ -8,8 +8,10 @@
   flex-direction: column;
 }
 
-.toolbar-remaining-space {
-    flex: 1 1 auto;
+.login-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 
 .mat-tab-body-wrapper {

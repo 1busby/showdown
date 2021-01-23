@@ -1,4 +1,5 @@
 .bracket-view-container {
+  cursor: grab;
   position: relative;
   overflow: auto;
   width: 100%;
@@ -11,4 +12,10 @@
   -moz-box-shadow: inset 0 0 10px #000000;
   -webkit-box-shadow: inset 0 0 10px #000000;
   box-shadow: inset 0 0 10px #000000;
+}
+
+.bracket-view-button-group {
+  position: absolute;
+  left: 20px;
+  top: 200px;
 }

@@ -1,20 +1,19 @@
 <div color="primary">
-  <span [routerLink]="'/'"
-    ><button
-      mat-fab
-      color="primary"
-    >
-      <mat-icon>home</mat-icon>
-    </button></span
-  >
+  <button [routerLink]="'/'" mat-fab color="primary">
+    <mat-icon>home</mat-icon>
+  </button>
 
   <span>
     <button
       *ngIf="!(appStore.loggedInUser | async)"
-      mat-button
+      class="login-button"
+      color="primary"
+      isRoundButton="true"
+      mat-raised-button
       (click)="login()"
     >
       Log In
+      <mat-icon>login</mat-icon>
     </button>
     <button *ngIf="appStore.loggedInUser | async" mat-button (click)="logout()">
       Logout

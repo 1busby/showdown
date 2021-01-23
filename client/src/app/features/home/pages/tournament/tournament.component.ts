@@ -26,10 +26,9 @@ import { MatchService } from '../../services/match.service';
 export class TournamentComponent implements OnInit, OnDestroy {
   tournament: Partial<ITournament>;
   ngUnsubscribe: Subject<any> = new Subject<any>();
-
   contestantList: Partial<IContestant>[] = [];
-
   isCheckingEditAccess = false;
+  viewBeingShown: 'bracket' | 'contestants' | 'matches' | 'updates' = 'bracket';
 
   constructor(
     private router: Router,
@@ -230,5 +229,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
         //   //   });
         // }
       // });
+  }
+
+
+  showView(view: 'bracket' | 'contestants' | 'matches' | 'updates') {
+    this.viewBeingShown = view;
   }
 }

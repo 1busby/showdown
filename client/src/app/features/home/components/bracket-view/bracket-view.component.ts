@@ -30,9 +30,11 @@ export class BracketViewComponent
   implements OnChanges, AfterViewInit, OnDestroy {
   private ngUnsubscribe = new Subject<any>();
   showingModal = false;
-  matches: any[];//BehaviorSubject<MatchContainer[]>;
-  losersMatches: any[];// BehaviorSubject<MatchContainer[]>;
+  matches: any[]; //BehaviorSubject<MatchContainer[]>;
+  losersMatches: any[]; // BehaviorSubject<MatchContainer[]>;
   bracketSide: 'winners' | 'losers' = 'winners';
+  pos = { top: 0, left: 0, x: 0, y: 0 };
+  isMouseDown = false;
 
   @Input() tournament: ITournament;
   @Output()
@@ -49,19 +51,16 @@ export class BracketViewComponent
   ngOnChanges(changes: SimpleChanges): void {
     console.log('LOOK BracketViewComponent ngOnChanges');
     const matches = this.bracketHandler.createBracket(this.tournament);
-    this.appStore.setMatchContainers(
-      matches.matches,
-      matches.losersMatches
-    );
+    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
 
   ngAfterViewInit() {
-    this.appStore.getWinnersMatchContainers().subscribe(matches => {
+    this.appStore.getWinnersMatchContainers().subscribe((matches) => {
       this.matches = null;
       this.matches = matches;
       this.changeDetectorRef.detectChanges();
     });
-    this.appStore.getLosersMatchContainers().subscribe(matches => {
+    this.appStore.getLosersMatchContainers().subscribe((matches) => {
       this.losersMatches = null;
       this.losersMatches = matches;
       this.changeDetectorRef.detectChanges();
@@ -72,10 +71,7 @@ export class BracketViewComponent
     );
 
     const matches = this.bracketHandler.createBracket(this.tournament);
-    this.appStore.setMatchContainers(
-      matches.matches,
-      matches.losersMatches
-    );
+    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
 
   ngOnDestroy(): void {
@@ -87,7 +83,36 @@ export class BracketViewComponent
     this.bracketSide = side;
   }
 
-  public trackMatch (index: number, item: MatchContainer) {
+  public trackMatch(index: number, item: MatchContainer) {
     return item._id;
+  }
+
+  mouseDown(e) {
+    this.isMouseDown = true;
+    this.bracketViewContainer.nativeElement.style.cursor = 'grabbing';
+    this.bracketViewContainer.nativeElement.style.userSelect = 'none';
+    this.pos = {
+      // The current scroll
+      left: this.bracketViewContainer.nativeElement.scrollLeft,
+      top: this.bracketViewContainer.nativeElement.scrollTop,
+      // Get the current mouse position
+      x: e.clientX,
+      y: e.clientY,
+    };
+  }
+
+  mouseMove(e) {
+    if (!this.isMouseDown) return;
+    // How far the mouse has been moved
+    const dx = e.clientX - this.pos.x;
+    const dy = e.clientY - this.pos.y;
+
+    this.bracketViewContainer.nativeElement.scrollTop = this.pos.top - dy;
+    this.bracketViewContainer.nativeElement.scrollLeft = this.pos.left - dx;
+  }
+
+  mouseUp() {
+    this.isMouseDown = false;
+    this.bracketViewContainer.nativeElement.style.cursor = 'grab';
   }
 }

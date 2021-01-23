@@ -1,6 +1,5 @@
 <ng-container *ngIf="this.tournament">
-  <div id="tournament-name">{{ this.tournament?.name }}</div>
-  <div style="margin-left: 10px;">
+  <div style="margin-left: 10px">
     <button
       mat-raised-button
       color="primary"
@@ -9,7 +8,11 @@
     >
       Edit
     </button>
-    <mat-spinner color="accent" diameter="30" *ngIf="isCheckingEditAccess"></mat-spinner>
+    <mat-spinner
+      color="accent"
+      diameter="30"
+      *ngIf="isCheckingEditAccess"
+    ></mat-spinner>
     <button
       mat-raised-button
       color="primary"
@@ -20,56 +23,72 @@
     </button>
   </div>
 
-  <mat-tab-group>
-    <mat-tab label="Bracket">
-      <bracket-view [tournament]="this.tournament" (showMatchDetailsEmitter)="showMatchDetails($event)"></bracket-view>
-    </mat-tab>
+  <mat-button-toggle-group class="action-buttons" #group="matButtonToggleGroup">
+    <mat-button-toggle value="left" (click)="showView('bracket')" aria-label="Bracket View">
+      <mat-icon>schema</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="center" (click)="showView('contestants')" aria-label="Contestants">
+      <mat-icon>people</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="right" (click)="showView('matches')" aria-label="Matches">
+      <mat-icon>format_list_numbered</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="justify" (click)="showView('updates')" aria-label="Updates">
+      <mat-icon>subscriptions</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 
-    <mat-tab label="Contestants">
-      <div>
-        {{ this.tournament?.contestants?.length || 0 }} /
-        {{ this.tournament?.contestantCount || 0 }} Contestants Registered
-      </div>
-      <button
-        *ngIf="
-          this.tournament?.contestants?.length <
-          this.tournament?.contestantCount
-        "
-        mat-raised-button
-        color="primary"
-        (click)="joinClicked()"
-      >
-        Join
-      </button>
-      <contestant-list
-        interactionMode="view"
-        [contestants]="this.tournament?.contestants || []"
-      ></contestant-list>
-    </mat-tab>
+  <div id="tournament-name">{{ this.tournament?.name }}</div>
+  <div label="Bracket" *ngIf="viewBeingShown === 'bracket'">
+    <bracket-view
+      [tournament]="this.tournament"
+      (showMatchDetailsEmitter)="showMatchDetails($event)"
+    ></bracket-view>
+  </div>
 
-    <mat-tab label="Matches">
-      <!-- <match-list [matches]="this.appStore.getWinnersMatchContainers() | async" (showMatchDetailsEmitter)="showMatchDetails($event)"></match-list> -->
-    </mat-tab>
+  <div label="Contestants" *ngIf="viewBeingShown === 'contestants'">
+    <div>
+      {{ this.tournament?.contestants?.length || 0 }} /
+      {{ this.tournament?.contestantCount || 0 }} Contestants Registered
+    </div>
+    <button
+      *ngIf="
+        this.tournament?.contestants?.length < this.tournament?.contestantCount
+      "
+      mat-raised-button
+      color="primary"
+      (click)="joinClicked()"
+    >
+      Join
+    </button>
+    <contestant-list
+      interactionMode="view"
+      [contestants]="this.tournament?.contestants || []"
+    ></contestant-list>
+  </div>
 
-    <mat-tab label="Updates">
-      <mat-card>
-        <mat-card-content>
-          Tournament created on
-          {{ this.tournament.createdOn | date: 'long' }}
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          Tournament created on
-          {{ this.tournament.createdOn | date: 'long' }}
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-content>
-          Tournament created on
-          {{ this.tournament.createdOn | date: 'long' }}
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
-  </mat-tab-group>
+  <div label="Matches" *ngIf="viewBeingShown === 'matches'">
+    <!-- <match-list [matches]="this.appStore.getWinnersMatchContainers() | async" (showMatchDetailsEmitter)="showMatchDetails($event)"></match-list> -->
+  </div>
+
+  <div label="Updates" *ngIf="viewBeingShown === 'updates'">
+    <mat-card>
+      <mat-card-content>
+        Tournament created on
+        {{ this.tournament.createdOn | date: 'long' }}
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        Tournament created on
+        {{ this.tournament.createdOn | date: 'long' }}
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        Tournament created on
+        {{ this.tournament.createdOn | date: 'long' }}
+      </mat-card-content>
+    </mat-card>
+  </div>
 </ng-container>

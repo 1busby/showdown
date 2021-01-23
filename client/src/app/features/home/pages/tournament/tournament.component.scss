@@ -5,10 +5,12 @@
 }
 
 #tournament-name {
-  text-align: center;
   width: 100%;
   font-size: 2em;
   font-weight: bold;
+  position: absolute;
+  left: 20px;
+  top: 150px;
 }
 
 .bracket-view {
