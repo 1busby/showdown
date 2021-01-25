@@ -15,6 +15,7 @@ export class RegisterUserGQL extends Mutation<{ registerUser: Partial<IUser> }> 
       }) {
         _id
         username
+        email
       }
     }
   `;

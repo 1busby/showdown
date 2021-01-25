@@ -15,6 +15,7 @@ export class SigninGQL extends Mutation<{ signin: Partial<IUser> }> {
       }) {
         _id
         username
+        email
       }
     }
   `;

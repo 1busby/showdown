@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 })
 export class SignupComponent {
   username: string = null;
+  email: string = null;
 
   constructor(
     private router: Router,
@@ -26,6 +27,6 @@ export class SignupComponent {
   }
 
   processSignup() {
-    this.authService.signup('', this.username).pipe(first()).subscribe();
+    this.authService.signup(this.email, this.username).pipe(first()).subscribe();
   }
 }

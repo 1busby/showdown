@@ -10,6 +10,7 @@ import { AuthService } from '@app/core';
 })
 export class LoginComponent {
   username: string = null;
+  email: string = null;
 
   constructor(
     private router: Router,
@@ -26,7 +27,7 @@ export class LoginComponent {
 
   processLogin() {
     if (this.username && this.username.length > 0) {
-      this.authService.login(null, this.username).subscribe(() => {
+      this.authService.login(this.email, this.username).subscribe(() => {
         this.router.navigateByUrl('/');
       });
     }
