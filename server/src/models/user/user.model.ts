@@ -11,6 +11,9 @@ export class User extends Document implements IUser, Contestant {
   _id: string;
 
   @Field({ nullable: true })
+  username?: string;
+
+  @Field({ nullable: true })
   email?: string;
 
   @Field({ nullable: true })
@@ -23,13 +26,12 @@ export class User extends Document implements IUser, Contestant {
   teams?: Team[];
 
   @Field({ nullable: true })
-  createdOn: Date;
+  createdOn?: Date;
 
   @Field({ nullable: true })
-  updatedOn: Date;
+  updatedOn?: Date;
 
   isRegistered?: boolean;
-
   // fields inherited from Contestant
   eventId?: string;
 

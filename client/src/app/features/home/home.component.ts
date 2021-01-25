@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AppStore, AuthenticationService, AlertService } from '@app/core';
+import { AppStore, AuthService, AlertService } from '@app/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ export class HomeComponent implements OnDestroy {
   constructor(
     private router: Router,
     private _snackBar: MatSnackBar,
-    private authenticationService: AuthenticationService,
+    private authenticationService: AuthService,
     public appStore: AppStore,
     private alertService: AlertService
   ) {
@@ -39,7 +39,7 @@ export class HomeComponent implements OnDestroy {
   }
 
   login() {
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/auth/login');
   }
 
   logout() {

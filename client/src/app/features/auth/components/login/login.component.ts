@@ -26,7 +26,7 @@ export class LoginComponent {
 
   processLogin() {
     if (this.username && this.username.length > 0) {
-      this.authService.login(this.username, '').subscribe(() => {
+      this.authService.login(null, this.username).subscribe(() => {
         this.router.navigateByUrl('/');
       });
     }

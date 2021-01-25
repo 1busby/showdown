@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '@app/core';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup',
@@ -25,6 +26,6 @@ export class SignupComponent {
   }
 
   processSignup() {
-    
+    this.authService.signup('', this.username).pipe(first()).subscribe();
   }
 }

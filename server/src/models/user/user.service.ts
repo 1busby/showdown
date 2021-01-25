@@ -4,22 +4,27 @@ import { Model } from 'mongoose';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersArgs } from './dto/users.args';
 import { User } from './user.model';
-
 @Injectable()
 export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-  async create(data: NewUserInput): Promise<User> {
+  create(data: NewUserInput): Promise<User> {
+    console.log('LOOK new user data ', data);
     const createdUser = new this.userModel({
       ...data,
       createdOn: Date.now(),
       updatedOn: Date.now(),
     });
-    return await createdUser.save();
+    return createdUser.save();
   }
-
+  
   async findOneById(id: string): Promise<User> {
-    return {} as any;
+    return this.userModel.findById(id);
+  }
+  
+  findOne({ username }): Promise<User> {
+    console.log('LOOK signin Data ', username);
+    return this.userModel.findOne({username}).exec();
   }
 
   async findOneByToken(token: string): Promise<User> {

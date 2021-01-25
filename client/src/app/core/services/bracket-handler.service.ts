@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { AppStore } from '../services/app.store.service';
-import { MatchContainer } from './match-container';
+import { AppStore } from '../data/app.store.service';
+import { MatchContainer } from '../utils/match-container';
 import { ITournament, IContestant } from '@app/shared';
 
 @Injectable({ providedIn: 'root' })
