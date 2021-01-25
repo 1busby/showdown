@@ -7,13 +7,13 @@ export * from './services/app.store.service';
 
 // GraphQL Services
 export * from './services/state.gql.service';
-export * from './services/graphql/tournament/tournament.gql.service';
-export * from './services/graphql/tournament/tournaments.gql.service';
-export * from './services/graphql/tournament/create-tournament.gql.service';
-export * from './services/graphql/tournament/edit-tournament.gql.service';
-export * from './services/graphql/tournament/join-tournament.gql.service';
-export * from './services/graphql/tournament/request-edit-access.gql.service';
-export * from './services/graphql/tournament/remove-contestant.gql.service';
+export * from './data/tournament/tournament.gql.service';
+export * from './data/tournament/tournaments.gql.service';
+export * from './data/tournament/create-tournament.gql.service';
+export * from './data/tournament/edit-tournament.gql.service';
+export * from './data/tournament/join-tournament.gql.service';
+export * from './data/tournament/request-edit-access.gql.service';
+export * from './data/tournament/remove-contestant.gql.service';
 
 export * from './utils/bracket-handler.service';
 export * from './utils/match-container';

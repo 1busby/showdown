@@ -1,0 +1,19 @@
+import { Injectable } from '@angular/core';
+import { Mutation } from 'apollo-angular';
+import gql from 'graphql-tag';
+
+import { IUser } from '@app/shared';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class RegisterUserGQL extends Mutation<{ registerUser: Partial<IUser> }> {
+  document = gql`
+    mutation registerUser($input: NewUserInput!) {
+      registerUser(newUserInput: $input) {
+        _id
+        token
+      }
+    }
+  `;
+}

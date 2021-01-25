@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 
-import { AppStore } from '@app/core';
+import { AppStore } from '../data/app.store.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
