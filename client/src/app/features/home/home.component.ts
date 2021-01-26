@@ -1,26 +1,29 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { AppStore, AuthService, AlertService } from '@app/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { AppStore, AuthService, AlertService } from '@app/core';
+import { IUser, LoginComponent } from '@app/shared';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<any>();
 
+  user: IUser = null;
+
   constructor(
-    private router: Router,
     private _snackBar: MatSnackBar,
     private authenticationService: AuthService,
     public appStore: AppStore,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public dialog: MatDialog
   ) {
     this.alertService.getAlert().pipe(takeUntil(this.ngUnsubscribe)).subscribe(alert => {
       if (!alert) {
@@ -33,13 +36,21 @@ export class HomeComponent implements OnDestroy {
     });
   }
 
+  ngOnInit() {
+    this.authenticationService.user.subscribe(user => {
+      this.user = user;
+    });
+  }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
   login() {
-    this.router.navigateByUrl('/auth/login');
+    this.dialog.open(LoginComponent, {
+      width: '250px',
+    });
   }
 
   logout() {

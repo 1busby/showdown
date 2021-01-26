@@ -4,41 +4,43 @@ import { first, map, switchMap } from 'rxjs/operators';
 import { Magic } from 'magic-sdk';
 
 import { IUser } from '@app/shared';
-import { SigninGQL } from '../data/user/signin.gql.service';
 import { UserGQL } from '../data/user/user.gql.service';
 import { RegisterUserGQL } from '../data/user/register-user.gql.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  magic;
-  loggedInUser: BehaviorSubject<IUser> = new BehaviorSubject<IUser>(null);
+  magic: Magic;
+  userId: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   isLoggedIn = false;
 
-  constructor(
-    private signinGql: SigninGQL,
-    private userGql: UserGQL,
-    private registerGql: RegisterUserGQL
-  ) {
+  constructor(private userGql: UserGQL, private registerGql: RegisterUserGQL) {
     this.magic = new Magic('pk_test_3E6E5F515983F699');
     this.magic.preload();
     // const user = JSON.parse(localStorage.getItem('loggedInUser'));
     // this.loggedInUser.next(user);
-    this.magic.user.isLoggedIn().then((isLoggedIn) => {
-      debugger
-      const userMetadata = this.magic.user.getMetadata();
-    })
+    this.magic.user
+      .isLoggedIn()
+      .then((isLoggedIn) => {
+        if (isLoggedIn) {
+          return this.magic.user.getMetadata();
+        }
+      })
+      .then((result) => {
+        this.userId.next(result.issuer);
+      })
+      .catch((error) => {
+        console.error('Error getting Logged in user ', error);
+      });
   }
 
-  user() {
+  get user() {
     // When our custom observable gets new data
-    return this.loggedInUser.pipe(
+    return this.userId.pipe(
       // use that data to query the user store the session info
-      switchMap((user) => {
-        if (user && user._id) {
-          localStorage.setItem('loggedInUser', JSON.stringify(user));
-          return this.userGql.watch({ id: user._id }).valueChanges;
+      switchMap((id) => {
+        if (id) {
+          return this.userGql.watch({ id }).valueChanges;
         } else {
-          localStorage.removeItem('loggedInUser');
           // tslint:disable-next-line:deprecation
           return of(null);
         }
@@ -54,32 +56,26 @@ export class AuthService {
     return this.registerGql.mutate({ email, username }).pipe(
       first(),
       map((user) => {
-        this.loggedInUser.next(user.data.registerUser as IUser);
+        this.userId.next(user.data.registerUser._id);
         return user;
       })
     );
   }
 
-  login(email, username) {
-    debugger
+  login(email) {
     if (email) {
       /* One-liner login 🤯 */
-      return this.magic.auth.loginWithMagicLink({ email })
-      .then(() => {
-        return this.magic.auth.loginWithCredential();
-      })
-      .then(() => {
-        return this.magic.user.getMetadata();
-      })
-      .then((metadata) => {
-        return this.signinGql.mutate({ email, username }).pipe(
-          first(),
-          map((user) => {
-            this.loggedInUser.next(user.data.signin as IUser);
-            return user;
-          })
-        );
-      });
+      return this.magic.auth
+        .loginWithMagicLink({ email })
+        .then(() => {
+          return this.magic.user.getMetadata();
+        })
+        .then((result) => {
+          return this.userId.next(result.issuer);
+        })
+        .catch((err) => {
+          console.error('Could not log in beacuse ', err);
+        });
     }
   }
 

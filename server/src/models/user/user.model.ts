@@ -9,6 +9,9 @@ import { Contestant } from '../contestant/contestant.entity';
 export class User extends Document implements IUser, Contestant {
   @Field(type => ID)
   _id: string;
+  
+  @Field(type => ID)
+  dId: string;
 
   @Field({ nullable: true })
   username?: string;

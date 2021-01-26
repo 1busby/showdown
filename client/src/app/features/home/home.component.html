@@ -5,7 +5,7 @@
 
   <span>
     <button
-      *ngIf="!(appStore.loggedInUser | async)"
+      *ngIf="!user?._id"
       class="login-button"
       color="primary"
       isRoundButton="true"
@@ -15,7 +15,7 @@
       Log In
       <mat-icon>login</mat-icon>
     </button>
-    <button *ngIf="appStore.loggedInUser | async" mat-button (click)="logout()">
+    <button *ngIf="user?._id" mat-button (click)="logout()">
       Logout
     </button>
   </span>
