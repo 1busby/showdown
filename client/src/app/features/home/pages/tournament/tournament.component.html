@@ -24,21 +24,41 @@
   </div>
 
   <mat-button-toggle-group class="action-buttons" #group="matButtonToggleGroup">
-    <mat-button-toggle value="left" (click)="showView('bracket')" aria-label="Bracket View">
+    <mat-button-toggle
+      value="left"
+      (click)="showView('bracket')"
+      aria-label="Bracket View"
+    >
       <mat-icon>schema</mat-icon>
     </mat-button-toggle>
-    <mat-button-toggle value="center" (click)="showView('contestants')" aria-label="Contestants">
+    <mat-button-toggle
+      value="center"
+      (click)="showView('contestants')"
+      aria-label="Contestants"
+    >
       <mat-icon>people</mat-icon>
     </mat-button-toggle>
-    <mat-button-toggle value="right" (click)="showView('matches')" aria-label="Matches">
+    <mat-button-toggle
+      value="right"
+      (click)="showView('matches')"
+      aria-label="Matches"
+    >
       <mat-icon>format_list_numbered</mat-icon>
     </mat-button-toggle>
-    <mat-button-toggle value="justify" (click)="showView('updates')" aria-label="Updates">
+    <mat-button-toggle
+      value="justify"
+      (click)="showView('updates')"
+      aria-label="Updates"
+    >
       <mat-icon>subscriptions</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
 
-  <div id="tournament-name">{{ this.tournament?.name }}</div>
+  <div id="tournament-name">
+    <p>
+      {{ this.tournament?.name }}
+    </p>
+  </div>
   <div label="Bracket" *ngIf="viewBeingShown === 'bracket'">
     <bracket-view
       [tournament]="this.tournament"

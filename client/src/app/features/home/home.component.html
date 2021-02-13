@@ -1,24 +1,21 @@
-<div>
-  <button [routerLink]="'/'" mat-fab color="primary">
-    <mat-icon>home</mat-icon>
+<button class="home-button" [routerLink]="'/'" mat-fab color="primary">
+  <mat-icon>home</mat-icon>
+</button>
+<!-- <span>
+  <button
+    *ngIf="!user?._id"
+    class="login-button"
+    color="primary"
+    isRoundButton="true"
+    mat-raised-button
+    (click)="login()"
+  >
+    Log In
+    <mat-icon>login</mat-icon>
   </button>
-
-  <span>
-    <button
-      *ngIf="!user?._id"
-      class="login-button"
-      color="primary"
-      isRoundButton="true"
-      mat-raised-button
-      (click)="login()"
-    >
-      Log In
-      <mat-icon>login</mat-icon>
-    </button>
-    <button *ngIf="user?._id" mat-button (click)="logout()">
-      Logout
-    </button>
-  </span>
-</div>
+  <button *ngIf="user?._id" mat-button (click)="logout()">
+    Logout
+  </button>
+</span> -->
 
 <router-outlet></router-outlet>

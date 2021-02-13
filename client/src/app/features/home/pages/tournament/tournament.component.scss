@@ -4,13 +4,19 @@
   flex-direction: column;
 }
 
+.action-buttons {
+  margin: auto;
+}
+
 #tournament-name {
   width: 100%;
   font-size: 2em;
   font-weight: bold;
-  position: absolute;
-  left: 20px;
-  top: 150px;
+
+  p {
+    margin: auto;
+    width: fit-content;
+  }
 }
 
 .bracket-view {
