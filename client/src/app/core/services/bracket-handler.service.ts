@@ -193,7 +193,7 @@ export class BracketHandler {
     }
 
     if (this.activeTournament.structure === 'double-elim') {
-      // Create extra macth for final showdown
+      // Create extra match for final showdown
       const newMatch = new MatchContainer();
       newMatch.roundNumber = this.matchesPerRound.length;
       const numWinnersRound = this.matchesPerRound.length - 1;
@@ -341,6 +341,14 @@ export class BracketHandler {
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
       }
+    }
+
+    if (this.activeTournament.structure === 'double-elim') {
+      let thisMatch = this.matchesPerRound[this.matchesPerRound.length - 1][0];
+      thisMatch.top =
+            thisMatch.highMatch.top;
+          thisMatch.left =
+            thisMatch.highMatch.left + this.matchWidth + this.margin * (this.matchesPerRound.length + 1);
     }
 
     for (let index = soonToBeRemovedIndexes.length - 1; index >= 0; index--) {
