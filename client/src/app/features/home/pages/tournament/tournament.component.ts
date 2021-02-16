@@ -71,7 +71,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
         console.log('LOOK TournamentComponent new tournamet data ', result.data.tournament);
         this.tournament = result.data.tournament;
-        debugger
         // this.tournament.contestants = this.tournament.contestants
         //   .slice()
         //   .sort((a, b) => a.seed - b.seed);

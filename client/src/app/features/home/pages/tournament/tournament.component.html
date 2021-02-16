@@ -88,27 +88,25 @@
   </div>
 
   <div label="Matches" *ngIf="viewBeingShown === 'matches'">
-    <match-list [matches]="this.appStore.getWinnersMatchContainers() | async" (showMatchDetailsEmitter)="showMatchDetails($event)"></match-list>
+    <match-list
+      [matches]="this.appStore.getWinnersMatchContainers() | async"
+      (showMatchDetailsEmitter)="showMatchDetails($event)"
+    ></match-list>
   </div>
 
   <div label="Updates" *ngIf="viewBeingShown === 'updates'">
-    <mat-card>
-      <mat-card-content>
-        Tournament created on
-        {{ this.tournament.createdOn | date: 'long' }}
-      </mat-card-content>
-    </mat-card>
-    <mat-card>
-      <mat-card-content>
-        Tournament created on
-        {{ this.tournament.createdOn | date: 'long' }}
-      </mat-card-content>
-    </mat-card>
-    <mat-card>
-      <mat-card-content>
-        Tournament created on
-        {{ this.tournament.createdOn | date: 'long' }}
-      </mat-card-content>
-    </mat-card>
+    <ng-container *ngFor="let update of tournament.updates">
+      <mat-card>
+        <mat-card-title>
+          {{ update.title }}
+        </mat-card-title>
+        <mat-card-content>
+          {{ update.description }}
+        </mat-card-content>
+        <mat-card-footer>
+          {{ update.createdOn | date: 'long' }}
+        </mat-card-footer>
+      </mat-card>
+    </ng-container>
   </div>
 </ng-container>
