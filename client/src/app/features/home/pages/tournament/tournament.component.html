@@ -88,7 +88,7 @@
   </div>
 
   <div label="Matches" *ngIf="viewBeingShown === 'matches'">
-    <!-- <match-list [matches]="this.appStore.getWinnersMatchContainers() | async" (showMatchDetailsEmitter)="showMatchDetails($event)"></match-list> -->
+    <match-list [matches]="this.appStore.getWinnersMatchContainers() | async" (showMatchDetailsEmitter)="showMatchDetails($event)"></match-list>
   </div>
 
   <div label="Updates" *ngIf="viewBeingShown === 'updates'">

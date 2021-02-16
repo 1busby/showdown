@@ -35,4 +35,12 @@ export class MatchCardComponent implements OnInit, OnChanges {
       }
     });
   }
+
+  getPlaceholderText(seed: 'high' | 'low') {
+    if (seed === 'high') {
+      return this.match.highSeedSource === 'winner' ? `Winner of ${this.match.highMatch.matchNumber + 1}` : `Loser of ${this.match.highMatch.matchNumber + 1}`;
+    } else {
+      return this.match.lowSeedSource === 'loser' ? `Loser of ${this.match.lowMatch.matchNumber + 1}` : `Winner of ${this.match.lowMatch.matchNumber + 1}`;
+    }
+  }
 }

@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import { MatchSchema } from '@models/match/match.schema';
+import { UpdateSchema } from '@models/update/update.schema';
 
 const anonymousContestantSchema = new mongoose.Schema({
   name: String,
@@ -37,4 +38,5 @@ export const TournamentSchema = new mongoose.Schema({
   allowSelfScoring: Boolean,
   structure: String,
   anonymousContestants: [anonymousContestantSchema],
+  updates: [UpdateSchema]
 });

@@ -142,6 +142,7 @@ type Tournament {
   contestants: [Contestant]
   teams: [Team]
   matches: [Match]
+  updates: [Update]
   createdOn: Date
   updatedOn: Date
   linkCode: String
@@ -151,6 +152,14 @@ type Tournament {
   allowRegistration: Boolean
   allowSelfScoring: Boolean
   structure: String
+}
+
+"""The update model"""
+type Update {
+  _id: ID!
+  title: String
+  description: String
+  createdOn: Date
 }
 
 input UpdateTournamentInput {

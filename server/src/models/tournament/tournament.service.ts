@@ -10,7 +10,7 @@ import { Tournament } from './tournament.model';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
-import { CustomLogger, IContestant, ITournament } from '@shared/index';
+import { CustomLogger } from '@shared/index';
 import { merge } from 'rxjs';
 
 @Injectable()
@@ -23,6 +23,7 @@ export class TournamentsService {
 
   async create(data: NewTournamentInput): Promise<Tournament> {
     const anonymousContestants = [];
+    const currentDate = Date.now();
 
     // tslint:disable-next-line: prefer-for-of
     for (let i = data.contestants.length - 1; i >= 0; i--) {
@@ -34,9 +35,16 @@ export class TournamentsService {
     const createdTournament = new this.tournamentModel({
       ...data,
       linkCode: shortid.generate(),
-      createdOn: Date.now(),
-      updatedOn: Date.now(),
+      createdOn: currentDate,
+      updatedOn: currentDate,
       anonymousContestants,
+      updates: [
+        {
+          title: 'Showdown time!',
+          description: 'GLHF',
+          createdOn: currentDate,
+        },
+      ],
     });
     return await createdTournament
       .save()
@@ -61,6 +69,7 @@ export class TournamentsService {
     return this.tournamentModel
       .findOne({ linkCode })
       .populate('contestants')
+      .populate('updates')
       .then(tournament => {
         tournament = tournament.toJSON();
         tournament.contestants = [

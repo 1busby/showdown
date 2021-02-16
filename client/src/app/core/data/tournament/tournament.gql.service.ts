@@ -31,6 +31,12 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         matches {
           ...allFields
         }
+        updates {
+          _id
+          title
+          description
+          createdOn
+        }
       }
     }
 

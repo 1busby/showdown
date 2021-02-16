@@ -15,6 +15,7 @@ import { HealthController } from './health.controller';
 import { TournamentsModule } from './models/tournament/tournament.module';
 import { UsersModule } from './models/user/user.module';
 import { MatchModule } from './models/match/match.module';
+import { UpdateModule } from '@models/update/update.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { MatchModule } from './models/match/match.module';
     UsersModule,
     TournamentsModule,
     MatchModule,
+    UpdateModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

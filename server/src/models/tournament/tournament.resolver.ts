@@ -37,6 +37,7 @@ export class TournamentsResolver {
     @Args('id', { nullable: true }) id?: string,
     @Args('linkCode', { nullable: true }) linkCode?: string,
   ): Promise<Tournament> {
+    this.logger.info('LOOK getting tournament id or linkCode = ' , id || linkCode);
     try {
       let tournament: Tournament;
       if (id) {
@@ -50,8 +51,11 @@ export class TournamentsResolver {
         );
       }
       if (!tournament) {
+        this.logger.info('LOOK tournement not found!');
         throw new NotFoundException('Tournament Not Found');
       }
+
+      this.logger.info('LOOK returning tournement ', tournament);
 
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
