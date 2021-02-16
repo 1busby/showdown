@@ -6,8 +6,6 @@ import {
   Resolver,
   Subscription,
   ID,
-  ResolveField,
-  Parent,
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
@@ -18,7 +16,6 @@ import { TournamentsService } from './tournament.service';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
-import { Match } from '@models/match/match.model';
 import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
 
@@ -37,7 +34,10 @@ export class TournamentsResolver {
     @Args('id', { nullable: true }) id?: string,
     @Args('linkCode', { nullable: true }) linkCode?: string,
   ): Promise<Tournament> {
-    this.logger.info('LOOK getting tournament id or linkCode = ' , id || linkCode);
+    this.logger.info(
+      'LOOK getting tournament id or linkCode = ',
+      id || linkCode,
+    );
     try {
       let tournament: Tournament;
       if (id) {
@@ -54,8 +54,6 @@ export class TournamentsResolver {
         this.logger.info('LOOK tournement not found!');
         throw new NotFoundException('Tournament Not Found');
       }
-
-      this.logger.info('LOOK returning tournement ', tournament);
 
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
@@ -96,6 +94,27 @@ export class TournamentsResolver {
       console.log('LOOK res ', res);
       return res;
     });
+  }
+
+  @Mutation(returns => Tournament)
+  async runTournament(@Args('_id', { type: () => ID }) _id: string): Promise<Tournament> {
+    console.log('LOOK tournament _id ', _id);
+    return this.tournamentsService
+      .updateOne({
+        _id,
+        hasStarted: true,
+        updates: [
+          {
+            title: 'Showdown started!',
+            description: 'Showdown has been started.',
+            createdOn: Date.now()
+          }
+        ]
+      })
+      .then(res => {
+        console.log('LOOK res ', res);
+        return res;
+      });
   }
 
   @Mutation(returns => Tournament)

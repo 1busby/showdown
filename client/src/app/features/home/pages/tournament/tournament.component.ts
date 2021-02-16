@@ -12,6 +12,7 @@ import {
   AppStore,
   MatchContainer,
   EditTournamentGQL,
+  RunTournamentGQL,
 } from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
@@ -40,7 +41,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private appStore: AppStore,
     private matchService: MatchService,
-    private editTournamentGql: EditTournamentGQL
+    private editTournamentGql: EditTournamentGQL,
+    private runTournamentGql: RunTournamentGQL
   ) {}
 
   ngOnInit() {
@@ -121,8 +123,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
           if (result.data['requestEditAccess'].canEdit) {
             this.isCheckingEditAccess = false;
             if (runTournament) {
-              this.editTournamentGql
-                .mutate({ _id: this.tournament._id, hasStarted: true })
+              this.runTournamentGql
+                .mutate({ _id: this.tournament._id })
                 .pipe(first())
                 .subscribe();
             } else {

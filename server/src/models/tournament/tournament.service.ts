@@ -40,7 +40,7 @@ export class TournamentsService {
       anonymousContestants,
       updates: [
         {
-          title: 'Showdown time!',
+          title: 'Showdown created!',
           description: 'GLHF',
           createdOn: currentDate,
         },
@@ -89,7 +89,7 @@ export class TournamentsService {
   ): Promise<Tournament> {
     console.log('LOOK updateOne data ', JSON.stringify(data));
     // separate anonymous users from regular users
-    const { _id, matches, ...updateData } = data;
+    const { _id, matches = [], updates, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
       const anonymousContestants = [];
       for (let i = data.contestants.length - 1; i >= 0; i--) {
@@ -101,9 +101,9 @@ export class TournamentsService {
       updateData.anonymousContestants = anonymousContestants;
     }
 
-    let matchIds: string[] = [];
+    let updateIds: string[] = [];
     if (matches && matches.length > 0) {
-      matchIds = matches.map(match => {
+      updateIds = matches.map(match => {
         // check if match has a winner
         if (!match.winnerSeed) {
           let highseedSetsWon = 0,
@@ -135,17 +135,43 @@ export class TournamentsService {
           in: {
             $cond: {
               if: {
-                $in: ['$$match._id', matchIds],
+                $in: ['$$match._id', updateIds],
               },
               then: {
                 $arrayElemAt: [
                   matches,
                   {
-                    $indexOfArray: [matchIds, '$$match._id'],
+                    $indexOfArray: [updateIds, '$$match._id'],
                   },
                 ],
               },
               else: '$$match',
+            },
+          },
+        },
+      };
+    }
+
+    if (updates && updates.length > 0) {
+      updateIds = updates.map(update =>  new ObjectId(update._id) as any);
+      updateData.updates = {
+        $map: {
+          input: '$updates',
+          as: 'update',
+          in: {
+            $cond: {
+              if: {
+                $in: ['$$update._id', updateIds],
+              },
+              then: {
+                $arrayElemAt: [
+                  updates,
+                  {
+                    $indexOfArray: [updateIds, '$$update._id'],
+                  },
+                ],
+              },
+              else: '$$update',
             },
           },
         },

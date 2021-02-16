@@ -24,6 +24,7 @@ export * from './data/tournament/tournament.gql.service';
 export * from './data/tournament/tournaments.gql.service';
 export * from './data/tournament/create-tournament.gql.service';
 export * from './data/tournament/edit-tournament.gql.service';
+export * from './data/tournament/run-tournament.gql.service';
 export * from './data/tournament/join-tournament.gql.service';
 export * from './data/tournament/request-edit-access.gql.service';
 export * from './data/tournament/remove-contestant.gql.service';
