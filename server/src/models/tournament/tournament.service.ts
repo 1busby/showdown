@@ -153,29 +153,8 @@ export class TournamentsService {
     }
 
     if (updates && updates.length > 0) {
-      updateIds = updates.map(update =>  new ObjectId(update._id) as any);
-      updateData.updates = {
-        $map: {
-          input: '$updates',
-          as: 'update',
-          in: {
-            $cond: {
-              if: {
-                $in: ['$$update._id', updateIds],
-              },
-              then: {
-                $arrayElemAt: [
-                  updates,
-                  {
-                    $indexOfArray: [updateIds, '$$update._id'],
-                  },
-                ],
-              },
-              else: '$$update',
-            },
-          },
-        },
-      };
+      updates.forEach(update => update._id = new ObjectId(update._id) as any);
+      updateData.updates = { $concatArrays: ['$updates', updates] };
     }
 
     return this.tournamentModel

@@ -4,6 +4,16 @@
   flex-direction: column;
 }
 
+.admin-buttons {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  button {
+    margin-right: 5px;
+  }
+}
+
 .action-buttons {
   margin: auto;
 }
