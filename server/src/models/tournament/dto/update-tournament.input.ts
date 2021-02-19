@@ -2,6 +2,7 @@ import { MaxLength } from 'class-validator';
 import { Field, InputType, ID, Int } from '@nestjs/graphql';
 import { ContestantInput } from '../../contestant/contestant.input';
 import { MatchInput } from '@models/match/dto/match.input';
+import { UpdateInput } from '@models/update/dto/update.input';
 
 @InputType()
 export class UpdateTournamentInput {
@@ -24,6 +25,9 @@ export class UpdateTournamentInput {
 
   @Field(type => [MatchInput], { nullable: 'itemsAndList' })
   matches?: MatchInput[];
+
+  @Field(type => [UpdateInput], { nullable: 'itemsAndList' })
+  updates?: UpdateInput[];
 
   @Field({ nullable: true })
   editAccessCode?: string;

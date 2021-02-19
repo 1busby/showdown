@@ -163,6 +163,13 @@ type Update {
   createdOn: Date
 }
 
+input UpdateInput {
+  title: String
+  description: String
+  recipientIds: [ID]
+  createdOn: Int
+}
+
 input UpdateTournamentInput {
   _id: ID!
   name: String
@@ -170,6 +177,7 @@ input UpdateTournamentInput {
   contestantCount: Int
   contestants: [ContestantInput]
   matches: [MatchInput]
+  updates: [UpdateInput]
   editAccessCode: String
   updatedBy: ID
   setCount: Int

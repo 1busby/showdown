@@ -101,33 +101,9 @@ export class TournamentsService {
       updateData.anonymousContestants = anonymousContestants;
     }
 
-    let updateIds: string[] = [];
+    let matchIds: string[] = [];
     if (matches && matches.length > 0) {
-      updateIds = matches.map(match => {
-        // check if match has a winner
-        if (!match.winnerSeed) {
-          let highseedSetsWon = 0,
-            lowseedSetsWon = 0;
-          match.sets.forEach(set => {
-            if (set.outcome === 'high') {
-              highseedSetsWon++;
-            } else if (set.outcome === 'low') {
-              lowseedSetsWon++;
-            }
-          });
-
-          if (highseedSetsWon + lowseedSetsWon >= match.sets.length) {
-            if (highseedSetsWon > lowseedSetsWon) {
-              match.winnerSeed = 'HIGHSEED';
-            } else {
-              match.winnerSeed = 'LOWSEED';
-            }
-          }
-        }
-
-        match._id = new ObjectId(match._id) as any;
-        return match._id;
-      });
+      matchIds = matches.map(match => new ObjectId(match._id) as any);
       updateData.matches = {
         $map: {
           input: '$matches',
@@ -135,13 +111,13 @@ export class TournamentsService {
           in: {
             $cond: {
               if: {
-                $in: ['$$match._id', updateIds],
+                $in: ['$$match._id', matchIds],
               },
               then: {
                 $arrayElemAt: [
                   matches,
                   {
-                    $indexOfArray: [updateIds, '$$match._id'],
+                    $indexOfArray: [matchIds, '$$match._id'],
                   },
                 ],
               },

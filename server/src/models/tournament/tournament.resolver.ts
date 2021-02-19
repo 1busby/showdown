@@ -90,6 +90,34 @@ export class TournamentsResolver {
   async updateTournament(
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
   ): Promise<Tournament> {
+    let updates = [];
+    updateTournamentData.matches.forEach(match => {
+      // check if match has a winner
+      if (!match.winnerSeed) {
+        let highseedSetsWon = 0,
+          lowseedSetsWon = 0;
+        match.sets.forEach(set => {
+          if (set.outcome === 'high') {
+            highseedSetsWon++;
+          } else if (set.outcome === 'low') {
+            lowseedSetsWon++;
+          }
+        });
+
+        if (highseedSetsWon + lowseedSetsWon >= match.sets.length) {
+          if (highseedSetsWon > lowseedSetsWon) {
+            match.winnerSeed = 'HIGHSEED';
+          } else {
+            match.winnerSeed = 'LOWSEED';
+          }
+
+          updates.push({
+            title: 'Match Won',
+            description: 'A match has been won!',
+          });
+        }
+      }
+    });
     return this.tournamentsService.updateOne(updateTournamentData).then(res => {
       console.log('LOOK res ', res);
       return res;
@@ -97,7 +125,9 @@ export class TournamentsResolver {
   }
 
   @Mutation(returns => Tournament)
-  async runTournament(@Args('_id', { type: () => ID }) _id: string): Promise<Tournament> {
+  async runTournament(
+    @Args('_id', { type: () => ID }) _id: string,
+  ): Promise<Tournament> {
     console.log('LOOK tournament _id ', _id);
     return this.tournamentsService
       .updateOne({
@@ -107,9 +137,9 @@ export class TournamentsResolver {
           {
             title: 'Showdown started!',
             description: 'Showdown has been started.',
-            createdOn: Date.now()
-          }
-        ]
+            createdOn: Date.now(),
+          },
+        ],
       })
       .then(res => {
         console.log('LOOK res ', res);
