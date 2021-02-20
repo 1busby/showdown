@@ -18,6 +18,8 @@ import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
 import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
+import { MatchInput } from '@models/match/dto/match.input';
+import { Match } from '@models/match/match.model';
 
 const pubSub = new PubSub();
 
@@ -90,36 +92,8 @@ export class TournamentsResolver {
   async updateTournament(
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
   ): Promise<Tournament> {
-    let updates = [];
-    updateTournamentData.matches.forEach(match => {
-      // check if match has a winner
-      if (!match.winnerSeed) {
-        let highseedSetsWon = 0,
-          lowseedSetsWon = 0;
-        match.sets.forEach(set => {
-          if (set.outcome === 'high') {
-            highseedSetsWon++;
-          } else if (set.outcome === 'low') {
-            lowseedSetsWon++;
-          }
-        });
-
-        if (highseedSetsWon + lowseedSetsWon >= match.sets.length) {
-          if (highseedSetsWon > lowseedSetsWon) {
-            match.winnerSeed = 'HIGHSEED';
-          } else {
-            match.winnerSeed = 'LOWSEED';
-          }
-
-          updates.push({
-            title: 'Match Won',
-            description: 'A match has been won!',
-          });
-        }
-      }
-    });
     return this.tournamentsService.updateOne(updateTournamentData).then(res => {
-      console.log('LOOK res ', res);
+      this.logger.log('LOOK res ' + res);
       return res;
     });
   }
@@ -128,7 +102,7 @@ export class TournamentsResolver {
   async runTournament(
     @Args('_id', { type: () => ID }) _id: string,
   ): Promise<Tournament> {
-    console.log('LOOK tournament _id ', _id);
+    this.logger.log('LOOK tournament _id ', _id);
     return this.tournamentsService
       .updateOne({
         _id,
@@ -137,12 +111,12 @@ export class TournamentsResolver {
           {
             title: 'Showdown started!',
             description: 'Showdown has been started.',
-            createdOn: Date.now(),
+            createdOn: new Date(),
           },
         ],
       })
       .then(res => {
-        console.log('LOOK res ', res);
+        this.logger.log('LOOK res ' + res);
         return res;
       });
   }
@@ -167,6 +141,61 @@ export class TournamentsResolver {
   @Mutation(returns => Boolean)
   removeTournament(@Args('id') id: string) {
     return this.tournamentsService.remove(id);
+  }
+
+  @Mutation(returns => Tournament)
+  reportMatchScore(@Args('matchData') matchData: MatchInput) {
+    if (!matchData.tournamentId) {
+      return 'No tournament ID received!';
+    }
+
+    return this.tournamentsService
+      .findOneById(matchData.tournamentId)
+      .then(tournament => {
+        this.logger.log('LOOK Tournament fetched: ' + tournament);
+        const updates = [];
+        // const match = 
+        // check if match has a winner
+        if (!matchData.winnerSeed) {
+          let highseedSetsWon = 0;
+          let lowseedSetsWon = 0;
+          matchData.sets.forEach(set => {
+            if (set.outcome === 'high') {
+              highseedSetsWon++;
+            } else if (set.outcome === 'low') {
+              lowseedSetsWon++;
+            }
+          });
+
+          if (highseedSetsWon + lowseedSetsWon >= matchData.sets.length) {
+            const currentDate = new Date();
+            if (highseedSetsWon > lowseedSetsWon) {
+              matchData.winnerSeed = 'HIGHSEED';
+              updates.push({
+                title: `Match ${matchData.matchNumber + 1} goes to {HighSeed}`,
+                description: 'TODO match won description',
+                createOn: currentDate
+              });
+            } else {
+              matchData.winnerSeed = 'LOWSEED';
+              updates.push({
+                title: `Match ${matchData.matchNumber + 1} goes to {HighSeed}`,
+                description: 'TODO match won description',
+                createOn: currentDate
+              });
+            }
+          }
+        }
+        return this.tournamentsService.updateOne({
+          _id: matchData.tournamentId,
+          matches: [matchData],
+          updates,
+        });
+      })
+      .then(res => {
+        this.logger.log('LOOK res ' + res);
+        return res;
+      });
   }
 
   @Subscription(returns => Tournament)

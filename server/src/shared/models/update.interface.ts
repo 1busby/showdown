@@ -4,6 +4,6 @@ export interface IUpdate {
   _id?: string;
   title?: string;
   description?: string;
-  createdOn?: number;
+  createdOn?: Date;
   notificationRecipients?: IUser[];
 }

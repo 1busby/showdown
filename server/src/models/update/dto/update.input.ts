@@ -1,9 +1,11 @@
 import { Field, InputType, ID, Int } from '@nestjs/graphql';
 
-import { IUpdate, IUser } from '@shared/index';
+import { IUpdate } from '@shared/index';
 
 @InputType()
 export class UpdateInput implements Partial<IUpdate> {
+  _id?: string;
+
   @Field({ nullable: true })
   title?: string;
 
@@ -14,5 +16,5 @@ export class UpdateInput implements Partial<IUpdate> {
   recipientIds?: string[];
 
   @Field(type => Int, { nullable: true })
-  createdOn?: number;
+  createdOn?: Date;
 }

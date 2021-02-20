@@ -8,6 +8,9 @@ export class MatchInput implements Partial<IMatch> {
   @Field(type => ID, { nullable: true })
   _id?: string;
 
+  @Field(type => ID, { nullable: true })
+  tournamentId?: string;
+
   @Field(type => Int, { nullable: true })
   matchNumber?: number;
 
