@@ -2,6 +2,9 @@ import { ITeam as Team } from './';
 import { IContestant } from './contestant.interface';
 
 export interface IUser extends IContestant {
+  _id?: string;
+  dId?: string;
+  username?: string;
   email?: string;
   teams?: Team[];
   createdOn?: Date;

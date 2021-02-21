@@ -3,6 +3,7 @@ import mongodb = require('mongodb');
 
 export const UserSchema = new mongoose.Schema({
   username: String,
+  dId: String,
   email: String,
   firstName: String,
   lastName: String,

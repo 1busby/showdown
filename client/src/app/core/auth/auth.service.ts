@@ -6,27 +6,38 @@ import { Magic } from 'magic-sdk';
 import { IUser } from '@app/shared';
 import { UserGQL } from '../data/user/user.gql.service';
 import { RegisterUserGQL } from '../data/user/register-user.gql.service';
+import { IconExtension } from '@magic-ext/icon';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   magic: Magic;
   userId: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   isLoggedIn = false;
+  publicAddress;
 
   constructor(private userGql: UserGQL, private registerGql: RegisterUserGQL) {
-    this.magic = new Magic('pk_test_3E6E5F515983F699');
+    this.magic = new Magic('pk_test_3E6E5F515983F699', {
+      extensions: [
+        new IconExtension({
+          rpcUrl: 'https://bicon.net.solidwallet.io/api/v3',
+        }),
+      ],
+    });
     this.magic.preload();
     // const user = JSON.parse(localStorage.getItem('loggedInUser'));
     // this.loggedInUser.next(user);
     this.magic.user
       .isLoggedIn()
       .then((isLoggedIn) => {
+        console.log('LOOK isLoggedIn ', isLoggedIn);
         if (isLoggedIn) {
-          return this.magic.user.getMetadata();
+          return this.fetchUserAddressMetadata();
         }
       })
       .then((result) => {
-        this.userId.next(result.issuer);
+        if (result) {
+          this.userId.next(result.issuer);
+        }
       })
       .catch((error) => {
         console.error('Error getting Logged in user ', error);
@@ -37,9 +48,9 @@ export class AuthService {
     // When our custom observable gets new data
     return this.userId.pipe(
       // use that data to query the user store the session info
-      switchMap((id) => {
-        if (id) {
-          return this.userGql.watch({ id }).valueChanges;
+      switchMap((dId) => {
+        if (dId) {
+          return this.userGql.watch({ dId }).valueChanges;
         } else {
           // tslint:disable-next-line:deprecation
           return of(null);
@@ -53,13 +64,23 @@ export class AuthService {
   }
 
   signup(email, username) {
-    return this.registerGql.mutate({ email, username }).pipe(
-      first(),
-      map((user) => {
-        this.userId.next(user.data.registerUser._id);
-        return user;
-      })
-    );
+    if (email && username) {
+      /* One-liner login 🤯 */
+      return this.magic.auth
+        .loginWithMagicLink({ email })
+        .then(() => {
+          return this.fetchUserAddressMetadata();
+        })
+        .then(result => {
+          return this.registerGql.mutate({ dId: result.issuer, username, email }).toPromise();
+        })
+        .then((result) => {
+          return this.userId.next(result.data.registerUser._id);
+        })
+        .catch((err) => {
+          console.error('Could not log in beacuse ', err);
+        });
+    }
   }
 
   login(email) {
@@ -68,7 +89,7 @@ export class AuthService {
       return this.magic.auth
         .loginWithMagicLink({ email })
         .then(() => {
-          return this.magic.user.getMetadata();
+          return this.fetchUserAddressMetadata();
         })
         .then((result) => {
           return this.userId.next(result.issuer);
@@ -83,5 +104,10 @@ export class AuthService {
     // remove user from local storage and set current user to null
     // this.loggedInUser.next({} as any);
     return this.magic.user.logout();
+  }
+
+  private async fetchUserAddressMetadata() {
+    this.publicAddress = await (this.magic.icon as any).getAccount();
+    return this.magic.user.getMetadata();
   }
 }

@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _snackBar: MatSnackBar,
-    private authenticationService: AuthService,
+    private authService: AuthService,
     public appStore: AppStore,
     private alertService: AlertService,
     public dialog: MatDialog
@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authenticationService.user.subscribe(user => {
+    this.authService.user.subscribe(user => {
+      console.log('LOOK homeComponent user ', user);
       this.user = user;
     });
   }
@@ -54,6 +55,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authenticationService.logout();
+    this.authService.logout();
   }
 }

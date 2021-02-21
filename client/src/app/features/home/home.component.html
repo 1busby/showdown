@@ -1,7 +1,7 @@
 <button class="home-button" [routerLink]="'/'" mat-fab color="primary">
   <mat-icon>home</mat-icon>
 </button>
-<!-- <span>
+<span>
   <button
     *ngIf="!user?._id"
     class="login-button"
@@ -13,9 +13,12 @@
     Log In
     <mat-icon>login</mat-icon>
   </button>
-  <button *ngIf="user?._id" mat-button (click)="logout()">
+  <!-- *ngIf="user?._id" -->
+  <button class="logout-button" mat-button (click)="logout()">
     Logout
   </button>
-</span> -->
+
+  {{ user.username }}
+</span>
 
 <router-outlet></router-outlet>

@@ -11,6 +11,8 @@ export class LoginComponent {
   username: string = null;
   email: string = null;
 
+  isSigningUp = false;
+
   constructor(
     private authService: AuthService,
     private dialogRef: MatDialogRef<LoginComponent>,
@@ -24,6 +26,14 @@ export class LoginComponent {
   processLogin() {
     if (this.email && this.email.length > 0) {
       this.authService.login(this.email).then(() => {
+        this.dialogRef.close();
+      });
+    }
+  }
+
+  processSignup() {
+    if (this.email && this.email.length > 0 && this.username && this.username.length > 0) {
+      this.authService.signup(this.email, this.username).then(() => {
         this.dialogRef.close();
       });
     }
