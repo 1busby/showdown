@@ -18,6 +18,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatMenuModule } from '@angular/material/menu';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
@@ -41,6 +42,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MatSlideToggleModule,
     MatSelectModule,
     MatButtonToggleModule,
+    MatMenuModule,
     OverlayModule,
   ],
 })

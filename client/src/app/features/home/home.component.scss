@@ -13,15 +13,21 @@
   z-index: 1;
 }
 
-.login-button {
+.top-right-controls {
   position: absolute;
   right: 10px;
   top: 10px;
 }
+
+.login-button {
+  // position: absolute;
+  // right: 10px;
+  // top: 10px;
+}
 .logout-button {
-  position: absolute;
-  right: 100px;
-  top: 10px;
+  // position: absolute;
+  // right: 100px;
+  // top: 10px;
 }
 
 .mat-tab-body-wrapper {
@@ -30,7 +36,7 @@
   display: flex;
   flex-grow: 1;
 }
-  
+
 .mat-tab-body-content {
   height: 100%;
   overflow: auto;

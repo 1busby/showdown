@@ -14,6 +14,7 @@ export class AuthService {
   userId: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   isLoggedIn = false;
   publicAddress;
+  isLoadingProfile: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private userGql: UserGQL, private registerGql: RegisterUserGQL) {
     this.magic = new Magic('pk_test_3E6E5F515983F699', {
@@ -31,11 +32,13 @@ export class AuthService {
       .then((isLoggedIn) => {
         console.log('LOOK isLoggedIn ', isLoggedIn);
         if (isLoggedIn) {
+          this.isLoadingProfile.next(true);
           return this.fetchUserAddressMetadata();
         }
       })
       .then((result) => {
         if (result) {
+          this.isLoadingProfile.next(false);
           this.userId.next(result.issuer);
         }
       })
@@ -65,7 +68,7 @@ export class AuthService {
 
   signup(email, username) {
     if (email && username) {
-      /* One-liner login 🤯 */
+      this.isLoadingProfile.next(true);
       return this.magic.auth
         .loginWithMagicLink({ email })
         .then(() => {
@@ -75,6 +78,7 @@ export class AuthService {
           return this.registerGql.mutate({ dId: result.issuer, username, email }).toPromise();
         })
         .then((result) => {
+          this.isLoadingProfile.next(false);
           return this.userId.next(result.data.registerUser._id);
         })
         .catch((err) => {
@@ -85,13 +89,14 @@ export class AuthService {
 
   login(email) {
     if (email) {
-      /* One-liner login 🤯 */
+      this.isLoadingProfile.next(true);
       return this.magic.auth
         .loginWithMagicLink({ email })
         .then(() => {
           return this.fetchUserAddressMetadata();
         })
         .then((result) => {
+          this.isLoadingProfile.next(false);
           return this.userId.next(result.issuer);
         })
         .catch((err) => {
@@ -103,7 +108,10 @@ export class AuthService {
   logout() {
     // remove user from local storage and set current user to null
     // this.loggedInUser.next({} as any);
-    return this.magic.user.logout();
+    return this.magic.user.logout()
+    .then(result => {
+      this.userId.next(null);
+    });
   }
 
   private async fetchUserAddressMetadata() {

@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<any>();
 
   user: IUser = null;
+  isLoadingProfile = false;
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -33,6 +34,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         duration: 2000,
         panelClass: `${alert.type}-snackbar`
       });
+    });
+
+    this.authService.isLoadingProfile.subscribe(isLoading => {
+      this.isLoadingProfile = isLoading;
     });
   }
 
