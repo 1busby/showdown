@@ -16,6 +16,7 @@ import { MatchDetailDialogComponent } from './components/match-detail-dialog/mat
 import { MatchListComponent } from './components/match-list/match-list.component';
 import { BracketViewComponent } from './components/bracket-view/bracket-view.component';
 import { MatchCardComponent } from './components/match-card/match-card.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 const gravatarConfig: GravatarConfig = {
   fallback: FALLBACK.robohash,
@@ -32,6 +33,7 @@ const gravatarConfig: GravatarConfig = {
     LandingComponent,
     TournamentComponent,
     CreateTournamentComponent,
+    ProfileComponent,
     ContestantListComponent,
     TournamentCardComponent,
     QuickJoinDialogComponent,

@@ -14,8 +14,8 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Query(returns => User)
-  async user(@Args('dId') dId: string): Promise<User> {
-    const user = await this.usersService.findOneById(dId);
+  async user(@Args('dId', { nullable: true }) dId?: string, @Args('username', { nullable: true }) username?: string): Promise<User> {
+    const user = dId ? await this.usersService.findOneById(dId) : await this.usersService.findOne({ username });
     if (!user) {
       throw new NotFoundException(dId);
     }

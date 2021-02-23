@@ -67,7 +67,7 @@ input NewTournamentInput {
   name: String!
   description: String
   contestantCount: Int
-  createdBy: ID
+  createdBy: String
   contestants: [ContestantInput]
   matches: [MatchInput]
   editAccessCode: String
@@ -89,7 +89,7 @@ type Query {
   tournament(linkCode: String, id: String): Tournament!
   tournaments(skip: Int = 0, take: Int = 25): [Tournament!]!
   requestEditAccess(requestEditAccessInput: RequestEditAccessInput!): EditAccessRequest!
-  user(dId: String!): User!
+  user(username: String, dId: String): User!
   users(skip: Int = 0, take: Int = 25): [User!]!
 }
 

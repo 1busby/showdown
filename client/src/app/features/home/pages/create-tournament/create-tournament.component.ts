@@ -11,6 +11,7 @@ import {
   AppStore,
   BracketHandler,
   RemoveContestantGQL,
+  AuthService,
 } from '@app/core';
 
 @Component({
@@ -64,7 +65,8 @@ export class CreateTournamentComponent implements OnInit {
     private tournamentGql: TournamentGQL,
     private removeContestantGql: RemoveContestantGQL,
     private bracketHandlerService: BracketHandler,
-    private appStore: AppStore
+    private appStore: AppStore,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -168,8 +170,13 @@ export class CreateTournamentComponent implements OnInit {
           );
         });
     } else {
+      const mutationInput = { ...this.tournamentForm.value, matches };
+      const userId = this.authService.userId.value;
+      if (userId) {
+        mutationInput.createdById = userId;
+      }
       this.createTournamentGql
-        .mutate({ ...this.tournamentForm.value, matches })
+        .mutate(mutationInput)
         .pipe(first())
         .subscribe((result) => {
           localStorage.setItem(

@@ -8,8 +8,14 @@
   // flex-direction: column;
 }
 
+.example-spacer {
+  flex: 1 1 auto;
+}
+
 .home-button {
   position: absolute;
+  top: 10px;
+  left: 10px;
   z-index: 1;
 }
 

@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AppStore, AuthService, AlertService } from '@app/core';
 import { IUser, LoginComponent } from '@app/shared';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     public appStore: AppStore,
     private alertService: AlertService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
     this.alertService.getAlert().pipe(takeUntil(this.ngUnsubscribe)).subscribe(alert => {
       if (!alert) {
@@ -61,5 +63,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   logout() {
     this.authService.logout();
+  }
+
+  newTournament() {
+    this.router.navigateByUrl('/create');
+  }
+
+  openProfile() {
+    this.router.navigateByUrl(`/profile/${this.user.username}`);
   }
 }

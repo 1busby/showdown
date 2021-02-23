@@ -16,7 +16,7 @@ export class NewTournamentInput {
   @Field(type => Int, { nullable: true })
   contestantCount?: number;
 
-  @Field(type => ID, { nullable: true })
+  @Field({ nullable: true })
   createdBy?: string;
 
   @Field(type => [ContestantInput], { nullable: 'itemsAndList' })

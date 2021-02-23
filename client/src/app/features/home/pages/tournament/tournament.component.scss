@@ -16,12 +16,20 @@
 
 .action-buttons {
   margin: auto;
+  position: absolute;
+  bottom: 0;
+  left: auto;
+  right: auto;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 
 #tournament-name {
   width: 100%;
   font-size: 2em;
   font-weight: bold;
+  height: 7%;
 
   p {
     margin: auto;

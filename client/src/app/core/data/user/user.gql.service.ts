@@ -9,8 +9,8 @@ import { IUser } from '@app/shared';
 })
 export class UserGQL extends Query<{ user: IUser }> {
   document = gql`
-    query user($dId: String!) {
-      user(dId: $dId) {
+    query user($dId: String, $username: String) {
+      user(dId: $dId, username: $username) {
         _id
         dId
         username
