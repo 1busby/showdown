@@ -1,4 +1,12 @@
 <div *ngIf="user">
 {{ user.username }}
 {{ user.email }}
+
+<ng-container *ngFor="let tournament of user.tournaments">
+
+  <button mat-raised-button (click)="openTournament(tournament.linkCode)">
+    {{ tournament.name }}
+  </button>
+</ng-container>
+
 </div>

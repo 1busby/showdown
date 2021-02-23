@@ -13,7 +13,7 @@ export class EditUserGQL extends Mutation<{
     mutation updateUser(
       $_id: ID!
       $username: String
-      $firstame: String
+      $firstName: String
       $lastName: String
       $tournaments: [String]
     ) {
@@ -21,7 +21,7 @@ export class EditUserGQL extends Mutation<{
         updateUserData: {
           _id: $_id
           username: $username
-          firstame: $firstame
+          firstName: $firstName
           lastName: $lastName
           tournaments: $tournaments
         }

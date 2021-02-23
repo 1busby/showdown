@@ -51,6 +51,7 @@ export class UsersResolver {
   async updateUser(
     @Args('updateUserData') updateUserData: UpdateUserInput,
   ): Promise<User> {
+    this.logger.log('LOOK updateUser ' + JSON.stringify(updateUserData));
     return this.usersService.updateOne(updateUserData).then(res => {
       this.logger.log('LOOK res ' + res);
       return res;

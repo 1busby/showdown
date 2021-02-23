@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ObjectId } from 'mongodb';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersArgs } from './dto/users.args';
 import { User } from './user.model';
@@ -14,19 +13,20 @@ export class UsersService {
     console.log('LOOK new user data ', data);
     const createdUser = new this.userModel({
       ...data,
+      tournaments: [],
       createdOn: Date.now(),
       updatedOn: Date.now(),
     });
     return createdUser.save();
   }
-  
+
   async findOneById(dId: string): Promise<User> {
     return this.userModel.findOne({ dId });
   }
-  
+
   findOne({ username }): Promise<User> {
     console.log('LOOK signin Data ', username);
-    return this.userModel.findOne({username}).exec();
+    return this.userModel.findOne({ username }).populate('tournaments').exec();
   }
 
   async findOneByToken(token: string): Promise<User> {
@@ -38,11 +38,10 @@ export class UsersService {
   }
 
   updateOne(data: UpdateUserInput & { [key: string]: any }) {
-    const {_id, tournaments, ...updateData } = data;
-
+    const { _id, tournaments, ...updateData } = data;
 
     if (tournaments && tournaments.length > 0) {
-      updateData.updates = { $concatArrays: ['$updates', tournaments] };
+      updateData.tournaments = { $concatArrays: ['$tournaments', tournaments] };
     }
 
     return this.userModel

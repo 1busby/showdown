@@ -109,9 +109,11 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
-      this.user = user;
-    });
+    this.authService.user
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((user) => {
+        this.user = user;
+      });
   }
 
   ngOnDestroy(): void {
@@ -140,7 +142,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     const matches: Partial<IMatch>[] = [];
     [
       ...this.appStore.getWinnersMatchContainers().value,
-      ...this.appStore.getLosersMatchContainers().value
+      ...this.appStore.getLosersMatchContainers().value,
     ].forEach((matchContainer) => {
       if (matchContainer.sets.length < this.tournamentForm.value.setCount) {
         // add new sets
@@ -184,7 +186,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
           );
         });
     } else {
-      const mutationInput = { ...this.tournamentForm.value, matches };;
+      const mutationInput = { ...this.tournamentForm.value, matches };
       if (this.user && this.user._id) {
         mutationInput.createdBy = this.user._id;
       }
@@ -192,9 +194,14 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         .mutate(mutationInput)
         .pipe(first())
         .subscribe((result) => {
-          debugger
           if (this.user && this.user._id) {
-            this.updateUserGql.mutate({ _id: this.user._id, tournaments: [result.data.addTournament._id]  });
+            this.updateUserGql
+              .mutate({
+                _id: this.user._id,
+                tournaments: [result.data.addTournament._id],
+              })
+              .pipe(first())
+              .subscribe((res) => {});
           }
           localStorage.setItem(
             `editAccessCode-${result.data.addTournament.linkCode}`,
