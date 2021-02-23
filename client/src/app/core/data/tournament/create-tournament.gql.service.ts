@@ -21,7 +21,7 @@ export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }
       $allowRegistration: Boolean
       $allowSelfScoring: Boolean
       $structure: String
-      $createdById: String
+      $createdBy: String
     ) {
       addTournament(
         newTournamentData: {
@@ -35,7 +35,7 @@ export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }
           allowRegistration: $allowRegistration
           allowSelfScoring: $allowSelfScoring
           structure: $structure
-          createdById: $createdById
+          createdBy: $createdBy
         }
       ) {
         _id

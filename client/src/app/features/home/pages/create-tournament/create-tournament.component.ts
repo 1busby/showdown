@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 
-import { ITournament, IContestant, IMatch } from '@app/shared';
+import { ITournament, IContestant, IMatch, IUser } from '@app/shared';
 import {
   CreateTournamentGQL,
   TournamentGQL,
@@ -13,14 +13,18 @@ import {
   RemoveContestantGQL,
   AuthService,
 } from '@app/core';
+import { Subject } from 'rxjs';
+import { EditUserGQL } from '@app/core/data/user/edit-user.gql.service';
 
 @Component({
   selector: 'app-home-create-tournament',
   templateUrl: './create-tournament.component.html',
   styleUrls: ['./create-tournament.component.scss'],
 })
-export class CreateTournamentComponent implements OnInit {
+export class CreateTournamentComponent implements OnInit, OnDestroy {
   private _tournament: ITournament = {} as ITournament;
+  private ngUnsubscribe = new Subject<any>();
+  user: IUser;
 
   stepperIsInTransition = true;
   editMode = false;
@@ -64,6 +68,7 @@ export class CreateTournamentComponent implements OnInit {
     private editTournamentGql: EditTournamentGQL,
     private tournamentGql: TournamentGQL,
     private removeContestantGql: RemoveContestantGQL,
+    private updateUserGql: EditUserGQL,
     private bracketHandlerService: BracketHandler,
     private appStore: AppStore,
     private authService: AuthService
@@ -103,6 +108,15 @@ export class CreateTournamentComponent implements OnInit {
         structure: 'single-elim',
       });
     }
+
+    this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+      this.user = user;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   loadTournament(tournament: ITournament) {
@@ -170,15 +184,18 @@ export class CreateTournamentComponent implements OnInit {
           );
         });
     } else {
-      const mutationInput = { ...this.tournamentForm.value, matches };
-      const userId = this.authService.userId.value;
-      if (userId) {
-        mutationInput.createdById = userId;
+      const mutationInput = { ...this.tournamentForm.value, matches };;
+      if (this.user && this.user._id) {
+        mutationInput.createdBy = this.user._id;
       }
       this.createTournamentGql
         .mutate(mutationInput)
         .pipe(first())
         .subscribe((result) => {
+          debugger
+          if (this.user && this.user._id) {
+            this.updateUserGql.mutate({ _id: this.user._id, tournaments: [result.data.addTournament._id]  });
+          }
           localStorage.setItem(
             `editAccessCode-${result.data.addTournament.linkCode}`,
             this.tournamentForm.value.editAccessCode

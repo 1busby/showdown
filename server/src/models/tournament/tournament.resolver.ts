@@ -20,6 +20,7 @@ import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
 import { MatchInput } from '@models/match/dto/match.input';
 import { Match } from '@models/match/match.model';
+// import { UsersService } from '@models/user/user.service';
 
 const pubSub = new PubSub();
 
@@ -29,6 +30,7 @@ export class TournamentsResolver {
     private logger: CustomLogger,
     private readonly tournamentsService: TournamentsService,
     private readonly matchService: MatchService,
+    // private readonly userService: UsersService
   ) {}
 
   @Query(returns => Tournament)
@@ -84,8 +86,11 @@ export class TournamentsResolver {
   async addTournament(
     @Args('newTournamentData') newTournamentData: NewTournamentInput,
   ): Promise<Tournament> {
-    const tournament = await this.tournamentsService.create(newTournamentData);
-    return tournament;
+    return await this.tournamentsService.create(newTournamentData)
+    // .then(tournament => {
+    //   this.userService.updateOne({ _id: newTournamentData.createdBy, })
+    //   return tournament
+    // });
   }
 
   @Mutation(returns => Tournament)

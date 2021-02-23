@@ -10,4 +10,8 @@ export const UserSchema = new mongoose.Schema({
   teams: mongodb.ObjectID,
   createdOn: Date,
   updatedOn: Date,
+  tournaments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tournament',
+  }],
 });

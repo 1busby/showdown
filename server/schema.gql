@@ -61,6 +61,7 @@ type Mutation {
   reportMatchScore(matchData: MatchInput!): Tournament!
   signin(signinInput: SigninInput!): User!
   registerUser(newUserInput: NewUserInput!): User!
+  updateUser(updateUserData: UpdateUserInput!): User!
 }
 
 input NewTournamentInput {
@@ -190,6 +191,15 @@ input UpdateTournamentInput {
   structure: String
 }
 
+input UpdateUserInput {
+  _id: ID!
+  username: String
+  email: String
+  firstName: String
+  lastName: String
+  tournaments: [String]
+}
+
 """The user model"""
 type User implements Contestant {
   _id: ID!
@@ -203,6 +213,7 @@ type User implements Contestant {
   firstName: String
   lastName: String
   teams: [Team]
+  tournaments: [Tournament]
   createdOn: Date
   updatedOn: Date
 }

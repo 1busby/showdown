@@ -12,7 +12,6 @@ export class UserGQL extends Query<{ user: IUser }> {
     query user($dId: String, $username: String) {
       user(dId: $dId, username: $username) {
         _id
-        dId
         username
         email
       }
