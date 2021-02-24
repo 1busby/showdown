@@ -1,12 +1,24 @@
 <div *ngIf="user">
-{{ user.username }}
-{{ user.email }}
+  {{ user.username }}
+  {{ user.email }}
 
-<ng-container *ngFor="let tournament of user.tournaments">
+  <ng-container *ngIf="authService.userId && user && user._id !== loggedInUser._id">
+    <br />
+    <button mat-raised-button>
+      <mat-icon>local_play</mat-icon>
+      Challenge
+    </button>
+  </ng-container>
 
-  <button mat-raised-button (click)="openTournament(tournament.linkCode)">
-    {{ tournament.name }}
-  </button>
-</ng-container>
+  <br />
+  <br />
+  <h1>Challenges</h1>
+  <ng-container *ngFor="let challenge of user.challenges"> </ng-container>
 
+  <h1>Tournaments</h1>
+  <ng-container *ngFor="let tournament of user.tournaments">
+    <button mat-raised-button (click)="openTournament(tournament.linkCode)">
+      {{ tournament.name }}
+    </button>
+  </ng-container>
 </div>
