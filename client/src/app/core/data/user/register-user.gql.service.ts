@@ -9,11 +9,12 @@ import { IUser } from '@app/shared';
 })
 export class RegisterUserGQL extends Mutation<{ registerUser: Partial<IUser> }> {
   document = gql`
-    mutation registerUser($username: String!, $dId: String!, $email: String!) {
+    mutation registerUser($username: String!, $dId: String!, $email: String!, $iconPublicAddress: String!) {
       registerUser(newUserInput: {
         username: $username
         dId: $dId
         email: $email
+        iconPublicAddress: $iconPublicAddress
       }) {
         _id
         dId

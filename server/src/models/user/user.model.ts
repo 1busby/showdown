@@ -31,6 +31,9 @@ export class User extends Document implements IUser, Contestant {
   
   @Field(type => [Tournament], { nullable: 'itemsAndList' })
   tournaments?: Tournament[];
+  
+  @Field({ nullable: true })
+  iconPublicAddress?: String;
 
   @Field({ nullable: true })
   createdOn?: Date;

@@ -75,7 +75,7 @@ export class AuthService {
           return this.fetchUserAddressMetadata();
         })
         .then(result => {
-          return this.registerGql.mutate({ dId: result.issuer, username, email }).toPromise();
+          return this.registerGql.mutate({ dId: result.issuer, username, email, iconPublicAddress: this.publicAddress }).toPromise();
         })
         .then((result) => {
           this.isLoadingProfile.next(false);

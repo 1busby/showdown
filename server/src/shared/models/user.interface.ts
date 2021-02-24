@@ -11,6 +11,7 @@ export interface IUser extends IContestant {
   createdOn?: Date;
   updatedOn?: Date;
   tournaments?: ITournament[];
+  iconPublicAddress: String;
 
   // front end only
   token?: string;

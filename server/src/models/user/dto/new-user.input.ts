@@ -12,6 +12,9 @@ export class NewUserInput {
 
   @Field()
   email: string;
+  
+  @Field()
+  iconPublicAddress: string;
 
   @Field({ nullable: true })
   firstName?: string;

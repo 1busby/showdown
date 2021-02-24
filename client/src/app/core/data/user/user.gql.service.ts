@@ -14,6 +14,7 @@ export class UserGQL extends Query<{ user: IUser }> {
         _id
         username
         email
+        iconPublicAddress
       }
     }
   `;

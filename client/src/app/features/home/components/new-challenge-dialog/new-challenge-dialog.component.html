@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>New Challenge</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Wager (ICX)</mat-label>
+    <input matInput type="text" [(ngModel)]="data.wager" required />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" cdkFocusInitial (click)="confirmChallenge()">
+    Send Challenge
+  </button>
+</mat-dialog-actions>

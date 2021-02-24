@@ -1,8 +1,14 @@
 <div *ngIf="user">
   {{ user.username }}
-  {{ user.email }}
+  <br />
 
-  <ng-container *ngIf="authService.userId && user && user._id !== loggedInUser._id">
+  <ng-container *ngIf="user?._id === loggedInUser?._id">
+    <h1>ICX Wallet Address</h1>
+    {{ loggedInUser.iconPublicAddress }}
+  </ng-container>
+  
+
+  <ng-container *ngIf="user?._id !== loggedInUser?._id">
     <br />
     <button mat-raised-button>
       <mat-icon>local_play</mat-icon>

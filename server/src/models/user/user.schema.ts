@@ -7,6 +7,7 @@ export const UserSchema = new mongoose.Schema({
   email: String,
   firstName: String,
   lastName: String,
+  iconPublicAddress: String,
   teams: mongodb.ObjectID,
   createdOn: Date,
   updatedOn: Date,
