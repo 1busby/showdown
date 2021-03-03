@@ -23,7 +23,7 @@ module.exports = {
 
   deploy: {
     production: {
-      key: '~/.ssh/brackets-0.pem',
+      key: '~/.ssh/brackets-2.pem',
       user: 'ubuntu',
       host: '54.204.160.247',
       ref: 'origin/master',

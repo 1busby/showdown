@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 
-import { ITournament, IContestant, IMatch } from '@app/shared';
+import { ITournament, IContestant, IMatch, IUser } from '@app/shared';
 import {
   CreateTournamentGQL,
   TournamentGQL,
@@ -11,32 +11,54 @@ import {
   AppStore,
   BracketHandler,
   RemoveContestantGQL,
+  AuthService,
 } from '@app/core';
+import { Subject } from 'rxjs';
+import { EditUserGQL } from '@app/core/data/user/edit-user.gql.service';
 
 @Component({
   selector: 'app-home-create-tournament',
   templateUrl: './create-tournament.component.html',
   styleUrls: ['./create-tournament.component.scss'],
 })
-export class CreateTournamentComponent implements OnInit {
+export class CreateTournamentComponent implements OnInit, OnDestroy {
   private _tournament: ITournament = {} as ITournament;
+  private ngUnsubscribe = new Subject<any>();
+  user: IUser;
 
   stepperIsInTransition = true;
+  editMode = false;
+  structureOptions = [
+    {
+      viewLabel: 'Single Elimination',
+      value: 'single-elim',
+    },
+    {
+      viewLabel: 'Double Elimination',
+      value: 'double-elim',
+    },
+    {
+      viewLabel: 'Round Robin',
+      value: 'round-robin',
+    },
+  ];
 
   tournamentForm = this.formBuilder.group({
     name: [''],
+    description: [''],
     contestantCount: [0],
     contestants: this.formBuilder.array([]),
     editAccessCode: '',
     matches: this.formBuilder.array([]),
     setCount: [0],
+    allowRegistration: [false],
+    allowSelfScoring: [false],
+    structure: ['single-elim'],
   });
 
   get contestants(): FormArray {
     return this.tournamentForm.get('contestants') as FormArray;
   }
-
-  editMode = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,8 +68,10 @@ export class CreateTournamentComponent implements OnInit {
     private editTournamentGql: EditTournamentGQL,
     private tournamentGql: TournamentGQL,
     private removeContestantGql: RemoveContestantGQL,
+    private updateUserGql: EditUserGQL,
     private bracketHandlerService: BracketHandler,
-    private appStore: AppStore
+    private appStore: AppStore,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -59,23 +83,42 @@ export class CreateTournamentComponent implements OnInit {
         .fetch({ linkCode }, { fetchPolicy: 'cache-first' })
         .subscribe(({ data: { tournament }, errors }) => {
           this._tournament = tournament;
-          const editAccessCode = localStorage.getItem('editAccessCode');
+          const editAccessCode = localStorage.getItem(
+            `editAccessCode-${tournament.linkCode}`
+          );
           this.tournamentForm.patchValue({ ...tournament, editAccessCode });
-          tournament.contestants.sort((a, b) => a.seed - b.seed);
-          tournament.contestants.forEach(({ __typename, ...contestant }: any) =>
+          const contestants = tournament.contestants
+            .slice()
+            .sort((a, b) => a.seed - b.seed);
+          contestants.forEach(({ __typename, ...contestant }: any) =>
             this.addContestant(contestant)
           );
         });
     } else {
       this.tournamentForm.patchValue({
         name: '',
+        description: '',
         contestantCount: 0,
         contestants: [],
         editAccessCode: '123',
         matches: [],
         setCount: 0,
+        allowRegistration: false,
+        allowSelfScoring: false,
+        structure: 'single-elim',
       });
     }
+
+    this.authService.user
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((user) => {
+        this.user = user;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   loadTournament(tournament: ITournament) {
@@ -88,12 +131,19 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   createTournament() {
-    this.bracketHandlerService.createBracket({
+    const matchContainers = this.bracketHandlerService.createBracket({
       ...this.tournamentForm.value,
       matches: this._tournament.matches,
     });
+    this.appStore.setMatchContainers(
+      matchContainers.matches,
+      matchContainers.losersMatches
+    );
     const matches: Partial<IMatch>[] = [];
-    this.appStore.getMatchContainers().value.forEach((matchContainer) => {
+    [
+      ...this.appStore.getWinnersMatchContainers().value,
+      ...this.appStore.getLosersMatchContainers().value,
+    ].forEach((matchContainer) => {
       if (matchContainer.sets.length < this.tournamentForm.value.setCount) {
         // add new sets
         for (
@@ -109,12 +159,9 @@ export class CreateTournamentComponent implements OnInit {
         matchContainer.sets.length > this.tournamentForm.value.setCount
       ) {
         // remove extra sets
-        const setRemoveCount = matchContainer.sets.length - this.tournamentForm.value.setCount;
-        for (
-          let i = 0;
-          i < setRemoveCount;
-          i++
-        ) {
+        const setRemoveCount =
+          matchContainer.sets.length - this.tournamentForm.value.setCount;
+        for (let i = 0; i < setRemoveCount; i++) {
           matchContainer.sets.pop();
         }
       }
@@ -139,10 +186,23 @@ export class CreateTournamentComponent implements OnInit {
           );
         });
     } else {
+      const mutationInput = { ...this.tournamentForm.value, matches };
+      if (this.user && this.user._id) {
+        mutationInput.createdBy = this.user._id;
+      }
       this.createTournamentGql
-        .mutate({ ...this.tournamentForm.value, matches })
+        .mutate(mutationInput)
         .pipe(first())
         .subscribe((result) => {
+          if (this.user && this.user._id) {
+            this.updateUserGql
+              .mutate({
+                _id: this.user._id,
+                tournaments: [result.data.addTournament._id],
+              })
+              .pipe(first())
+              .subscribe((res) => {});
+          }
           localStorage.setItem(
             `editAccessCode-${result.data.addTournament.linkCode}`,
             this.tournamentForm.value.editAccessCode

@@ -23,6 +23,7 @@ export class TournamentsService {
 
   async create(data: NewTournamentInput): Promise<Tournament> {
     const anonymousContestants = [];
+    const currentDate = Date.now();
 
     // tslint:disable-next-line: prefer-for-of
     for (let i = data.contestants.length - 1; i >= 0; i--) {
@@ -34,9 +35,16 @@ export class TournamentsService {
     const createdTournament = new this.tournamentModel({
       ...data,
       linkCode: shortid.generate(),
-      createdOn: Date.now(),
-      updatedOn: Date.now(),
+      createdOn: currentDate,
+      updatedOn: currentDate,
       anonymousContestants,
+      updates: [
+        {
+          title: 'Showdown created!',
+          description: 'GLHF',
+          createdOn: currentDate,
+        },
+      ],
     });
     return await createdTournament
       .save()
@@ -61,6 +69,7 @@ export class TournamentsService {
     return this.tournamentModel
       .findOne({ linkCode })
       .populate('contestants')
+      .populate('updates')
       .then(tournament => {
         tournament = tournament.toJSON();
         tournament.contestants = [
@@ -75,12 +84,14 @@ export class TournamentsService {
     return await this.tournamentModel.find().exec();
   }
 
-  async updateOne(data: any): Promise<Tournament> {
+  async updateOne(
+    data: UpdateTournamentInput & { [key: string]: any },
+  ): Promise<Tournament> {
+    console.log('LOOK updateOne data ', JSON.stringify(data));
     // separate anonymous users from regular users
-    const { _id, matches, ...updateData } = data;
+    const { _id, matches = [], updates, ...updateData } = data;
     if (data.contestants && data.contestants.length > 0) {
       const anonymousContestants = [];
-      // tslint:disable-next-line: prefer-for-of
       for (let i = data.contestants.length - 1; i >= 0; i--) {
         if (!data.contestants[i].isRegistered) {
           anonymousContestants.push(data.contestants[i]);
@@ -90,8 +101,9 @@ export class TournamentsService {
       updateData.anonymousContestants = anonymousContestants;
     }
 
+    let matchIds: string[] = [];
     if (matches && matches.length > 0) {
-      const matchIds = matches.map(match => new ObjectId(match._id));
+      matchIds = matches.map(match => new ObjectId(match._id) as any);
       updateData.matches = {
         $map: {
           input: '$matches',
@@ -116,6 +128,11 @@ export class TournamentsService {
       };
     }
 
+    if (updates && updates.length > 0) {
+      updates.forEach(update => update._id = new ObjectId(update._id) as any);
+      updateData.updates = { $concatArrays: ['$updates', updates] };
+    }
+
     return this.tournamentModel
       .findOneAndUpdate(
         { _id },
@@ -125,6 +142,17 @@ export class TournamentsService {
               ...updateData,
             },
           },
+          // {
+          //   $project: {
+          //     matches: {
+          //       $filter: {
+          //         input: '$matches',
+          //         as: 'match',
+          //         cond: { $in: [ "$$match._id", matchIds ] },
+          //       },
+          //     },
+          //   },
+          // },
         ],
         {
           new: true,
@@ -132,7 +160,30 @@ export class TournamentsService {
       )
       .exec()
       .then(result => {
-        return result;
+        result.populate('matches.sets');
+        const resultObject = result.toObject();
+        const returnObject: any = resultObject;
+
+        returnObject.matches = matches.map(updateDataMatch => {
+          // console.log('LOOK updatedDataMatch ', updateDataMatch);
+          // console.log('LOOK docMatch ', resultObject.matches.find(
+          //   docMatch => updateDataMatch._id == docMatch._id.toString(),
+          // ));
+          return {
+            ...resultObject.matches.find(
+              docMatch => updateDataMatch._id == docMatch._id.toString(),
+            ),
+            ...updateDataMatch,
+          };
+        });
+        // console.log('LOOK updated tournament resultObject ', JSON.stringify(resultObject));
+        console.log(
+          'LOOK updated tournament returnObject ',
+          JSON.stringify(returnObject),
+        );
+
+        return this.clean(returnObject);
+        // return changedProperties as Tournament;
       })
       .catch(error => {
         throw new Error('Error updating tournament >>> ' + error);
@@ -190,5 +241,14 @@ export class TournamentsService {
           };
         });
     }
+  }
+
+  clean(obj) {
+    for (var propName in obj) {
+      if (obj[propName] === null || obj[propName] === undefined) {
+        delete obj[propName];
+      }
+    }
+    return obj;
   }
 }

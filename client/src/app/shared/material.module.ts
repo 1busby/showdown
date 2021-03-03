@@ -15,6 +15,11 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatMenuModule } from '@angular/material/menu';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   exports: [
@@ -34,6 +39,11 @@ import { MatRadioModule } from '@angular/material/radio';
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatRadioModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatMenuModule,
+    OverlayModule,
   ],
 })
 export class MaterialModule {}

@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
 import { TournamentsGQL } from '@app/core';
-import { ITournament } from '@app/shared';
+import { ITournament, IUser } from '@app/shared';
+import { UsersGQL } from '@app/core/data/user/users.gql.service';
 
 @Component({
   selector: 'app-home-landing',
@@ -12,13 +13,24 @@ import { ITournament } from '@app/shared';
 })
 export class LandingComponent {
   allTournaments: Partial<ITournament>[];
+  allUsers: Partial<IUser>[];
 
-  constructor(private router: Router, private tournamentsGql: TournamentsGQL) {
+  constructor(
+    private router: Router,
+    private tournamentsGql: TournamentsGQL,
+    private usersGql: UsersGQL
+  ) {
     this.tournamentsGql
       .fetch()
       .pipe(first())
       .subscribe((result) => {
         this.allTournaments = result.data.tournaments;
+      });
+    this.usersGql
+      .fetch()
+      .pipe(first())
+      .subscribe((result) => {
+        this.allUsers = result.data.users;
       });
   }
 

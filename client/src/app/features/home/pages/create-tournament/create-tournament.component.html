@@ -11,6 +11,11 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Number of Contestants</mat-label>
         <input
           matInput
@@ -19,6 +24,38 @@
           formControlName="contestantCount"
           (change)="contestantCountChange($event)"
         />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Sets per Match</mat-label>
+        <input matInput type="number" required formControlName="setCount" />
+      </mat-form-field>
+
+      <mat-slide-toggle
+        color="accent"
+        formControlName="allowRegistration"
+        labelPosition="before"
+      >
+        Allow Registration
+      </mat-slide-toggle>
+
+      <mat-slide-toggle
+        color="accent"
+        formControlName="allowSelfScoring"
+        labelPosition="before"
+      >
+        Allow Self Scoring
+      </mat-slide-toggle>
+
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="structure">
+          <mat-option
+            *ngFor="let option of structureOptions"
+            [value]="option.value"
+          >
+            {{ option.viewLabel }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
@@ -45,24 +82,6 @@
           required
           formControlName="editAccessCode"
           (change)="contestantCountChange($event)"
-        />
-      </mat-form-field>
-
-      <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
-        <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button matStepperNext type="button">Next</button>
-      </div>
-    </mat-step>
-
-    <!-- Step 3 -->
-    <mat-step class="height-100">
-      <mat-form-field appearance="outline">
-        <mat-label>Sets per Match</mat-label>
-        <input
-          matInput
-          type="number"
-          required
-          formControlName="setCount"
         />
       </mat-form-field>
 

@@ -3,7 +3,7 @@
     mat-raised-button
     class="create-button"
     isRoundButton="true"
-    color="primary"
+    color="secondary"
     (click)="createTournament()"
   >
     Create Tournament
@@ -12,11 +12,21 @@
 
 <div class="content-container">
   <ng-container *ngIf="allTournaments">
+    <h1>Tournaments</h1>
     <tournament-card
       *ngFor="let tournament of allTournaments; trackBy: trackByFn"
       [tournament]="tournament"
       (selectTournament)="viewTournament(tournament)"
     ></tournament-card>
+  </ng-container>
+
+  <ng-container *ngIf="allTournaments">
+    <h1>Users</h1>
+    <button mat-button
+      *ngFor="let user of allUsers; trackBy: trackByFn"
+      (click)="viewTournament(tournament)"
+      routerLink="/profile/{{user.username}}"
+    >{{user.username}}</button>
   </ng-container>
 
   <mat-spinner *ngIf="!allTournaments"></mat-spinner>

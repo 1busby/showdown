@@ -2,10 +2,11 @@ import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
 import { ITournament } from '@shared/index';
-import { Team } from '../team/team.model';
-import { User } from '../user/user.model';
-import { Contestant } from '../contestant/contestant.entity';
-import { Match } from '../match/match.model';
+import { Team } from '@models/team/team.model';
+import { User } from '@models/user/user.model';
+import { Contestant } from '@models/contestant/contestant.entity';
+import { Match } from '@models/match/match.model';
+import { Update } from '@models/update/update.model';
 
 @ObjectType({ description: 'The tournament model' })
 export class Tournament extends Document implements ITournament {
@@ -14,6 +15,9 @@ export class Tournament extends Document implements ITournament {
 
   @Field({ nullable: true })
   name?: string;
+
+  @Field({ nullable: true })
+  description?: string;
 
   @Field(type => Int, { nullable: true })
   contestantCount?: number;
@@ -30,6 +34,9 @@ export class Tournament extends Document implements ITournament {
   @Field(type => [Match], { nullable: 'itemsAndList' })
   matches?: Match[];
 
+  @Field(type => [Update], { nullable: 'itemsAndList' })
+  updates?: Update[];
+
   @Field({ nullable: true })
   createdOn?: Date;
 
@@ -44,6 +51,18 @@ export class Tournament extends Document implements ITournament {
 
   @Field(type => Int, { nullable: true })
   setCount?: number;
+
+  @Field({ nullable: true })
+  hasStarted?: boolean;
+
+  @Field({ nullable: true })
+  allowRegistration?: boolean;
+
+  @Field({ nullable: true })
+  allowSelfScoring?: boolean;
+
+  @Field({ nullable: true })
+  structure?: 'single-elim' | 'double-elim' | 'round-robin';
 
   anonymousContestants?: [];
 }

@@ -9,10 +9,14 @@ export class NewTournamentInput {
   @MaxLength(30)
   name: string;
 
+  @Field({ nullable: true })
+  @MaxLength(30)
+  description?: string;
+
   @Field(type => Int, { nullable: true })
   contestantCount?: number;
 
-  @Field(type => ID, { nullable: true })
+  @Field({ nullable: true })
   createdBy?: string;
 
   @Field(type => [ContestantInput], { nullable: 'itemsAndList' })
@@ -26,4 +30,13 @@ export class NewTournamentInput {
 
   @Field(type => Int, { nullable: true })
   setCount?: number;
+
+  @Field({ nullable: true })
+  allowRegistration?: boolean;
+
+  @Field({ nullable: true })
+  allowSelfScoring?: boolean;
+
+  @Field({ nullable: true })
+  structure?: 'single-elim' | 'double-elim' | 'round-robin';
 }

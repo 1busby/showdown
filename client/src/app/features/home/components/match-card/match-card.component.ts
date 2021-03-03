@@ -1,4 +1,11 @@
-import { Component, Input, SimpleChanges, OnChanges, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  SimpleChanges,
+  OnChanges,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 import { MatchContainer } from '@app/core';
 
@@ -6,6 +13,7 @@ import { MatchContainer } from '@app/core';
   selector: 'match-card',
   templateUrl: './match-card.component.html',
   styleUrls: ['./match-card.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MatchCardComponent implements OnInit, OnChanges {
   @Input() match: Partial<MatchContainer>;
@@ -13,12 +21,13 @@ export class MatchCardComponent implements OnInit, OnChanges {
   highSetCount: number;
   lowSetCount: number;
 
-  constructor() {}
+  ngOnInit() {}
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('LOOK MatchCardComponent ngOnChanges');
     this.highSetCount = 0;
     this.lowSetCount = 0;
-    this.match.sets.forEach(set => {
+    this.match.sets.forEach((set) => {
       if (set.outcome === 'high') {
         this.highSetCount++;
       } else if (set.outcome === 'low') {
@@ -27,5 +36,11 @@ export class MatchCardComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  getPlaceholderText(seed: 'high' | 'low') {
+    if (seed === 'high') {
+      return this.match.highSeedSource === 'winner' ? `Winner of ${this.match.highMatch.matchNumber + 1}` : `Loser of ${this.match.highMatch.matchNumber + 1}`;
+    } else {
+      return this.match.lowSeedSource === 'loser' ? `Loser of ${this.match.lowMatch.matchNumber + 1}` : `Winner of ${this.match.lowMatch.matchNumber + 1}`;
+    }
+  }
 }

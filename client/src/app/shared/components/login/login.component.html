@@ -1,0 +1,23 @@
+<h1 mat-dialog-title *ngIf="!isSigningUp">Log in</h1>
+<h1 mat-dialog-title *ngIf="isSigningUp">Sign up</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input cdkFocusInitial matInput [(ngModel)]="email" />
+  </mat-form-field>
+  <mat-form-field *ngIf="isSigningUp">
+    <mat-label>Username</mat-label>
+    <input cdkFocusInitial matInput [(ngModel)]="username" />
+  </mat-form-field>
+</div>
+<mat-slide-toggle [(ngModel)]="isSigningUp">I'm new here!</mat-slide-toggle>
+<div mat-dialog-actions>
+  <br>
+  <button mat-raised-button (click)="onCancel()" color="warn">CANCEL</button>
+  <button *ngIf="!isSigningUp" mat-raised-button color="primary" (click)="processLogin()">
+    LOG IN
+  </button>
+  <button *ngIf="isSigningUp" color="primary" mat-raised-button (click)="processSignup()">
+    SIGN UP
+  </button>
+</div>

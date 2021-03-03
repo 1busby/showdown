@@ -7,41 +7,112 @@ import {
   ElementRef,
   Self,
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewChild,
+  AfterViewInit,
+  ChangeDetectorRef,
+  OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 import { MatchContainer, AppStore, BracketHandler } from '@app/core';
 import { ITournament } from '@app/shared';
-import { MatchService } from '../../services/match.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'bracket-view',
   templateUrl: './bracket-view.component.html',
-  styleUrls: ['./bracket-view.component.scss']
+  styleUrls: ['./bracket-view.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BracketViewComponent implements OnChanges, OnInit {
+export class BracketViewComponent
+  implements OnChanges, AfterViewInit, OnDestroy {
+  private ngUnsubscribe = new Subject<any>();
   showingModal = false;
-
-  matches: BehaviorSubject<MatchContainer[]>;
+  matches: any[]; //BehaviorSubject<MatchContainer[]>;
+  losersMatches: any[]; // BehaviorSubject<MatchContainer[]>;
+  bracketSide: 'winners' | 'losers' = 'winners';
+  pos = { top: 0, left: 0, x: 0, y: 0 };
+  isMouseDown = false;
 
   @Input() tournament: ITournament;
-  @Output() showMatchDetailsEmitter: EventEmitter<MatchContainer> = new EventEmitter<MatchContainer>();
+  @Output()
+  showMatchDetailsEmitter: EventEmitter<MatchContainer> = new EventEmitter<MatchContainer>();
+
+  @ViewChild('bracketViewContainer') bracketViewContainer: ElementRef;
 
   constructor(
-    @Self() private element: ElementRef,
     private bracketHandler: BracketHandler,
-    private appStore: AppStore
+    private appStore: AppStore,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('LOOK BracketViewComponent ngOnChanges');
+    const matches = this.bracketHandler.createBracket(this.tournament);
+    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
+  }
 
-  ngOnInit() {
-    this.matches = this.appStore.getMatchContainers();
+  ngAfterViewInit() {
+    this.appStore.getWinnersMatchContainers().subscribe((matches) => {
+      this.matches = null;
+      this.matches = matches;
+      this.changeDetectorRef.detectChanges();
+    });
+    this.appStore.getLosersMatchContainers().subscribe((matches) => {
+      this.losersMatches = null;
+      this.losersMatches = matches;
+      this.changeDetectorRef.detectChanges();
+    });
     this.bracketHandler.setContainerDimensions(
-      586,
-      619
+      this.bracketViewContainer.nativeElement.offsetWidth,
+      this.bracketViewContainer.nativeElement.offsetHeight
     );
-    this.bracketHandler.createBracket(this.tournament);
+
+    const matches = this.bracketHandler.createBracket(this.tournament);
+    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  changeBracketSide(side: 'winners' | 'losers') {
+    this.bracketSide = side;
+  }
+
+  public trackMatch(index: number, item: MatchContainer) {
+    return item._id;
+  }
+
+  mouseDown(e) {
+    this.isMouseDown = true;
+    this.bracketViewContainer.nativeElement.style.cursor = 'grabbing';
+    this.bracketViewContainer.nativeElement.style.userSelect = 'none';
+    this.pos = {
+      // The current scroll
+      left: this.bracketViewContainer.nativeElement.scrollLeft,
+      top: this.bracketViewContainer.nativeElement.scrollTop,
+      // Get the current mouse position
+      x: e.clientX,
+      y: e.clientY,
+    };
+  }
+
+  mouseMove(e) {
+    if (!this.isMouseDown) return;
+    // How far the mouse has been moved
+    const dx = e.clientX - this.pos.x;
+    const dy = e.clientY - this.pos.y;
+
+    this.bracketViewContainer.nativeElement.scrollTop = this.pos.top - dy;
+    this.bracketViewContainer.nativeElement.scrollLeft = this.pos.left - dx;
+  }
+
+  mouseUp() {
+    this.isMouseDown = false;
+    this.bracketViewContainer.nativeElement.style.cursor = 'grab';
   }
 }

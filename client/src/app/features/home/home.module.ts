@@ -16,6 +16,8 @@ import { MatchDetailDialogComponent } from './components/match-detail-dialog/mat
 import { MatchListComponent } from './components/match-list/match-list.component';
 import { BracketViewComponent } from './components/bracket-view/bracket-view.component';
 import { MatchCardComponent } from './components/match-card/match-card.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { NewChallengeComponent } from './components/new-challenge-dialog/new-challenge-dialog.component';
 
 const gravatarConfig: GravatarConfig = {
   fallback: FALLBACK.robohash,
@@ -28,20 +30,22 @@ const gravatarConfig: GravatarConfig = {
 @NgModule({
   imports: [GravatarModule.forRoot(gravatarConfig), HomeRoutingModule, SharedModule],
   declarations: [
-    MatchCardComponent,
     HomeComponent,
     LandingComponent,
     TournamentComponent,
     CreateTournamentComponent,
+    ProfileComponent,
     ContestantListComponent,
     TournamentCardComponent,
     QuickJoinDialogComponent,
     EditAccessDialogComponent,
     MatchDetailDialogComponent,
     MatchListComponent,
-    BracketViewComponent
+    BracketViewComponent,
+    MatchCardComponent,
+    NewChallengeComponent
   ],
   providers: [MatchService],
-  bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent, MatchDetailDialogComponent]
+  bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent, MatchDetailDialogComponent, NewChallengeComponent]
 })
 export class HomeModule {}

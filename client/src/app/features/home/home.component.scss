@@ -4,12 +4,36 @@
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
 }
 
-.toolbar-remaining-space {
-    flex: 1 1 auto;
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.home-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+.top-right-controls {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.login-button {
+  // position: absolute;
+  // right: 10px;
+  // top: 10px;
+}
+.logout-button {
+  // position: absolute;
+  // right: 100px;
+  // top: 10px;
 }
 
 .mat-tab-body-wrapper {
@@ -18,7 +42,7 @@
   display: flex;
   flex-grow: 1;
 }
-  
+
 .mat-tab-body-content {
   height: 100%;
   overflow: auto;

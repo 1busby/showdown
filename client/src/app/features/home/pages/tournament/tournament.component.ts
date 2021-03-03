@@ -10,9 +10,9 @@ import {
   AlertService,
   RequestEditAccessGQL,
   AppStore,
-  BracketHandler,
   MatchContainer,
   EditTournamentGQL,
+  RunTournamentGQL,
 } from '@app/core';
 import { ITournament, IContestant } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
@@ -27,10 +27,9 @@ import { MatchService } from '../../services/match.service';
 export class TournamentComponent implements OnInit, OnDestroy {
   tournament: Partial<ITournament>;
   ngUnsubscribe: Subject<any> = new Subject<any>();
-
   contestantList: Partial<IContestant>[] = [];
-
   isCheckingEditAccess = false;
+  viewBeingShown: 'bracket' | 'contestants' | 'matches' | 'updates' = 'bracket';
 
   constructor(
     private router: Router,
@@ -40,10 +39,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private requestEditAccessGql: RequestEditAccessGQL,
     private alertService: AlertService,
     public dialog: MatDialog,
-    private bracketHelper: BracketHandler,
     private appStore: AppStore,
     private matchService: MatchService,
-    private editTournamentGql: EditTournamentGQL
+    private editTournamentGql: EditTournamentGQL,
+    private runTournamentGql: RunTournamentGQL
   ) {}
 
   ngOnInit() {
@@ -52,7 +51,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
         switchMap(
           (params: ParamMap) =>
-            this.tournamentGql.watch({ linkCode: params.get('linkCode') })
+            this.tournamentGql.watch({ linkCode: params.get('linkCode') }, {
+              returnPartialData: true,
+            })
               .valueChanges
         ),
         catchError((error) => {
@@ -62,7 +63,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
       )
       .subscribe((result) => {
         if (typeof result === 'string') {
-          console.error(result);
+          console.error('Unexpected typeof ', result);
           return;
         }
         if (!result) {
@@ -70,8 +71,11 @@ export class TournamentComponent implements OnInit, OnDestroy {
           return;
         }
 
+        console.log('LOOK TournamentComponent new tournamet data ', result.data.tournament);
         this.tournament = result.data.tournament;
-        this.tournament.contestants.sort((a, b) => a.seed - b.seed);
+        // this.tournament.contestants = this.tournament.contestants
+        //   .slice()
+        //   .sort((a, b) => a.seed - b.seed);
       });
   }
 
@@ -104,7 +108,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
       });
   }
 
-  editTournament() {
+  editTournament(runTournament?: boolean) {
     this.isCheckingEditAccess = true;
     const editAccessCode = localStorage.getItem(
       `editAccessCode-${this.tournament.linkCode}`
@@ -117,7 +121,15 @@ export class TournamentComponent implements OnInit, OnDestroy {
         })
         .subscribe((result) => {
           if (result.data['requestEditAccess'].canEdit) {
-            this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+            this.isCheckingEditAccess = false;
+            if (runTournament) {
+              this.runTournamentGql
+                .mutate({ _id: this.tournament._id })
+                .pipe(first())
+                .subscribe();
+            } else {
+              this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+            }
           } else {
             this.showEditAccessDialog();
           }
@@ -139,12 +151,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(first())
       .subscribe((editAccessCode: string) => {
+        if (!editAccessCode) {
+          this.isCheckingEditAccess = false;
+        }
         this.requestEditAccessGql
           .fetch({
             tournamentId: this.tournament._id,
             editAccessCode,
           })
           .subscribe((result) => {
+            this.isCheckingEditAccess = false;
             if (result.data['requestEditAccess'].canEdit) {
               localStorage.setItem(
                 `editAccessCode-${this.tournament.linkCode}`,
@@ -159,48 +175,66 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   showMatchDetails(match: MatchContainer) {
+    const canEdit = localStorage.getItem(
+      `editAccessCode-${this.tournament.linkCode}`
+    )
+      ? true
+      : false;
     this.matchService
-      .showMatchDetails(match, this.tournament._id)
+      .showMatchDetails(match, canEdit, this.tournament)
       .pipe(first())
-      .subscribe((updatedMatch: MatchContainer) => {
-        if (updatedMatch) {
-          const matchesToBeSaved = [];
+      .subscribe()
+        // if (match && action === 'save') {
+        //   let matchesToBeSaved = [];
 
-          const numSets = updatedMatch.sets.length;
-          let highSeedScore = 0;
-          let lowSeedScore = 0;
-          let isMatchComplete = true;
-          for (let i = numSets - 1; i >= 0; i--) {
-            const setOutcome = updatedMatch.sets[i].outcome;
-            if (!setOutcome) {
-              // match not finished
-              isMatchComplete = false;
-              break;
-            } else if (setOutcome === 'high') {
-              highSeedScore++;
-            } else if (setOutcome === 'low') {
-              lowSeedScore++;
-            }
-          }
+        //   const numSets = match.sets.length;
+        //   let highSeedScore = 0;
+        //   let lowSeedScore = 0;
+        //   let isMatchComplete = true;
+        //   for (let i = numSets - 1; i >= 0; i--) {
+        //     const setOutcome = match.sets[i].outcome;
+        //     if (!setOutcome) {
+        //       // match not finished
+        //       isMatchComplete = false;
+        //       break;
+        //     } else if (setOutcome === 'high') {
+        //       highSeedScore++;
+        //     } else if (setOutcome === 'low') {
+        //       lowSeedScore++;
+        //     }
+        //   }
 
-          if (isMatchComplete) {
-            if (highSeedScore > lowSeedScore) {
-              updatedMatch.updateWinner(MatchContainer.HIGHSEED);
-            } else if (lowSeedScore > highSeedScore) {
-              updatedMatch.updateWinner(MatchContainer.LOWSEED);
-            }
-            matchesToBeSaved.push((updatedMatch.observers[0] as MatchContainer).getData());
-          }
-          matchesToBeSaved.push(updatedMatch.getData());
+        //   if (isMatchComplete) {
+        //     if (highSeedScore > lowSeedScore) {
+        //       match.updateWinner(MatchContainer.HIGHSEED);
+        //     } else if (lowSeedScore > highSeedScore) {
+        //       match.updateWinner(MatchContainer.LOWSEED);
+        //     }
 
-          this.editTournamentGql
-            .mutate({
-              _id: this.tournament._id,
-              matches: matchesToBeSaved,
-            })
-            .pipe(first())
-            .subscribe();
-        }
-      });
+        //     if(match.observers[0]) {
+        //       matchesToBeSaved = [
+        //         ...matchesToBeSaved,
+        //         ...match.observers.map((matchContainer: MatchContainer) => matchContainer.getData())
+        //       ];
+        //     }
+        //   }
+        //   matchesToBeSaved.push(match.getData());
+
+        //   // this.editTournamentGql
+        //   //   .mutate({
+        //   //     _id: this.tournament._id,
+        //   //     matches: matchesToBeSaved,
+        //   //   })
+        //   //   .pipe(first())
+        //   //   .subscribe(result => {
+        //   //     debugger
+        //   //   });
+        // }
+      // });
+  }
+
+
+  showView(view: 'bracket' | 'contestants' | 'matches' | 'updates') {
+    this.viewBeingShown = view;
   }
 }
