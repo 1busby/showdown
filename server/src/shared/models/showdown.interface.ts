@@ -1,10 +1,9 @@
-import { IUser, IUpdate } from './';
+import { IUser, IUpdate } from '.';
 
-export interface IChallenge {
+export interface IShowdown {
   _id: string;
-  contestants?: IUser;
-  challenger?: IUser;
-  defender?: IUser;
+  challenger?: Partial<IUser>;
+  defender?: Partial<IUser>;
   createdOn?: Date;
   updatedOn?: Date;
   expiresOn?: Date;

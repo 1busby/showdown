@@ -4,38 +4,29 @@ import { Model } from 'mongoose';
 import * as shortid from 'shortid';
 import { ObjectId } from 'mongodb';
 
-import { NewChallengeInput } from './dto/new-Challenge.input';
-import { ChallengesArgs } from './dto/challenges.args';
-import { Challenge } from './challenge.model';
-import { UpdateChallengeInput } from './dto/update-Challenge.input';
+import { NewShowdownInput } from './dto/new-showdown.input';
+import { ShowdownsArgs } from './dto/showdowns.args';
+import { Showdown } from './showdown.model';
+import { UpdateShowdownInput } from './dto/update-showdown.input';
 import { CustomLogger } from '@shared/index';
-import { merge } from 'rxjs';
 
 @Injectable()
-export class ChallengeService {
+export class ShowdownService {
   constructor(
-    @InjectModel('Challenge')
-    private readonly challengeModel: Model<Challenge>,
+    @InjectModel('Showdown')
+    private readonly showdownModel: Model<Showdown>,
     private logger: CustomLogger,
   ) {}
 
-  async create(data: NewChallengeInput): Promise<Challenge> {
-    const anonymousContestants = [];
+  async create(data: NewShowdownInput): Promise<Showdown> {
     const currentDate = Date.now();
 
     // tslint:disable-next-line: prefer-for-of
-    for (let i = data.contestants.length - 1; i >= 0; i--) {
-      if (!data.contestants[i].isRegistered) {
-        anonymousContestants.push(data.contestants[i]);
-        data.contestants.splice(i, 1);
-      }
-    }
-    const createdChallenge = new this.challengeModel({
+    const createdShowdown = new this.showdownModel({
       ...data,
       linkCode: shortid.generate(),
       createdOn: currentDate,
       updatedOn: currentDate,
-      anonymousContestants,
       updates: [
         {
           title: 'Showdown created!',
@@ -44,47 +35,32 @@ export class ChallengeService {
         },
       ],
     });
-    return await createdChallenge
+    return await createdShowdown
       .save()
-      .then(challenge => {
-        return challenge.populate('contestants');
-      })
-      .then(challenge => {
-        challenge = challenge.toJSON();
-        challenge.contestants = [
-          ...challenge.contestants,
-          ...challenge.anonymousContestants,
-        ];
-        return challenge;
+      .then(showdown => {
+        return showdown.populate('contestants');
       });
   }
 
-  async findOneById(id: string): Promise<Challenge> {
-    return this.challengeModel.findById(id).exec();
+  async findOneById(id: string): Promise<Showdown> {
+    return this.showdownModel.findById(id).exec();
   }
 
-  findOneByLinkCode(linkCode: string): Promise<Challenge> {
-    return this.challengeModel
+  findOneByLinkCode(linkCode: string): Promise<Showdown> {
+    return this.showdownModel
       .findOne({ linkCode })
       .populate('contestants')
       .populate('updates')
-      .then(challenge => {
-        challenge = challenge.toJSON();
-        challenge.contestants = [
-          ...challenge.contestants,
-          ...challenge.anonymousContestants,
-        ];
-        return challenge;
-      });
+      .exec();
   }
 
-  async findAll(challengesArgs: ChallengesArgs): Promise<Challenge[]> {
-    return await this.challengeModel.find().exec();
+  async findAll(showdownsArgs: ShowdownsArgs): Promise<Showdown[]> {
+    return await this.showdownModel.find().exec();
   }
 
   async updateOne(
-    data: UpdateChallengeInput & { [key: string]: any },
-  ): Promise<Challenge> {
+    data: UpdateShowdownInput & { [key: string]: any },
+  ): Promise<Showdown> {
     console.log('LOOK updateOne data ', JSON.stringify(data));
     // separate anonymous users from regular users
     const { _id, matches = [], updates, ...updateData } = data;
@@ -131,7 +107,7 @@ export class ChallengeService {
       updateData.updates = { $concatArrays: ['$updates', updates] };
     }
 
-    return this.challengeModel
+    return this.showdownModel
       .findOneAndUpdate(
         { _id },
         [
@@ -174,17 +150,17 @@ export class ChallengeService {
             ...updateDataMatch,
           };
         });
-        // console.log('LOOK updated Challenge resultObject ', JSON.stringify(resultObject));
+        // console.log('LOOK updated Showdown resultObject ', JSON.stringify(resultObject));
         console.log(
-          'LOOK updated Challenge returnObject ',
+          'LOOK updated Showdown returnObject ',
           JSON.stringify(returnObject),
         );
 
         return this.clean(returnObject);
-        // return changedProperties as Challenge;
+        // return changedProperties as Showdown;
       })
       .catch(error => {
-        throw new Error('Error updating Challenge >>> ' + error);
+        throw new Error('Error updating Showdown >>> ' + error);
       });
   }
 
@@ -200,13 +176,13 @@ export class ChallengeService {
     } else {
       return;
     }
-    return this.challengeModel
+    return this.showdownModel
       .findOneAndUpdate({ _id: id }, { $push: updateObj }, { new: true })
       .exec();
   }
 
   removeContestant(_id, contestantId) {
-    return this.challengeModel
+    return this.showdownModel
       .updateOne(
         { _id },
         { $pull: { anonymousContestants: { _id: contestantId } as never } },
@@ -215,13 +191,13 @@ export class ChallengeService {
   }
 
   remove(id: string): Promise<boolean> {
-    return this.challengeModel
+    return this.showdownModel
       .deleteOne({ _id: id })
       .then(result => {
         return true;
       })
       .catch(error => {
-        throw new Error('Error removing Challenge >>> ' + error);
+        throw new Error('Error removing Showdown >>> ' + error);
       });
   }
 

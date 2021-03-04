@@ -1,17 +1,13 @@
-import { MaxLength } from 'class-validator';
 import { Field, InputType, ID, Int } from '@nestjs/graphql';
+import { MaxLength } from 'class-validator';
 import { ContestantInput } from '../../contestant/contestant.input';
 import { MatchInput } from '@models/match/dto/match.input';
-import { UpdateInput } from '@models/update/dto/update.input';
 
 @InputType()
-export class UpdateChallengeInput {
-  @Field(type => ID)
-  _id: string;
-
-  @Field({ nullable: true })
+export class NewShowdownInput {
+  @Field()
   @MaxLength(30)
-  name?: string;
+  name: string;
 
   @Field({ nullable: true })
   @MaxLength(30)
@@ -20,26 +16,20 @@ export class UpdateChallengeInput {
   @Field(type => Int, { nullable: true })
   contestantCount?: number;
 
+  @Field({ nullable: true })
+  createdBy?: string;
+
   @Field(type => [ContestantInput], { nullable: 'itemsAndList' })
   contestants?: ContestantInput[];
 
   @Field(type => [MatchInput], { nullable: 'itemsAndList' })
   matches?: MatchInput[];
 
-  @Field(type => [UpdateInput], { nullable: 'itemsAndList' })
-  updates?: UpdateInput[];
-
   @Field({ nullable: true })
   editAccessCode?: string;
 
-  @Field(type => ID, { nullable: true })
-  updatedBy?: string;
-
   @Field(type => Int, { nullable: true })
   setCount?: number;
-
-  @Field({ nullable: true })
-  hasStarted?: boolean;
 
   @Field({ nullable: true })
   allowRegistration?: boolean;

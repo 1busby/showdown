@@ -10,7 +10,7 @@ import { Tournament } from '@models/tournament/tournament.model';
 export class User extends Document implements IUser, Contestant {
   @Field(type => ID)
   _id: string;
-  
+
   @Field(type => ID)
   dId: string;
 
@@ -28,12 +28,12 @@ export class User extends Document implements IUser, Contestant {
 
   @Field(type => [Team], { nullable: 'itemsAndList' })
   teams?: Team[];
-  
+
   @Field(type => [Tournament], { nullable: 'itemsAndList' })
   tournaments?: Tournament[];
-  
+
   @Field({ nullable: true })
-  iconPublicAddress?: String;
+  iconPublicAddress?: string;
 
   @Field({ nullable: true })
   createdOn?: Date;

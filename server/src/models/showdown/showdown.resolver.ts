@@ -9,92 +9,90 @@ import {
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
-import { NewChallengeInput } from './dto/new-Challenge.input';
-import { ChallengesArgs } from './dto/challenges.args';
-import { Challenge } from './challenge.model';
-import { ChallengeService } from './challenge.service';
-import { UpdateChallengeInput } from './dto/update-Challenge.input';
+import { NewShowdownInput } from './dto/new-Showdown.input';
+import { ShowdownsArgs } from './dto/showdowns.args';
+import { Showdown } from './showdown.model';
+import { ShowdownService } from './showdown.service';
+import { UpdateShowdownInput } from './dto/update-Showdown.input';
 import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
 
 const pubSub = new PubSub();
 
-@Resolver(of => Challenge)
-export class ChallengesResolver {
+@Resolver(of => Showdown)
+export class ShowdownResolver {
   constructor(
     private logger: CustomLogger,
-    private readonly challengeService: ChallengeService,
+    private readonly showdownService: ShowdownService,
     private readonly matchService: MatchService,
     // private readonly userService: UsersService
   ) {}
 
-  @Query(returns => Challenge)
-  async challenge(
+  @Query(returns => Showdown)
+  async showdown(
     @Args('id', { nullable: true }) id?: string,
     @Args('linkCode', { nullable: true }) linkCode?: string,
-  ): Promise<Challenge> {
+  ): Promise<Showdown> {
     this.logger.info(
-      'LOOK getting Challenge id or linkCode = ',
+      'LOOK getting Showdown id or linkCode = ',
       id || linkCode,
     );
     try {
-      let challenge: Challenge;
+      let showdown: Showdown;
       if (id) {
-        challenge = await this.challengeService.findOneById(id);
+        showdown = await this.showdownService.findOneById(id);
       } else if (linkCode) {
-        challenge = await this.challengeService.findOneByLinkCode(linkCode);
+        showdown = await this.showdownService.findOneByLinkCode(linkCode);
       } else {
         throw new NotAcceptableException(
           null,
           'No link code or description found.',
         );
       }
-      if (!challenge) {
-        this.logger.info('LOOK tournement not found!');
-        throw new NotFoundException('Challenge Not Found');
+      if (!showdown) {
+        this.logger.info('LOOK showdown not found!');
+        throw new NotFoundException('Showdown Not Found');
       }
 
-      challenge.contestants.sort((a, b) => a.seed - b.seed);
-
-      return challenge;
+      return showdown;
     } catch (e) {
-      this.logger.error('Error getting Challenge becuase ', e);
+      this.logger.error('Error getting Showdown becuase ', e);
     }
   }
 
-  @Query(returns => [Challenge])
-  challenges(@Args() challengesArgs: ChallengesArgs): Promise<Challenge[]> {
-    return this.challengeService.findAll(challengesArgs);
+  @Query(returns => [Showdown])
+  showdowns(@Args() showdownsArgs: ShowdownsArgs): Promise<Showdown[]> {
+    return this.showdownService.findAll(showdownsArgs);
   }
 
 
-  @Mutation(returns => Challenge)
-  async addChallenge(
-    @Args('newChallengeData') newChallengeData: NewChallengeInput,
-  ): Promise<Challenge> {
-    return await this.challengeService.create(newChallengeData)
-    // .then(Challenge => {
-    //   this.userService.updateOne({ _id: newChallengeData.createdBy, })
-    //   return Challenge
+  @Mutation(returns => Showdown)
+  async addShowdown(
+    @Args('newShowdownData') newShowdownData: NewShowdownInput,
+  ): Promise<Showdown> {
+    return await this.showdownService.create(newShowdownData);
+    // .then(Showdown => {
+    //   this.userService.updateOne({ _id: newShowdownData.createdBy, })
+    //   return Showdown
     // });
   }
 
-  @Mutation(returns => Challenge)
-  async updateChallenge(
-    @Args('updateChallengeData') updateChallengeData: UpdateChallengeInput,
-  ): Promise<Challenge> {
-    return this.challengeService.updateOne(updateChallengeData).then(res => {
+  @Mutation(returns => Showdown)
+  async updateShowdown(
+    @Args('updateShowdownData') updateShowdownData: UpdateShowdownInput,
+  ): Promise<Showdown> {
+    return this.showdownService.updateOne(updateShowdownData).then(res => {
       this.logger.log('LOOK res ' + res);
       return res;
     });
   }
 
-  @Mutation(returns => Challenge)
-  async runChallenge(
+  @Mutation(returns => Showdown)
+  async runShowdown(
     @Args('_id', { type: () => ID }) _id: string,
-  ): Promise<Challenge> {
-    this.logger.log('LOOK Challenge _id ', _id);
-    return this.challengeService
+  ): Promise<Showdown> {
+    this.logger.log('LOOK Showdown _id ', _id);
+    return this.showdownService
       .updateOne({
         _id,
         hasStarted: true,
@@ -113,20 +111,20 @@ export class ChallengesResolver {
   }
 
   @Mutation(returns => Boolean)
-  removeChallenge(@Args('id') id: string) {
-    return this.challengeService.remove(id);
+  removeShowdown(@Args('id') id: string) {
+    return this.showdownService.remove(id);
   }
 
-  // @Mutation(returns => Challenge)
+  // @Mutation(returns => Showdown)
   // reportMatchScore(@Args('matchData') matchData: MatchInput) {
-  //   if (!matchData.challengeId) {
-  //     return 'No Challenge ID received!';
+  //   if (!matchData.showdownId) {
+  //     return 'No Showdown ID received!';
   //   }
 
-  //   return this.challengeService
-  //     .findOneById(matchData.ChallengeId)
-  //     .then(Challenge => {
-  //       this.logger.log('LOOK Challenge fetched: ' + Challenge);
+  //   return this.showdownService
+  //     .findOneById(matchData.ShowdownId)
+  //     .then(Showdown => {
+  //       this.logger.log('LOOK Showdown fetched: ' + Showdown);
   //       const updates = [];
   //       // const match = 
   //       // check if match has a winner
@@ -160,8 +158,8 @@ export class ChallengesResolver {
   //           }
   //         }
   //       }
-  //       return this.challengeService.updateOne({
-  //         _id: matchData.ChallengeId,
+  //       return this.showdownService.updateOne({
+  //         _id: matchData.ShowdownId,
   //         matches: [matchData],
   //         updates,
   //       });
@@ -172,8 +170,8 @@ export class ChallengesResolver {
   //     });
   // }
 
-  @Subscription(returns => Challenge)
-  challengeAdded() {
-    return pubSub.asyncIterator('challengeAdded');
+  @Subscription(returns => Showdown)
+  showdownAdded() {
+    return pubSub.asyncIterator('showdownAdded');
   }
 }

@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 import { MatchSchema } from '@models/match/match.schema';
 import { UpdateSchema } from '@models/update/update.schema';
 
-export const ChallengeSchema = new mongoose.Schema({
+export const ShowdownSchema = new mongoose.Schema({
   name: String,
   description: String,
   contestantCount: Number,

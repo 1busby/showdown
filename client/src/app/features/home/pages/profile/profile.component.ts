@@ -56,4 +56,8 @@ export class ProfileComponent implements OnDestroy {
   openTournament(linkCode) {
     this.router.navigateByUrl(`/${linkCode}`);
   }
+
+  createShowdown(showdownData) {
+    
+  }
 }

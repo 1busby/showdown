@@ -17,7 +17,7 @@
       Challenge
     </button>
 
-    <sd-new-challenge *ngIf="showChallengeForm"></sd-new-challenge>
+    <sd-new-showdown *ngIf="showChallengeForm" (confirm)="createShowdown($event)"></sd-new-showdown>
   </ng-container>
 
   <br />
