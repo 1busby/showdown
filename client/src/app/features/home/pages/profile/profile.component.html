@@ -5,15 +5,19 @@
   <ng-container *ngIf="user?._id === loggedInUser?._id">
     <h1>ICX Wallet Address</h1>
     {{ loggedInUser.iconPublicAddress }}
+    <br />
+    {{ icxAmount }}
   </ng-container>
   
 
   <ng-container *ngIf="user?._id !== loggedInUser?._id">
     <br />
-    <button mat-raised-button>
+    <button mat-raised-button (click)="showChallengeForm = true">
       <mat-icon>local_play</mat-icon>
       Challenge
     </button>
+
+    <sd-new-challenge *ngIf="showChallengeForm"></sd-new-challenge>
   </ng-container>
 
   <br />

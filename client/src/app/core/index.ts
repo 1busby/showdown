@@ -19,6 +19,7 @@ export * from './services/alert.service';
 export * from './data/app.store.service';
 
 export * from './data/user/user.gql.service';
+export * from './data/user/user-profile.gql.service';
 
 export * from './data/tournament/tournament.gql.service';
 export * from './data/tournament/tournaments.gql.service';

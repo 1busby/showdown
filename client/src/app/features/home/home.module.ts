@@ -17,7 +17,7 @@ import { MatchListComponent } from './components/match-list/match-list.component
 import { BracketViewComponent } from './components/bracket-view/bracket-view.component';
 import { MatchCardComponent } from './components/match-card/match-card.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { NewChallengeComponent } from './components/new-challenge-dialog/new-challenge-dialog.component';
+import { NewChallengeComponent } from './components/new-challenge/new-challenge.component';
 
 const gravatarConfig: GravatarConfig = {
   fallback: FALLBACK.robohash,
