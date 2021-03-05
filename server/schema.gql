@@ -1,0 +1,271 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+interface Contestant {
+  _id: ID!
+  name: String
+  seed: Int
+  points: Int
+  isRegistered: Boolean
+}
+
+input ContestantInput {
+  _id: ID
+  name: String
+  seed: Int
+  points: Int
+  isRegistered: Boolean
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+"""An object with to inform app of access status"""
+type EditAccessRequest {
+  canEdit: Boolean
+}
+
+"""The match model"""
+type Match {
+  _id: ID!
+  matchNumber: Int
+  roundNumber: Int
+  winnerSeed: String
+  createdOn: Date
+  updatedOn: Date
+  highSeedNumber: Int
+  lowSeedNumber: Int
+  matches: [Match]
+  sets: [Set]
+}
+
+input MatchInput {
+  _id: ID
+  tournamentId: ID
+  matchNumber: Int
+  roundNumber: Int
+  highSeedNumber: Int
+  lowSeedNumber: Int
+  winnerSeed: String
+  sets: [SetInput]
+}
+
+type Mutation {
+  addTournament(newTournamentData: NewTournamentInput!): Tournament!
+  updateTournament(updateTournamentData: UpdateTournamentInput!): Tournament!
+  runTournament(_id: ID!): Tournament!
+  joinTournament(userId: ID, contestantName: String, id: ID!): Tournament!
+  removeContestant(contestantId: ID!, _id: ID!): Tournament!
+  removeTournament(id: String!): Boolean!
+  reportMatchScore(matchData: MatchInput!): Tournament!
+  signin(signinInput: SigninInput!): User!
+  registerUser(newUserInput: NewUserInput!): User!
+  updateUser(updateUserData: UpdateUserInput!): User!
+  addShowdown(newShowdownData: NewShowdownInput!): Showdown!
+  updateShowdown(updateShowdownData: UpdateShowdownInput!): Showdown!
+  runShowdown(_id: ID!): Showdown!
+  removeShowdown(id: String!): Boolean!
+}
+
+input NewShowdownInput {
+  _id: ID
+  challenger: ID
+  defender: ID
+  expiresOn: Date
+  setCount: Int
+  wager: Float
+}
+
+input NewTournamentInput {
+  name: String!
+  description: String
+  contestantCount: Int
+  createdBy: String
+  contestants: [ContestantInput]
+  matches: [MatchInput]
+  editAccessCode: String
+  setCount: Int
+  allowRegistration: Boolean
+  allowSelfScoring: Boolean
+  structure: String
+}
+
+input NewUserInput {
+  dId: String!
+  username: String!
+  email: String!
+  iconPublicAddress: String!
+  firstName: String
+  lastName: String
+}
+
+type Query {
+  tournament(linkCode: String, id: String): Tournament!
+  tournaments(skip: Int = 0, take: Int = 25): [Tournament!]!
+  requestEditAccess(requestEditAccessInput: RequestEditAccessInput!): EditAccessRequest!
+  user(username: String, dId: String): User!
+  users(skip: Int = 0, take: Int = 25): [User!]!
+  showdown(linkCode: String, id: String): Showdown!
+  showdowns(skip: Int = 0, take: Int = 25): [Showdown!]!
+}
+
+input RequestEditAccessInput {
+  tournamentId: String
+  editAccessCode: String
+}
+
+"""A set for a match"""
+type Set {
+  _id: ID!
+  orderNumber: Int
+  highSeedScore: Int
+  lowSeedScore: Int
+  outcome: String
+  startedOn: Date
+  completedOn: Date
+  notes: String
+}
+
+input SetInput {
+  _id: ID
+  orderNumber: Int
+  highSeedScore: Int
+  lowSeedScore: Int
+  outcome: String
+  notes: String
+}
+
+"""The Challenge model"""
+type Showdown {
+  _id: ID!
+  challenger: Contestant
+  defender: Contestant
+  createdOn: Date
+  updatedOn: Date
+  expiresOn: Date
+  linkCode: String
+  updates: [Update]
+  setCount: Int
+  wager: Float
+  consensusReached: Boolean
+  isChallengerReviewing: Boolean
+  isDefenderReviewing: Boolean
+}
+
+input SigninInput {
+  username: String!
+}
+
+type Subscription {
+  tournamentAdded: Tournament!
+  showdownAdded: Showdown!
+}
+
+type Team {
+  _id: ID!
+  name: String!
+  createdOn: Date!
+  updatedOn: Date!
+  users: User
+  seed: Float!
+}
+
+"""The tournament model"""
+type Tournament {
+  _id: ID!
+  name: String
+  description: String
+  contestantCount: Int
+  createdBy: User
+  contestants: [Contestant]
+  teams: [Team]
+  matches: [Match]
+  updates: [Update]
+  createdOn: Date
+  updatedOn: Date
+  linkCode: String
+  editAccessCode: String
+  setCount: Int
+  hasStarted: Boolean
+  allowRegistration: Boolean
+  allowSelfScoring: Boolean
+  structure: String
+}
+
+"""The update model"""
+type Update {
+  _id: ID!
+  title: String
+  description: String
+  createdOn: Date
+}
+
+input UpdateInput {
+  title: String
+  description: String
+  recipientIds: [ID]
+  createdOn: Int
+}
+
+input UpdateShowdownInput {
+  _id: ID!
+  name: String
+  description: String
+  contestantCount: Int
+  contestants: [ContestantInput]
+  matches: [MatchInput]
+  updates: [UpdateInput]
+  editAccessCode: String
+  updatedBy: ID
+  setCount: Int
+  hasStarted: Boolean
+  allowRegistration: Boolean
+  allowSelfScoring: Boolean
+  structure: String
+}
+
+input UpdateTournamentInput {
+  _id: ID!
+  name: String
+  description: String
+  contestantCount: Int
+  contestants: [ContestantInput]
+  matches: [MatchInput]
+  updates: [UpdateInput]
+  editAccessCode: String
+  updatedBy: ID
+  setCount: Int
+  hasStarted: Boolean
+  allowRegistration: Boolean
+  allowSelfScoring: Boolean
+  structure: String
+}
+
+input UpdateUserInput {
+  _id: ID!
+  username: String
+  email: String
+  firstName: String
+  lastName: String
+  tournaments: [String]
+}
+
+"""The user model"""
+type User implements Contestant {
+  _id: ID!
+  name: String
+  seed: Int
+  points: Int
+  isRegistered: Boolean
+  dId: ID!
+  username: String
+  email: String
+  firstName: String
+  lastName: String
+  teams: [Team]
+  tournaments: [Tournament]
+  iconPublicAddress: String
+  createdOn: Date
+  updatedOn: Date
+}

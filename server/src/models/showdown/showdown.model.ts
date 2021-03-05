@@ -1,8 +1,7 @@
-import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
+import { Field, ID, ObjectType, Int, Float } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
 import { IShowdown } from '@shared/index';
-import { User } from '@models/user/user.model';
 import { Contestant } from '@models/contestant/contestant.entity';
 import { Update } from '@models/update/update.model';
 
@@ -11,10 +10,10 @@ export class Showdown extends Document implements IShowdown {
   @Field(type => ID)
   _id: string;
 
-  @Field(type => Contestant, { nullable: 'itemsAndList' })
+  @Field(type => Contestant, { nullable: true })
   challenger?: Contestant;
 
-  @Field(type => Contestant, { nullable: 'itemsAndList' })
+  @Field(type => Contestant, { nullable: true })
   defender?: Contestant;
 
   @Field({ nullable: true })
@@ -29,11 +28,14 @@ export class Showdown extends Document implements IShowdown {
   @Field({ nullable: true })
   linkCode?: string;
 
-  @Field({ nullable: true })
+  @Field(type => [Update], { nullable: 'itemsAndList' })
   updates?: Update[];
 
   @Field(type => Int, { nullable: true })
   setCount?: number;
+
+  @Field(type => Float, { nullable: true })
+  wager?: number;
 
   @Field({ nullable: true })
   consensusReached?: boolean;

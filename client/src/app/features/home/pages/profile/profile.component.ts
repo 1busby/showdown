@@ -1,11 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { first, switchMap, takeUntil } from 'rxjs/operators';
 
-import { AuthService, UserProfileGQL } from '@app/core';
+import {
+  AuthService,
+  UserProfileGQL,
+  CreateShowdownGQL,
+  IconTransactionService,
+} from '@app/core';
 import { IUser } from '@app/shared';
-import { IconTransactionService } from '@app/core/services/icon-transaction.service';
 
 @Component({
   selector: 'sd-home-profile',
@@ -17,7 +21,7 @@ export class ProfileComponent implements OnDestroy {
 
   user: IUser;
   loggedInUser: IUser;
-  showChallengeForm = false;
+  showShowdownForm = false;
   icxAmount = 0;
 
   constructor(
@@ -25,7 +29,8 @@ export class ProfileComponent implements OnDestroy {
     private router: Router,
     private userProfileGql: UserProfileGQL,
     private authService: AuthService,
-    private iconService: IconTransactionService
+    private iconService: IconTransactionService,
+    private createShowdownGql: CreateShowdownGQL
   ) {
     this.route.params
       .pipe(
@@ -36,11 +41,11 @@ export class ProfileComponent implements OnDestroy {
       )
       .subscribe((result) => {
         this.user = result.data.user;
-        debugger
-        this.iconService.getIcxAmount(this.user.iconPublicAddress).then(amount => {
-          debugger
-          this.icxAmount = amount;
-        });
+        this.iconService
+          .getIcxAmount(this.user.iconPublicAddress)
+          .then((amount) => {
+            this.icxAmount = amount;
+          });
       });
 
     this.authService.user.subscribe((user) => {
@@ -58,6 +63,15 @@ export class ProfileComponent implements OnDestroy {
   }
 
   createShowdown(showdownData) {
-    
+    this.createShowdownGql
+    .mutate({
+      ...showdownData,
+      challenger: this.loggedInUser._id,
+      defender: this.user._id,
+    })
+    .pipe(first())
+    .subscribe(result => {
+      console.log('LOOK Showdown Created, result ', result);
+    });
   }
 }

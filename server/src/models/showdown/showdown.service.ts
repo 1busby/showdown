@@ -36,10 +36,7 @@ export class ShowdownService {
       ],
     });
     return await createdShowdown
-      .save()
-      .then(showdown => {
-        return showdown.populate('contestants');
-      });
+      .save();
   }
 
   async findOneById(id: string): Promise<Showdown> {

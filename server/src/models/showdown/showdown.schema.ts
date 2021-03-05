@@ -23,6 +23,7 @@ export const ShowdownSchema = new mongoose.Schema({
   linkCode: String,
   editAccessCode: String,
   setCount: Number,
+  wager: Number,
   hasStarted: Boolean,
   allowRegistration: Boolean,
   allowSelfScoring: Boolean,

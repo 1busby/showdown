@@ -10,6 +10,7 @@ export interface IShowdown {
   linkCode?: string;
   updates?: IUpdate[];
   setCount?: number;
+  wager?: number;
   consensusReached?: boolean;
   isChallengerReviewing?: boolean;
   isDefenderReviewing?: boolean;

@@ -1,4 +1,4 @@
-import { Field, InputType, ID, Int } from '@nestjs/graphql';
+import { Field, InputType, ID, Int, Float } from '@nestjs/graphql';
 import { Contestant } from '@models/contestant/contestant.entity';
 
 @InputType()
@@ -20,6 +20,9 @@ export class ShowdownInput {
 
   @Field(type => Int, { nullable: true })
   setCount?: number;
+
+  @Field(type => Float, { nullable: true })
+  wager?: number;
 
   @Field({ nullable: true })
   consensusReached?: boolean;
