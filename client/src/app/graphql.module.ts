@@ -4,8 +4,6 @@ import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 
 import { environment } from '../environments/environment';
-import { typeDefs } from '@app/core';
-import { IContestant, IMatch, ISet } from './shared';
 
 const uri = environment.production
   ? '/graphql'

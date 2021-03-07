@@ -17,6 +17,7 @@ import { UsersModule } from './models/user/user.module';
 import { MatchModule } from './models/match/match.module';
 import { UpdateModule } from '@models/update/update.module';
 import { ShowdownModule } from '@models/showdown/showdown.module';
+import { ContestantModule } from '@models/contestant/contestant.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { ShowdownModule } from '@models/showdown/showdown.module';
     TournamentsModule,
     MatchModule,
     UpdateModule,
-    ShowdownModule
+    ShowdownModule,
+    ContestantModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

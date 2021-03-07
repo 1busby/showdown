@@ -84,11 +84,11 @@ export class TournamentComponent implements OnInit, OnDestroy {
         );
         this.tournament = result.data.tournament;
         this.isContestant = this.checkIfContestant();
-        this.tournament.contestants.forEach(contestant => {
-          if (contestant.profile) {
-            contestant.name = contestant.profile.username;
-          }
-        })
+        // this.tournament.contestants.forEach(contestant => {
+        //   if (contestant.profile) {
+        //     contestant.name = contestant.profile.username;
+        //   }
+        // })
       });
 
     this.authService.user.subscribe((user) => {

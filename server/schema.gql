@@ -5,7 +5,7 @@
 """The match model"""
 type Contestant {
   _id: ID
-  name: String
+  name: String!
   seed: Int
   points: Int
   isRegistered: Boolean
