@@ -115,8 +115,8 @@ export class TournamentsResolver {
         hasStarted: true,
         updates: [
           {
-            title: 'Showdown started!',
-            description: 'Showdown has been started.',
+            title: 'Tournament started!',
+            description: 'Tournament has been started.',
             createdOn: new Date(),
           },
         ],

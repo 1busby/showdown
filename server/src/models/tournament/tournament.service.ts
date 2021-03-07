@@ -40,7 +40,7 @@ export class TournamentsService {
       anonymousContestants,
       updates: [
         {
-          title: 'Showdown created!',
+          title: 'Tournament created!',
           description: 'GLHF',
           createdOn: currentDate,
         },
@@ -94,6 +94,7 @@ export class TournamentsService {
     if (data.contestants && data.contestants.length > 0) {
       const anonymousContestants = [];
       for (let i = data.contestants.length - 1; i >= 0; i--) {
+        data.contestants[i]._id = new ObjectId() as any
         if (!data.contestants[i].isRegistered) {
           anonymousContestants.push(data.contestants[i]);
           data.contestants.splice(i, 1);
