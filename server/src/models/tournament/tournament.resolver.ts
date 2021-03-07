@@ -129,11 +129,11 @@ export class TournamentsResolver {
 
   @Mutation(returns => Tournament)
   joinTournament(
-    @Args('id', { type: () => ID }) id: string,
+    @Args('_id', { type: () => ID }) _id: string,
     @Args('contestantName', { nullable: true }) contestantName?: string,
     @Args('userId', { nullable: true, type: () => ID }) userId?: string,
   ): Promise<Tournament> {
-    return this.tournamentsService.addContestant(id, contestantName, userId);
+    return this.tournamentsService.addContestant(_id, contestantName, userId);
   }
 
   @Mutation(returns => Tournament)
@@ -145,8 +145,8 @@ export class TournamentsResolver {
   }
 
   @Mutation(returns => Boolean)
-  removeTournament(@Args('id') id: string) {
-    return this.tournamentsService.remove(id);
+  removeTournament(@Args('_id', { type: () => ID }) _id: string) {
+    return this.tournamentsService.remove(_id);
   }
 
   @Mutation(returns => Tournament)

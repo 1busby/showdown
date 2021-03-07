@@ -17,7 +17,8 @@
 
     <button
       *ngIf="
-        this.tournament?.contestants?.length < this.tournament?.contestantCount
+        this.tournament?.contestants?.length < this.tournament?.contestantCount &&
+        !this.checkIfContestant()
       "
       mat-raised-button
       color="primary"

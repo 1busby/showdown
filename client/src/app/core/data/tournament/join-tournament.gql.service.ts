@@ -6,14 +6,16 @@ import { Injectable } from '@angular/core';
 })
 export class JoinTournamentGQL extends Mutation {
   document = gql`
-    mutation joinTournament($id: ID!, $contestantName: String, $userId: ID) {
+    mutation joinTournament($_id: ID!, $contestantName: String, $userId: ID) {
       joinTournament(
-        id: $id
+        _id: $_id
         contestantName: $contestantName
         userId: $userId
       ) {
         _id
-        contestants
+        contestants {
+          _id
+        }
       }
     }
   `;

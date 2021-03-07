@@ -14,10 +14,16 @@ import { ITournament } from '@app/shared';
 export class TournamentCardComponent {
   @Input() tournament: ITournament;
   @Output() selectTournament: EventEmitter<ITournament> = new EventEmitter<ITournament>();
+  @Output() delete: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {}
 
   onSelect(tournament: ITournament) {
     this.selectTournament.emit(tournament);
+  }
+
+  onDelete(event) {
+    this.delete.emit(true);
+    event.stopPropagation();
   }
 }

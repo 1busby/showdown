@@ -50,10 +50,12 @@ export class TournamentComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
         switchMap(
           (params: ParamMap) =>
-            this.tournamentGql.watch({ linkCode: params.get('linkCode') }, {
-              returnPartialData: true,
-            })
-              .valueChanges
+            this.tournamentGql.watch(
+              { linkCode: params.get('linkCode') },
+              {
+                returnPartialData: true,
+              }
+            ).valueChanges
         ),
         catchError((error) => {
           this.router.navigateByUrl('/');
@@ -70,16 +72,19 @@ export class TournamentComponent implements OnInit, OnDestroy {
           return;
         }
 
-        console.log('LOOK TournamentComponent new tournamet data ', result.data.tournament);
+        console.log(
+          'LOOK TournamentComponent new tournamet data ',
+          result.data.tournament
+        );
         this.tournament = result.data.tournament;
         // this.tournament.contestants = this.tournament.contestants
         //   .slice()
         //   .sort((a, b) => a.seed - b.seed);
       });
 
-      this.authService.user.subscribe((user) => {
-        this.loggedInUser = user;
-      });
+    this.authService.user.subscribe((user) => {
+      this.loggedInUser = user;
+    });
   }
 
   ngOnDestroy(): void {
@@ -88,27 +93,58 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   joinClicked() {
-    const dialogRef = this.dialog.open(QuickJoinDialogComponent, {
-      data: {
-        tournamentName: this.tournament.name,
-      },
+    if (this.tournament.createdBy && this.tournament.createdBy._id) {
+      if (!this.loggedInUser) {
+        this.alertService.error('Log in to join this tournament');
+        return;
+      }
+      if (this.checkIfContestant()) {
+        this.alertService.error('You already joined!');
+        return;
+      }
+
+      this.joinTournamentGql
+        .mutate({
+          _id: this.tournament._id,
+          userId: this.loggedInUser._id,
+        })
+        .pipe(first())
+        .subscribe((result) => {
+          console.log('LOOK joinTournament result: ', result);
+        });
+    } else {
+      const dialogRef = this.dialog.open(QuickJoinDialogComponent, {
+        data: {
+          tournamentName: this.tournament.name,
+        },
+      });
+
+      dialogRef
+        .afterClosed()
+        .pipe(first())
+        .subscribe((contestant) => {
+          this.joinTournamentGql
+            .mutate({
+              _id: this.tournament._id,
+              contestantName: contestant.name,
+            })
+            .pipe(first())
+            .subscribe((result) => {
+              console.log('LOOK joinTournament result: ', result);
+            });
+        });
+    }
+  }
+
+  checkIfContestant(): boolean {
+    if (!this.loggedInUser) {
+      return false;
+    }
+    const index = this.contestantList.findIndex((contestant) => {
+      return contestant._id === this.loggedInUser._id;
     });
 
-    dialogRef
-      .afterClosed()
-      .pipe(first())
-      .subscribe((contestant) => {
-        this.joinTournamentGql
-          .mutate({
-            id: this.tournament._id,
-            contestantName: contestant.name,
-            userId: contestant._id,
-          })
-          .pipe(first())
-          .subscribe((result) => {
-            console.log('LOOK joinTournament result: ', result);
-          });
-      });
+    return index > -1 ? true : false;
   }
 
   editTournament(runTournament?: boolean) {
@@ -183,9 +219,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         return true;
       }
     } else {
-      return localStorage.getItem(
-        `editAccessCode-${this.tournament.linkCode}`
-      )
+      return localStorage.getItem(`editAccessCode-${this.tournament.linkCode}`)
         ? true
         : false;
     }
@@ -195,60 +229,59 @@ export class TournamentComponent implements OnInit, OnDestroy {
     let canEdit = false;
 
     canEdit = this.canEdit();
-    
+
     this.matchService
       .showMatchDetails(match, canEdit, this.tournament)
       .pipe(first())
-      .subscribe()
-        // if (match && action === 'save') {
-        //   let matchesToBeSaved = [];
+      .subscribe();
+    // if (match && action === 'save') {
+    //   let matchesToBeSaved = [];
 
-        //   const numSets = match.sets.length;
-        //   let highSeedScore = 0;
-        //   let lowSeedScore = 0;
-        //   let isMatchComplete = true;
-        //   for (let i = numSets - 1; i >= 0; i--) {
-        //     const setOutcome = match.sets[i].outcome;
-        //     if (!setOutcome) {
-        //       // match not finished
-        //       isMatchComplete = false;
-        //       break;
-        //     } else if (setOutcome === 'high') {
-        //       highSeedScore++;
-        //     } else if (setOutcome === 'low') {
-        //       lowSeedScore++;
-        //     }
-        //   }
+    //   const numSets = match.sets.length;
+    //   let highSeedScore = 0;
+    //   let lowSeedScore = 0;
+    //   let isMatchComplete = true;
+    //   for (let i = numSets - 1; i >= 0; i--) {
+    //     const setOutcome = match.sets[i].outcome;
+    //     if (!setOutcome) {
+    //       // match not finished
+    //       isMatchComplete = false;
+    //       break;
+    //     } else if (setOutcome === 'high') {
+    //       highSeedScore++;
+    //     } else if (setOutcome === 'low') {
+    //       lowSeedScore++;
+    //     }
+    //   }
 
-        //   if (isMatchComplete) {
-        //     if (highSeedScore > lowSeedScore) {
-        //       match.updateWinner(MatchContainer.HIGHSEED);
-        //     } else if (lowSeedScore > highSeedScore) {
-        //       match.updateWinner(MatchContainer.LOWSEED);
-        //     }
+    //   if (isMatchComplete) {
+    //     if (highSeedScore > lowSeedScore) {
+    //       match.updateWinner(MatchContainer.HIGHSEED);
+    //     } else if (lowSeedScore > highSeedScore) {
+    //       match.updateWinner(MatchContainer.LOWSEED);
+    //     }
 
-        //     if(match.observers[0]) {
-        //       matchesToBeSaved = [
-        //         ...matchesToBeSaved,
-        //         ...match.observers.map((matchContainer: MatchContainer) => matchContainer.getData())
-        //       ];
-        //     }
-        //   }
-        //   matchesToBeSaved.push(match.getData());
+    //     if(match.observers[0]) {
+    //       matchesToBeSaved = [
+    //         ...matchesToBeSaved,
+    //         ...match.observers.map((matchContainer: MatchContainer) => matchContainer.getData())
+    //       ];
+    //     }
+    //   }
+    //   matchesToBeSaved.push(match.getData());
 
-        //   // this.editTournamentGql
-        //   //   .mutate({
-        //   //     _id: this.tournament._id,
-        //   //     matches: matchesToBeSaved,
-        //   //   })
-        //   //   .pipe(first())
-        //   //   .subscribe(result => {
-        //   //     debugger
-        //   //   });
-        // }
-      // });
+    //   // this.editTournamentGql
+    //   //   .mutate({
+    //   //     _id: this.tournament._id,
+    //   //     matches: matchesToBeSaved,
+    //   //   })
+    //   //   .pipe(first())
+    //   //   .subscribe(result => {
+    //   //     debugger
+    //   //   });
+    // }
+    // });
   }
-
 
   showView(view: 'bracket' | 'contestants' | 'matches' | 'updates') {
     this.viewBeingShown = view;

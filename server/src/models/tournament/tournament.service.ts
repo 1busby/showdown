@@ -194,11 +194,11 @@ export class TournamentsService {
 
   addContestant(id, contestantName?, userId?) {
     const updateObj = {
-      temporaryContestants: null,
-      contesants: null,
+      temporaryContestants: undefined,
+      contestants: undefined,
     };
     if (userId) {
-      updateObj.contesants = userId;
+      updateObj.contestants = userId;
     } else if (contestantName) {
       updateObj.temporaryContestants = contestantName;
     } else {
@@ -218,9 +218,9 @@ export class TournamentsService {
       .exec();
   }
 
-  remove(id: string): Promise<boolean> {
+  remove(_id: string): Promise<boolean> {
     return this.tournamentModel
-      .deleteOne({ _id: id })
+      .deleteOne({ _id })
       .then(result => {
         return true;
       })
