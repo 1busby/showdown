@@ -74,8 +74,8 @@ export class TournamentsService {
           path: 'contestants',
           populate: {
             path: 'profile',
-            model: 'User'
-          }
+            model: 'User',
+          },
         })
         // .then(tournament => {
         //   tournament = tournament.toJSON();
@@ -113,7 +113,10 @@ export class TournamentsService {
 
     let matchIds: string[] = [];
     if (matches && matches.length > 0) {
-      matchIds = matches.map(match => new ObjectId(match._id) as any);
+      matchIds = matches.map(match => {
+        match._id = new ObjectId(match._id) as any;
+        return match._id;
+      });
       updateData.matches = {
         $map: {
           input: '$matches',
@@ -124,10 +127,15 @@ export class TournamentsService {
                 $in: ['$$match._id', matchIds],
               },
               then: {
-                $arrayElemAt: [
-                  matches,
+                $mergeObjects: [
+                  '$$match',
                   {
-                    $indexOfArray: [matchIds, '$$match._id'],
+                    $arrayElemAt: [
+                      matches,
+                      {
+                        $indexOfArray: [matchIds, '$$match._id'],
+                      },
+                    ],
                   },
                 ],
               },
@@ -210,13 +218,17 @@ export class TournamentsService {
     };
 
     return this.tournamentModel
-      .findOneAndUpdate({ _id: id }, { $push: { contestants:  contestant } }, { new: true })
+      .findOneAndUpdate(
+        { _id: id },
+        { $push: { contestants: contestant } },
+        { new: true },
+      )
       .populate({
         path: 'contestants',
         populate: {
           path: 'profile',
-          model: 'User'
-        }
+          model: 'User',
+        },
       })
       .exec();
   }
@@ -235,6 +247,10 @@ export class TournamentsService {
     return this.tournamentModel
       .deleteOne({ _id })
       .then(result => {
+        if (result.ok !== 1) {
+          return false;
+        }
+
         return true;
       })
       .catch(error => {

@@ -163,6 +163,7 @@ export class TournamentsResolver {
       .findOneById(matchData.tournamentId)
       .then(tournament => {
         this.logger.log('LOOK Tournament fetched: ' + tournament);
+        const match = tournament.matches.find(m => m.matchNumber === matchData.matchNumber);
         const updates = [];
         // const match = 
         // check if match has a winner
@@ -181,16 +182,22 @@ export class TournamentsResolver {
             const currentDate = new Date();
             if (highseedSetsWon > lowseedSetsWon) {
               matchData.winnerSeed = 'HIGHSEED';
+
+              const highSeed = match.highSeedNumber;
+              const contestant = tournament.contestants.find(c => c.seed === highSeed);
+
               updates.push({
-                title: `Match ${matchData.matchNumber + 1} goes to {HighSeed}`,
-                description: 'TODO match won description',
+                title: `Match ${matchData.matchNumber + 1} goes to ${contestant.name}`,
                 createdOn: currentDate
               });
             } else {
               matchData.winnerSeed = 'LOWSEED';
+
+              const lowSeed = match.lowSeedNumber;
+              const contestant = tournament.contestants.find(c => c.seed === lowSeed);
+
               updates.push({
-                title: `Match ${matchData.matchNumber + 1} goes to {HighSeed}`,
-                description: 'TODO match won description',
+                title: `Match ${matchData.matchNumber + 1} goes to ${contestant.name}`,
                 createdOn: currentDate
               });
             }
