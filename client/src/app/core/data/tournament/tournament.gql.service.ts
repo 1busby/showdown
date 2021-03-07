@@ -37,6 +37,9 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           description
           createdOn
         }
+        createdBy {
+          _id
+        }
       }
     }
 

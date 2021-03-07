@@ -70,6 +70,7 @@ export class TournamentsService {
       .findOne({ linkCode })
       .populate('contestants')
       .populate('updates')
+      .populate('createdBy')
       .then(tournament => {
         tournament = tournament.toJSON();
         tournament.contestants = [

@@ -25,6 +25,8 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   loser: IContestant; // the loser of this match;
   winnerSeed: string;
 
+  hasLowSeed = true;
+
   width;
   height;
   top;

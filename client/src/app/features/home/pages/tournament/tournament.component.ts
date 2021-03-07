@@ -9,12 +9,11 @@ import {
   JoinTournamentGQL,
   AlertService,
   RequestEditAccessGQL,
-  AppStore,
   MatchContainer,
-  EditTournamentGQL,
   RunTournamentGQL,
+  AuthService,
 } from '@app/core';
-import { ITournament, IContestant } from '@app/shared';
+import { ITournament, IContestant, IUser } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
 import { MatchService } from '../../services/match.service';
@@ -25,8 +24,9 @@ import { MatchService } from '../../services/match.service';
   styleUrls: ['./tournament.component.scss'],
 })
 export class TournamentComponent implements OnInit, OnDestroy {
-  tournament: Partial<ITournament>;
   ngUnsubscribe: Subject<any> = new Subject<any>();
+  loggedInUser: IUser;
+  tournament: Partial<ITournament>;
   contestantList: Partial<IContestant>[] = [];
   isCheckingEditAccess = false;
   viewBeingShown: 'bracket' | 'contestants' | 'matches' | 'updates' = 'bracket';
@@ -34,14 +34,13 @@ export class TournamentComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private tournamentGql: TournamentGQL,
     private joinTournamentGql: JoinTournamentGQL,
     private requestEditAccessGql: RequestEditAccessGQL,
     private alertService: AlertService,
     public dialog: MatDialog,
-    private appStore: AppStore,
     private matchService: MatchService,
-    private editTournamentGql: EditTournamentGQL,
     private runTournamentGql: RunTournamentGQL
   ) {}
 
@@ -76,6 +75,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
         // this.tournament.contestants = this.tournament.contestants
         //   .slice()
         //   .sort((a, b) => a.seed - b.seed);
+      });
+
+      this.authService.user.subscribe((user) => {
+        this.loggedInUser = user;
       });
   }
 
@@ -175,11 +178,20 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   showMatchDetails(match: MatchContainer) {
-    const canEdit = localStorage.getItem(
-      `editAccessCode-${this.tournament.linkCode}`
-    )
-      ? true
-      : false;
+    let canEdit = false;
+
+    if (this.tournament.createdBy) {
+      if (this.tournament.createdBy._id === this.loggedInUser._id) {
+        canEdit = true;
+      }
+    } else {
+      canEdit = localStorage.getItem(
+        `editAccessCode-${this.tournament.linkCode}`
+      )
+        ? true
+        : false;
+    }
+    
     this.matchService
       .showMatchDetails(match, canEdit, this.tournament)
       .pipe(first())

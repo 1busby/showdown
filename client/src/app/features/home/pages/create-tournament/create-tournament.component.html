@@ -23,12 +23,13 @@
           required
           formControlName="contestantCount"
           (change)="contestantCountChange($event)"
+          min="0"
         />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Sets per Match</mat-label>
-        <input matInput type="number" required formControlName="setCount" />
+        <input matInput type="number" required formControlName="setCount" min="1" />
       </mat-form-field>
 
       <mat-slide-toggle

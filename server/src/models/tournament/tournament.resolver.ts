@@ -58,7 +58,8 @@ export class TournamentsResolver {
         this.logger.info('LOOK tournement not found!');
         throw new NotFoundException('Tournament Not Found');
       }
-
+      
+      this.logger.info('LOOK found tournement ', tournament);
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
       return tournament;

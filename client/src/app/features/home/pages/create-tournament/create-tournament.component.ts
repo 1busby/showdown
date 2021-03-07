@@ -102,7 +102,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         contestants: [],
         editAccessCode: '123',
         matches: [],
-        setCount: 0,
+        setCount: 1,
         allowRegistration: false,
         allowSelfScoring: false,
         structure: 'single-elim',

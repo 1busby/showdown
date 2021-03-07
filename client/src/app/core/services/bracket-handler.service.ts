@@ -66,7 +66,7 @@ export class BracketHandler {
     return {
       matches: this.matchContainers,
       losersMatches: this.losersMatchContainers
-    }
+    };
   }
 
   createSeededBracket() {
@@ -221,19 +221,34 @@ export class BracketHandler {
       if (numSeeded >= this.high2Power / 2) {
         break;
       }
-      this.matchesPerRound[0][this.seedsByIndex[i] - 1].addContestant(
-        contestants[i]
-      );
+
+      const match = this.matchesPerRound[0][this.seedsByIndex[i] - 1];
+      const contestant = contestants[i];
+
+      if (contestant) {
+
+      // } else {
+        match.addContestant(
+          contestants[i]
+        );
+      }
       numSeeded++;
     }
     // loop backwards the other way for the second half
     for (let i = 0; i < contestants.length - this.bigSkip * 2; i++) {
-      if (numSeeded >= contestantLimit) {
-        break;
-      }
-      this.matchesPerRound[0][
+      const match = this.matchesPerRound[0][
         this.seedsByIndex[this.seedsByIndex.length - 1 - i] - 1
-      ].addContestant(contestants[this.bigSkip * 2 + i]);
+      ];
+      const contestant = contestants[this.bigSkip * 2 + i];
+      if (numSeeded >= contestantLimit) {
+        match.hasLowSeed = false;
+        continue;
+      }
+
+      // if ()
+      match.addContestant(contestant);
+      // debugger
+      match.hasLowSeed = true;
       numSeeded++;
     }
   }
@@ -323,7 +338,7 @@ export class BracketHandler {
         matches.push(thisMatch);
         // first round
         if (i === 0) {
-          if (!thisMatch.lowSeed) {
+          if (!thisMatch.hasLowSeed) {
             soonToBeRemovedMatches.push(thisMatch);
             soonToBeRemovedIndexes.push(j);
             thisMatch.updateWinner(MatchContainer.HIGHSEED);
