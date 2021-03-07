@@ -67,9 +67,16 @@ export class TournamentsService {
     return (
       this.tournamentModel
         .findOne({ linkCode })
-        .populate('contestants')
         .populate('updates')
         .populate('createdBy')
+        .populate('contestants')
+        .populate({
+          path: 'contestants',
+          populate: {
+            path: 'profile',
+            model: 'User'
+          }
+        })
         // .then(tournament => {
         //   tournament = tournament.toJSON();
         //   tournament.contestants = [
@@ -193,20 +200,25 @@ export class TournamentsService {
       });
   }
 
-  addContestant(id, contestantName?, userId?) {
-    const updateObj = {
-      temporaryContestants: undefined,
-      contestants: undefined,
+  addContestant(id, seed?, name?, userId?) {
+    this.logger.log('LOOK addContestant seed ', seed);
+    this.logger.log('LOOK addContestant userId ', userId);
+    const contestant = {
+      _id: new ObjectId(),
+      seed,
+      name,
+      profile: { _id: new ObjectId(userId) } as any,
     };
-    if (userId) {
-      updateObj.contestants = userId;
-    } else if (contestantName) {
-      updateObj.temporaryContestants = contestantName;
-    } else {
-      return;
-    }
+
     return this.tournamentModel
-      .findOneAndUpdate({ _id: id }, { $push: updateObj }, { new: true })
+      .findOneAndUpdate({ _id: id }, { $push: { contestants:  contestant } }, { new: true })
+      .populate({
+        path: 'contestants',
+        populate: {
+          path: 'profile',
+          model: 'User'
+        }
+      })
       .exec();
   }
 

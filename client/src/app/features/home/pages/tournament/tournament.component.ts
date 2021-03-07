@@ -117,10 +117,21 @@ export class TournamentComponent implements OnInit, OnDestroy {
         return;
       }
 
+      let seed = 0;
+
+      for (let i = 1; i <= this.tournament.contestantCount; i++) {
+        const alreadySeededContestant = this.tournament.contestants.find(cont => cont.seed === i);
+        if (!alreadySeededContestant) {
+          seed = i;
+          break;
+        }
+      }
+
       this.joinTournamentGql
         .mutate({
           _id: this.tournament._id,
           userId: this.loggedInUser._id,
+          seed
         })
         .pipe(first())
         .subscribe((result) => {

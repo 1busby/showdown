@@ -60,7 +60,7 @@ type Mutation {
   addTournament(newTournamentData: NewTournamentInput!): Tournament!
   updateTournament(updateTournamentData: UpdateTournamentInput!): Tournament!
   runTournament(_id: ID!): Tournament!
-  joinTournament(userId: ID, contestantName: String, _id: ID!): Tournament!
+  joinTournament(seed: Int, userId: ID, contestantName: String, _id: ID!): Tournament!
   removeContestant(contestantId: ID!, _id: ID!): Tournament!
   removeTournament(_id: ID!): Boolean!
   reportMatchScore(matchData: MatchInput!): Tournament!

@@ -8,6 +8,7 @@ import {
   ID,
   ResolveField,
   Parent,
+  Int,
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
@@ -134,8 +135,9 @@ export class TournamentsResolver {
     @Args('_id', { type: () => ID }) _id: string,
     @Args('contestantName', { nullable: true }) contestantName?: string,
     @Args('userId', { nullable: true, type: () => ID }) userId?: string,
+    @Args('seed', { nullable: true, type: () => Int }) seed?: number,
   ): Promise<Tournament> {
-    return this.tournamentsService.addContestant(_id, contestantName, userId);
+    return this.tournamentsService.addContestant(_id, seed, contestantName, userId);
   }
 
   @Mutation(returns => Tournament)

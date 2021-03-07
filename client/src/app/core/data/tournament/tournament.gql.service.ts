@@ -29,6 +29,7 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           isRegistered
           profile {
             _id
+            username
           }
         }
         matches {
