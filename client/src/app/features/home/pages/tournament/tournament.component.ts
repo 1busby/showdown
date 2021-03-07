@@ -184,7 +184,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   checkIfContestant(): boolean {
-    if (!this.loggedInUser) {
+    if (!this.loggedInUser || !this.tournament) {
       return false;
     }
     const index = this.tournament.contestants.findIndex((contestant) => {

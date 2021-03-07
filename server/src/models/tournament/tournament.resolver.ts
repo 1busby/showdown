@@ -193,7 +193,7 @@ export class TournamentsResolver {
             } else {
               matchData.winnerSeed = 'LOWSEED';
 
-              const lowSeed = match.lowSeedNumber;
+              const lowSeed = matchData.lowSeedNumber;
               const contestant = tournament.contestants.find(c => c.seed === lowSeed);
 
               updates.push({
