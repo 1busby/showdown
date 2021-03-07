@@ -45,7 +45,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     public dialog: MatDialog,
     private matchService: MatchService,
-    private runTournamentGql: RunTournamentGQL,
+    private runTournamentGql: RunTournamentGQL
   ) {}
 
   ngOnInit() {
@@ -118,7 +118,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
       let seed = 0;
 
       for (let i = 1; i <= this.tournament.contestantCount; i++) {
-        const alreadySeededContestant = this.tournament.contestants.find(cont => cont.seed === i);
+        const alreadySeededContestant = this.tournament.contestants.find(
+          (cont) => cont.seed === i
+        );
         if (!alreadySeededContestant) {
           seed = i;
           break;
@@ -129,7 +131,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         .mutate({
           _id: this.tournament._id,
           userId: this.loggedInUser._id,
-          seed
+          seed,
         })
         .pipe(first())
         .subscribe((result) => {
@@ -262,7 +264,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   canEdit() {
     if (this.tournament.createdBy) {
-      if (this.loggedInUser && this.tournament.createdBy._id === this.loggedInUser._id) {
+      if (
+        this.loggedInUser &&
+        this.tournament.createdBy._id === this.loggedInUser._id
+      ) {
         return true;
       }
     } else {
