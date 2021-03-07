@@ -46,9 +46,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private matchService: MatchService,
     private runTournamentGql: RunTournamentGQL,
-    private bracketHandlerService: BracketHandler,
-    private editTournamentGql: EditTournamentGQL,
-    private appStore: AppStore
   ) {}
 
   ngOnInit() {
@@ -79,16 +76,19 @@ export class TournamentComponent implements OnInit, OnDestroy {
           return;
         }
 
+        if (!result.data.tournament) return;
+
         console.log(
           'LOOK TournamentComponent new tournamet data ',
           result.data.tournament
         );
         this.tournament = result.data.tournament;
         this.isContestant = this.checkIfContestant();
-
-        // this.tournament.contestants = this.tournament.contestants
-        //   .slice()
-        //   .sort((a, b) => a.seed - b.seed);
+        this.tournament.contestants.forEach(contestant => {
+          if (contestant.profile) {
+            contestant.name = contestant.profile.username;
+          }
+        })
       });
 
     this.authService.user.subscribe((user) => {
