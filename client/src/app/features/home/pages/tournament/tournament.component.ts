@@ -177,20 +177,24 @@ export class TournamentComponent implements OnInit, OnDestroy {
       });
   }
 
-  showMatchDetails(match: MatchContainer) {
-    let canEdit = false;
-
+  canEdit() {
     if (this.tournament.createdBy) {
       if (this.tournament.createdBy._id === this.loggedInUser._id) {
-        canEdit = true;
+        return true;
       }
     } else {
-      canEdit = localStorage.getItem(
+      return localStorage.getItem(
         `editAccessCode-${this.tournament.linkCode}`
       )
         ? true
         : false;
     }
+  }
+
+  showMatchDetails(match: MatchContainer) {
+    let canEdit = false;
+
+    canEdit = this.canEdit();
     
     this.matchService
       .showMatchDetails(match, canEdit, this.tournament)
