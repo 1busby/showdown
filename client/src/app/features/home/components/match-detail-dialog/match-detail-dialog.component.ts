@@ -54,6 +54,7 @@ export class MatchDetailDialogComponent {
     //       });
     //     }
     //   });
+
     this.reportMatchScoreGql
       .mutate({ tournamentId: this.data.tournamentId, ...this.match })
       .pipe(first())

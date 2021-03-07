@@ -183,7 +183,7 @@ export class TournamentsResolver {
             if (highseedSetsWon > lowseedSetsWon) {
               matchData.winnerSeed = 'HIGHSEED';
 
-              const highSeed = match.highSeedNumber;
+              const highSeed = matchData.highSeedNumber;
               const contestant = tournament.contestants.find(c => c.seed === highSeed);
 
               updates.push({
