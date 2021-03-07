@@ -76,8 +76,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
           return;
         }
 
-        if (!result.data.tournament) return;
-
         console.log(
           'LOOK TournamentComponent new tournamet data ',
           result.data.tournament
@@ -264,7 +262,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   canEdit() {
     if (this.tournament.createdBy) {
-      if (this.tournament.createdBy._id === this.loggedInUser._id) {
+      if (this.loggedInUser && this.tournament.createdBy._id === this.loggedInUser._id) {
         return true;
       }
     } else {

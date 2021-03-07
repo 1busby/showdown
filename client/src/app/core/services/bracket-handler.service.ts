@@ -240,6 +240,7 @@ export class BracketHandler {
       const match = this.matchesPerRound[0][
         this.seedsByIndex[this.seedsByIndex.length - 1 - i] - 1
       ];
+      if (!match) continue;
       const contestant = contestants[this.bigSkip * 2 + i];
       if (contestant && !contestant.seed) {
         contestant.seed = numSeeded;
@@ -251,7 +252,6 @@ export class BracketHandler {
 
       // if ()
       match.addContestant(contestant);
-      // debugger
       match.hasLowSeed = true;
       numSeeded++;
     }

@@ -168,7 +168,6 @@ export class TournamentsService {
           new: true,
         },
       )
-      .exec()
       .then(result => {
         result.populate('matches.sets');
         const resultObject = result.toObject();
