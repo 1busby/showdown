@@ -1,5 +1,6 @@
 <form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()">
   <mat-horizontal-stepper
+  style="display: initial;"
     (animationDone)="this.stepperIsInTransition = false"
     (selectionChange)="this.stepperIsInTransition = true"
   >

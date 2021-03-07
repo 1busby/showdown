@@ -8,8 +8,8 @@ export interface IMatch {
   roundNumber?: number;
   highSeedNumber?: number;
   lowSeedNumber?: number;
-  highSeedContestant?: IContestant;
-  lowSeedContestant?: IContestant;
+  highSeedContestantId?: string;
+  lowSeedContestantId?: string;
   winner?: IContestant;
   winnerSeed?: string; // HIGHSEED or LOWSEED
   matchRounds?: number;

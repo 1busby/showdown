@@ -60,6 +60,6 @@ export class UsersResolver {
 
   @ResolveField('name', returns => String)
   async getName(@Parent() user: User) {
-    return user.username;
+    return user.name || user.username;
   }
 }

@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 interface Contestant {
-  _id: ID!
+  _id: ID
   name: String
   seed: Int
   points: Int
@@ -36,6 +36,8 @@ type Match {
   updatedOn: Date
   highSeedNumber: Int
   lowSeedNumber: Int
+  highSeedContestantId: ID
+  lowSeedContestantId: ID
   matches: [Match]
   sets: [Set]
 }

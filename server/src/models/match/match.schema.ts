@@ -10,5 +10,7 @@ export const MatchSchema = new mongoose.Schema({
   updatedOn: Date,
   highSeedNumber: Number,
   lowSeedNumber: Number,
+  highSeedContestant: mongoose.Schema.Types.ObjectId,
+  lowSeedContestant: mongoose.Schema.Types.ObjectId,
   sets: [setSchema],
 });

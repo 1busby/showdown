@@ -8,8 +8,8 @@ import { User } from '../user/user.model';
   },
 })
 export abstract class Contestant implements IContestant {
-  @Field(type => ID)
-  _id: string;
+  @Field(type => ID, { nullable: true })
+  _id?: string;
 
   @Field({ nullable: true })
   name?: string;

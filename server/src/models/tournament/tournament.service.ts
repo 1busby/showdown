@@ -71,6 +71,8 @@ export class TournamentsService {
       .populate('contestants')
       .populate('updates')
       .populate('createdBy')
+      .populate('matches.highSeedContestant')
+      .populate('matches.lowSeedContestant')
       .then(tournament => {
         tournament = tournament.toJSON();
         tournament.contestants = [
