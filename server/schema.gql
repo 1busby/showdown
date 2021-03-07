@@ -52,6 +52,9 @@ input MatchInput {
 }
 
 type Mutation {
+  signin(signinInput: SigninInput!): User!
+  registerUser(newUserInput: NewUserInput!): User!
+  updateUser(updateUserData: UpdateUserInput!): User!
   addTournament(newTournamentData: NewTournamentInput!): Tournament!
   updateTournament(updateTournamentData: UpdateTournamentInput!): Tournament!
   runTournament(_id: ID!): Tournament!
@@ -59,9 +62,6 @@ type Mutation {
   removeContestant(contestantId: ID!, _id: ID!): Tournament!
   removeTournament(_id: ID!): Boolean!
   reportMatchScore(matchData: MatchInput!): Tournament!
-  signin(signinInput: SigninInput!): User!
-  registerUser(newUserInput: NewUserInput!): User!
-  updateUser(updateUserData: UpdateUserInput!): User!
   addShowdown(newShowdownData: NewShowdownInput!): Showdown!
   updateShowdown(updateShowdownData: UpdateShowdownInput!): Showdown!
   runShowdown(_id: ID!): Showdown!
@@ -101,11 +101,11 @@ input NewUserInput {
 }
 
 type Query {
+  user(username: String, dId: String): User!
+  users(skip: Int = 0, take: Int = 25): [User!]!
   tournament(linkCode: String, id: String): Tournament!
   tournaments(skip: Int = 0, take: Int = 25): [Tournament!]!
   requestEditAccess(requestEditAccessInput: RequestEditAccessInput!): EditAccessRequest!
-  user(username: String, dId: String): User!
-  users(skip: Int = 0, take: Int = 25): [User!]!
   showdown(linkCode: String, id: String): Showdown!
   showdowns(skip: Int = 0, take: Int = 25): [Showdown!]!
 }
@@ -254,7 +254,7 @@ input UpdateUserInput {
 """The user model"""
 type User implements Contestant {
   _id: ID!
-  name: String
+  name: String!
   seed: Int
   points: Int
   isRegistered: Boolean

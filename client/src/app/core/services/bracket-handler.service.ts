@@ -224,9 +224,12 @@ export class BracketHandler {
 
       const match = this.matchesPerRound[0][this.seedsByIndex[i] - 1];
       const contestant = contestants[i];
-
+      
       if (contestant) {
-
+        if (!contestant.seed) {
+          contestant.seed = numSeeded;
+        }
+        
       // } else {
         match.addContestant(
           contestants[i]
@@ -240,6 +243,9 @@ export class BracketHandler {
         this.seedsByIndex[this.seedsByIndex.length - 1 - i] - 1
       ];
       const contestant = contestants[this.bigSkip * 2 + i];
+      if (contestant && !contestant.seed) {
+        contestant.seed = numSeeded;
+      }
       if (numSeeded >= contestantLimit) {
         match.hasLowSeed = false;
         continue;

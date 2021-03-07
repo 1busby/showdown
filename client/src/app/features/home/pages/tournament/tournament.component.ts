@@ -99,7 +99,11 @@ export class TournamentComponent implements OnInit, OnDestroy {
         return;
       }
       if (this.checkIfContestant()) {
-        this.alertService.error('You already joined!');
+        this.alertService.error('You already joined this tournament');
+        return;
+      }
+      if (!this.tournament.allowRegistration) {
+        this.alertService.error('This tournament does not allow registration');
         return;
       }
 

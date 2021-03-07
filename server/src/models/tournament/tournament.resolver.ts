@@ -6,6 +6,8 @@ import {
   Resolver,
   Subscription,
   ID,
+  ResolveField,
+  Parent,
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 

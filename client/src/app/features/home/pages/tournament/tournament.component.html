@@ -17,6 +17,7 @@
 
     <button
       *ngIf="
+        tournament.allowRegistration &&
         this.tournament?.contestants?.length < this.tournament?.contestantCount &&
         !this.checkIfContestant()
       "
