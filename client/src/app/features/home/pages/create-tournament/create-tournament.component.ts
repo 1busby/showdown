@@ -173,6 +173,9 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         .mutate({
           _id: this._tournament._id,
           ...this.tournamentForm.value,
+          contestants: this.tournamentForm.value.contestants.map(({ profile, ...contestantData}) => {
+            return contestantData;
+          }),
           matches,
         })
         .pipe(first())
