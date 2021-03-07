@@ -65,7 +65,7 @@ export class BracketHandler {
 
     return {
       matches: this.matchContainers,
-      losersMatches: this.losersMatchContainers
+      losersMatches: this.losersMatchContainers,
     };
   }
 
@@ -224,16 +224,14 @@ export class BracketHandler {
 
       const match = this.matchesPerRound[0][this.seedsByIndex[i] - 1];
       const contestant = contestants[i];
-      
+
       if (contestant) {
         if (!contestant.seed) {
           contestant.seed = numSeeded;
         }
-        
-      // } else {
-        match.addContestant(
-          contestants[i]
-        );
+
+        // } else {
+        match.addContestant(contestants[i]);
       }
       numSeeded++;
     }
@@ -366,10 +364,11 @@ export class BracketHandler {
 
     if (this.activeTournament.structure === 'double-elim') {
       let thisMatch = this.matchesPerRound[this.matchesPerRound.length - 1][0];
-      thisMatch.top =
-            thisMatch.highMatch.top;
-          thisMatch.left =
-            thisMatch.highMatch.left + this.matchWidth + this.margin * (this.matchesPerRound.length + 1);
+      thisMatch.top = thisMatch.highMatch.top;
+      thisMatch.left =
+        thisMatch.highMatch.left +
+        this.matchWidth +
+        this.margin * (this.matchesPerRound.length + 1);
     }
 
     for (let index = soonToBeRemovedIndexes.length - 1; index >= 0; index--) {

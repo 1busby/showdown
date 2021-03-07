@@ -12,6 +12,9 @@ import {
   MatchContainer,
   RunTournamentGQL,
   AuthService,
+  BracketHandler,
+  EditTournamentGQL,
+  AppStore,
 } from '@app/core';
 import { ITournament, IContestant, IUser } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
@@ -30,6 +33,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
   contestantList: Partial<IContestant>[] = [];
   isCheckingEditAccess = false;
   viewBeingShown: 'bracket' | 'contestants' | 'matches' | 'updates' = 'bracket';
+  isContestant = false;
 
   constructor(
     private router: Router,
@@ -41,7 +45,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     public dialog: MatDialog,
     private matchService: MatchService,
-    private runTournamentGql: RunTournamentGQL
+    private runTournamentGql: RunTournamentGQL,
+    private bracketHandlerService: BracketHandler,
+    private editTournamentGql: EditTournamentGQL,
+    private appStore: AppStore
   ) {}
 
   ngOnInit() {
@@ -67,7 +74,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
           console.error('Unexpected typeof ', result);
           return;
         }
-        if (!result) {
+        if (!result && result.data && result.data.tournament) {
           this.router.navigateByUrl('/');
           return;
         }
@@ -77,6 +84,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
           result.data.tournament
         );
         this.tournament = result.data.tournament;
+        this.isContestant = this.checkIfContestant();
+
         // this.tournament.contestants = this.tournament.contestants
         //   .slice()
         //   .sort((a, b) => a.seed - b.seed);
@@ -84,6 +93,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
     this.authService.user.subscribe((user) => {
       this.loggedInUser = user;
+      this.isContestant = this.checkIfContestant();
     });
   }
 
@@ -115,6 +125,30 @@ export class TournamentComponent implements OnInit, OnDestroy {
         .pipe(first())
         .subscribe((result) => {
           console.log('LOOK joinTournament result: ', result);
+
+          // // TODO Optimize
+          // const matchContainers = this.bracketHandlerService.createBracket(
+          //   this.tournament
+          // );
+          // const matchToSave = [
+          //   ...matchContainers.matches,
+          //   ...matchContainers.losersMatches,
+          // ].find((match) => {
+          //   return (
+          //     (match.highSeed && match.highSeed._id == this.loggedInUser._id) ||
+          //     (match.lowSeed && match.lowSeed._id == this.loggedInUser._id)
+          //   );
+          // });
+          // if (matchToSave) {
+          //   this.editTournamentGql
+          //     .mutate({
+          //       _id: this.tournament._id,
+          //       matches: [matchToSave],
+          //     })
+          //     .pipe(first())
+          //     .subscribe((result) => {
+          //     });
+          // }
         });
     } else {
       const dialogRef = this.dialog.open(QuickJoinDialogComponent, {
@@ -144,7 +178,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     if (!this.loggedInUser) {
       return false;
     }
-    const index = this.contestantList.findIndex((contestant) => {
+    const index = this.tournament.contestants.findIndex((contestant) => {
       return contestant._id === this.loggedInUser._id;
     });
 

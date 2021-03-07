@@ -3,7 +3,6 @@ import { Document } from 'mongoose';
 
 import { IMatch } from '@shared/index';
 import { Set } from '../set/set.model';
-import { Contestant } from '@models/contestant/contestant.entity';
 
 @ObjectType({ description: 'The match model' })
 export class Match extends Document implements IMatch {
@@ -30,12 +29,6 @@ export class Match extends Document implements IMatch {
 
   @Field(type => Int, { nullable: true })
   lowSeedNumber?: number;
-
-  @Field(type => ID, { nullable: true })
-  highSeedContestantId?: string;
-
-  @Field(type => ID, { nullable: true })
-  lowSeedContestantId?: string;
 
   @Field(type => [Match], { nullable: 'itemsAndList' })
   matches?: Match[];

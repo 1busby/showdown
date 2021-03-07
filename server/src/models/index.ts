@@ -1,6 +1,5 @@
-export * from './contestant/contestant.entity';
+export * from './contestant/contestant.model';
 export * from './contestant/contestant.input';
-export * from './contestant/contestant.union';
 
 export * from './match/match.model';
 

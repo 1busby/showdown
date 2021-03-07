@@ -27,6 +27,9 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           seed
           points
           isRegistered
+          profile {
+            _id
+          }
         }
         matches {
           ...allFields
@@ -49,8 +52,6 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
       roundNumber
       highSeedNumber
       lowSeedNumber
-      highSeedContestantId
-      lowSeedContestantId
       winnerSeed
       sets {
         _id

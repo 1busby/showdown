@@ -186,8 +186,10 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   }
 
   getData(): IMatch {
-    const dataObj: any = {
+    return {
       _id: this._id,
+      highSeedNumber: this.highSeed ? this.highSeed.seed : null,
+      lowSeedNumber: this.lowSeed ? this.lowSeed.seed : null,
       matchNumber: this.matchNumber,
       roundNumber: this.roundNumber,
       winnerSeed: this.winnerSeed,
@@ -196,21 +198,5 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
         return setData;
       }),
     };
-    if (this.highSeed) {
-      if (this.highSeed._id) {
-        dataObj.highSeedContestantId = this.highSeed._id;
-      } else {
-        dataObj.highSeedNumber = this.highSeed.seed
-      }
-    }
-    if (this.lowSeed) {
-      if (this.highSeed._id) {
-        dataObj.lowSeedContestantId = this.lowSeed._id;
-      } else {
-        dataObj.lowSeedNumber = this.lowSeed.seed
-      }
-    }
-
-    return dataObj;
   }
 }

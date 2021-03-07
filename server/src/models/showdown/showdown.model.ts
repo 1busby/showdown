@@ -2,7 +2,7 @@ import { Field, ID, ObjectType, Int, Float } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
 import { IShowdown } from '@shared/index';
-import { Contestant } from '@models/contestant/contestant.entity';
+import { Contestant } from '@models/contestant/contestant.model';
 import { Update } from '@models/update/update.model';
 
 @ObjectType({ description: 'The Challenge model' })

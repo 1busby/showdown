@@ -2,12 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-interface Contestant {
+"""The match model"""
+type Contestant {
   _id: ID
   name: String
   seed: Int
   points: Int
   isRegistered: Boolean
+  profile: User
 }
 
 input ContestantInput {
@@ -36,8 +38,6 @@ type Match {
   updatedOn: Date
   highSeedNumber: Int
   lowSeedNumber: Int
-  highSeedContestantId: ID
-  lowSeedContestantId: ID
   matches: [Match]
   sets: [Set]
 }
@@ -254,18 +254,13 @@ input UpdateUserInput {
 }
 
 """The user model"""
-type User implements Contestant {
+type User {
   _id: ID!
-  name: String!
-  seed: Int
-  points: Int
-  isRegistered: Boolean
   dId: ID!
   username: String
   email: String
   firstName: String
   lastName: String
-  teams: [Team]
   tournaments: [Tournament]
   iconPublicAddress: String
   createdOn: Date

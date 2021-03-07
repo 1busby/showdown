@@ -22,22 +22,22 @@ export class TournamentsService {
   ) {}
 
   async create(data: NewTournamentInput): Promise<Tournament> {
-    const anonymousContestants = [];
+    // const anonymousContestants = [];
     const currentDate = Date.now();
 
     // tslint:disable-next-line: prefer-for-of
-    for (let i = data.contestants.length - 1; i >= 0; i--) {
-      if (!data.contestants[i].isRegistered) {
-        anonymousContestants.push(data.contestants[i]);
-        data.contestants.splice(i, 1);
-      }
-    }
+    // for (let i = data.contestants.length - 1; i >= 0; i--) {
+    //   if (!data.contestants[i].isRegistered) {
+    //     anonymousContestants.push(data.contestants[i]);
+    //     data.contestants.splice(i, 1);
+    //   }
+    // }
     const createdTournament = new this.tournamentModel({
       ...data,
       linkCode: shortid.generate(),
       createdOn: currentDate,
       updatedOn: currentDate,
-      anonymousContestants,
+      // anonymousContestants,
       updates: [
         {
           title: 'Tournament created!',
@@ -46,19 +46,17 @@ export class TournamentsService {
         },
       ],
     });
-    return await createdTournament
-      .save()
-      .then(tournament => {
-        return tournament.populate('contestants');
-      })
-      .then(tournament => {
-        tournament = tournament.toJSON();
-        tournament.contestants = [
-          ...tournament.contestants,
-          ...tournament.anonymousContestants,
-        ];
-        return tournament;
-      });
+    return await createdTournament.save().then(tournament => {
+      return tournament.populate('contestants').populate('contestants.profile');
+    });
+    // .then(tournament => {
+    //   tournament = tournament.toJSON();
+    //   tournament.contestants = [
+    //     ...tournament.contestants,
+    //     ...tournament.anonymousContestants,
+    //   ];
+    //   return tournament;
+    // });
   }
 
   async findOneById(id: string): Promise<Tournament> {
@@ -66,21 +64,22 @@ export class TournamentsService {
   }
 
   findOneByLinkCode(linkCode: string): Promise<Tournament> {
-    return this.tournamentModel
-      .findOne({ linkCode })
-      .populate('contestants')
-      .populate('updates')
-      .populate('createdBy')
-      .populate('matches.highSeedContestant')
-      .populate('matches.lowSeedContestant')
-      .then(tournament => {
-        tournament = tournament.toJSON();
-        tournament.contestants = [
-          ...tournament.contestants,
-          ...tournament.anonymousContestants,
-        ];
-        return tournament;
-      });
+    return (
+      this.tournamentModel
+        .findOne({ linkCode })
+        .populate('contestants')
+        .populate('updates')
+        .populate('createdBy')
+        // .then(tournament => {
+        //   tournament = tournament.toJSON();
+        //   tournament.contestants = [
+        //     ...tournament.contestants,
+        //     ...tournament.anonymousContestants,
+        //   ];
+        //   return tournament;
+        // });
+        .exec()
+    );
   }
 
   async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
@@ -93,17 +92,17 @@ export class TournamentsService {
     console.log('LOOK updateOne data ', JSON.stringify(data));
     // separate anonymous users from regular users
     const { _id, matches = [], updates, ...updateData } = data;
-    if (data.contestants && data.contestants.length > 0) {
-      const anonymousContestants = [];
-      for (let i = data.contestants.length - 1; i >= 0; i--) {
-        if (!data.contestants[i].isRegistered) {
-          data.contestants[i]._id = new ObjectId() as any
-          anonymousContestants.push(data.contestants[i]);
-          data.contestants.splice(i, 1);
-        }
-      }
-      updateData.anonymousContestants = anonymousContestants;
-    }
+    // if (data.contestants && data.contestants.length > 0) {
+    //   const anonymousContestants = [];
+    //   for (let i = data.contestants.length - 1; i >= 0; i--) {
+    //     if (!data.contestants[i].isRegistered) {
+    //       data.contestants[i]._id = new ObjectId() as any;
+    //       anonymousContestants.push(data.contestants[i]);
+    //       data.contestants.splice(i, 1);
+    //     }
+    //   }
+    //   updateData.anonymousContestants = anonymousContestants;
+    // }
 
     let matchIds: string[] = [];
     if (matches && matches.length > 0) {
@@ -133,7 +132,7 @@ export class TournamentsService {
     }
 
     if (updates && updates.length > 0) {
-      updates.forEach(update => update._id = new ObjectId(update._id) as any);
+      updates.forEach(update => (update._id = new ObjectId(update._id) as any));
       updateData.updates = { $concatArrays: ['$updates', updates] };
     }
 
@@ -215,7 +214,8 @@ export class TournamentsService {
     return this.tournamentModel
       .updateOne(
         { _id },
-        { $pull: { anonymousContestants: { _id: contestantId } as never } },
+        { $pull: { contestants: { _id: contestantId } as never } },
+        // { $pull: { anonymousContestants: { _id: contestantId } as never } },
       )
       .exec();
   }

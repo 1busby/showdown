@@ -57,9 +57,4 @@ export class UsersResolver {
       return res;
     });
   }
-
-  @ResolveField('name', returns => String)
-  async getName(@Parent() user: User) {
-    return user.name || user.username;
-  }
 }

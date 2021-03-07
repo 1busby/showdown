@@ -1,5 +1,4 @@
 import { Field, InputType, ID, Int, Float } from '@nestjs/graphql';
-import { Contestant } from '@models/contestant/contestant.entity';
 
 @InputType()
 export class ShowdownInput {

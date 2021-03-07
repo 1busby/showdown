@@ -1,12 +1,8 @@
-import { InterfaceType, Field, ID, Int } from '@nestjs/graphql';
+import { InterfaceType, Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { IContestant } from '@shared/index';
 import { User } from '../user/user.model';
 
-@InterfaceType({
-  resolveType(contestant) {
-    return User;
-  },
-})
+@ObjectType({ description: 'The match model' })
 export abstract class Contestant implements IContestant {
   @Field(type => ID, { nullable: true })
   _id?: string;
@@ -22,4 +18,7 @@ export abstract class Contestant implements IContestant {
 
   @Field({ nullable: true })
   isRegistered?: boolean;
+
+  @Field({ nullable: true })
+  profile?: User;
 }

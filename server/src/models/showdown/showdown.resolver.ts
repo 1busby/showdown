@@ -146,14 +146,14 @@ export class ShowdownResolver {
   //             updates.push({
   //               title: `Match ${matchData.matchNumber + 1} goes to {HighSeed}`,
   //               description: 'TODO match won description',
-  //               createOn: currentDate
+  //               createdOn: currentDate
   //             });
   //           } else {
   //             matchData.winnerSeed = 'LOWSEED';
   //             updates.push({
   //               title: `Match ${matchData.matchNumber + 1} goes to {HighSeed}`,
   //               description: 'TODO match won description',
-  //               createOn: currentDate
+  //               createdOn: currentDate
   //             });
   //           }
   //         }
