@@ -37,6 +37,6 @@ export class User extends Document implements IUser {
   @Field({ nullable: true })
   updatedOn?: Date;
 
-  @Field({ nullable: true })
+  @Field(type => PushSubscription, { nullable: true })
   pushSubscription?: PushSubscription;
 }

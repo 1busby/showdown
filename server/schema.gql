@@ -110,6 +110,13 @@ type PushSubscription {
   authSecret: String
 }
 
+input PushSubscriptionInput {
+  endpoint: String
+  expirationTime: String
+  encryptionKey: String
+  authSecret: String
+}
+
 type Query {
   user(username: String, dId: String): User!
   users(skip: Int = 0, take: Int = 25): [User!]!
@@ -259,6 +266,7 @@ input UpdateUserInput {
   firstName: String
   lastName: String
   tournaments: [String]
+  pushSubscription: PushSubscriptionInput
 }
 
 """The user model"""
