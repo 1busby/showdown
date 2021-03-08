@@ -176,8 +176,21 @@ export class TournamentsService {
           new: true,
         },
       )
-      .then(result => {
-        result.populate('matches.sets');
+      .populate({
+        path: 'matches',
+        populate: {
+          path: 'sets',
+          model: 'Set',
+        },
+      })
+      .populate({
+        path: 'contestants',
+        populate: {
+          path: 'profile',
+          model: 'User',
+        },
+      })
+      .then((result) => {
         const resultObject = result.toObject();
         const returnObject: any = resultObject;
 

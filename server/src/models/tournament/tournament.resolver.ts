@@ -22,7 +22,6 @@ import { EditAccessRequest } from './dto/edit-access-request';
 import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
 import { MatchInput } from '@models/match/dto/match.input';
-import { Match } from '@models/match/match.model';
 import { WebPushService } from '@shared/services/web-push.service';
 // import { UsersService } from '@models/user/user.service';
 
@@ -74,7 +73,7 @@ export class TournamentsResolver {
 
   @Query(returns => [Tournament])
   tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
-    this.webPushService.sendNotification();
+    // this.webPushService.sendNotification();
     return this.tournamentsService.findAll(tournamentsArgs);
   }
 
@@ -113,21 +112,27 @@ export class TournamentsResolver {
   async runTournament(
     @Args('_id', { type: () => ID }) _id: string,
   ): Promise<Tournament> {
-    this.logger.log('LOOK tournament _id ', _id);
+    const notification = {
+      title: 'Tournament started!',
+      // description: 'Tournament has been started.',
+      createdOn: new Date(),
+    };
     return this.tournamentsService
       .updateOne({
         _id,
         hasStarted: true,
-        updates: [
-          {
-            title: 'Tournament started!',
-            // description: 'Tournament has been started.',
-            createdOn: new Date(),
-          },
-        ],
+        updates: [notification],
       })
       .then(res => {
-        this.logger.log('LOOK res ' + res);
+        this.webPushService.sendNotification(
+          res.contestants
+            .filter(c => !!c.profile)
+            .map(c => {
+              return JSON.parse(c.profile.pushSubscription);
+            }),
+            `${res.name} has started!`,
+            `The Showdown begins`,
+        );
         return res;
       });
   }
