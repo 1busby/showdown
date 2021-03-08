@@ -23,7 +23,7 @@ export class AppComponent {
         serverPublicKey: this.VAPID_PUBLIC_KEY
     })
     .then(sub => {
-      debugger
+      console.log('LOOK Push Subscription ', sub);
     })
     .catch(err => console.error("Could not subscribe to notifications", err));
 }
