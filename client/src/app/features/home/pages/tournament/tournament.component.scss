@@ -1,5 +1,4 @@
-:host(app-home-tournament) {
-  flex: 1 1 auto;
+:host {
   display: flex;
   flex-direction: column;
 }
@@ -30,6 +29,7 @@
   font-size: 2em;
   font-weight: bold;
   height: 7%;
+  margin-top: 10px;
 
   p {
     margin: auto;

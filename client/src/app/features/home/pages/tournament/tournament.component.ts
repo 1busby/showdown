@@ -90,7 +90,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         // })
       });
 
-    this.authService.user.subscribe((user) => {
+    this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.loggedInUser = user;
       this.isContestant = this.checkIfContestant();
     });

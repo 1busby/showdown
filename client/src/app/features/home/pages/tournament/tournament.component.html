@@ -35,15 +35,15 @@
     </p>
   </div>
 
-  <div>
-    <div label="Bracket" *ngIf="viewBeingShown === 'bracket'">
+  <ng-container>
+    <ng-container label="Bracket" *ngIf="viewBeingShown === 'bracket'">
       <bracket-view
         [tournament]="this.tournament"
         (showMatchDetailsEmitter)="showMatchDetails($event)"
       ></bracket-view>
-    </div>
+    </ng-container>
 
-    <div label="Contestants" *ngIf="viewBeingShown === 'contestants'">
+    <ng-container label="Contestants" *ngIf="viewBeingShown === 'contestants'">
       <div>
         {{ this.tournament?.contestants?.length || 0 }} /
         {{ this.tournament?.contestantCount || 0 }} Contestants Registered
@@ -52,16 +52,16 @@
         interactionMode="view"
         [contestants]="this.tournament?.contestants || []"
       ></contestant-list>
-    </div>
+    </ng-container>
 
-    <div label="Matches" *ngIf="viewBeingShown === 'matches'">
+    <ng-container label="Matches" *ngIf="viewBeingShown === 'matches'">
       <match-list
         [matches]="this.appStore.getWinnersMatchContainers() | async"
         (showMatchDetailsEmitter)="showMatchDetails($event)"
       ></match-list>
-    </div>
+    </ng-container>
 
-    <div label="Updates" *ngIf="viewBeingShown === 'updates'">
+    <ng-container label="Updates" *ngIf="viewBeingShown === 'updates'">
       <ng-container *ngFor="let update of tournament.updates">
         <mat-card>
           <mat-card-title>
@@ -75,8 +75,8 @@
           </mat-card-footer>
         </mat-card>
       </ng-container>
-    </div>
-  </div>
+    </ng-container>
+  </ng-container>
 
   <mat-button-toggle-group class="action-buttons" #group="matButtonToggleGroup">
     <mat-button-toggle
