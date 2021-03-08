@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import {
   HealthCheckService,
-  DNSHealthIndicator,
+  HttpHealthIndicator,
   HealthCheck,
 } from '@nestjs/terminus';
 
@@ -9,7 +9,7 @@ import {
 export class HealthController {
   constructor(
     private health: HealthCheckService,
-    private dns: DNSHealthIndicator,
+    private dns: HttpHealthIndicator,
   ) {}
 
   @Get()
