@@ -10,30 +10,32 @@
   <mat-button-toggle value="losers">L</mat-button-toggle>
 </mat-button-toggle-group>
 
-<div
-  class="bracket-view-container"
-  #bracketViewContainer
-  (mousedown)="mouseDown($event)"
-  (mousemove)="mouseMove($event)"
-  (mouseup)="mouseUp()"
->
-  <ng-container *ngIf="bracketSide === 'winners'">
-    <match-card
-      class="match-container"
-      *ngFor="let match of matches; trackBy: trackMatch"
-      [ngStyle]="match.getStyleObject()"
-      (click)="showMatchDetailsEmitter.emit(match)"
-      [match]="match"
-    ></match-card>
-  </ng-container>
+<div class="outer-container">
+  <div
+    class="bracket-view-container"
+    #bracketViewContainer
+    (mousedown)="mouseDown($event)"
+    (mousemove)="mouseMove($event)"
+    (mouseup)="mouseUp()"
+  >
+    <ng-container *ngIf="bracketSide === 'winners'">
+      <match-card
+        class="match-container"
+        *ngFor="let match of matches; trackBy: trackMatch"
+        [ngStyle]="match.getStyleObject()"
+        (click)="showMatchDetailsEmitter.emit(match)"
+        [match]="match"
+      ></match-card>
+    </ng-container>
 
-  <ng-container *ngIf="bracketSide === 'losers'">
-    <match-card
-      class="match-container"
-      *ngFor="let match of losersMatches; trackBy: trackMatch"
-      [ngStyle]="match.getStyleObject()"
-      (click)="showMatchDetailsEmitter.emit(match)"
-      [match]="match"
-    ></match-card>
-  </ng-container>
+    <ng-container *ngIf="bracketSide === 'losers'">
+      <match-card
+        class="match-container"
+        *ngFor="let match of losersMatches; trackBy: trackMatch"
+        [ngStyle]="match.getStyleObject()"
+        (click)="showMatchDetailsEmitter.emit(match)"
+        [match]="match"
+      ></match-card>
+    </ng-container>
+  </div>
 </div>
