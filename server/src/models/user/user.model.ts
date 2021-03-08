@@ -3,6 +3,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { IUser } from '@shared/index';
 import { Document } from 'mongoose';
 import { Tournament } from '@models/tournament/tournament.model';
+import { PushSubscription } from '@models/push-subscription/push-subscription.model';
 
 @ObjectType({ description: 'The user model' })
 export class User extends Document implements IUser {
@@ -35,4 +36,7 @@ export class User extends Document implements IUser {
 
   @Field({ nullable: true })
   updatedOn?: Date;
+
+  @Field({ nullable: true })
+  pushSubscription?: PushSubscription;
 }

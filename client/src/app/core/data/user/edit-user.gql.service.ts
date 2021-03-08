@@ -16,6 +16,7 @@ export class EditUserGQL extends Mutation<{
       $firstName: String
       $lastName: String
       $tournaments: [String]
+      $pushSubscription: PushSubscription
     ) {
       updateUser(
         updateUserData: {
@@ -24,6 +25,7 @@ export class EditUserGQL extends Mutation<{
           firstName: $firstName
           lastName: $lastName
           tournaments: $tournaments
+          pushSubscription: $pushSubscription
         }
       ) {
         _id

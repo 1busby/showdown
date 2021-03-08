@@ -102,6 +102,14 @@ input NewUserInput {
   lastName: String
 }
 
+"""A set for a match"""
+type PushSubscription {
+  endpoint: String
+  expirationTime: String
+  encryptionKey: String
+  authSecret: String
+}
+
 type Query {
   user(username: String, dId: String): User!
   users(skip: Int = 0, take: Int = 25): [User!]!
@@ -265,4 +273,5 @@ type User {
   iconPublicAddress: String
   createdOn: Date
   updatedOn: Date
+  pushSubscription: PushSubscription
 }
