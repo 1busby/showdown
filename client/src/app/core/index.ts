@@ -13,6 +13,7 @@ export * from './data/state.gql.service';
 export * from './services/bracket-handler.service';
 export * from './services/alert.service';
 export * from './services/icon-transaction.service';
+export * from './services/web-notification.service';
 
 /***********************
  * Data Sources

@@ -15,7 +15,7 @@ import { environment } from '../environments/environment';
     GraphQLModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
+      enabled: true//environment.production,
     }),
   ],
   providers: [httpInterceptorProviders],

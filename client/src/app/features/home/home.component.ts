@@ -85,27 +85,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   subscribeToNotifications() {
-    // const pushSubscription = {
-    //   endpoint: '1',
-    //   expirationTime: '2',
-    //   encryptionKey: '3',
-    //   authSecret: '4',
-    // };
-
-    // this.editUserGql.mutate({ 
-    //   _id: this.user._id,
-    //   pushSubscription
-    // }).pipe(first()).subscribe();
     this.swPush
       .requestSubscription({
         serverPublicKey: this.VAPID_PUBLIC_KEY,
       })
       .then((sub) => {
+        const cleanSub = JSON.parse(JSON.stringify(sub));
         const pushSubscription = {
-          endpoint: sub.endpoint,
-          expirationTime: sub.expirationTime,
-          encryptionKey: sub.getKey('p256dh'),
-          authSecret: sub.getKey('auth'),
+          endpoint: cleanSub.endpoint,
+          expirationTime: cleanSub.expirationTime,
+          encryptionKey: cleanSub.keys.p256dh,
+          authSecret: cleanSub.keys.auth,
         };
 
         this.editUserGql.mutate({ 
