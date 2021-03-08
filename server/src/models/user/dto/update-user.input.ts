@@ -1,8 +1,6 @@
 import { MaxLength } from 'class-validator';
 import { Field, InputType, ID } from '@nestjs/graphql';
 
-import { PushSubscriptionInput } from '@models/push-subscription/push-subscription.input';
-
 @InputType()
 export class UpdateUserInput {
   @Field(type => ID)
@@ -24,6 +22,6 @@ export class UpdateUserInput {
   @Field(type => [String], { nullable: 'itemsAndList' })
   tournaments?: string[];
 
-  @Field(type => PushSubscriptionInput, { nullable: true })
-  pushSubscription?: PushSubscriptionInput;
+  @Field({ nullable: true })
+  pushSubscription?: string;
 }

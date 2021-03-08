@@ -6,7 +6,7 @@ import { SwPush } from '@angular/service-worker';
 })
 export class WebNotificationService {
   readonly VAPID_PUBLIC_KEY =
-    'BLBx-hf2WrL2qEa0qKb-aCJbcxEvyn62GDTyyP9KTS5K7ZL0K7TfmOKSPqp8vQF0DaG8hpSBknz_x3qf5F4iEFo';
+    'BPsLfHWEVrAUNEVuXwzFsUWSmIG4Sq6EMuySGbkiDkI7WK1lg71wQL1OLVEFCScVmJpy1W2OajKRPwFY-ysirzY';
   private baseUrl = 'http://localhost:5000/notifications';
   constructor(private http: HttpClient, private swPush: SwPush) {}
   subscribeToNotification() {

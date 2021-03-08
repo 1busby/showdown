@@ -23,6 +23,7 @@ import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
 import { MatchInput } from '@models/match/dto/match.input';
 import { Match } from '@models/match/match.model';
+import { WebPushService } from '@shared/services/web-push.service';
 // import { UsersService } from '@models/user/user.service';
 
 const pubSub = new PubSub();
@@ -33,8 +34,8 @@ export class TournamentsResolver {
     private logger: CustomLogger,
     private readonly tournamentsService: TournamentsService,
     private readonly matchService: MatchService,
-  ) // private readonly userService: UsersService
-  {}
+    private webPushService: WebPushService,
+  ) {}
 
   @Query(returns => Tournament)
   async tournament(
@@ -73,6 +74,7 @@ export class TournamentsResolver {
 
   @Query(returns => [Tournament])
   tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+    this.webPushService.sendNotification();
     return this.tournamentsService.findAll(tournamentsArgs);
   }
 
