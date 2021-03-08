@@ -1,10 +1,6 @@
 <ng-container *ngIf="this.tournament">
   <div class="admin-buttons" *ngIf="!tournament.hasStarted">
-    <ng-container
-      *ngIf="
-        !tournament.createdBy || tournament.createdBy._id === loggedInUser?._id
-      "
-    >
+    <ng-container *ngIf="!tournament.createdBy || tournament.createdBy._id === loggedInUser?._id">
       <ng-container *ngIf="isCheckingEditAccess">
         <mat-spinner color="accent" diameter="30"></mat-spinner>
       </ng-container>
@@ -12,21 +8,17 @@
         <button mat-raised-button color="primary" (click)="editTournament()">
           Edit
         </button>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="editTournament(true)"
-        >
+        <button mat-raised-button color="primary" (click)="editTournament(true)">
           Run
         </button>
       </ng-container>
     </ng-container>
+    
 
     <button
       *ngIf="
         tournament.allowRegistration &&
-        this.tournament?.contestants?.length <
-          this.tournament?.contestantCount &&
+        this.tournament?.contestants?.length < this.tournament?.contestantCount &&
         !this.checkIfContestant()
       "
       mat-raised-button
@@ -64,7 +56,6 @@
 
     <div label="Matches" *ngIf="viewBeingShown === 'matches'">
       <match-list
-        *ngIf="this.appStore"
         [matches]="this.appStore.getWinnersMatchContainers() | async"
         (showMatchDetailsEmitter)="showMatchDetails($event)"
       ></match-list>

@@ -45,7 +45,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     public dialog: MatDialog,
     private matchService: MatchService,
-    private runTournamentGql: RunTournamentGQL
+    private runTournamentGql: RunTournamentGQL,
+    public appStore: AppStore
   ) {}
 
   ngOnInit() {

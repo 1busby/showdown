@@ -41,7 +41,7 @@ export class TournamentsService {
       updates: [
         {
           title: 'Tournament created!',
-          description: 'GLHF',
+          // description: 'GLHF',
           createdOn: currentDate,
         },
       ],

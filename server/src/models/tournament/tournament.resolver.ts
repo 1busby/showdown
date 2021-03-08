@@ -119,7 +119,7 @@ export class TournamentsResolver {
         updates: [
           {
             title: 'Tournament started!',
-            description: 'Tournament has been started.',
+            // description: 'Tournament has been started.',
             createdOn: new Date(),
           },
         ],
