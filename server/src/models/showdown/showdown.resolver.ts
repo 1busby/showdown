@@ -9,11 +9,11 @@ import {
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
-import { NewShowdownInput } from './dto/new-Showdown.input';
+import { NewShowdownInput } from './dto/new-showdown.input';
 import { ShowdownsArgs } from './dto/showdowns.args';
 import { Showdown } from './showdown.model';
 import { ShowdownService } from './showdown.service';
-import { UpdateShowdownInput } from './dto/update-Showdown.input';
+import { UpdateShowdownInput } from './dto/update-showdown.input';
 import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
 
