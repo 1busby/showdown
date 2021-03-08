@@ -18,7 +18,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { MatchContainer, AppStore, BracketHandler } from '@app/core';
 import { ITournament } from '@app/shared';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'bracket-view',
@@ -49,7 +48,8 @@ export class BracketViewComponent
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('LOOK BracketViewComponent ngOnChanges');
+    console.log('LOOK BracketViewComponent ngOnChanges ', this.tournament);
+    if (changes.tournament.firstChange) return;
     const matches = this.bracketHandler.createBracket(this.tournament);
     this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }

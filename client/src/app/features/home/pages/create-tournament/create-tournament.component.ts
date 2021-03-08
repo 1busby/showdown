@@ -102,7 +102,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         contestants: [],
         editAccessCode: '123',
         matches: [],
-        setCount: 0,
+        setCount: 1,
         allowRegistration: false,
         allowSelfScoring: false,
         structure: 'single-elim',
@@ -173,6 +173,9 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         .mutate({
           _id: this._tournament._id,
           ...this.tournamentForm.value,
+          contestants: this.tournamentForm.value.contestants.map(({ profile, ...contestantData}) => {
+            return contestantData;
+          }),
           matches,
         })
         .pipe(first())

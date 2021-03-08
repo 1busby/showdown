@@ -10,7 +10,7 @@ import { IconExtension } from '@magic-ext/icon';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  magic: Magic;
+  magic: any;
   userId: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   isLoggedIn = false;
   publicAddress;

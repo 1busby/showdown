@@ -12,6 +12,7 @@ export * from './auth/auth.guard';
 export * from './data/state.gql.service';
 export * from './services/bracket-handler.service';
 export * from './services/alert.service';
+export * from './services/icon-transaction.service';
 
 /***********************
  * Data Sources
@@ -19,6 +20,7 @@ export * from './services/alert.service';
 export * from './data/app.store.service';
 
 export * from './data/user/user.gql.service';
+export * from './data/user/user-profile.gql.service';
 
 export * from './data/tournament/tournament.gql.service';
 export * from './data/tournament/tournaments.gql.service';
@@ -28,6 +30,8 @@ export * from './data/tournament/run-tournament.gql.service';
 export * from './data/tournament/join-tournament.gql.service';
 export * from './data/tournament/request-edit-access.gql.service';
 export * from './data/tournament/remove-contestant.gql.service';
+
+export * from './data/showdown/create-showdown.gql.service';
 
 /***********************
  * Data Sources

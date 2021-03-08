@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 import { ITournament } from '@shared/index';
 import { Team } from '@models/team/team.model';
 import { User } from '@models/user/user.model';
-import { Contestant } from '@models/contestant/contestant.entity';
+import { Contestant } from '@models/contestant/contestant.model';
 import { Match } from '@models/match/match.model';
 import { Update } from '@models/update/update.model';
 
@@ -64,5 +64,5 @@ export class Tournament extends Document implements ITournament {
   @Field({ nullable: true })
   structure?: 'single-elim' | 'double-elim' | 'round-robin';
 
-  anonymousContestants?: [];
+  // anonymousContestants?: [];
 }

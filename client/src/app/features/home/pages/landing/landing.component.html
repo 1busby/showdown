@@ -17,6 +17,7 @@
       *ngFor="let tournament of allTournaments; trackBy: trackByFn"
       [tournament]="tournament"
       (selectTournament)="viewTournament(tournament)"
+      (delete)="deleteTournament(tournament._id)"
     ></tournament-card>
   </ng-container>
 

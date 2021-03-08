@@ -6,6 +6,9 @@ import {
   Resolver,
   Subscription,
   ID,
+  ResolveField,
+  Parent,
+  Int,
 } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
@@ -30,8 +33,8 @@ export class TournamentsResolver {
     private logger: CustomLogger,
     private readonly tournamentsService: TournamentsService,
     private readonly matchService: MatchService,
-    // private readonly userService: UsersService
-  ) {}
+  ) // private readonly userService: UsersService
+  {}
 
   @Query(returns => Tournament)
   async tournament(
@@ -59,6 +62,7 @@ export class TournamentsResolver {
         throw new NotFoundException('Tournament Not Found');
       }
 
+      this.logger.info('LOOK found tournement ', tournament);
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
       return tournament;
@@ -86,7 +90,7 @@ export class TournamentsResolver {
   async addTournament(
     @Args('newTournamentData') newTournamentData: NewTournamentInput,
   ): Promise<Tournament> {
-    return await this.tournamentsService.create(newTournamentData)
+    return await this.tournamentsService.create(newTournamentData);
     // .then(tournament => {
     //   this.userService.updateOne({ _id: newTournamentData.createdBy, })
     //   return tournament
@@ -114,8 +118,8 @@ export class TournamentsResolver {
         hasStarted: true,
         updates: [
           {
-            title: 'Showdown started!',
-            description: 'Showdown has been started.',
+            title: 'Tournament started!',
+            // description: 'Tournament has been started.',
             createdOn: new Date(),
           },
         ],
@@ -128,11 +132,17 @@ export class TournamentsResolver {
 
   @Mutation(returns => Tournament)
   joinTournament(
-    @Args('id', { type: () => ID }) id: string,
+    @Args('_id', { type: () => ID }) _id: string,
     @Args('contestantName', { nullable: true }) contestantName?: string,
     @Args('userId', { nullable: true, type: () => ID }) userId?: string,
+    @Args('seed', { nullable: true, type: () => Int }) seed?: number,
   ): Promise<Tournament> {
-    return this.tournamentsService.addContestant(id, contestantName, userId);
+    return this.tournamentsService.addContestant(
+      _id,
+      seed,
+      contestantName,
+      userId,
+    );
   }
 
   @Mutation(returns => Tournament)
@@ -144,8 +154,8 @@ export class TournamentsResolver {
   }
 
   @Mutation(returns => Boolean)
-  removeTournament(@Args('id') id: string) {
-    return this.tournamentsService.remove(id);
+  removeTournament(@Args('_id', { type: () => ID }) _id: string) {
+    return this.tournamentsService.remove(_id);
   }
 
   @Mutation(returns => Tournament)
@@ -158,8 +168,11 @@ export class TournamentsResolver {
       .findOneById(matchData.tournamentId)
       .then(tournament => {
         this.logger.log('LOOK Tournament fetched: ' + tournament);
+        const match = tournament.matches.find(
+          m => m.matchNumber === matchData.matchNumber,
+        );
         const updates = [];
-        // const match = 
+        // const match =
         // check if match has a winner
         if (!matchData.winnerSeed) {
           let highseedSetsWon = 0;
@@ -176,17 +189,31 @@ export class TournamentsResolver {
             const currentDate = new Date();
             if (highseedSetsWon > lowseedSetsWon) {
               matchData.winnerSeed = 'HIGHSEED';
+
+              const highSeed = matchData.highSeedNumber;
+              const contestant = tournament.contestants.find(
+                c => c.seed === highSeed,
+              );
+
               updates.push({
-                title: `Match ${matchData.matchNumber + 1} goes to {HighSeed}`,
-                description: 'TODO match won description',
-                createOn: currentDate
+                title: `Match ${matchData.matchNumber + 1} goes to ${
+                  contestant.name
+                }`,
+                createdOn: currentDate,
               });
             } else {
               matchData.winnerSeed = 'LOWSEED';
+
+              const lowSeed = matchData.lowSeedNumber;
+              const contestant = tournament.contestants.find(
+                c => c.seed === lowSeed,
+              );
+
               updates.push({
-                title: `Match ${matchData.matchNumber + 1} goes to {HighSeed}`,
-                description: 'TODO match won description',
-                createOn: currentDate
+                title: `Match ${matchData.matchNumber + 1} goes to ${
+                  contestant.name
+                }`,
+                createdOn: currentDate,
               });
             }
           }

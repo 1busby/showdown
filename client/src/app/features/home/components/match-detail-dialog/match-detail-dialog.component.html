@@ -11,7 +11,7 @@
   </div>
 </div>
 <div>
-  <mat-list *ngIf="this.data.allowEdit && this.data.hasStarted">
+  <mat-list *ngIf="this.data.allowEdit && this.data.hasStarted && data.match.lowSeed && data.match.highSeed">
     <mat-list-item *ngFor="let set of match.sets">
       <mat-radio-group [(ngModel)]="set.outcome">
         <mat-radio-button *ngIf="!set.outcome" value="high"></mat-radio-button>
@@ -25,5 +25,5 @@
 </div>
 <mat-dialog-actions align="end">
   <button mat-raised-button color="warn" [mat-dialog-close]="data.match">Close</button>
-  <button mat-raised-button color="accent" *ngIf="this.data.allowEdit && this.data.hasStarted" (click)="save()">Save</button>
+  <button mat-raised-button color="accent" *ngIf="this.data.allowEdit && this.data.hasStarted && data.match.lowSeed && data.match.highSeed" (click)="save()">Save</button>
 </mat-dialog-actions>

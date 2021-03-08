@@ -7,7 +7,7 @@ const anonymousContestantSchema = new mongoose.Schema({
   name: String,
   seed: Number,
   points: Number,
-  userId: {
+  profile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
@@ -17,12 +17,7 @@ export const TournamentSchema = new mongoose.Schema({
   name: String,
   description: String,
   contestantCount: Number,
-  contestants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-  ],
+  contestants: [anonymousContestantSchema],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -37,6 +32,6 @@ export const TournamentSchema = new mongoose.Schema({
   allowRegistration: Boolean,
   allowSelfScoring: Boolean,
   structure: String,
-  anonymousContestants: [anonymousContestantSchema],
+  // anonymousContestants: [anonymousContestantSchema],
   updates: [UpdateSchema]
 });

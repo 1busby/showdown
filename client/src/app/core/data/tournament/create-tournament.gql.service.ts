@@ -39,8 +39,11 @@ export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }
         }
       ) {
         _id
+        name
+        description
         linkCode
         createdOn
+        contestantCount
         contestants {
           _id
           seed

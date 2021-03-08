@@ -27,6 +27,10 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           seed
           points
           isRegistered
+          profile {
+            _id
+            username
+          }
         }
         matches {
           ...allFields
@@ -36,6 +40,9 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           title
           description
           createdOn
+        }
+        createdBy {
+          _id
         }
       }
     }

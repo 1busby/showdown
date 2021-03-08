@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { TournamentsGQL } from '@app/core';
 import { ITournament, IUser } from '@app/shared';
 import { UsersGQL } from '@app/core/data/user/users.gql.service';
+import { RemoveTournamentGQL } from '@app/core/data/tournament/remove-tournament.gql.service';
 
 @Component({
   selector: 'app-home-landing',
@@ -18,7 +19,8 @@ export class LandingComponent {
   constructor(
     private router: Router,
     private tournamentsGql: TournamentsGQL,
-    private usersGql: UsersGQL
+    private usersGql: UsersGQL,
+    private removeTournamentGql: RemoveTournamentGQL
   ) {
     this.tournamentsGql
       .fetch()
@@ -43,6 +45,10 @@ export class LandingComponent {
       return;
     }
     this.router.navigateByUrl(`/${tournament.linkCode}`);
+  }
+
+  deleteTournament(_id) {
+    this.removeTournamentGql.mutate({ _id }).pipe(first()).subscribe();
   }
 
   trackByFn(index, tournament) {

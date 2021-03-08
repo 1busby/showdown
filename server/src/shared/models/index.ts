@@ -5,3 +5,5 @@ export * from './match.interface';
 export * from './set.interface';
 export * from './contestant.interface';
 export * from './update.interface';
+export * from './showdown.interface';
+export * from './push-subscription.interface';

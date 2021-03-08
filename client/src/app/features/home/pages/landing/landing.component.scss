@@ -16,7 +16,11 @@
 
 .content-container {
   overflow: auto;
-  padding-top: 64px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 64px;
 
   tournament-card {
     cursor: pointer;

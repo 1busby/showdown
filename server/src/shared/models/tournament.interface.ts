@@ -1,4 +1,5 @@
 import { IMatch, IUser, IUpdate } from './';
+import { IContestant } from './contestant.interface';
 
 export interface ITournament {
   _id: string;
@@ -6,7 +7,7 @@ export interface ITournament {
   description?: string;
   contestantCount?: number;
   matches?: IMatch[];
-  contestants?: Array<Partial<IUser>>;
+  contestants?: Array<IContestant>;
   createdBy?: Partial<IUser>;
   createdOn?: Date;
   updatedOn?: Date;

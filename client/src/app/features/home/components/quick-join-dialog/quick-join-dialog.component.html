@@ -1,13 +1,11 @@
 <h2 mat-dialog-title>Join {{data.tournamentName}}</h2>
 <mat-dialog-content>
   <mat-form-field appearance="outline">
-    <mat-label>Game Tag</mat-label>
-    <input matInput type="text" [(ngModel)]="data.contestant.name" required />
+    <mat-label>Name Tag</mat-label>
+    <input matInput type="text" [(ngModel)]="data.contestant.name" required  placeholder="ex: pr0gam3r"/>
   </mat-form-field>
-  <br> -- or -- <br>
-  <button mat-raised-button color="primary">Sign Up</button>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button color="primary" [mat-dialog-close]="data.contestant" cdkFocusInitial>Join Tournament</button>
+  <button mat-raised-button mat-dialog-close color="warn" cdkFocusInitial>Cancel</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="data.contestant">Join</button>
 </mat-dialog-actions>

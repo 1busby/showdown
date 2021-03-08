@@ -15,6 +15,8 @@ export class ReportMatchScoreGQL extends Mutation<{
       $tournamentId: ID
       $winnerSeed: String
       $matchNumber: Int
+      $highSeedNumber: Int
+      $lowSeedNumber: Int
       $sets: [SetInput]
     ) {
       reportMatchScore(
@@ -24,6 +26,8 @@ export class ReportMatchScoreGQL extends Mutation<{
           winnerSeed: $winnerSeed
           matchNumber: $matchNumber
           sets: $sets
+          highSeedNumber: $highSeedNumber
+          lowSeedNumber: $lowSeedNumber
         }
       ) {
         _id

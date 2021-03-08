@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CustomLogger } from '@shared/index';
 import { PubSub } from 'apollo-server-express';
 import { NewUserInput } from './dto/new-user.input';
