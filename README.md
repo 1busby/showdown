@@ -11,6 +11,6 @@ ISPRODUCTION=&lt;boolean>
 
 ## Deploy to Production
 
-Run the following command in ./server
+If the server is up and the app is already running, run the following command in ./server on your local machine
 
 npm run deploy-production
