@@ -58,11 +58,8 @@ export class TournamentsResolver {
         );
       }
       if (!tournament) {
-        this.logger.info('LOOK tournement not found!');
         throw new NotFoundException('Tournament Not Found');
       }
-
-      this.logger.info('LOOK found tournement ', tournament);
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
       return tournament;
@@ -103,7 +100,6 @@ export class TournamentsResolver {
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
   ): Promise<Tournament> {
     return this.tournamentsService.updateOne(updateTournamentData).then(res => {
-      this.logger.log('LOOK res ' + res);
       return res;
     });
   }
@@ -232,7 +228,6 @@ export class TournamentsResolver {
         });
       })
       .then(res => {
-        this.logger.log('LOOK res ' + res);
         return res;
       });
   }

@@ -1,37 +1,22 @@
 <ng-container *ngIf="this.tournament">
-  <div class="admin-buttons" *ngIf="!tournament.hasStarted">
-    <ng-container *ngIf="!tournament.createdBy || tournament.createdBy._id === loggedInUser?._id">
-      <ng-container *ngIf="isCheckingEditAccess">
-        <mat-spinner color="accent" diameter="30"></mat-spinner>
-      </ng-container>
-      <ng-container *ngIf="!isCheckingEditAccess">
-        <button mat-raised-button color="primary" (click)="editTournament()">
-          Edit
-        </button>
-        <button mat-raised-button color="primary" (click)="editTournament(true)">
-          Run
-        </button>
-      </ng-container>
-    </ng-container>
-    
-
-    <button
-      *ngIf="
-        tournament.allowRegistration &&
-        this.tournament?.contestants?.length < this.tournament?.contestantCount &&
-        !this.checkIfContestant()
-      "
-      mat-raised-button
-      color="primary"
-      (click)="joinClicked()"
-    >
-      Join
-    </button>
-  </div>
-
   <div id="tournament-name">
     <p>
       {{ this.tournament?.name }}
+      <ng-container
+        *ngIf="
+          (!tournament.hasStarted && !tournament.createdBy) ||
+          tournament.createdBy._id === loggedInUser?._id
+        "
+      >
+        <ng-container *ngIf="isCheckingEditAccess">
+          <mat-spinner color="accent" diameter="30"></mat-spinner>
+        </ng-container>
+        <ng-container *ngIf="!isCheckingEditAccess">
+          <button mat-icon-button color="primary" (click)="editTournament()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </ng-container>
+      </ng-container>
     </p>
   </div>
 
@@ -62,25 +47,27 @@
     </ng-container>
 
     <ng-container label="Updates" *ngIf="viewBeingShown === 'updates'">
-      <ng-container *ngFor="let update of tournament.updates">
-        <mat-card>
-          <mat-card-title>
-            {{ update.title }}
-          </mat-card-title>
-          <mat-card-content>
-            {{ update.description }}
-          </mat-card-content>
-          <mat-card-footer>
-            {{ update.createdOn | date: 'long' }}
-          </mat-card-footer>
-        </mat-card>
-      </ng-container>
+      <div class="update-container">
+        <ng-container *ngFor="let update of tournament.updates">
+          <mat-card>
+            <mat-card-title>
+              {{ update.title }}
+            </mat-card-title>
+            <mat-card-content>
+              {{ update.description }}
+            </mat-card-content>
+            <mat-card-footer>
+              {{ update.createdOn | date: 'long' }}
+            </mat-card-footer>
+          </mat-card>
+        </ng-container>
+      </div>
     </ng-container>
   </ng-container>
 
   <mat-button-toggle-group class="action-buttons" #group="matButtonToggleGroup">
     <mat-button-toggle
-    color="primary"
+      color="primary"
       value="left"
       (click)="showView('bracket')"
       aria-label="Bracket View"
@@ -109,4 +96,19 @@
       <mat-icon>subscriptions</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
+
 </ng-container>
+
+<button
+  *ngIf="
+    tournament?.allowRegistration &&
+    this.tournament?.contestants?.length < this.tournament?.contestantCount &&
+    !this.checkIfContestant()
+  "
+  mat-fab
+  color="primary"
+  (click)="joinClicked()"
+  class="join-button"
+>
+  <mat-icon style="font-weight: bold;" svgIcon="swords"></mat-icon>
+</button>

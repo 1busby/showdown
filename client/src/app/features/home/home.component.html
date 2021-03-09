@@ -10,7 +10,7 @@
   <span class="example-spacer"></span>
 
   <ng-container *ngIf="!isLoadingProfile">
-    <button
+    <!-- <button
       *ngIf="!user?._id"
       class="login-button"
       color="accent"
@@ -20,11 +20,10 @@
     >
       Log In
       <mat-icon>login</mat-icon>
-    </button>
+    </button> -->
 
     {{ user?.username }}
     <button
-      *ngIf="user?._id"
       mat-icon-button
       [matMenuTriggerFor]="menu"
       aria-label="Example icon-button with a menu"
@@ -32,7 +31,7 @@
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #menu="matMenu" color="accent">
-      <button mat-menu-item (click)="openProfile()">
+      <button mat-menu-item *ngIf="user?._id" (click)="openProfile()">
         <mat-icon>account_circle</mat-icon>
         <span>Profile</span>
       </button>
@@ -40,11 +39,15 @@
           <mat-icon>local_play</mat-icon>
           <span>New Challenge</span>
         </button> -->
-      <button mat-menu-item (click)="newTournament()">
+      <button mat-menu-item (click)="newTournament()" color="accent">
         <mat-icon>account_tree</mat-icon>
         <span>New Tournament</span>
       </button>
-      <button mat-menu-item (click)="logout()">
+      <button mat-menu-item *ngIf="!user?._id" (click)="login()" color="primary">
+        <mat-icon>login</mat-icon>
+        <span>Log In</span>
+      </button>
+      <button mat-menu-item *ngIf="user?._id" (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
       </button>

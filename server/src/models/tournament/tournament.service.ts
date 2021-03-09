@@ -90,7 +90,7 @@ export class TournamentsService {
   }
 
   async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
-    return await this.tournamentModel.find().exec();
+    return await this.tournamentModel.find().populate('createdBy').exec();
   }
 
   async updateOne(
