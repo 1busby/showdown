@@ -1,13 +1,13 @@
 :host {
   overflow: auto;
   padding: 12px;
+  height: 200px;
+  flex-grow: 1;
 }
 
 .outer-container {
-  position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
 }
 
 .list-container {
@@ -23,7 +23,7 @@
   box-shadow: inset 0 0 10px #000000;
 
   overflow: auto;
-  flex-grow: 1;
+  height: 100%;
 }
 
 .options-container {
