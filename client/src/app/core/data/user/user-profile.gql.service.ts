@@ -15,6 +15,7 @@ export class UserProfileGQL extends Query<{ user: IUser }> {
         username
         email
         iconPublicAddress
+        imageUrl
         tournaments {
           _id
           name

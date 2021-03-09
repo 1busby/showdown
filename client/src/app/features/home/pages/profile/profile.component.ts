@@ -24,6 +24,11 @@ export class ProfileComponent implements OnDestroy {
   showShowdownForm = false;
   icxAmount = 0;
 
+  profileImageChangedStatus = 'init';
+  uploadImageLabel = 'Choose file (max size 1MB)';
+  imageFileIsTooBig = false;
+  selectedFileSrc: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -64,14 +69,53 @@ export class ProfileComponent implements OnDestroy {
 
   createShowdown(showdownData) {
     this.createShowdownGql
-    .mutate({
-      ...showdownData,
-      challenger: this.loggedInUser._id,
-      defender: this.user._id,
-    })
-    .pipe(first())
-    .subscribe(result => {
-      console.log('LOOK Showdown Created, result ', result);
-    });
+      .mutate({
+        ...showdownData,
+        challenger: this.loggedInUser._id,
+        defender: this.user._id,
+      })
+      .pipe(first())
+      .subscribe((result) => {
+        console.log('LOOK Showdown Created, result ', result);
+      });
   }
+
+  // changeImage(imageInput: HTMLInputElement) {
+  //   const file: File = imageInput.files[0];
+  //   this.uploadImageLabel = `${file.name} (${(file.size * 0.000001).toFixed(
+  //     2
+  //   )} MB)`;
+  //   if (file.size > 1048576) {
+  //     this.imageFileIsTooBig = true;
+  //   } else {
+  //     this.imageFileIsTooBig = false;
+  //     const reader = new FileReader();
+
+  //     reader.addEventListener('load', (event: any) => {
+  //       this.selectedFileSrc = event.target.result;
+  //       this.userDataService
+  //         .uploadProfileImage(this.userData.userId, file)
+  //         .subscribe(
+  //           (response) => {
+  //             this.userData.profile.imageUrl = response.url;
+  //             this.userDataStore.updateUserData$(this.userData).subscribe(
+  //               () => {
+  //                 this.profileImageChangedStatus = 'ok';
+  //               },
+  //               () => {
+  //                 this.profileImageChangedStatus = 'fail';
+  //               }
+  //             );
+  //           },
+  //           () => {
+  //             this.profileImageChangedStatus = 'fail';
+  //           }
+  //         );
+  //     });
+
+  //     if (file) {
+  //       reader.readAsDataURL(file);
+  //     }
+  //   }
+  // }
 }

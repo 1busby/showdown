@@ -13,6 +13,7 @@ export interface IUser extends IContestant {
   tournaments?: ITournament[];
   iconPublicAddress?: string;
   pushSubscription?: string;
+  imageUrl?: string;
 
   // front end only
   token?: string;

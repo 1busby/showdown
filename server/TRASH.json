@@ -1,0 +1,74 @@
+{
+  "data": {
+    "tournaments": [
+      {
+        "_id": "602b4eca259b11c523232a17",
+        "name": "8a",
+        "createdOn": 1613450954863,
+        "linkCode": "efoGWM0y1",
+        "createdBy": null,
+        "__typename": "Tournament"
+      },
+      {
+        "_id": "602b68bec2fe9f9174bcab6f",
+        "name": "8b",
+        "createdOn": 1613457598160,
+        "linkCode": "8cMa1TMPf",
+        "createdBy": null,
+        "__typename": "Tournament"
+      },
+      {
+        "_id": "60454de83dc92783e5de45ed",
+        "name": "Alex8",
+        "createdOn": 1615154664878,
+        "linkCode": "wD2y69JuB",
+        "createdBy": {
+          "_id": "6035c490a453ba3dc552952f",
+          "username": "Alexander",
+          "__typename": "User"
+        },
+        "__typename": "Tournament"
+      },
+      {
+        "_id": "604555f9064deac1b554129f",
+        "name": "4 ppl",
+        "createdOn": 1615156729155,
+        "linkCode": "N72hti0rK",
+        "createdBy": {
+          "_id": "6035c314a453ba3dc552952e",
+          "username": "busby",
+          "__typename": "User"
+        },
+        "__typename": "Tournament"
+      },
+      {
+        "_id": "60468fd6b447fdb4f8a7dc1d",
+        "name": "busby1",
+        "createdOn": 1615237078359,
+        "linkCode": "60rvK48wM",
+        "createdBy": {
+          "_id": "6035c314a453ba3dc552952e",
+          "username": "busby",
+          "__typename": "User"
+        },
+        "__typename": "Tournament"
+      },
+      {
+        "_id": "6046b47ddd9b6439e748bfa1",
+        "name": "32 contestants",
+        "createdOn": 1615246461648,
+        "linkCode": "O9tZ-8kRl",
+        "createdBy": null,
+        "__typename": "Tournament"
+      },
+      {
+        "_id": "6046c972dd9b6439e748c03f",
+        "name": "asdfasf",
+        "createdOn": 1615251826433,
+        "linkCode": "oNhCGws75",
+        "createdBy": null,
+        "__typename": "Tournament"
+      }
+    ]
+  }
+}

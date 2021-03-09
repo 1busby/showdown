@@ -30,6 +30,7 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           profile {
             _id
             username
+            imageUrl
           }
         }
         matches {

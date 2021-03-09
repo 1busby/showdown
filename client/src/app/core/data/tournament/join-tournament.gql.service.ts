@@ -19,6 +19,7 @@ export class JoinTournamentGQL extends Mutation {
           profile {
             _id
             username
+            imageUrl
           }
         }
       }

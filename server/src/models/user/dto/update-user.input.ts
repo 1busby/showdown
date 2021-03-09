@@ -24,4 +24,7 @@ export class UpdateUserInput {
 
   @Field({ nullable: true })
   pushSubscription?: string;
+
+  @Field({ nullable: true })
+  imageUrl?: string;
 }

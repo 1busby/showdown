@@ -100,6 +100,7 @@ input NewUserInput {
   iconPublicAddress: String!
   firstName: String
   lastName: String
+  imageUrl: String
 }
 
 type Query {
@@ -252,6 +253,7 @@ input UpdateUserInput {
   lastName: String
   tournaments: [String]
   pushSubscription: String
+  imageUrl: String
 }
 
 """The user model"""
@@ -267,4 +269,5 @@ type User {
   createdOn: Date
   updatedOn: Date
   pushSubscription: String
+  imageUrl: String
 }

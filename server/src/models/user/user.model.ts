@@ -38,4 +38,7 @@ export class User extends Document implements IUser {
 
   @Field({ nullable: true })
   pushSubscription?: string;
+
+  @Field({ nullable: true })
+  imageUrl?: string;
 }
