@@ -1,11 +1,17 @@
 <div class="outer-container">
-  <div class="list-container">
-    <ng-container
+  <mat-list class="list-container">
+    <mat-list-item
       *ngFor="let match of localMatchList; let i = index; trackBy: trackById"
+      class="match-list-item"
     >
-      <match-card [match]="match" (click)="showMatchDetailsEmitter.emit(match)"> </match-card>
-    </ng-container>
-  </div>
+      <match-card
+        [match]="match"
+        (click)="showMatchDetailsEmitter.emit(match)"
+        class="match"
+      >
+      </match-card>
+    </mat-list-item>
+  </mat-list>
 
   <div class="options-container" *ngIf="false"></div>
 </div>
