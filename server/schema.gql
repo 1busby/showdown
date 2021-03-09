@@ -102,21 +102,6 @@ input NewUserInput {
   lastName: String
 }
 
-"""A set for a match"""
-type PushSubscription {
-  endpoint: String
-  expirationTime: String
-  encryptionKey: String
-  authSecret: String
-}
-
-input PushSubscriptionInput {
-  endpoint: String
-  expirationTime: String
-  encryptionKey: String
-  authSecret: String
-}
-
 type Query {
   user(username: String, dId: String): User!
   users(skip: Int = 0, take: Int = 25): [User!]!
@@ -266,7 +251,7 @@ input UpdateUserInput {
   firstName: String
   lastName: String
   tournaments: [String]
-  pushSubscription: PushSubscriptionInput
+  pushSubscription: String
 }
 
 """The user model"""
@@ -281,5 +266,5 @@ type User {
   iconPublicAddress: String
   createdOn: Date
   updatedOn: Date
-  pushSubscription: PushSubscription
+  pushSubscription: String
 }

@@ -54,7 +54,8 @@
     "rxjs": "^6.5.4",
     "shortid": "^2.2.15",
     "tslog": "^2.5.0",
-    "type-graphql": "^0.17.6"
+    "type-graphql": "^0.17.6",
+    "web-push": "^3.4.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.4.1",

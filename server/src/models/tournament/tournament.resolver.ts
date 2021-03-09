@@ -22,7 +22,7 @@ import { EditAccessRequest } from './dto/edit-access-request';
 import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
 import { MatchInput } from '@models/match/dto/match.input';
-import { Match } from '@models/match/match.model';
+import { WebPushService } from '@shared/services/web-push.service';
 // import { UsersService } from '@models/user/user.service';
 
 const pubSub = new PubSub();
@@ -33,8 +33,8 @@ export class TournamentsResolver {
     private logger: CustomLogger,
     private readonly tournamentsService: TournamentsService,
     private readonly matchService: MatchService,
-  ) // private readonly userService: UsersService
-  {}
+    private webPushService: WebPushService,
+  ) {}
 
   @Query(returns => Tournament)
   async tournament(
@@ -58,11 +58,8 @@ export class TournamentsResolver {
         );
       }
       if (!tournament) {
-        this.logger.info('LOOK tournement not found!');
         throw new NotFoundException('Tournament Not Found');
       }
-
-      this.logger.info('LOOK found tournement ', tournament);
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
       return tournament;
@@ -73,6 +70,7 @@ export class TournamentsResolver {
 
   @Query(returns => [Tournament])
   tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+    // this.webPushService.sendNotification();
     return this.tournamentsService.findAll(tournamentsArgs);
   }
 
@@ -102,7 +100,6 @@ export class TournamentsResolver {
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
   ): Promise<Tournament> {
     return this.tournamentsService.updateOne(updateTournamentData).then(res => {
-      this.logger.log('LOOK res ' + res);
       return res;
     });
   }
@@ -111,21 +108,27 @@ export class TournamentsResolver {
   async runTournament(
     @Args('_id', { type: () => ID }) _id: string,
   ): Promise<Tournament> {
-    this.logger.log('LOOK tournament _id ', _id);
+    const notification = {
+      title: 'Tournament started!',
+      // description: 'Tournament has been started.',
+      createdOn: new Date(),
+    };
     return this.tournamentsService
       .updateOne({
         _id,
         hasStarted: true,
-        updates: [
-          {
-            title: 'Tournament started!',
-            // description: 'Tournament has been started.',
-            createdOn: new Date(),
-          },
-        ],
+        updates: [notification],
       })
       .then(res => {
-        this.logger.log('LOOK res ' + res);
+        this.webPushService.sendNotification(
+          res.contestants
+            .filter(c => !!c.profile)
+            .map(c => {
+              return JSON.parse(c.profile.pushSubscription);
+            }),
+            `${res.name} has started!`,
+            `The Showdown begins`,
+        );
         return res;
       });
   }
@@ -225,7 +228,6 @@ export class TournamentsResolver {
         });
       })
       .then(res => {
-        this.logger.log('LOOK res ' + res);
         return res;
       });
   }

@@ -1,7 +1,7 @@
-:host(app-home-tournament) {
-  flex: 1 1 auto;
+:host {
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 
 .admin-buttons {
@@ -16,13 +16,13 @@
 
 .action-buttons {
   margin: auto;
-  position: absolute;
-  bottom: 0;
-  left: auto;
-  right: auto;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
+  position: relative;
+  // bottom: 0;
+  // left: auto;
+  // right: auto;
+  // left: 50%;
+  // -webkit-transform: translateX(-50%);
+  // transform: translateX(-50%);
 }
 
 #tournament-name {
@@ -30,6 +30,7 @@
   font-size: 2em;
   font-weight: bold;
   height: 7%;
+  padding-top: 10px;
 
   p {
     margin: auto;
@@ -51,4 +52,16 @@ mat-card {
 
 contestant-list {
   // max-height: 50%;
+}
+
+.update-container {
+  height: 200px;
+  flex-grow: 1;
+  padding: 12px;
+}
+
+.join-button {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
 }

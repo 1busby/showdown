@@ -4,7 +4,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { ITournament } from '@app/shared';
+import { ITournament, IUser } from '@app/shared';
 
 @Component({
   selector: 'tournament-card',
@@ -13,6 +13,7 @@ import { ITournament } from '@app/shared';
 })
 export class TournamentCardComponent {
   @Input() tournament: ITournament;
+  @Input() user: IUser;
   @Output() selectTournament: EventEmitter<ITournament> = new EventEmitter<ITournament>();
   @Output() delete: EventEmitter<boolean> = new EventEmitter<boolean>();
 

@@ -1,16 +1,16 @@
+:host {
+  height: 200px;
+  padding: 12px;
+  flex-grow: 1;
+}
+
 .outer-container {
-  position: relative;
   overflow: hidden;
-  width: 100%;
-  height: 60vh;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
 }
 
 .list-container {
-  margin: 12px;
-  padding: 12px;
-  flex-grow: 1;
+  height: 100%;
 
   border-style: solid;
   border-width: 0.5px;
@@ -22,6 +22,19 @@
   box-shadow: inset 0 0 10px #000000;
 
   overflow: auto;
+}
+
+mat-list-item.match-list-item {
+  height: fit-content;
+
+  > div {
+    padding: 0;
+  }
+}
+
+.match {
+  padding-top: 16px;
+  width: 100%;
 }
 
 .options-container {

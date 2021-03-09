@@ -16,6 +16,10 @@ export class TournamentsGQL extends Query<{ tournaments: [ITournament] }> {
         name
         createdOn
         linkCode
+        createdBy {
+          _id
+          username
+        }
       }
     }
   `;

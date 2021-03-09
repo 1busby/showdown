@@ -20,6 +20,8 @@ import { ITournament, IContestant, IUser } from '@app/shared';
 import { QuickJoinDialogComponent } from '../../components/quick-join-dialog/quick-join-dialog.component';
 import { EditAccessDialogComponent } from '../../components/edit-access-dialog/edit-access-dialog.component';
 import { MatchService } from '../../services/match.service';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home-tournament',
@@ -46,8 +48,12 @@ export class TournamentComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private matchService: MatchService,
     private runTournamentGql: RunTournamentGQL,
-    public appStore: AppStore
-  ) {}
+    public appStore: AppStore,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
+  ) {
+    matIconRegistry.addSvgIcon('swords', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/swords.svg'))
+  }
 
   ngOnInit() {
     this.route.paramMap
@@ -90,7 +96,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         // })
       });
 
-    this.authService.user.subscribe((user) => {
+    this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.loggedInUser = user;
       this.isContestant = this.checkIfContestant();
     });

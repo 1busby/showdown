@@ -15,8 +15,5 @@ export const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Tournament',
   }],
-  pushSubscription: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'PushSubscription',
-  },
+  pushSubscription: String,
 });

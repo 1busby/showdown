@@ -90,7 +90,7 @@ export class TournamentsService {
   }
 
   async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
-    return await this.tournamentModel.find().exec();
+    return await this.tournamentModel.find().populate('createdBy').exec();
   }
 
   async updateOne(
@@ -176,8 +176,21 @@ export class TournamentsService {
           new: true,
         },
       )
-      .then(result => {
-        result.populate('matches.sets');
+      .populate({
+        path: 'matches',
+        populate: {
+          path: 'sets',
+          model: 'Set',
+        },
+      })
+      .populate({
+        path: 'contestants',
+        populate: {
+          path: 'profile',
+          model: 'User',
+        },
+      })
+      .then((result) => {
         const resultObject = result.toObject();
         const returnObject: any = resultObject;
 

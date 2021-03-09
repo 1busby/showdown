@@ -3,7 +3,7 @@
     mat-raised-button
     class="create-button"
     isRoundButton="true"
-    color="secondary"
+    color="accent"
     (click)="createTournament()"
   >
     Create Tournament
@@ -16,6 +16,7 @@
     <tournament-card
       *ngFor="let tournament of allTournaments; trackBy: trackByFn"
       [tournament]="tournament"
+      [user]="loggedInUser"
       (selectTournament)="viewTournament(tournament)"
       (delete)="deleteTournament(tournament._id)"
     ></tournament-card>

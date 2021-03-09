@@ -1,6 +1,5 @@
 import { ITeam as Team } from './';
 import { IContestant } from './contestant.interface';
-import { IPushSubscription } from './push-subscription.interface';
 import { ITournament } from './tournament.interface';
 
 export interface IUser extends IContestant {
@@ -13,7 +12,7 @@ export interface IUser extends IContestant {
   updatedOn?: Date;
   tournaments?: ITournament[];
   iconPublicAddress?: string;
-  pushSubscription?: IPushSubscription
+  pushSubscription?: string;
 
   // front end only
   token?: string;

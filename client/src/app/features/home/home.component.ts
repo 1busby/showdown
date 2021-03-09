@@ -16,7 +16,7 @@ import { SwPush } from '@angular/service-worker';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   readonly VAPID_PUBLIC_KEY =
-    'BLBx-hf2WrL2qEa0qKb-aCJbcxEvyn62GDTyyP9KTS5K7ZL0K7TfmOKSPqp8vQF0DaG8hpSBknz_x3qf5F4iEFo';
+    'BPsLfHWEVrAUNEVuXwzFsUWSmIG4Sq6EMuySGbkiDkI7WK1lg71wQL1OLVEFCScVmJpy1W2OajKRPwFY-ysirzY';
   private ngUnsubscribe = new Subject<any>();
 
   user: IUser = null;
@@ -85,32 +85,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   subscribeToNotifications() {
-    // const pushSubscription = {
-    //   endpoint: '1',
-    //   expirationTime: '2',
-    //   encryptionKey: '3',
-    //   authSecret: '4',
-    // };
-
-    // this.editUserGql.mutate({ 
-    //   _id: this.user._id,
-    //   pushSubscription
-    // }).pipe(first()).subscribe();
     this.swPush
       .requestSubscription({
         serverPublicKey: this.VAPID_PUBLIC_KEY,
       })
       .then((sub) => {
-        const pushSubscription = {
-          endpoint: sub.endpoint,
-          expirationTime: sub.expirationTime,
-          encryptionKey: sub.getKey('p256dh'),
-          authSecret: sub.getKey('auth'),
-        };
-
         this.editUserGql.mutate({ 
           _id: this.user._id,
-          pushSubscription
+          pushSubscription: JSON.stringify(sub)
         }).pipe(first()).subscribe();
       })
       .catch((err) =>
