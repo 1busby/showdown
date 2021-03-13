@@ -104,7 +104,6 @@ export class BracketViewComponent
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this.appStore.setMatchContainers(null, null);
   }
 
 
