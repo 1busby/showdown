@@ -18,6 +18,7 @@
     (mousemove)="mouseMove($event)"
     (mouseup)="mouseUp()"
   >
+  <canvas class="line-canvas" #lineCanvas width="4000px" height="4000px"></canvas>
     <ng-container *ngIf="bracketSide === 'winners'">
       <match-card
         class="match-container"

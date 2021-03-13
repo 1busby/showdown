@@ -27,3 +27,8 @@
   bottom: 120px;
   z-index: 1;
 }
+
+.line-canvas {
+  position: absolute;
+  z-index: -3;
+}

@@ -40,6 +40,7 @@ export class BracketViewComponent
   showMatchDetailsEmitter: EventEmitter<MatchContainer> = new EventEmitter<MatchContainer>();
 
   @ViewChild('bracketViewContainer') bracketViewContainer: ElementRef;
+  @ViewChild('lineCanvas') lineCanvas: ElementRef;
 
   constructor(
     private bracketHandler: BracketHandler,
@@ -52,12 +53,37 @@ export class BracketViewComponent
     if (changes.tournament.firstChange) return;
     const matches = this.bracketHandler.createBracket(this.tournament);
     this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
+
+
+    // LOOK remove 
+    console.log('linesObject ', this.bracketHandler.linesObject);
   }
 
   ngAfterViewInit() {
     this.appStore.getWinnersMatchContainers().subscribe((matches) => {
       this.matches = null;
       this.matches = matches;
+      const ctx = this.lineCanvas.nativeElement.getContext('2d');
+      this.matches.forEach((match: MatchContainer) => {
+        if (match.highMatch) {
+          ctx.beginPath();
+          const from = match.highMatch.getLineConnectionPoint('next');
+          ctx.moveTo(from.x, from.y);
+          const to = match.getLineConnectionPoint('high');
+          ctx.lineTo(to.x, to.y);
+          ctx.stroke();
+          console.log('LOOK highMatch from ', from);
+          console.log('LOOK highMatch to ', to);
+        }
+        if (match.lowMatch) {
+          ctx.beginPath();
+          const from = match.lowMatch.getLineConnectionPoint('next');
+          ctx.moveTo(from.x, from.y);
+          const to = match.getLineConnectionPoint('low');
+          ctx.lineTo(to.x, to.y);
+          ctx.stroke();
+        }
+      });
       this.changeDetectorRef.detectChanges();
     });
     this.appStore.getLosersMatchContainers().subscribe((matches) => {
@@ -72,12 +98,15 @@ export class BracketViewComponent
 
     const matches = this.bracketHandler.createBracket(this.tournament);
     this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
+    
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
+
+
 
   changeBracketSide(side: 'winners' | 'losers') {
     this.bracketSide = side;
