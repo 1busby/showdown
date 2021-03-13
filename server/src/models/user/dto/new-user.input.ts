@@ -21,4 +21,7 @@ export class NewUserInput {
 
   @Field({ nullable: true })
   lastName?: string;
+
+  @Field({ nullable: true })
+  imageUrl?: string;
 }

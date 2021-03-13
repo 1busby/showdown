@@ -4,8 +4,9 @@
       {{ this.tournament?.name }}
       <ng-container
         *ngIf="
-          (!tournament.hasStarted && !tournament.createdBy) ||
-          tournament.createdBy._id === loggedInUser?._id
+          !tournament.hasStarted &&
+          (!tournament.createdBy ||
+            tournament.createdBy._id === loggedInUser?._id)
         "
       >
         <ng-container *ngIf="isCheckingEditAccess">
@@ -15,6 +16,13 @@
           <button mat-icon-button color="primary" (click)="editTournament()">
             <mat-icon>edit</mat-icon>
           </button>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="editTournament(true)"
+          >
+            <mat-icon>play_arrow</mat-icon>
+          </button>
         </ng-container>
       </ng-container>
     </p>
@@ -23,6 +31,7 @@
   <ng-container>
     <ng-container label="Bracket" *ngIf="viewBeingShown === 'bracket'">
       <bracket-view
+        class="tournament-view"
         [tournament]="this.tournament"
         (showMatchDetailsEmitter)="showMatchDetails($event)"
       ></bracket-view>
@@ -34,6 +43,7 @@
         {{ this.tournament?.contestantCount || 0 }} Contestants Registered
       </div>
       <contestant-list
+        class="tournament-view"
         interactionMode="view"
         [contestants]="this.tournament?.contestants || []"
       ></contestant-list>
@@ -41,13 +51,14 @@
 
     <ng-container label="Matches" *ngIf="viewBeingShown === 'matches'">
       <match-list
+        class="tournament-view"
         [matches]="this.appStore.getWinnersMatchContainers() | async"
         (showMatchDetailsEmitter)="showMatchDetails($event)"
       ></match-list>
     </ng-container>
 
     <ng-container label="Updates" *ngIf="viewBeingShown === 'updates'">
-      <div class="update-container">
+      <div class="tournament-view">
         <ng-container *ngFor="let update of tournament.updates">
           <mat-card>
             <mat-card-title>
@@ -96,7 +107,6 @@
       <mat-icon>subscriptions</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
-
 </ng-container>
 
 <button
@@ -110,5 +120,5 @@
   (click)="joinClicked()"
   class="join-button"
 >
-  <mat-icon style="font-weight: bold;" svgIcon="swords"></mat-icon>
+  <mat-icon style="font-weight: bold" svgIcon="swords"></mat-icon>
 </button>

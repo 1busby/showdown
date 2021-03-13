@@ -36,6 +36,8 @@ export class BracketHandler {
    */
   losersMatchesPerRound = [];
 
+  linesObject = {};
+
   constructor(private appStore: AppStore) {}
 
   createBracket(bracket: Partial<ITournament>) {
@@ -60,6 +62,7 @@ export class BracketHandler {
     } else {
       this.matchContainers.forEach((matchContainer, index) => {
         matchContainer.matchNumber = index;
+        this.linesObject['B' + matchContainer.matchNumber] = 'hello';
       });
     }
 
@@ -240,13 +243,14 @@ export class BracketHandler {
       const match = this.matchesPerRound[0][
         this.seedsByIndex[this.seedsByIndex.length - 1 - i] - 1
       ];
+      // debugger
       if (!match) continue;
       const contestant = contestants[this.bigSkip * 2 + i];
       if (contestant && !contestant.seed) {
         contestant.seed = numSeeded;
       }
       if (numSeeded >= contestantLimit) {
-        match.hasLowSeed = false;
+        // match.hasLowSeed = false;
         continue;
       }
 
@@ -359,6 +363,8 @@ export class BracketHandler {
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
+
+
       }
     }
 

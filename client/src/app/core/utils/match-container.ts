@@ -25,7 +25,7 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   loser: IContestant; // the loser of this match;
   winnerSeed: string;
 
-  hasLowSeed = true;
+  hasLowSeed = false;
 
   width;
   height;
@@ -198,5 +198,25 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
         return setData;
       }),
     };
+  }
+
+  getLineConnectionPoint(whichPoint: 'high' | 'low' | 'next') {
+    switch (whichPoint) {
+      case 'high':
+        return {
+          x: this.left + this.width / 20,
+          y: this.top + 5,
+        };
+      case 'low':
+        return {
+          x: this.left + this.width / 20,
+          y: this.top + this.height - 5,
+        };
+      case 'next':
+        return {
+          x: this.left + this.width - 5,
+          y: this.top + this.height / 2,
+        };
+    }
   }
 }
