@@ -26,13 +26,13 @@ export class AppStore {
     matchContainers: MatchContainer[],
     losersMatchContainers?: MatchContainer[]
   ) {
-    if (matchContainers) {
+    // if (matchContainers) {
       this.winnersMatchContainers.next(matchContainers);
-    }
+    // }
 
-    if (losersMatchContainers) {
+    // if (losersMatchContainers) {
       this.losersMatchContainers.next(losersMatchContainers);
-    }
+    // }
   }
 
   getWinnersMatchContainers() {

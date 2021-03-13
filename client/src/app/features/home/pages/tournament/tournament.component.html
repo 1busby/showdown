@@ -4,8 +4,9 @@
       {{ this.tournament?.name }}
       <ng-container
         *ngIf="
-          (!tournament.hasStarted && !tournament.createdBy) ||
-          tournament.createdBy._id === loggedInUser?._id
+          !tournament.hasStarted &&
+          (!tournament.createdBy ||
+            tournament.createdBy._id === loggedInUser?._id)
         "
       >
         <ng-container *ngIf="isCheckingEditAccess">
@@ -14,6 +15,13 @@
         <ng-container *ngIf="!isCheckingEditAccess">
           <button mat-icon-button color="primary" (click)="editTournament()">
             <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="editTournament(true)"
+          >
+            <mat-icon>play_arrow</mat-icon>
           </button>
         </ng-container>
       </ng-container>
@@ -99,7 +107,6 @@
       <mat-icon>subscriptions</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
-
 </ng-container>
 
 <button
@@ -113,5 +120,5 @@
   (click)="joinClicked()"
   class="join-button"
 >
-  <mat-icon style="font-weight: bold;" svgIcon="swords"></mat-icon>
+  <mat-icon style="font-weight: bold" svgIcon="swords"></mat-icon>
 </button>
