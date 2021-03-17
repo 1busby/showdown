@@ -254,12 +254,6 @@ export class BracketHandler {
       match.addContestant(contestant);
       numSeeded++;
     }
-
-    // this.matchesPerRound[1].forEach((match: MatchContainer) => {
-    //   if (!match.highMatch.hasLowSeed) {
-    //     match.highMatch = null;
-    //   }
-    // });
   }
 
   /**

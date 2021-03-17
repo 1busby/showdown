@@ -62,7 +62,7 @@ export class BracketViewComponent
       const ctx = this.lineCanvas.nativeElement.getContext('2d');
       if (!this.matches) return;
       this.matches.forEach((match: MatchContainer) => {
-        if (match.highMatch) {
+        if (match.highMatch && match.highMatch.hasLowSeed) {
           ctx.beginPath();
           const from = match.highMatch.getLineConnectionPoint('next');
           ctx.moveTo(from.x, from.y);
