@@ -14,7 +14,12 @@
           size="30"
         />
         <div class="my-center">
-          {{ match.highSeed?.name || getPlaceholderText('high') }}
+          <p *ngIf="match?.highSeed?.name">
+            {{ match.highSeed?.name }}
+          </p>
+          <p *ngIf="!match?.highSeed" class="placeholder-text">
+            {{ getPlaceholderText('high') }}
+          </p>
         </div>
       </div>
       <div class="high__right">
@@ -33,7 +38,12 @@
           size="30"
         />
         <div class="my-center">
-          {{ match.lowSeed?.name || getPlaceholderText('low') }}
+          <p *ngIf="match?.lowSeed?.name">
+            {{ match.lowSeed?.name }}
+          </p>
+          <p *ngIf="!match?.lowSeed" class="placeholder-text">
+            {{ getPlaceholderText('low') }}
+          </p>
         </div>
       </div>
       <div class="low__right">
