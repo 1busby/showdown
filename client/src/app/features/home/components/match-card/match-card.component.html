@@ -13,10 +13,12 @@
           [email]="match.highSeed?.name"
           size="30"
         />
-        {{ match.highSeed?.name || getPlaceholderText('high') }}
+        <div class="my-center">
+          {{ match.highSeed?.name || getPlaceholderText('high') }}
+        </div>
       </div>
       <div class="high__right">
-        <div>
+        <div class="my-center">
           {{ highSetCount }}
         </div>
       </div>
@@ -30,10 +32,12 @@
           [email]="match.lowSeed?.name || '---'"
           size="30"
         />
-        {{ match.lowSeed?.name || getPlaceholderText('low') }}
+        <div class="my-center">
+          {{ match.lowSeed?.name || getPlaceholderText('low') }}
+        </div>
       </div>
       <div class="low__right">
-        <div>
+        <div class="my-center">
           {{ lowSetCount }}
         </div>
       </div>

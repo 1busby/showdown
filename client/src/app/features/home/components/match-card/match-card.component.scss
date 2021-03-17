@@ -32,7 +32,7 @@ mat-card {
   position: absolute;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  // width: 100%;
+  width: 70%;
 }
 
 .high__right {
@@ -44,16 +44,7 @@ mat-card {
   width: 20%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
-
-  div {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-  }
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .low {
@@ -70,7 +61,7 @@ mat-card {
   position: absolute;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  // width: 100%;
+  width: 70%;
 }
 .low__right {
   flex-grow: 1;
@@ -82,24 +73,23 @@ mat-card {
   width: 20%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
-
-  div {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-  }
+  background: rgba(0, 0, 0, 0.5);
 }
 
-// .low__inner {
-//   display: flex;
-//   margin: 0;
-//   top: 50%;
-//   position: absolute;
-//   -ms-transform: translateY(-50%);
-//   transform: translateY(-50%);
-//   width: 100%;
-// }
+.my-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: max-content;
+}
+
+.my-center-vertical {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
