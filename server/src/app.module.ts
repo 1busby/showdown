@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -18,6 +18,8 @@ import { MatchModule } from './models/match/match.module';
 import { UpdateModule } from '@models/update/update.module';
 import { ShowdownModule } from '@models/showdown/showdown.module';
 import { ContestantModule } from '@models/contestant/contestant.module';
+import { graphqlUploadExpress } from 'graphql-upload';
+import { FileModule } from '@models/file/file.module';
 
 @Module({
   imports: [
@@ -38,15 +40,21 @@ import { ContestantModule } from '@models/contestant/contestant.module';
       autoSchemaFile: 'schema.gql',
       context: ({ req }) => ({ req }),
       cors: false,
+      uploads: false
     }),
     UsersModule,
     TournamentsModule,
     MatchModule,
     UpdateModule,
     ShowdownModule,
-    ContestantModule
+    ContestantModule,
+    FileModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(graphqlUploadExpress()).forRoutes("graphql")
+  }
+}

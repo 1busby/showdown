@@ -68,6 +68,7 @@ type Mutation {
   updateShowdown(updateShowdownData: UpdateShowdownInput!): Showdown!
   runShowdown(_id: ID!): Showdown!
   removeShowdown(id: String!): Boolean!
+  singleUploadStream(file: Upload!): Boolean!
 }
 
 input NewShowdownInput {
@@ -255,6 +256,9 @@ input UpdateUserInput {
   pushSubscription: String
   imageUrl: String
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 """The user model"""
 type User {

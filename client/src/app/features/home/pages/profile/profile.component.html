@@ -3,8 +3,8 @@
     <h2>Profile image <i class="fas fa-portrait"></i></h2>
     <div class="profile-image">
       <img
-        *ngIf="selectedFileSrc || user.profile.imageUrl; else robot"
-        [src]="selectedFileSrc || user.profile.imageUrl"
+        *ngIf="selectedFileSrc || user.imageUrl; else robot"
+        [src]="selectedFileSrc || user.imageUrl"
         height="200"
         alt="User profile image"
       />
