@@ -45,13 +45,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.authService.isLoadingProfile.subscribe((isLoading) => {
+    this.authService.isLoadingProfile.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isLoading) => {
       this.isLoadingProfile = isLoading;
     });
   }
 
   ngOnInit() {
-    this.authService.user.subscribe((user) => {
+    this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       console.log('LOOK homeComponent user ', user);
       this.user = user;
       if (user && !user.pushSubscription) {

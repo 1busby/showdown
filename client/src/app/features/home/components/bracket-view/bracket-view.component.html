@@ -18,17 +18,30 @@
     (mousemove)="mouseMove($event)"
     (mouseup)="mouseUp()"
   >
-  <canvas class="line-canvas" #lineCanvas width="4000px" height="4000px"></canvas>
+  <canvas
+    class="line-canvas"
+    [ngStyle]="{ 'display': bracketSide === 'winners' ? 'initial' : 'none' }"
+    #lineCanvas
+    [width]="canvasWidth"
+    [height]="canvasHeight"
+  ></canvas>
     <ng-container *ngIf="bracketSide === 'winners'">
       <match-card
-        class="match-container"
-        *ngFor="let match of matches; trackBy: trackMatch"
-        [ngStyle]="match.getStyleObject()"
-        (click)="showMatchDetailsEmitter.emit(match)"
-        [match]="match"
+      class="match-container"
+      *ngFor="let match of matches; trackBy: trackMatch"
+      [ngStyle]="match.getStyleObject()"
+      (click)="showMatchDetailsEmitter.emit(match)"
+      [match]="match"
       ></match-card>
     </ng-container>
-
+    
+    <canvas
+      class="line-canvas"
+      [ngStyle]="{ 'display': bracketSide === 'losers' ? 'initial' : 'none' }"
+      #lineCanvasLosers
+      [width]="canvasWidthLosers"
+      [height]="canvasHeightLosers"
+    ></canvas>
     <ng-container *ngIf="bracketSide === 'losers'">
       <match-card
         class="match-container"

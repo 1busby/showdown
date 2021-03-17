@@ -1,36 +1,56 @@
-<mat-card
+<div
+  style="width: 100%; height: 100%"
   [matBadge]="match.matchNumber + 1"
   matBadgePosition="before"
   matBadgeColor="accent"
-  class="container"
 >
-  <div class="high">
-    <div class="high__left">
-      <img
-        *ngIf="match.highSeed?.name"
-        ngxGravatar
-        [email]="match.highSeed?.name"
-        size="30"
-      />
-      {{ match.highSeed?.name || getPlaceholderText('high') }}
+  <mat-card class="container">
+    <div class="high">
+      <div class="high__left">
+        <img
+          *ngIf="match.highSeed?.name"
+          ngxGravatar
+          [email]="match.highSeed?.name"
+          size="30"
+        />
+        <div class="my-center">
+          <p *ngIf="match?.highSeed?.name">
+            {{ match.highSeed?.name }}
+          </p>
+          <p *ngIf="!match?.highSeed" class="placeholder-text">
+            {{ getPlaceholderText('high') }}
+          </p>
+        </div>
+      </div>
+      <div class="high__right" [ngStyle]="{ 'background-color': match.winnerSeed === 'HIGHSEED' ? 'rgba(255,233,0, 0.4)' : 'rgba(0, 0, 0, 0.4)' }">
+        <div class="my-center">
+          {{ highSetCount }}
+        </div>
+      </div>
     </div>
-    <div class="high__right">
-      {{ highSetCount }}
+    <mat-divider></mat-divider>
+    <div class="low">
+      <div class="low__left">
+        <img
+          *ngIf="match.lowSeed?.name"
+          ngxGravatar
+          [email]="match.lowSeed?.name || '---'"
+          size="30"
+        />
+        <div class="my-center">
+          <p *ngIf="match?.lowSeed?.name">
+            {{ match.lowSeed?.name }}
+          </p>
+          <p *ngIf="!match?.lowSeed" class="placeholder-text">
+            {{ getPlaceholderText('low') }}
+          </p>
+        </div>
+      </div>
+      <div class="low__right" [ngStyle]="{ 'background-color': match.winnerSeed === 'LOWSEED' ? 'rgba(255,233,0, 0.4)' : 'rgba(0, 0, 0, 0.4)' }">
+        <div class="my-center">
+          {{ lowSetCount }}
+        </div>
+      </div>
     </div>
-  </div>
-  <mat-divider></mat-divider>
-  <div class="low">
-    <div class="low__left">
-      <img
-      *ngIf="match.lowSeed?.name"
-        ngxGravatar
-        [email]="match.lowSeed?.name || '---'"
-        size="30"
-      />
-      {{ match.lowSeed?.name || getPlaceholderText('low') }}
-    </div>
-    <div class="low__right">
-      {{ lowSetCount }}
-    </div>
-  </div>
-</mat-card>
+  </mat-card>
+</div>

@@ -2,10 +2,10 @@
 <mat-dialog-content>
   <mat-form-field appearance="outline">
     <mat-label>Name Tag</mat-label>
-    <input matInput type="text" [(ngModel)]="data.contestant.name" required  placeholder="ex: pr0gam3r"/>
+    <input matInput type="text" [(ngModel)]="data.contestant.name" required  placeholder="ex: pr0gam3r" #name="ngModel"/>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-raised-button mat-dialog-close color="warn" cdkFocusInitial>Cancel</button>
-  <button mat-raised-button color="primary" [mat-dialog-close]="data.contestant">Join</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="data.contestant" [disabled]="!name.valid">Join</button>
 </mat-dialog-actions>

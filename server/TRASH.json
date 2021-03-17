@@ -1,74 +1,79 @@
 {
-  "data": {
-    "tournaments": [
-      {
-        "_id": "602b4eca259b11c523232a17",
-        "name": "8a",
-        "createdOn": 1613450954863,
-        "linkCode": "efoGWM0y1",
-        "createdBy": null,
-        "__typename": "Tournament"
-      },
-      {
-        "_id": "602b68bec2fe9f9174bcab6f",
-        "name": "8b",
-        "createdOn": 1613457598160,
-        "linkCode": "8cMa1TMPf",
-        "createdBy": null,
-        "__typename": "Tournament"
-      },
-      {
-        "_id": "60454de83dc92783e5de45ed",
-        "name": "Alex8",
-        "createdOn": 1615154664878,
-        "linkCode": "wD2y69JuB",
-        "createdBy": {
-          "_id": "6035c490a453ba3dc552952f",
-          "username": "Alexander",
-          "__typename": "User"
-        },
-        "__typename": "Tournament"
-      },
-      {
-        "_id": "604555f9064deac1b554129f",
-        "name": "4 ppl",
-        "createdOn": 1615156729155,
-        "linkCode": "N72hti0rK",
-        "createdBy": {
-          "_id": "6035c314a453ba3dc552952e",
-          "username": "busby",
-          "__typename": "User"
-        },
-        "__typename": "Tournament"
-      },
-      {
-        "_id": "60468fd6b447fdb4f8a7dc1d",
-        "name": "busby1",
-        "createdOn": 1615237078359,
-        "linkCode": "60rvK48wM",
-        "createdBy": {
-          "_id": "6035c314a453ba3dc552952e",
-          "username": "busby",
-          "__typename": "User"
-        },
-        "__typename": "Tournament"
-      },
-      {
-        "_id": "6046b47ddd9b6439e748bfa1",
-        "name": "32 contestants",
-        "createdOn": 1615246461648,
-        "linkCode": "O9tZ-8kRl",
-        "createdBy": null,
-        "__typename": "Tournament"
-      },
-      {
-        "_id": "6046c972dd9b6439e748c03f",
-        "name": "asdfasf",
-        "createdOn": 1615251826433,
-        "linkCode": "oNhCGws75",
-        "createdBy": null,
-        "__typename": "Tournament"
-      }
-    ]
-  }
+  "_id": "605144792c9b44ca55f748cf",
+  "name": "7 - 3 c",
+  "description": "",
+  "contestantCount": 7,
+  "contestants": [
+    { "_id": "605144792c9b44ca55f748d0", "name": "a", "seed": 1 },
+    { "_id": "605144792c9b44ca55f748d1", "name": "b", "seed": 2 },
+    { "_id": "605144792c9b44ca55f748d2", "name": "c", "seed": 3 },
+    { "_id": "605144792c9b44ca55f748d3", "name": "d", "seed": 4 },
+    { "_id": "605144a32c9b44ca55f748e1", "profile": null }
+  ],
+  "matches": [
+    {
+      "_id": "605144792c9b44ca55f748d4",
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": 4,
+      "lowSeedNumber": null,
+      "sets": [{ "_id": "605144792c9b44ca55f748d5", "orderNumber": 1 }]
+    },
+    {
+      "_id": "605144792c9b44ca55f748d6",
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": 2,
+      "lowSeedNumber": null,
+      "sets": [{ "_id": "605144792c9b44ca55f748d7", "orderNumber": 1 }]
+    },
+    {
+      "_id": "605144792c9b44ca55f748d8",
+      "matchNumber": 2,
+      "roundNumber": 1,
+      "highSeedNumber": 3,
+      "lowSeedNumber": null,
+      "sets": [{ "_id": "605144792c9b44ca55f748d9", "orderNumber": 1 }]
+    },
+    {
+      "_id": "605144792c9b44ca55f748da",
+      "matchNumber": 3,
+      "roundNumber": 2,
+      "highSeedNumber": 1,
+      "lowSeedNumber": null,
+      "sets": [{ "_id": "605144792c9b44ca55f748db", "orderNumber": 1 }]
+    },
+    {
+      "_id": "605144792c9b44ca55f748dc",
+      "matchNumber": 4,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "_id": "605144792c9b44ca55f748dd", "orderNumber": 1 }]
+    },
+    {
+      "_id": "605144792c9b44ca55f748de",
+      "matchNumber": 5,
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "_id": "605144792c9b44ca55f748df", "orderNumber": 1 }]
+    }
+  ],
+  "editAccessCode": "123",
+  "setCount": 1,
+  "allowRegistration": true,
+  "allowSelfScoring": false,
+  "structure": "single-elim",
+  "linkCode": "iVCei2o_e",
+  "createdOn": "2021-03-16T23:51:21.235Z",
+  "updatedOn": "2021-03-16T23:51:21.235Z",
+  "updates": [
+    {
+      "_id": "605144792c9b44ca55f748e0",
+      "title": "Tournament created!",
+      "createdOn": "2021-03-16T23:51:21.235Z"
+    }
+  ],
+  "__v": 0
 }

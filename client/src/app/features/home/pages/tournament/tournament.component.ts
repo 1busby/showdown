@@ -52,7 +52,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ) {
-    matIconRegistry.addSvgIcon('swords', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/swords.svg'))
+    matIconRegistry.addSvgIcon(
+      'swords',
+      domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/swords.svg')
+    );
   }
 
   ngOnInit() {
@@ -66,7 +69,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
               {
                 returnPartialData: true,
               }
-            ).valueChanges
+            ).valueChanges.pipe(takeUntil(this.ngUnsubscribe)),
         ),
         catchError((error) => {
           this.router.navigateByUrl('/');
@@ -78,10 +81,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
           console.error('Unexpected typeof ', result);
           return;
         }
-        if (!result && result.data && result.data.tournament) {
-          this.router.navigateByUrl('/');
-          return;
-        }
+        // if (!result && result.data && result.data.tournament) {
+        //   this.router.navigateByUrl('/');
+        //   return;
+        // }
 
         console.log(
           'LOOK TournamentComponent new tournamet data ',
@@ -96,13 +99,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
         // })
       });
 
-    this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
-      this.loggedInUser = user;
-      this.isContestant = this.checkIfContestant();
-    });
+    this.authService.user
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((user) => {
+        this.loggedInUser = user;
+        this.isContestant = this.checkIfContestant();
+      });
   }
 
   ngOnDestroy(): void {
+    console.log('LOOK onDestroy Tournament');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
 
@@ -181,15 +187,27 @@ export class TournamentComponent implements OnInit, OnDestroy {
         .afterClosed()
         .pipe(first())
         .subscribe((contestant) => {
-          this.joinTournamentGql
-            .mutate({
-              _id: this.tournament._id,
-              contestantName: contestant.name,
-            })
-            .pipe(first())
-            .subscribe((result) => {
-              console.log('LOOK joinTournament result: ', result);
-            });
+          if (contestant.name && contestant.name.length > 0) {
+            this.joinTournamentGql
+              .mutate({
+                _id: this.tournament._id,
+                contestantName: contestant.name,
+              })
+              .pipe(first())
+              .subscribe((result) => {
+                console.log('LOOK joinTournament result: ', result);
+              });
+          } else if (contestant.id && contestant.id.length > 0) {
+            this.joinTournamentGql
+              .mutate({
+                _id: this.tournament._id,
+                userId: contestant.id,
+              })
+              .pipe(first())
+              .subscribe((result) => {
+                console.log('LOOK joinTournament result: ', result);
+              });
+          }
         });
     }
   }

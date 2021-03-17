@@ -14,6 +14,10 @@ export class BracketHandler {
   numRows: number; // number of rows for layout ()
   high2Power: number; // the next 2^x after numContestants
   numRounds: number; // number of rounds, therefore number of columns
+  canvasWidth = 0;
+  canvasHeight = 0;
+  canvasWidthLosers = 0;
+  canvasHeightLosers = 0;
   /**
    * positions of seeds in order.
    * the index corresponds to the seed, the value
@@ -36,11 +40,11 @@ export class BracketHandler {
    */
   losersMatchesPerRound = [];
 
-  linesObject = {};
-
   constructor(private appStore: AppStore) {}
 
   createBracket(bracket: Partial<ITournament>) {
+    this.canvasWidth = 0;
+    this.canvasHeight = 0;
     this.activeTournament = bracket;
     this.createSeededBracket();
     this.matchContainers = this.defineLayoutPlacements();
@@ -62,7 +66,6 @@ export class BracketHandler {
     } else {
       this.matchContainers.forEach((matchContainer, index) => {
         matchContainer.matchNumber = index;
-        this.linesObject['B' + matchContainer.matchNumber] = 'hello';
       });
     }
 
@@ -132,6 +135,7 @@ export class BracketHandler {
           if (roundNumber === 0) {
             if (j % 2 === 0) {
               losersMatch = new MatchContainer();
+              losersMatch.isLosersBracket = true;
               losersMatch.matchNumber = losersMatchNumber;
               losersMatchNumber++;
               losersMatch.roundNumber = 1;
@@ -149,6 +153,7 @@ export class BracketHandler {
             }
           } else if (roundNumber === 1) {
             losersMatch = new MatchContainer();
+            losersMatch.isLosersBracket = true;
             losersMatch.matchNumber = losersMatchNumber;
             losersMatchNumber++;
             const lowMatch = this.losersMatchesPerRound[0][j];
@@ -165,6 +170,7 @@ export class BracketHandler {
             losersMatchNumber++;
 
             const losersMatch1 = new MatchContainer();
+            losersMatch1.isLosersBracket = true;
             losersMatch1.matchNumber = matchNumber1;
             const parentBase =
               this.losersMatchesPerRound[losersRound - 1].length * 2;
@@ -182,6 +188,7 @@ export class BracketHandler {
             this.losersMatchesPerRound[losersRound - 1][j] = losersMatch1;
 
             const losersMatch2 = new MatchContainer();
+            losersMatch2.isLosersBracket = true;
             losersMatch2.matchNumber = matchNumber2;
             losersMatch2.roundNumber = losersRound;
             losersMatch2.setHighMatch(newMatch, 'loser');
@@ -233,30 +240,28 @@ export class BracketHandler {
           contestant.seed = numSeeded;
         }
 
-        // } else {
         match.addContestant(contestants[i]);
       }
       numSeeded++;
     }
     // loop backwards the other way for the second half
-    for (let i = 0; i < contestants.length - this.bigSkip * 2; i++) {
-      const match = this.matchesPerRound[0][
+    for (let i = 0; i < this.bigSkip * 2; i++) {
+      const match: MatchContainer = this.matchesPerRound[0][
         this.seedsByIndex[this.seedsByIndex.length - 1 - i] - 1
       ];
-      // debugger
-      if (!match) continue;
       const contestant = contestants[this.bigSkip * 2 + i];
-      if (contestant && !contestant.seed) {
-        contestant.seed = numSeeded;
-      }
-      if (numSeeded >= contestantLimit) {
-        // match.hasLowSeed = false;
+
+      if (!contestant) {
+        if (i >= contestantLimit - this.bigSkip * 2) {
+          match.hasLowSeed = false;
+        }
         continue;
       }
+      if (!contestant.seed) {
+        contestant.seed = numSeeded;
+      }
 
-      // if ()
       match.addContestant(contestant);
-      match.hasLowSeed = true;
       numSeeded++;
     }
   }
@@ -335,7 +340,7 @@ export class BracketHandler {
 
   defineLayoutPlacements() {
     this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 200);
-    this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 75);
+    this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 100);
 
     const matches: MatchContainer[] = [];
     const soonToBeRemovedMatches: MatchContainer[] = [];
@@ -359,12 +364,20 @@ export class BracketHandler {
             thisMatch.highMatch.top -
             (thisMatch.highMatch.top - thisMatch.lowMatch.top) / 2;
           thisMatch.left =
-            thisMatch.highMatch.left + this.matchWidth + this.margin * (i + 1);
+            thisMatch.highMatch.left + this.matchWidth + this.margin * 3 //* (i + 1);
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
 
+        const bottom = thisMatch.top + thisMatch.height;
+        const right = thisMatch.left + thisMatch.width;
 
+        if (bottom > this.canvasHeight) {
+          this.canvasHeight = bottom + 12;
+        }
+        if (right > this.canvasWidth) {
+          this.canvasWidth = right + 24;
+        }
       }
     }
 
@@ -444,6 +457,16 @@ export class BracketHandler {
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
+
+        const bottom = thisMatch.top + thisMatch.height;
+        const right = thisMatch.left + thisMatch.width;
+
+        if (bottom > this.canvasHeightLosers) {
+          this.canvasHeightLosers = bottom + 12;
+        }
+        if (right > this.canvasWidthLosers) {
+          this.canvasWidthLosers = right + 24;
+        }
 
         thisMatch.matchNumber -= soonToBeRemovedMatches.length;
       }

@@ -20,6 +20,7 @@
 
 mat-list-item.match-list-item {
   height: fit-content;
+  cursor: pointer;
 
   > div {
     padding: 0;
@@ -29,6 +30,7 @@ mat-list-item.match-list-item {
 .match {
   padding-top: 16px;
   width: 100%;
+  height: 100px;
 }
 
 .options-container {

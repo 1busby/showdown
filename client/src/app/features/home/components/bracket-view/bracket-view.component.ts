@@ -14,7 +14,7 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { MatchContainer, AppStore, BracketHandler } from '@app/core';
 import { ITournament } from '@app/shared';
@@ -27,7 +27,7 @@ import { takeUntil } from 'rxjs/operators';
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BracketViewComponent
-  implements OnChanges, AfterViewInit, OnDestroy {
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   private ngUnsubscribe = new Subject<any>();
   showingModal = false;
   matches: any[]; //BehaviorSubject<MatchContainer[]>;
@@ -35,6 +35,10 @@ export class BracketViewComponent
   bracketSide: 'winners' | 'losers' = 'winners';
   pos = { top: 0, left: 0, x: 0, y: 0 };
   isMouseDown = false;
+  canvasWidth = 0;
+  canvasHeight = 0;
+  canvasWidthLosers = 0;
+  canvasHeightLosers = 0;
 
   @Input() tournament: ITournament;
   @Output()
@@ -42,6 +46,7 @@ export class BracketViewComponent
 
   @ViewChild('bracketViewContainer') bracketViewContainer: ElementRef;
   @ViewChild('lineCanvas') lineCanvas: ElementRef;
+  @ViewChild('lineCanvasLosers') lineCanvasLosers: ElementRef;
 
   constructor(
     private bracketHandler: BracketHandler,
@@ -52,53 +57,46 @@ export class BracketViewComponent
   ngOnChanges(changes: SimpleChanges): void {
     console.log('LOOK BracketViewComponent ngOnChanges ', this.tournament);
     if (changes.tournament.firstChange) return;
+    this.changeDetectorRef.detectChanges();
+    
+    // const matches = this.bracketHandler.createBracket(this.tournament);
+    // this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
+  }
+
+  ngOnInit() {
+    // this.bracketHandler.setContainerDimensions(
+    //   this.bracketViewContainer.nativeElement.offsetWidth,
+    //   this.bracketViewContainer.nativeElement.offsetHeight
+    // );
     const matches = this.bracketHandler.createBracket(this.tournament);
+    this.canvasWidth = this.bracketHandler.canvasWidth;
+    this.canvasHeight = this.bracketHandler.canvasHeight;
+    this.canvasWidthLosers = this.bracketHandler.canvasWidthLosers;
+    this.canvasHeightLosers = this.bracketHandler.canvasHeightLosers;
     this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
-
-
-    // LOOK remove 
-    console.log('linesObject ', this.bracketHandler.linesObject);
   }
 
   ngAfterViewInit() {
     this.appStore.getWinnersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
+      if (!m) return;
+      if (!this.matches) {
+        const ctx = this.lineCanvas.nativeElement.getContext('2d');
+        this.drawLines(m, ctx);
+      }
+      this.matches = null;
       this.matches = m;
-      const ctx = this.lineCanvas.nativeElement.getContext('2d');
-      if (!this.matches) return;
-      this.matches.forEach((match: MatchContainer) => {
-        if (match.highMatch) {
-          ctx.beginPath();
-          const from = match.highMatch.getLineConnectionPoint('next');
-          ctx.moveTo(from.x, from.y);
-          const to = match.getLineConnectionPoint('high');
-          ctx.lineTo(to.x, to.y);
-          ctx.stroke();
-          console.log('LOOK highMatch from ', from);
-          console.log('LOOK highMatch to ', to);
-        }
-        if (match.lowMatch) {
-          ctx.beginPath();
-          const from = match.lowMatch.getLineConnectionPoint('next');
-          ctx.moveTo(from.x, from.y);
-          const to = match.getLineConnectionPoint('low');
-          ctx.lineTo(to.x, to.y);
-          ctx.stroke();
-        }
-      });
       this.changeDetectorRef.detectChanges();
     });
     this.appStore.getLosersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
+      if (!m) return;
+      if (!this.losersMatches) {
+        const ctx = this.lineCanvasLosers.nativeElement.getContext('2d');
+        this.drawLinesLosers(m, ctx);
+      }
       this.losersMatches = null;
       this.losersMatches = m;
       this.changeDetectorRef.detectChanges();
     });
-    this.bracketHandler.setContainerDimensions(
-      this.bracketViewContainer.nativeElement.offsetWidth,
-      this.bracketViewContainer.nativeElement.offsetHeight
-    );
-
-    const matches = this.bracketHandler.createBracket(this.tournament);
-    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
 
   ngOnDestroy(): void {
@@ -106,14 +104,92 @@ export class BracketViewComponent
     this.ngUnsubscribe.complete();
   }
 
-
-
   changeBracketSide(side: 'winners' | 'losers') {
     this.bracketSide = side;
   }
 
+  drawLines(matches, ctx) {
+    ctx.strokeStyle = "#71BC76";
+    matches.forEach((match: MatchContainer) => {
+      if (match.highMatch && match.highMatch.hasLowSeed) {
+        ctx.beginPath();
+        const from = match.highMatch.getLineConnectionPoint('next');
+        const to = match.getLineConnectionPoint('high');
+        const midX = from.x + (to.x - from.x) / 2;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(
+          midX,
+          from.y
+        );
+        ctx.lineTo(
+          midX,
+          to.y
+        );
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      }
+      if (match.lowMatch && !match.lowMatch.isLosersBracket) {
+        ctx.beginPath();
+        const from = match.lowMatch.getLineConnectionPoint('next');
+        const to = match.getLineConnectionPoint('low');
+        const midX = from.x + (to.x - from.x) / 2;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(
+          midX,
+          from.y
+        );
+        ctx.lineTo(
+          midX,
+          to.y
+        );
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      }
+    });
+  }
+
+  drawLinesLosers(matches, ctx) {
+    ctx.strokeStyle = "#71BC76";
+    matches.forEach((match: MatchContainer) => {
+      if (match.highMatch && match.highMatch.isLosersBracket) {
+        ctx.beginPath();
+        const from = match.highMatch.getLineConnectionPoint('next');
+        const to = match.getLineConnectionPoint('high');
+        const midX = from.x + (to.x - from.x) / 2;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(
+          midX,
+          from.y
+        );
+        ctx.lineTo(
+          midX,
+          to.y
+        );
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      }
+      if (match.lowMatch && match.lowMatch.isLosersBracket) {
+        ctx.beginPath();
+        const from = match.lowMatch.getLineConnectionPoint('next');
+        const to = match.getLineConnectionPoint('low');
+        const midX = from.x + (to.x - from.x) / 2;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(
+          midX,
+          from.y
+        );
+        ctx.lineTo(
+          midX,
+          to.y
+        );
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      }
+    });
+  }
+
   public trackMatch(index: number, item: MatchContainer) {
-    return item._id;
+    return item._id + item.winnerSeed;
   }
 
   mouseDown(e) {
