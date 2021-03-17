@@ -12,6 +12,7 @@ import {
   BracketHandler,
   RemoveContestantGQL,
   AuthService,
+  TournamentsGQL,
 } from '@app/core';
 import { Subject } from 'rxjs';
 import { EditUserGQL } from '@app/core/data/user/edit-user.gql.service';
@@ -67,6 +68,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     private createTournamentGql: CreateTournamentGQL,
     private editTournamentGql: EditTournamentGQL,
     private tournamentGql: TournamentGQL,
+    private tournamentsGql: TournamentsGQL,
     private removeContestantGql: RemoveContestantGQL,
     private updateUserGql: EditUserGQL,
     private bracketHandlerService: BracketHandler,
@@ -169,15 +171,18 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     });
 
     if (this.editMode) {
-      this.editTournamentGql
-        .mutate({
-          _id: this._tournament._id,
-          ...this.tournamentForm.value,
-          contestants: this.tournamentForm.value.contestants.map(({ profile, ...contestantData}) => {
+      const mutationInput = {
+        _id: this._tournament._id,
+        ...this.tournamentForm.value,
+        contestants: this.tournamentForm.value.contestants.map(
+          ({ profile, ...contestantData }) => {
             return contestantData;
-          }),
-          matches,
-        })
+          }
+        ),
+        matches,
+      };
+      this.editTournamentGql
+        .mutate(mutationInput)
         .pipe(first())
         .subscribe((result) => {
           localStorage.setItem(
@@ -194,7 +199,24 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         mutationInput.createdBy = this.user._id;
       }
       this.createTournamentGql
-        .mutate(mutationInput)
+        .mutate(mutationInput, {
+          optimisticResponse: {
+            addTournament: {
+              _id: 'newTourny1',
+              name: mutationInput.name,
+              description: mutationInput.description
+            },
+          },
+          update: (proxy, { data: { addTournament } }: any) => {
+            let { tournaments }: any = proxy.readQuery({
+              query: this.tournamentsGql.document,
+            });
+            proxy.writeQuery({
+              query: this.tournamentsGql.document,
+              data: { tournaments: [...tournaments, addTournament] },
+            });
+          },
+        })
         .pipe(first())
         .subscribe((result) => {
           if (this.user && this.user._id) {
