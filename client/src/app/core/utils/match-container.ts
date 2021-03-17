@@ -207,12 +207,12 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
       case 'high':
         return {
           x: this.left + this.width / 20,
-          y: this.top + 5,
+          y: this.top + this.height / 2,
         };
       case 'low':
         return {
           x: this.left + this.width / 20,
-          y: this.top + this.height - 5,
+          y: this.top + this.height / 2,
         };
       case 'next':
         return {
