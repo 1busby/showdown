@@ -42,6 +42,7 @@ export class BracketViewComponent
 
   @ViewChild('bracketViewContainer') bracketViewContainer: ElementRef;
   @ViewChild('lineCanvas') lineCanvas: ElementRef;
+  @ViewChild('lineCanvasLosers') lineCanvasLosers: ElementRef;
 
   constructor(
     private bracketHandler: BracketHandler,
@@ -65,8 +66,17 @@ export class BracketViewComponent
         if (match.highMatch && match.highMatch.hasLowSeed) {
           ctx.beginPath();
           const from = match.highMatch.getLineConnectionPoint('next');
-          ctx.moveTo(from.x, from.y);
           const to = match.getLineConnectionPoint('high');
+          const midX = from.x + (to.x - from.x) / 2;
+          ctx.moveTo(from.x, from.y);
+          ctx.lineTo(
+            midX,
+            from.y
+          );
+          ctx.lineTo(
+            midX,
+            to.y
+          );
           ctx.lineTo(to.x, to.y);
           ctx.stroke();
           console.log('LOOK highMatch from ', from);
@@ -75,8 +85,17 @@ export class BracketViewComponent
         if (match.lowMatch) {
           ctx.beginPath();
           const from = match.lowMatch.getLineConnectionPoint('next');
-          ctx.moveTo(from.x, from.y);
           const to = match.getLineConnectionPoint('low');
+          const midX = from.x + (to.x - from.x) / 2;
+          ctx.moveTo(from.x, from.y);
+          ctx.lineTo(
+            midX,
+            from.y
+          );
+          ctx.lineTo(
+            midX,
+            to.y
+          );
           ctx.lineTo(to.x, to.y);
           ctx.stroke();
         }
@@ -86,6 +105,28 @@ export class BracketViewComponent
     this.appStore.getLosersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
       this.losersMatches = null;
       this.losersMatches = m;
+      // const ctx = this.lineCanvasLosers.nativeElement.getContext('2d');
+      // if (!this.losersMatches) return;
+      // this.losersMatches.forEach((match: MatchContainer) => {
+      //   if (match.highMatch && match.highMatch.hasLowSeed) {
+      //     ctx.beginPath();
+      //     const from = match.highMatch.getLineConnectionPoint('next');
+      //     ctx.moveTo(from.x, from.y);
+      //     const to = match.getLineConnectionPoint('high');
+      //     ctx.lineTo(to.x, to.y);
+      //     ctx.stroke();
+      //     console.log('LOOK highMatch from ', from);
+      //     console.log('LOOK highMatch to ', to);
+      //   }
+      //   if (match.lowMatch) {
+      //     ctx.beginPath();
+      //     const from = match.lowMatch.getLineConnectionPoint('next');
+      //     ctx.moveTo(from.x, from.y);
+      //     const to = match.getLineConnectionPoint('low');
+      //     ctx.lineTo(to.x, to.y);
+      //     ctx.stroke();
+      //   }
+      // });
       this.changeDetectorRef.detectChanges();
     });
     this.bracketHandler.setContainerDimensions(
