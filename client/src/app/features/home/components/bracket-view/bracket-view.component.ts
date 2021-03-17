@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'bracket-view',
   templateUrl: './bracket-view.component.html',
   styleUrls: ['./bracket-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BracketViewComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy {
@@ -55,7 +55,8 @@ export class BracketViewComponent
   ngOnChanges(changes: SimpleChanges): void {
     console.log('LOOK BracketViewComponent ngOnChanges ', this.tournament);
     if (changes.tournament.firstChange) return;
-    console.log('LOOK CREATEBRACKET 1');
+    this.changeDetectorRef.detectChanges();
+    
     // const matches = this.bracketHandler.createBracket(this.tournament);
     // this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
@@ -65,7 +66,6 @@ export class BracketViewComponent
     //   this.bracketViewContainer.nativeElement.offsetWidth,
     //   this.bracketViewContainer.nativeElement.offsetHeight
     // );
-    console.log('LOOK CREATEBRACKET 2');
     const matches = this.bracketHandler.createBracket(this.tournament);
     this.canvasWidth = this.bracketHandler.canvasWidth;
     this.canvasHeight = this.bracketHandler.canvasHeight;
@@ -74,47 +74,15 @@ export class BracketViewComponent
 
   ngAfterViewInit() {
     this.appStore.getWinnersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
+      console.log('LOOK appStore.getWinnersMatchContainers matches ', m);
+      if (!m) return;
+      if (!this.matches) {
+        const ctx = this.lineCanvas.nativeElement.getContext('2d');
+        this.drawLines(m, ctx);
+      }
+      // debugger
+      this.matches = null;
       this.matches = m;
-      const ctx = this.lineCanvas.nativeElement.getContext('2d');
-      if (!this.matches) return;
-      this.matches.forEach((match: MatchContainer) => {
-        if (match.highMatch && match.highMatch.hasLowSeed) {
-          ctx.beginPath();
-          const from = match.highMatch.getLineConnectionPoint('next');
-          const to = match.getLineConnectionPoint('high');
-          const midX = from.x + (to.x - from.x) / 2;
-          ctx.moveTo(from.x, from.y);
-          ctx.lineTo(
-            midX,
-            from.y
-          );
-          ctx.lineTo(
-            midX,
-            to.y
-          );
-          ctx.lineTo(to.x, to.y);
-          ctx.stroke();
-          console.log('LOOK highMatch from ', from);
-          console.log('LOOK highMatch to ', to);
-        }
-        if (match.lowMatch) {
-          ctx.beginPath();
-          const from = match.lowMatch.getLineConnectionPoint('next');
-          const to = match.getLineConnectionPoint('low');
-          const midX = from.x + (to.x - from.x) / 2;
-          ctx.moveTo(from.x, from.y);
-          ctx.lineTo(
-            midX,
-            from.y
-          );
-          ctx.lineTo(
-            midX,
-            to.y
-          );
-          ctx.lineTo(to.x, to.y);
-          ctx.stroke();
-        }
-      });
       this.changeDetectorRef.detectChanges();
     });
     this.appStore.getLosersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
@@ -151,14 +119,53 @@ export class BracketViewComponent
     this.ngUnsubscribe.complete();
   }
 
-
-
   changeBracketSide(side: 'winners' | 'losers') {
     this.bracketSide = side;
   }
 
+  drawLines(matches, ctx) {
+    matches.forEach((match: MatchContainer) => {
+      if (match.highMatch && match.highMatch.hasLowSeed) {
+        ctx.beginPath();
+        const from = match.highMatch.getLineConnectionPoint('next');
+        const to = match.getLineConnectionPoint('high');
+        const midX = from.x + (to.x - from.x) / 2;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(
+          midX,
+          from.y
+        );
+        ctx.lineTo(
+          midX,
+          to.y
+        );
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+        console.log('LOOK highMatch from ', from);
+        console.log('LOOK highMatch to ', to);
+      }
+      if (match.lowMatch) {
+        ctx.beginPath();
+        const from = match.lowMatch.getLineConnectionPoint('next');
+        const to = match.getLineConnectionPoint('low');
+        const midX = from.x + (to.x - from.x) / 2;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(
+          midX,
+          from.y
+        );
+        ctx.lineTo(
+          midX,
+          to.y
+        );
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      }
+    });
+  }
+
   public trackMatch(index: number, item: MatchContainer) {
-    return item._id;
+    return item._id + item.winnerSeed;
   }
 
   mouseDown(e) {

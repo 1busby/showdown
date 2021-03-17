@@ -13,7 +13,7 @@ import { MatchContainer } from '@app/core';
   selector: 'match-card',
   templateUrl: './match-card.component.html',
   styleUrls: ['./match-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MatchCardComponent implements OnInit, OnChanges {
   @Input() match: Partial<MatchContainer>;

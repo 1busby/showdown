@@ -27,11 +27,12 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
             },
           },
         },
-        Match: {
+        Set: {
           fields: {
-            sets: {
-              merge(existing = [], incoming: any[]) {
-                return myMerge(existing, incoming);
+            outcome: {
+              merge(existing, incoming) {
+                
+                return incoming;
               },
             },
           },
@@ -62,6 +63,11 @@ function myMerge(existing: any[] = [], incoming: any[]) {
     const existingItemIndex = newItems.findIndex((b) => a.__ref == b.__ref);
     if (existingItemIndex < 0) {
       newItems.push(a);
+    } else {
+      newItems[existingItemIndex] = {
+        ...newItems[existingItemIndex],
+        ...a,
+      };
     }
   });
 
