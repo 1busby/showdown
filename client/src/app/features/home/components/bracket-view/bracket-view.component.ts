@@ -14,7 +14,7 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { MatchContainer, AppStore, BracketHandler } from '@app/core';
 import { ITournament } from '@app/shared';
@@ -54,10 +54,6 @@ export class BracketViewComponent
     if (changes.tournament.firstChange) return;
     const matches = this.bracketHandler.createBracket(this.tournament);
     this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
-
-
-    // LOOK remove 
-    console.log('linesObject ', this.bracketHandler.linesObject);
   }
 
   ngAfterViewInit() {

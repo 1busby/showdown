@@ -52,7 +52,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ) {
-    matIconRegistry.addSvgIcon('swords', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/swords.svg'))
+    matIconRegistry.addSvgIcon(
+      'swords',
+      domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/swords.svg')
+    );
   }
 
   ngOnInit() {
@@ -96,10 +99,12 @@ export class TournamentComponent implements OnInit, OnDestroy {
         // })
       });
 
-    this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
-      this.loggedInUser = user;
-      this.isContestant = this.checkIfContestant();
-    });
+    this.authService.user
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((user) => {
+        this.loggedInUser = user;
+        this.isContestant = this.checkIfContestant();
+      });
   }
 
   ngOnDestroy(): void {
@@ -181,15 +186,27 @@ export class TournamentComponent implements OnInit, OnDestroy {
         .afterClosed()
         .pipe(first())
         .subscribe((contestant) => {
-          this.joinTournamentGql
-            .mutate({
-              _id: this.tournament._id,
-              contestantName: contestant.name,
-            })
-            .pipe(first())
-            .subscribe((result) => {
-              console.log('LOOK joinTournament result: ', result);
-            });
+          if (contestant.name && contestant.name.length > 0) {
+            this.joinTournamentGql
+              .mutate({
+                _id: this.tournament._id,
+                contestantName: contestant.name,
+              })
+              .pipe(first())
+              .subscribe((result) => {
+                console.log('LOOK joinTournament result: ', result);
+              });
+          } else if (contestant.id && contestant.id.length > 0) {
+            this.joinTournamentGql
+              .mutate({
+                _id: this.tournament._id,
+                userId: contestant.id,
+              })
+              .pipe(first())
+              .subscribe((result) => {
+                console.log('LOOK joinTournament result: ', result);
+              });
+          }
         });
     }
   }
