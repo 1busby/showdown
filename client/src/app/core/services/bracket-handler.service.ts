@@ -151,6 +151,7 @@ export class BracketHandler {
             }
           } else if (roundNumber === 1) {
             losersMatch = new MatchContainer();
+            losersMatch.isLosersBracket = true;
             losersMatch.matchNumber = losersMatchNumber;
             losersMatchNumber++;
             const lowMatch = this.losersMatchesPerRound[0][j];
@@ -167,6 +168,7 @@ export class BracketHandler {
             losersMatchNumber++;
 
             const losersMatch1 = new MatchContainer();
+            losersMatch1.isLosersBracket = true;
             losersMatch1.matchNumber = matchNumber1;
             const parentBase =
               this.losersMatchesPerRound[losersRound - 1].length * 2;
@@ -184,6 +186,7 @@ export class BracketHandler {
             this.losersMatchesPerRound[losersRound - 1][j] = losersMatch1;
 
             const losersMatch2 = new MatchContainer();
+            losersMatch2.isLosersBracket = true;
             losersMatch2.matchNumber = matchNumber2;
             losersMatch2.roundNumber = losersRound;
             losersMatch2.setHighMatch(newMatch, 'loser');
