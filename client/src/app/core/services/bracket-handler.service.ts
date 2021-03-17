@@ -14,6 +14,8 @@ export class BracketHandler {
   numRows: number; // number of rows for layout ()
   high2Power: number; // the next 2^x after numContestants
   numRounds: number; // number of rounds, therefore number of columns
+  canvasWidth = 0;
+  canvasHeight = 0;
   /**
    * positions of seeds in order.
    * the index corresponds to the seed, the value
@@ -39,6 +41,8 @@ export class BracketHandler {
   constructor(private appStore: AppStore) {}
 
   createBracket(bracket: Partial<ITournament>) {
+    this.canvasWidth = 0;
+    this.canvasHeight = 0;
     this.activeTournament = bracket;
     this.createSeededBracket();
     this.matchContainers = this.defineLayoutPlacements();
@@ -330,7 +334,7 @@ export class BracketHandler {
 
   defineLayoutPlacements() {
     this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 200);
-    this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 75);
+    this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 100);
 
     const matches: MatchContainer[] = [];
     const soonToBeRemovedMatches: MatchContainer[] = [];
@@ -354,10 +358,20 @@ export class BracketHandler {
             thisMatch.highMatch.top -
             (thisMatch.highMatch.top - thisMatch.lowMatch.top) / 2;
           thisMatch.left =
-            thisMatch.highMatch.left + this.matchWidth + this.margin * (i + 1);
+            thisMatch.highMatch.left + this.matchWidth + this.margin * 3 //* (i + 1);
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
+
+        const bottom = thisMatch.top + thisMatch.height;
+        const right = thisMatch.left + thisMatch.width;
+
+        if (bottom > this.canvasHeight) {
+          this.canvasHeight = bottom + 12;
+        }
+        if (right > this.canvasWidth) {
+          this.canvasWidth = right + 24;
+        }
       }
     }
 

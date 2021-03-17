@@ -27,7 +27,7 @@ import { takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BracketViewComponent
-  implements OnChanges, AfterViewInit, OnDestroy {
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   private ngUnsubscribe = new Subject<any>();
   showingModal = false;
   matches: any[]; //BehaviorSubject<MatchContainer[]>;
@@ -35,6 +35,8 @@ export class BracketViewComponent
   bracketSide: 'winners' | 'losers' = 'winners';
   pos = { top: 0, left: 0, x: 0, y: 0 };
   isMouseDown = false;
+  canvasWidth = 0;
+  canvasHeight = 0;
 
   @Input() tournament: ITournament;
   @Output()
@@ -56,6 +58,18 @@ export class BracketViewComponent
     console.log('LOOK CREATEBRACKET 1');
     // const matches = this.bracketHandler.createBracket(this.tournament);
     // this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
+  }
+
+  ngOnInit() {
+    // this.bracketHandler.setContainerDimensions(
+    //   this.bracketViewContainer.nativeElement.offsetWidth,
+    //   this.bracketViewContainer.nativeElement.offsetHeight
+    // );
+    console.log('LOOK CREATEBRACKET 2');
+    const matches = this.bracketHandler.createBracket(this.tournament);
+    this.canvasWidth = this.bracketHandler.canvasWidth;
+    this.canvasHeight = this.bracketHandler.canvasHeight;
+    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
 
   ngAfterViewInit() {
@@ -130,14 +144,6 @@ export class BracketViewComponent
       // });
       this.changeDetectorRef.detectChanges();
     });
-    this.bracketHandler.setContainerDimensions(
-      this.bracketViewContainer.nativeElement.offsetWidth,
-      this.bracketViewContainer.nativeElement.offsetHeight
-    );
-
-    console.log('LOOK CREATEBRACKET 2');
-    const matches = this.bracketHandler.createBracket(this.tournament);
-    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
 
   ngOnDestroy(): void {
