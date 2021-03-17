@@ -16,6 +16,8 @@ export class BracketHandler {
   numRounds: number; // number of rounds, therefore number of columns
   canvasWidth = 0;
   canvasHeight = 0;
+  canvasWidthLosers = 0;
+  canvasHeightLosers = 0;
   /**
    * positions of seeds in order.
    * the index corresponds to the seed, the value
@@ -455,6 +457,16 @@ export class BracketHandler {
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
+
+        const bottom = thisMatch.top + thisMatch.height;
+        const right = thisMatch.left + thisMatch.width;
+
+        if (bottom > this.canvasHeightLosers) {
+          this.canvasHeightLosers = bottom + 12;
+        }
+        if (right > this.canvasWidthLosers) {
+          this.canvasWidthLosers = right + 24;
+        }
 
         thisMatch.matchNumber -= soonToBeRemovedMatches.length;
       }

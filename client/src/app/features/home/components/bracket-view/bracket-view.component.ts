@@ -37,6 +37,8 @@ export class BracketViewComponent
   isMouseDown = false;
   canvasWidth = 0;
   canvasHeight = 0;
+  canvasWidthLosers = 0;
+  canvasHeightLosers = 0;
 
   @Input() tournament: ITournament;
   @Output()
@@ -69,47 +71,30 @@ export class BracketViewComponent
     const matches = this.bracketHandler.createBracket(this.tournament);
     this.canvasWidth = this.bracketHandler.canvasWidth;
     this.canvasHeight = this.bracketHandler.canvasHeight;
+    this.canvasWidthLosers = this.bracketHandler.canvasWidthLosers;
+    this.canvasHeightLosers = this.bracketHandler.canvasHeightLosers;
     this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
 
   ngAfterViewInit() {
     this.appStore.getWinnersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
-      console.log('LOOK appStore.getWinnersMatchContainers matches ', m);
       if (!m) return;
       if (!this.matches) {
         const ctx = this.lineCanvas.nativeElement.getContext('2d');
         this.drawLines(m, ctx);
       }
-      // debugger
       this.matches = null;
       this.matches = m;
       this.changeDetectorRef.detectChanges();
     });
     this.appStore.getLosersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
+      if (!m) return;
+      if (!this.losersMatches) {
+        const ctx = this.lineCanvasLosers.nativeElement.getContext('2d');
+        this.drawLinesLosers(m, ctx);
+      }
       this.losersMatches = null;
       this.losersMatches = m;
-      // const ctx = this.lineCanvasLosers.nativeElement.getContext('2d');
-      // if (!this.losersMatches) return;
-      // this.losersMatches.forEach((match: MatchContainer) => {
-      //   if (match.highMatch && match.highMatch.hasLowSeed) {
-      //     ctx.beginPath();
-      //     const from = match.highMatch.getLineConnectionPoint('next');
-      //     ctx.moveTo(from.x, from.y);
-      //     const to = match.getLineConnectionPoint('high');
-      //     ctx.lineTo(to.x, to.y);
-      //     ctx.stroke();
-      //     console.log('LOOK highMatch from ', from);
-      //     console.log('LOOK highMatch to ', to);
-      //   }
-      //   if (match.lowMatch) {
-      //     ctx.beginPath();
-      //     const from = match.lowMatch.getLineConnectionPoint('next');
-      //     ctx.moveTo(from.x, from.y);
-      //     const to = match.getLineConnectionPoint('low');
-      //     ctx.lineTo(to.x, to.y);
-      //     ctx.stroke();
-      //   }
-      // });
       this.changeDetectorRef.detectChanges();
     });
   }
@@ -141,10 +126,47 @@ export class BracketViewComponent
         );
         ctx.lineTo(to.x, to.y);
         ctx.stroke();
-        console.log('LOOK highMatch from ', from);
-        console.log('LOOK highMatch to ', to);
       }
       if (match.lowMatch && !match.lowMatch.isLosersBracket) {
+        ctx.beginPath();
+        const from = match.lowMatch.getLineConnectionPoint('next');
+        const to = match.getLineConnectionPoint('low');
+        const midX = from.x + (to.x - from.x) / 2;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(
+          midX,
+          from.y
+        );
+        ctx.lineTo(
+          midX,
+          to.y
+        );
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      }
+    });
+  }
+
+  drawLinesLosers(matches, ctx) {
+    matches.forEach((match: MatchContainer) => {
+      if (match.highMatch && match.highMatch.isLosersBracket) {
+        ctx.beginPath();
+        const from = match.highMatch.getLineConnectionPoint('next');
+        const to = match.getLineConnectionPoint('high');
+        const midX = from.x + (to.x - from.x) / 2;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(
+          midX,
+          from.y
+        );
+        ctx.lineTo(
+          midX,
+          to.y
+        );
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      }
+      if (match.lowMatch && match.lowMatch.isLosersBracket) {
         ctx.beginPath();
         const from = match.lowMatch.getLineConnectionPoint('next');
         const to = match.getLineConnectionPoint('low');
