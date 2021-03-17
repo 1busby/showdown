@@ -31,8 +31,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
           fields: {
             sets: {
               merge(existing = [], incoming: any[]) {
-                const newItems = [];
-                
+                return myMerge(existing, incoming);
               },
             },
           },
