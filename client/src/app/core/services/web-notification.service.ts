@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SwPush } from '@angular/service-worker';
+import { first } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,6 +21,6 @@ export class WebNotificationService {
       );
   }
   sendToServer(params: any) {
-    this.http.post(this.baseUrl, { notification: params }).subscribe();
+    this.http.post(this.baseUrl, { notification: params }).pipe(first()).subscribe();
   }
 }

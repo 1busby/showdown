@@ -41,7 +41,7 @@ export class ProfileComponent implements OnDestroy {
       .pipe(
         takeUntil(this.ngUnsubscribe),
         switchMap(({ username }) => {
-          return this.userProfileGql.watch({ username }).valueChanges;
+          return this.userProfileGql.watch({ username }).valueChanges.pipe(takeUntil(this.ngUnsubscribe));
         })
       )
       .subscribe((result) => {
@@ -53,7 +53,7 @@ export class ProfileComponent implements OnDestroy {
           });
       });
 
-    this.authService.user.subscribe((user) => {
+    this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.loggedInUser = user;
     });
   }

@@ -69,7 +69,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
               {
                 returnPartialData: true,
               }
-            ).valueChanges
+            ).valueChanges.pipe(takeUntil(this.ngUnsubscribe)),
         ),
         catchError((error) => {
           this.router.navigateByUrl('/');
@@ -81,10 +81,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
           console.error('Unexpected typeof ', result);
           return;
         }
-        if (!result && result.data && result.data.tournament) {
-          this.router.navigateByUrl('/');
-          return;
-        }
+        // if (!result && result.data && result.data.tournament) {
+        //   this.router.navigateByUrl('/');
+        //   return;
+        // }
 
         console.log(
           'LOOK TournamentComponent new tournamet data ',
@@ -108,6 +108,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log('LOOK onDestroy Tournament');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
 

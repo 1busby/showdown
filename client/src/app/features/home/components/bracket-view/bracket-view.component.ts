@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'bracket-view',
   templateUrl: './bracket-view.component.html',
   styleUrls: ['./bracket-view.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BracketViewComponent
   implements OnChanges, AfterViewInit, OnDestroy {
@@ -53,6 +53,7 @@ export class BracketViewComponent
   ngOnChanges(changes: SimpleChanges): void {
     console.log('LOOK BracketViewComponent ngOnChanges ', this.tournament);
     if (changes.tournament.firstChange) return;
+    console.log('NOT FIRST CHANGE');
     const matches = this.bracketHandler.createBracket(this.tournament);
     this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
