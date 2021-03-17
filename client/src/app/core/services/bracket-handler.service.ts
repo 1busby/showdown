@@ -133,6 +133,7 @@ export class BracketHandler {
           if (roundNumber === 0) {
             if (j % 2 === 0) {
               losersMatch = new MatchContainer();
+              losersMatch.isLosersBracket = true;
               losersMatch.matchNumber = losersMatchNumber;
               losersMatchNumber++;
               losersMatch.roundNumber = 1;

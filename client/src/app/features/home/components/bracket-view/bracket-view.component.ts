@@ -144,7 +144,7 @@ export class BracketViewComponent
         console.log('LOOK highMatch from ', from);
         console.log('LOOK highMatch to ', to);
       }
-      if (match.lowMatch) {
+      if (match.lowMatch && !match.lowMatch.isLosersBracket) {
         ctx.beginPath();
         const from = match.lowMatch.getLineConnectionPoint('next');
         const to = match.getLineConnectionPoint('low');
