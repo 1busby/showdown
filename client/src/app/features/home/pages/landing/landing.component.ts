@@ -30,14 +30,16 @@ export class LandingComponent implements OnDestroy {
     private authService: AuthService
   ) {
     this.tournamentsGql
-      .fetch()
-      .pipe(first())
+      .watch()
+      .valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result) => {
         this.allTournaments = result.data.tournaments;
       });
     this.usersGql
-      .fetch()
-      .pipe(first())
+      .watch()
+      .valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result) => {
         this.allUsers = result.data.users;
       });
@@ -66,7 +68,30 @@ export class LandingComponent implements OnDestroy {
   }
 
   deleteTournament(_id) {
-    this.removeTournamentGql.mutate({ _id }).pipe(first()).subscribe();
+    this.removeTournamentGql
+      .mutate(
+        { _id },
+        {
+          // Optimistically update tournament list shown on screen
+          update: (proxy, { data: { removeTournament } }: any) => {
+            if (removeTournament === false) {
+              return;
+            }
+            // Read the data from our cache for this query.
+            let { tournaments }: any = proxy.readQuery({
+              query: this.tournamentsGql.document,
+            });
+            // Add our comment from the mutation to the end.\
+            tournaments = tournaments.filter(
+              (m) => m._id !== _id
+            );
+            // Write our data back to the cache.
+            proxy.writeQuery({ query: this.tournamentsGql.document, data: { tournaments } });
+          },
+        }
+      )
+      .pipe(first())
+      .subscribe();
   }
 
   trackByFn(index, tournament) {
