@@ -18,6 +18,7 @@ import { BracketViewComponent } from './components/bracket-view/bracket-view.com
 import { MatchCardComponent } from './components/match-card/match-card.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { NewShowdownComponent } from './components/new-showdown/new-showdown.component';
+import { UpdateListComponent } from './components/update-list/update-list.component';
 
 const gravatarConfig: GravatarConfig = {
   fallback: FALLBACK.robohash,
@@ -43,7 +44,8 @@ const gravatarConfig: GravatarConfig = {
     MatchListComponent,
     BracketViewComponent,
     MatchCardComponent,
-    NewShowdownComponent
+    NewShowdownComponent,
+    UpdateListComponent
   ],
   providers: [MatchService],
   bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent, MatchDetailDialogComponent, NewShowdownComponent]

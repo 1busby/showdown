@@ -59,19 +59,9 @@
 
     <ng-container label="Updates" *ngIf="viewBeingShown === 'updates'">
       <div class="tournament-view">
-        <ng-container *ngFor="let update of tournament.updates">
-          <mat-card>
-            <mat-card-title>
-              {{ update.title }}
-            </mat-card-title>
-            <mat-card-content>
-              {{ update.description }}
-            </mat-card-content>
-            <mat-card-footer>
-              {{ update.createdOn | date: 'long' }}
-            </mat-card-footer>
-          </mat-card>
-        </ng-container>
+        <sd-update-list [updates]="tournament.updates">
+          
+        </sd-update-list>
       </div>
     </ng-container>
   </ng-container>

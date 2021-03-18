@@ -62,7 +62,7 @@ export class TournamentsResolver {
       }
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
-      this.logger.log('LOOK returning tournament ', JSON.stringify(tournament));
+      // this.logger.log('LOOK returning tournament ', JSON.stringify(tournament));
 
       return tournament;
     } catch (e) {

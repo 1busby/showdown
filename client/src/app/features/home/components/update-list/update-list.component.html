@@ -1,0 +1,22 @@
+<div class="outer-container">
+  <mat-list class="list-container">
+    <mat-list-item
+      *ngFor="let update of updates; let i = index; trackBy: trackById"
+      class="update-list-item"
+    >
+    <mat-card class="update">
+      <mat-card-title>
+        {{ update.title }}
+      </mat-card-title>
+      <!-- <mat-card-content>
+        {{ update.description }}
+      </mat-card-content> -->
+      <mat-card-footer class="update__footer">
+        {{ update.createdOn | date: 'long' }}
+      </mat-card-footer>
+    </mat-card>
+    </mat-list-item>
+  </mat-list>
+
+  <div class="options-container" *ngIf="false"></div>
+</div>

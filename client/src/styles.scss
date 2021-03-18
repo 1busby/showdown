@@ -5,6 +5,36 @@
   box-sizing: border-box;
 }
 
+
+@media only screen and (min-width: 600px) {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0); 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 20px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  ::-webkit-scrollbar-corner {
+    display: none;
+  }
+}
+
+
 a {
   cursor: pointer;
 }
