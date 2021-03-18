@@ -3,13 +3,15 @@ import {
   Input,
   Output,
   EventEmitter,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ITournament, IUser } from '@app/shared';
 
 @Component({
   selector: 'tournament-card',
   templateUrl: './tournament-card.component.html',
-  styleUrls: ['./tournament-card.component.scss']
+  styleUrls: ['./tournament-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TournamentCardComponent {
   @Input() tournament: ITournament;

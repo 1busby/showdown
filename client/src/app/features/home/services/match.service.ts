@@ -20,6 +20,7 @@ export class MatchService {
         hasStarted: tournament.hasStarted,
         tournamentId: tournament._id
       },
+      panelClass: 'match-detail-panel'
     });
 
     return dialogRef.afterClosed();

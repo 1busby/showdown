@@ -87,3 +87,7 @@ app-home > div > * {
 .mat-divider {
   bottom: auto !important;
 }
+
+.match-detail-panel > .mat-dialog-container {
+  border-radius: 25px;
+}
