@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormArray } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first, takeUntil } from 'rxjs/operators';
 
@@ -44,7 +44,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     },
   ];
 
-  tournamentForm = this.formBuilder.group({
+  tournamentForm: FormGroup = this.formBuilder.group({
     name: [''],
     description: [''],
     contestantCount: [0],
@@ -53,6 +53,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     matches: this.formBuilder.array([]),
     setCount: [0],
     allowRegistration: [false],
+    requireRegistrationApproval: [false],
     allowSelfScoring: [false],
     structure: ['single-elim'],
   });

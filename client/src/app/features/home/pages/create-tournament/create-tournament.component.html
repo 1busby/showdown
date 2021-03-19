@@ -1,67 +1,76 @@
 <form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()">
   <mat-horizontal-stepper
-  style="display: initial;"
+    style="display: initial"
     (animationDone)="this.stepperIsInTransition = false"
     (selectionChange)="this.stepperIsInTransition = true"
   >
     <!-- Step 1 -->
     <mat-step class="height-100">
-      <mat-form-field appearance="outline">
-        <mat-label>Tournament Name</mat-label>
-        <input type="text" matInput required formControlName="name" />
-      </mat-form-field>
+      <div class="form-fields-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Tournament Name</mat-label>
+          <input type="text" matInput required formControlName="name" />
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="description"></textarea>
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Number of Contestants</mat-label>
-        <input
-          matInput
-          type="number"
-          required
-          formControlName="contestantCount"
-          (change)="contestantCountChange($event)"
-          min="0"
-        />
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Number of Contestants</mat-label>
+          <input
+            matInput
+            type="number"
+            required
+            formControlName="contestantCount"
+            (change)="contestantCountChange($event)"
+            min="0"
+          />
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Sets per Match</mat-label>
-        <input matInput type="number" required formControlName="setCount" min="1" />
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Sets per Match</mat-label>
+          <input
+            matInput
+            type="number"
+            required
+            formControlName="setCount"
+            min="1"
+          />
+        </mat-form-field>
 
-      <mat-slide-toggle
-        color="accent"
-        formControlName="allowRegistration"
-        labelPosition="before"
-      >
-        Allow Registration
-      </mat-slide-toggle>
+        <mat-slide-toggle color="accent" formControlName="allowRegistration">
+          Allow Registration
+        </mat-slide-toggle>
 
-      <mat-slide-toggle
-        color="accent"
-        formControlName="allowSelfScoring"
-        labelPosition="before"
-      >
-        Allow Self Scoring
-      </mat-slide-toggle>
-
-      <mat-form-field appearance="outline">
-        <mat-select formControlName="structure">
-          <mat-option
-            *ngFor="let option of structureOptions"
-            [value]="option.value"
+        <div *ngIf="tournamentForm.controls.allowRegistration.value" style="margin-left: 12px">
+          <mat-slide-toggle
+            color="accent"
+            formControlName="requireRegistrationApproval"
           >
-            {{ option.viewLabel }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+            Require Approval
+          </mat-slide-toggle>
+        </div>
 
-      <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
-        <button mat-button matStepperNext type="button">Next</button>
+        <mat-slide-toggle color="accent" formControlName="allowSelfScoring">
+          Allow Self Scoring
+        </mat-slide-toggle>
+
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="structure">
+            <mat-option
+              *ngFor="let option of structureOptions"
+              [value]="option.value"
+            >
+              {{ option.viewLabel }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
       </div>
     </mat-step>
 

@@ -117,14 +117,16 @@ export class BracketViewComponent
         const to = match.getLineConnectionPoint('high');
         const midX = from.x + (to.x - from.x) / 2;
         ctx.moveTo(from.x, from.y);
-        ctx.lineTo(
-          midX,
-          from.y
-        );
-        ctx.lineTo(
-          midX,
-          to.y
-        );
+        // ctx.lineTo(
+        //   midX,
+        //   from.y
+        // );
+        // ctx.lineTo(
+        //   midX,
+        //   to.y
+        // );
+        // ctx.quadraticCurveTo(midX, from.y, midX, to.y);
+        ctx.bezierCurveTo(midX, from.y, midX, from.y, midX, to.y);
         ctx.lineTo(to.x, to.y);
         ctx.stroke();
       }
@@ -134,14 +136,16 @@ export class BracketViewComponent
         const to = match.getLineConnectionPoint('low');
         const midX = from.x + (to.x - from.x) / 2;
         ctx.moveTo(from.x, from.y);
-        ctx.lineTo(
-          midX,
-          from.y
-        );
-        ctx.lineTo(
-          midX,
-          to.y
-        );
+        // ctx.lineTo(
+        //   midX,
+        //   from.y
+        // );
+        // ctx.lineTo(
+        //   midX,
+        //   to.y
+        // );
+        // ctx.quadraticCurveTo(midX, from.y, midX, to.y);
+        ctx.bezierCurveTo(midX, from.y, midX, from.y, midX, to.y);
         ctx.lineTo(to.x, to.y);
         ctx.stroke();
       }
