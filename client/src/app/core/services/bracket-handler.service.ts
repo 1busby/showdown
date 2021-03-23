@@ -400,7 +400,7 @@ export class BracketHandler {
 
   defineLosersLayoutPlacements() {
     this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 200);
-    this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 75);
+    this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 100);
 
     // create an offest bracket to the left if
     // entire first round moves forward
@@ -452,8 +452,7 @@ export class BracketHandler {
           thisMatch.left =
             thisMatch.lowMatch.left +
             this.matchWidth +
-            this.margin * (i + 1) -
-            leftOffset;
+            this.margin * 3//(i + 1) - leftOffset;
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
