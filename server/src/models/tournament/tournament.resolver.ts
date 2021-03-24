@@ -28,10 +28,10 @@ import { WebPushService } from '@shared/services/web-push.service';
 const pubSub = new PubSub();
 
 @Resolver(of => Tournament)
-export class TournamentsResolver {
+export class TournamentResolver {
   constructor(
     private logger: CustomLogger,
-    private readonly tournamentsService: TournamentsService,
+    private readonly tournamentService: TournamentsService,
     private readonly matchService: MatchService,
     private webPushService: WebPushService,
   ) {}
@@ -48,9 +48,9 @@ export class TournamentsResolver {
     try {
       let tournament: Tournament;
       if (id) {
-        tournament = await this.tournamentsService.findOneById(id);
+        tournament = await this.tournamentService.findOneById(id);
       } else if (linkCode) {
-        tournament = await this.tournamentsService.findOneByLinkCode(linkCode);
+        tournament = await this.tournamentService.findOneByLinkCode(linkCode);
       } else {
         throw new NotAcceptableException(
           null,
@@ -73,7 +73,7 @@ export class TournamentsResolver {
   @Query(returns => [Tournament])
   tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
     // this.webPushService.sendNotification();
-    return this.tournamentsService.findAll(tournamentsArgs);
+    return this.tournamentService.findAll(tournamentsArgs);
   }
 
   @Query(returns => EditAccessRequest)
@@ -81,7 +81,7 @@ export class TournamentsResolver {
     @Args('requestEditAccessInput')
     requestEditAccessInput: RequestEditAccessInput,
   ): Promise<EditAccessRequest> {
-    return this.tournamentsService.handleEditAccessRequest(
+    return this.tournamentService.handleEditAccessRequest(
       requestEditAccessInput,
     );
   }
@@ -90,7 +90,7 @@ export class TournamentsResolver {
   async addTournament(
     @Args('newTournamentData') newTournamentData: NewTournamentInput,
   ): Promise<Tournament> {
-    return await this.tournamentsService.create(newTournamentData);
+    return await this.tournamentService.create(newTournamentData);
     // .then(tournament => {
     //   this.userService.updateOne({ _id: newTournamentData.createdBy, })
     //   return tournament
@@ -101,7 +101,7 @@ export class TournamentsResolver {
   async updateTournament(
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
   ): Promise<Tournament> {
-    return this.tournamentsService.updateOne(updateTournamentData).then(res => {
+    return this.tournamentService.updateOne(updateTournamentData).then(res => {
       return res;
     });
   }
@@ -115,7 +115,7 @@ export class TournamentsResolver {
       // description: 'Tournament has been started.',
       createdOn: new Date(),
     };
-    return this.tournamentsService
+    return this.tournamentService
       .updateOne({
         _id,
         hasStarted: true,
@@ -128,26 +128,38 @@ export class TournamentsResolver {
             .map(c => {
               return JSON.parse(c.profile.pushSubscription);
             }),
-            `${res.name} has started!`,
-            `The Showdown begins`,
+          `${res.name} has started!`,
+          `The Showdown begins`,
         );
         return res;
       });
   }
 
   @Mutation(returns => Tournament)
-  joinTournament(
+  async joinTournament(
     @Args('_id', { type: () => ID }) _id: string,
     @Args('contestantName', { nullable: true }) contestantName?: string,
     @Args('userId', { nullable: true, type: () => ID }) userId?: string,
     @Args('seed', { nullable: true, type: () => Int }) seed?: number,
   ): Promise<Tournament> {
-    return this.tournamentsService.addContestant(
-      _id,
-      seed,
-      contestantName,
-      userId,
-    );
+    const tournament = await this.tournamentService.findOneById(_id);
+
+    if (tournament.requireRegistrationApproval) {
+      return this.tournamentService.addRegistrationRequest(_id, {
+        contestant: {
+          profile: userId,
+          name: contestantName,
+        },
+      });
+    } else {
+      return this.tournamentService.addContestant(
+        _id,
+        seed,
+        contestantName,
+        userId,
+      );
+    }
+
   }
 
   @Mutation(returns => Tournament)
@@ -155,12 +167,12 @@ export class TournamentsResolver {
     @Args('_id', { type: () => ID }) _id: string,
     @Args('contestantId', { type: () => ID }) contestantId: string,
   ): Promise<Tournament> {
-    return this.tournamentsService.removeContestant(_id, contestantId);
+    return this.tournamentService.removeContestant(_id, contestantId);
   }
 
   @Mutation(returns => Boolean)
   removeTournament(@Args('_id', { type: () => ID }) _id: string) {
-    return this.tournamentsService.remove(_id);
+    return this.tournamentService.remove(_id);
   }
 
   @Mutation(returns => Tournament)
@@ -169,7 +181,7 @@ export class TournamentsResolver {
       return 'No tournament ID received!';
     }
 
-    return this.tournamentsService
+    return this.tournamentService
       .findOneById(matchData.tournamentId)
       .then(tournament => {
         this.logger.log('LOOK Tournament fetched: ' + tournament);
@@ -223,7 +235,7 @@ export class TournamentsResolver {
             }
           }
         }
-        return this.tournamentsService.updateOne({
+        return this.tournamentService.updateOne({
           _id: matchData.tournamentId,
           matches: [matchData],
           updates,

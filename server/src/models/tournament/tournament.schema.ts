@@ -2,22 +2,17 @@ import * as mongoose from 'mongoose';
 
 import { MatchSchema } from '@models/match/match.schema';
 import { UpdateSchema } from '@models/update/update.schema';
+import { ContestantSchema } from '@models/contestant/contestant.schema';
 
-const anonymousContestantSchema = new mongoose.Schema({
-  name: String,
-  seed: Number,
-  points: Number,
-  profile: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
+const RegistrationRequestSchema = new mongoose.Schema({
+  contestant: ContestantSchema,
 });
 
 export const TournamentSchema = new mongoose.Schema({
   name: String,
   description: String,
   contestantCount: Number,
-  contestants: [anonymousContestantSchema],
+  contestants: [ContestantSchema],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -31,6 +26,8 @@ export const TournamentSchema = new mongoose.Schema({
   hasStarted: Boolean,
   allowRegistration: Boolean,
   allowSelfScoring: Boolean,
+  requireRegistrationApproval: Boolean,
+  registrationRequests: [RegistrationRequestSchema],
   structure: String,
   // anonymousContestants: [anonymousContestantSchema],
   updates: [UpdateSchema]

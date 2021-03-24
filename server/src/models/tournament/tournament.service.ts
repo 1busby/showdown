@@ -77,6 +77,17 @@ export class TournamentsService {
             model: 'User',
           },
         })
+        .populate({
+          path: 'registrationRequests',
+          populate: {
+            path: 'contestant',
+            model: 'Contestant',
+            populate: {
+              path: 'profile',
+              model: 'User',
+            },
+          },
+        })
         // .then(tournament => {
         //   tournament = tournament.toJSON();
         //   tournament.contestants = [
@@ -90,7 +101,10 @@ export class TournamentsService {
   }
 
   async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
-    return await this.tournamentModel.find().populate('createdBy').exec();
+    return await this.tournamentModel
+      .find()
+      .populate('createdBy')
+      .exec();
   }
 
   async updateOne(
@@ -190,7 +204,7 @@ export class TournamentsService {
           model: 'User',
         },
       })
-      .then((result) => {
+      .then(result => {
         const resultObject = result.toObject();
         const returnObject: any = resultObject;
 
@@ -253,6 +267,27 @@ export class TournamentsService {
         { $pull: { contestants: { _id: contestantId } as never } },
         // { $pull: { anonymousContestants: { _id: contestantId } as never } },
       )
+      .exec();
+  }
+
+  addRegistrationRequest(tournamentId, request) {
+    return this.tournamentModel
+      .findOneAndUpdate(
+        { _id: tournamentId },
+        { $push: { registrationRequests: request } },
+        { new: true },
+      )
+      .populate({
+        path: 'registrationRequests',
+        populate: {
+          path: 'contestant',
+          model: 'Contestant',
+          populate: {
+            path: 'profile',
+            model: 'User',
+          },
+        },
+      })
       .exec();
   }
 

@@ -6,3 +6,4 @@ export * from './set.interface';
 export * from './contestant.interface';
 export * from './update.interface';
 export * from './showdown.interface';
+export * from './registration-request';

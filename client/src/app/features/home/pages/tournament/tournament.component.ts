@@ -131,7 +131,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
       }
 
       let seed = 0;
-
       for (let i = 1; i <= this.tournament.contestantCount; i++) {
         const alreadySeededContestant = this.tournament.contestants.find(
           (cont) => cont.seed === i
@@ -150,7 +149,13 @@ export class TournamentComponent implements OnInit, OnDestroy {
         })
         .pipe(first())
         .subscribe((result) => {
-          console.log('LOOK joinTournament result: ', result);
+          let message;
+          if (this.tournament.requireRegistrationApproval) {
+            message = 'You have successfully requested to join this tournament!';
+          } else {
+            message = 'You have successfully joined this tournament!';
+          }
+          this.alertService.success(message);
 
           // // TODO Optimize
           // const matchContainers = this.bracketHandlerService.createBracket(
@@ -205,7 +210,14 @@ export class TournamentComponent implements OnInit, OnDestroy {
               })
               .pipe(first())
               .subscribe((result) => {
-                console.log('LOOK joinTournament result: ', result);
+                let message;
+                if (this.tournament.requireRegistrationApproval) {
+                  message = 'You have successfully requested to join this tournament!';
+                } else {
+                  message = 'You have successfully joined this tournament!';
+                }
+
+                this.alertService.success(message);
               });
           }
         });

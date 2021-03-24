@@ -39,7 +39,7 @@ export class BracketViewComponent
   canvasHeight = 0;
   canvasWidthLosers = 0;
   canvasHeightLosers = 0;
-  zoomLevel = 0.5;
+  zoomLevel = 0.75;
 
   @Input() tournament: ITournament;
   @Output()

@@ -53,7 +53,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     matches: this.formBuilder.array([]),
     setCount: [0],
     allowRegistration: [false],
-    requireRegistrationApproval: [false],
+    requireRegistrationApproval: [true],
     allowSelfScoring: [false],
     structure: ['single-elim'],
   });

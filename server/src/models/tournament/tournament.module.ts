@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { TournamentsResolver } from './tournament.resolver';
+import { TournamentResolver } from './tournament.resolver';
 import { TournamentsService } from './tournament.service';
 import { TournamentSchema } from './tournament.schema';
 import { SharedModule } from '@shared/index';
@@ -15,6 +15,6 @@ import { MatchModule } from '@models/match/match.module';
     ]),
     MatchModule,
   ],
-  providers: [TournamentsResolver, TournamentsService],
+  providers: [TournamentResolver, TournamentsService],
 })
 export class TournamentsModule {}
