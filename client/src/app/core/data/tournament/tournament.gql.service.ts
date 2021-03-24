@@ -20,6 +20,7 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         hasStarted
         allowRegistration
         allowSelfScoring
+        requireRegistrationApproval
         structure
         contestants {
           _id

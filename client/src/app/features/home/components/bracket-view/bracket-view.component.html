@@ -10,6 +10,18 @@
   <mat-button-toggle value="losers">L</mat-button-toggle>
 </mat-button-toggle-group>
 
+<mat-slider
+  class="zoom-slider"
+  [max]="1.25"
+  [min]="0.25"
+  [step]="0.25"
+  [tickInterval]="0.25"
+  [vertical]="true"
+  [(ngModel)]="zoomLevel"
+  (input)="onZoomInput($event)"
+>
+</mat-slider>
+
 <div class="outer-container">
   <div
     class="bracket-view-container"
@@ -17,27 +29,28 @@
     (mousedown)="mouseDown($event)"
     (mousemove)="mouseMove($event)"
     (mouseup)="mouseUp()"
+    [ngStyle]="{ zoom: zoomLevel }"
   >
-  <canvas
-    class="line-canvas"
-    [ngStyle]="{ 'display': bracketSide === 'winners' ? 'initial' : 'none' }"
-    #lineCanvas
-    [width]="canvasWidth"
-    [height]="canvasHeight"
-  ></canvas>
-    <ng-container *ngIf="bracketSide === 'winners'">
-      <match-card
-      class="match-container"
-      *ngFor="let match of matches; trackBy: trackMatch"
-      [ngStyle]="match.getStyleObject()"
-      (click)="showMatchDetailsEmitter.emit(match)"
-      [match]="match"
-      ></match-card>
-    </ng-container>
-    
     <canvas
       class="line-canvas"
-      [ngStyle]="{ 'display': bracketSide === 'losers' ? 'initial' : 'none' }"
+      [ngStyle]="{ display: bracketSide === 'winners' ? 'initial' : 'none' }"
+      #lineCanvas
+      [width]="canvasWidth"
+      [height]="canvasHeight"
+    ></canvas>
+    <ng-container *ngIf="bracketSide === 'winners'">
+      <match-card
+        class="match-container"
+        *ngFor="let match of matches; trackBy: trackMatch"
+        [ngStyle]="match.getStyleObject()"
+        (click)="showMatchDetailsEmitter.emit(match)"
+        [match]="match"
+      ></match-card>
+    </ng-container>
+
+    <canvas
+      class="line-canvas"
+      [ngStyle]="{ display: bracketSide === 'losers' ? 'initial' : 'none' }"
       #lineCanvasLosers
       [width]="canvasWidthLosers"
       [height]="canvasHeightLosers"

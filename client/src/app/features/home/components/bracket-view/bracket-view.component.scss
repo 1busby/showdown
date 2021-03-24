@@ -28,6 +28,12 @@
   z-index: 1;
 }
 
+.zoom-slider {
+  position: absolute;
+  right: 40px;
+  top: 100px;
+}
+
 .line-canvas {
   position: absolute;
   z-index: -3;

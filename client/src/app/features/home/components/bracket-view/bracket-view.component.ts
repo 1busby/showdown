@@ -39,6 +39,7 @@ export class BracketViewComponent
   canvasHeight = 0;
   canvasWidthLosers = 0;
   canvasHeightLosers = 0;
+  zoomLevel = 0.5;
 
   @Input() tournament: ITournament;
   @Output()
@@ -235,5 +236,9 @@ export class BracketViewComponent
   mouseUp() {
     this.isMouseDown = false;
     this.bracketViewContainer.nativeElement.style.cursor = 'grab';
+  }
+
+  onZoomInput(event) {
+    this.zoomLevel = event.value;
   }
 }

@@ -18,5 +18,6 @@ export interface ITournament {
   hasStarted?: boolean;
   allowRegistration?: boolean;
   allowSelfScoring?: boolean;
+  requireRegistrationApproval?: boolean;
   structure?: 'single-elim' | 'double-elim' | 'round-robin';
 }
