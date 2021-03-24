@@ -111,6 +111,7 @@ export class BracketViewComponent
 
   drawLines(matches, ctx) {
     ctx.strokeStyle = "#71BC76";
+    ctx.lineWidth = 5;
     matches.forEach((match: MatchContainer) => {
       if (match.highMatch && match.highMatch.hasLowSeed) {
         ctx.beginPath();
@@ -159,6 +160,7 @@ export class BracketViewComponent
 
   drawLinesLosers(matches, ctx) {
     ctx.strokeStyle = "#71BC76";
+    ctx.lineWidth = 5;
     matches.forEach((match: MatchContainer) => {
       if (match.highMatch && match.highMatch.isLosersBracket) {
         ctx.beginPath();
