@@ -62,7 +62,7 @@ export class TournamentResolver {
       }
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
-      // this.logger.log('LOOK returning tournament ', JSON.stringify(tournament));
+      this.logger.log('LOOK returning tournament ', JSON.stringify(tournament));
 
       return tournament;
     } catch (e) {
@@ -143,23 +143,49 @@ export class TournamentResolver {
     @Args('seed', { nullable: true, type: () => Int }) seed?: number,
   ): Promise<Tournament> {
     const tournament = await this.tournamentService.findOneById(_id);
-
     if (tournament.requireRegistrationApproval) {
-      return this.tournamentService.addRegistrationRequest(_id, {
-        contestant: {
-          profile: userId,
-          name: contestantName,
+      let existingRequestIndex = tournament.registrationRequests.findIndex(
+        request => {
+          return (
+            request.contestant.name === contestantName ||
+            request.contestant.profile.id === userId
+          );
         },
-      });
-    } else {
-      return this.tournamentService.addContestant(
-        _id,
-        seed,
-        contestantName,
-        userId,
       );
-    }
 
+      if (existingRequestIndex >= 0) {
+        // LOOK TODO: return useful message
+        throw new Error();
+      } else {
+        return this.tournamentService.addRegistrationRequest(_id, {
+          contestant: {
+            profile: userId,
+            name: contestantName,
+          },
+        });
+      }
+    } else {
+      let existingContestantIndex = tournament.contestants.findIndex(
+        contestant => {
+          return (
+            contestant.name === contestantName ||
+            contestant.profile.id === userId
+          );
+        },
+      );
+
+      if (existingContestantIndex >= 0) {
+        // LOOK TODO: return useful message
+        throw new Error();
+      } else {
+        return this.tournamentService.addContestant(
+          _id,
+          seed,
+          contestantName,
+          userId,
+        );
+      }
+    }
   }
 
   @Mutation(returns => Tournament)

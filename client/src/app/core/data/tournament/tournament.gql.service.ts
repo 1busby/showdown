@@ -46,6 +46,12 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         createdBy {
           _id
         }
+        registrationRequests {
+          _id
+          contestant {
+            _id
+          }
+        }
       }
     }
 

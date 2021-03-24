@@ -77,16 +77,14 @@ export class TournamentsService {
             model: 'User',
           },
         })
+        .populate('registrationRequests')
+        // .populate({
+        //   path: 'registrationRequests.contestant',
+        //   model: 'Contestant',
+        // })
         .populate({
-          path: 'registrationRequests',
-          populate: {
-            path: 'contestant',
-            model: 'Contestant',
-            populate: {
-              path: 'profile',
-              model: 'User',
-            },
-          },
+          path: 'registrationRequests.contestant.profile',
+          model: 'User',
         })
         // .then(tournament => {
         //   tournament = tournament.toJSON();

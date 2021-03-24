@@ -7,7 +7,7 @@ import { User } from '@models/user/user.model';
 import { Contestant } from '@models/contestant/contestant.model';
 import { Match } from '@models/match/match.model';
 import { Update } from '@models/update/update.model';
-import { RegistrationRequest } from './registration-requset.model';
+import { RegistrationRequest } from './registration-request.model';
 
 @ObjectType({ description: 'The tournament model' })
 export class Tournament extends Document implements ITournament {
