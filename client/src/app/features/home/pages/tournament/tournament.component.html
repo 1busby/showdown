@@ -64,6 +64,14 @@
         </sd-update-list>
       </div>
     </ng-container>
+
+    <ng-container label="Requests" *ngIf="viewBeingShown === 'requests'">
+      <div class="tournament-view">
+        <div *ngFor="let request of tournament.registrationRequests">
+          {{ request.contestant.profile?.username || request.contestant.name }} wants to join the tournament
+        </div>
+      </div>
+    </ng-container>
   </ng-container>
 
   <mat-button-toggle-group class="action-buttons" #group="matButtonToggleGroup">
@@ -94,7 +102,14 @@
       (click)="showView('updates')"
       aria-label="Updates"
     >
-      <mat-icon>subscriptions</mat-icon>
+      <mat-icon>dynamic_feed</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      value="justify"
+      (click)="showView('requests')"
+      aria-label="Updates"
+    >
+      <mat-icon>how_to_reg</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
 </ng-container>

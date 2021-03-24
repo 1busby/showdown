@@ -34,7 +34,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
   tournament: Partial<ITournament>;
   contestantList: Partial<IContestant>[] = [];
   isCheckingEditAccess = false;
-  viewBeingShown: 'bracket' | 'contestants' | 'matches' | 'updates' = 'bracket';
+  viewBeingShown: 'bracket' | 'contestants' | 'matches' | 'updates' | 'requests' = 'bracket';
   isContestant = false;
 
   constructor(
@@ -374,7 +374,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     // });
   }
 
-  showView(view: 'bracket' | 'contestants' | 'matches' | 'updates') {
+  showView(view: 'bracket' | 'contestants' | 'matches' | 'updates' | 'requests') {
     this.viewBeingShown = view;
   }
 }

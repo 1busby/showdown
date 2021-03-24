@@ -50,6 +50,10 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
           _id
           contestant {
             _id
+            profile {
+              _id
+              username
+            }
           }
         }
       }
