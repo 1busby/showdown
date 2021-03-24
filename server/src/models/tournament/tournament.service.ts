@@ -59,8 +59,39 @@ export class TournamentsService {
     // });
   }
 
-  async findOneById(id: string): Promise<Tournament> {
-    return this.tournamentModel.findById(id).exec();
+  findOneById(id: string): Promise<Tournament> {
+    return (
+      this.tournamentModel
+        .findById(id)
+        .populate('updates')
+        .populate('createdBy')
+        .populate('contestants')
+        .populate({
+          path: 'contestants',
+          populate: {
+            path: 'profile',
+            model: 'User',
+          },
+        })
+        .populate('registrationRequests')
+        // .populate({
+        //   path: 'registrationRequests.contestant',
+        //   model: 'Contestant',
+        // })
+        .populate({
+          path: 'registrationRequests.contestant.profile',
+          model: 'User',
+        })
+        // .then(tournament => {
+        //   tournament = tournament.toJSON();
+        //   tournament.contestants = [
+        //     ...tournament.contestants,
+        //     ...tournament.anonymousContestants,
+        //   ];
+        //   return tournament;
+        // });
+        .exec()
+    );
   }
 
   findOneByLinkCode(linkCode: string): Promise<Tournament> {
@@ -110,7 +141,13 @@ export class TournamentsService {
   ): Promise<Tournament> {
     console.log('LOOK updateOne data ', JSON.stringify(data));
     // separate anonymous users from regular users
-    const { _id, matches = [], updates, ...updateData } = data;
+    const {
+      _id,
+      matches = [],
+      updates,
+      registrationRequests,
+      ...updateData
+    } = data;
     // if (data.contestants && data.contestants.length > 0) {
     //   const anonymousContestants = [];
     //   for (let i = data.contestants.length - 1; i >= 0; i--) {
@@ -152,6 +189,44 @@ export class TournamentsService {
                 ],
               },
               else: '$$match',
+            },
+          },
+        },
+      };
+    }
+
+    let registrationRequestIds: string[] = [];
+    if (registrationRequests && registrationRequests.length > 0) {
+      registrationRequestIds = registrationRequests.map(request => {
+        request._id = new ObjectId(request._id) as any;
+        return request._id;
+      });
+      updateData.registrationRequests = {
+        $map: {
+          input: '$registrationRequests',
+          as: 'request',
+          in: {
+            $cond: {
+              if: {
+                $in: ['$$request._id', registrationRequestIds],
+              },
+              then: {
+                $mergeObjects: [
+                  '$$request',
+                  {
+                    $arrayElemAt: [
+                      registrationRequests,
+                      {
+                        $indexOfArray: [
+                          registrationRequestIds,
+                          '$$request._id',
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              else: '$$request',
             },
           },
         },
@@ -232,7 +307,7 @@ export class TournamentsService {
       });
   }
 
-  addContestant(id, seed?, name?, userId?) {
+  addContestant(tournamentId, seed?, name?, userId?) {
     this.logger.log('LOOK addContestant seed ', seed);
     this.logger.log('LOOK addContestant userId ', userId);
     const contestant = {
@@ -244,7 +319,7 @@ export class TournamentsService {
 
     return this.tournamentModel
       .findOneAndUpdate(
-        { _id: id },
+        { _id: tournamentId },
         { $push: { contestants: contestant } },
         { new: true },
       )

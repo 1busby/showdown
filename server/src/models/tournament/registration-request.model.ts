@@ -10,4 +10,10 @@ export class RegistrationRequest implements IRegistrationRequest {
 
   @Field(type => Contestant)
   contestant: Contestant;
+
+  @Field({ nullable: true })
+  isReviewed?: boolean;
+
+  @Field({ nullable: true })
+  isApproved?: boolean;
 }

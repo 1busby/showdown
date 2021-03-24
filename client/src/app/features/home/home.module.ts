@@ -25,11 +25,15 @@ const gravatarConfig: GravatarConfig = {
   rating: RATING.x,
   backgroundColor: 'rgba(0, 0, 0, 0.1)',
   borderColor: 'rgba(0, 0, 0, 0.1)',
-  hasBorder: true // Set this flag to true to have a border by default
+  hasBorder: true, // Set this flag to true to have a border by default
 };
 
 @NgModule({
-  imports: [GravatarModule.forRoot(gravatarConfig), HomeRoutingModule, SharedModule],
+  imports: [
+    GravatarModule.forRoot(gravatarConfig),
+    HomeRoutingModule,
+    SharedModule,
+  ],
   declarations: [
     HomeComponent,
     LandingComponent,
@@ -45,9 +49,14 @@ const gravatarConfig: GravatarConfig = {
     BracketViewComponent,
     MatchCardComponent,
     NewShowdownComponent,
-    UpdateListComponent
+    UpdateListComponent,
   ],
   providers: [MatchService],
-  bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent, MatchDetailDialogComponent, NewShowdownComponent]
+  bootstrap: [
+    QuickJoinDialogComponent,
+    EditAccessDialogComponent,
+    MatchDetailDialogComponent,
+    NewShowdownComponent,
+  ],
 })
 export class HomeModule {}

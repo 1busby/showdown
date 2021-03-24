@@ -14,6 +14,7 @@ import {
   AuthService,
   BracketHandler,
   EditTournamentGQL,
+  EditRegistrationRequestGQL,
   AppStore,
 } from '@app/core';
 import { ITournament, IContestant, IUser } from '@app/shared';
@@ -34,7 +35,12 @@ export class TournamentComponent implements OnInit, OnDestroy {
   tournament: Partial<ITournament>;
   contestantList: Partial<IContestant>[] = [];
   isCheckingEditAccess = false;
-  viewBeingShown: 'bracket' | 'contestants' | 'matches' | 'updates' | 'requests' = 'bracket';
+  viewBeingShown:
+    | 'bracket'
+    | 'contestants'
+    | 'matches'
+    | 'updates'
+    | 'requests' = 'bracket';
   isContestant = false;
 
   constructor(
@@ -50,7 +56,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private runTournamentGql: RunTournamentGQL,
     public appStore: AppStore,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private editRegistrationRequestGql: EditRegistrationRequestGQL
   ) {
     matIconRegistry.addSvgIcon(
       'swords',
@@ -62,14 +69,15 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        switchMap(
-          (params: ParamMap) =>
-            this.tournamentGql.watch(
+        switchMap((params: ParamMap) =>
+          this.tournamentGql
+            .watch(
               { linkCode: params.get('linkCode') },
               {
                 returnPartialData: true,
               }
-            ).valueChanges.pipe(takeUntil(this.ngUnsubscribe)),
+            )
+            .valueChanges.pipe(takeUntil(this.ngUnsubscribe))
         ),
         catchError((error) => {
           this.router.navigateByUrl('/');
@@ -151,7 +159,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
         .subscribe((result) => {
           let message;
           if (this.tournament.requireRegistrationApproval) {
-            message = 'You have successfully requested to join this tournament!';
+            message =
+              'You have successfully requested to join this tournament!';
           } else {
             message = 'You have successfully joined this tournament!';
           }
@@ -212,7 +221,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
               .subscribe((result) => {
                 let message;
                 if (this.tournament.requireRegistrationApproval) {
-                  message = 'You have successfully requested to join this tournament!';
+                  message =
+                    'You have successfully requested to join this tournament!';
                 } else {
                   message = 'You have successfully joined this tournament!';
                 }
@@ -230,6 +240,20 @@ export class TournamentComponent implements OnInit, OnDestroy {
     }
     const index = this.tournament.contestants.findIndex((contestant) => {
       return contestant._id === this.loggedInUser._id;
+    });
+
+    return index > -1 ? true : false;
+  }
+
+  checkIfWaitingApproval(): boolean {
+    if (!this.loggedInUser || !this.tournament) {
+      return false;
+    }
+    const index = this.tournament.registrationRequests.findIndex((request) => {
+      return (
+        request.contestant.profile &&
+        request.contestant.profile._id === this.loggedInUser._id
+      );
     });
 
     return index > -1 ? true : false;
@@ -374,7 +398,19 @@ export class TournamentComponent implements OnInit, OnDestroy {
     // });
   }
 
-  showView(view: 'bracket' | 'contestants' | 'matches' | 'updates' | 'requests') {
+  showView(
+    view: 'bracket' | 'contestants' | 'matches' | 'updates' | 'requests'
+  ) {
     this.viewBeingShown = view;
+  }
+
+  reviewRegistrationRequest(request, isApproved) {
+    this.editRegistrationRequestGql.mutate({
+      requestId: request._id,
+      tournamentId: this.tournament._id,
+      isApproved,
+    })
+    .pipe(first())
+    .subscribe();
   }
 }

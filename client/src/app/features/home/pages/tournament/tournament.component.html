@@ -59,16 +59,19 @@
 
     <ng-container label="Updates" *ngIf="viewBeingShown === 'updates'">
       <div class="tournament-view">
-        <sd-update-list [updates]="tournament.updates">
-          
-        </sd-update-list>
+        <sd-update-list [updates]="tournament.updates"> </sd-update-list>
       </div>
     </ng-container>
 
     <ng-container label="Requests" *ngIf="viewBeingShown === 'requests'">
       <div class="tournament-view">
         <div *ngFor="let request of tournament.registrationRequests">
-          {{ request.contestant.profile?.username || request.contestant.name }} wants to join the tournament
+          {{
+            request.contestant.profile?.username || request.contestant.name
+          }}
+          wants to join the tournament
+          <button mat-stroked-button color="primary" (click)="reviewRegistrationRequest(request, true)">APPROVE</button>
+          <button mat-stroked-button color="warn" (click)="reviewRegistrationRequest(request, false)">DENY</button>
         </div>
       </div>
     </ng-container>
@@ -105,6 +108,11 @@
       <mat-icon>dynamic_feed</mat-icon>
     </mat-button-toggle>
     <mat-button-toggle
+      *ngIf="
+        !tournament.hasStarted &&
+        (!tournament.createdBy ||
+          tournament.createdBy._id === loggedInUser?._id)
+      "
       value="justify"
       (click)="showView('requests')"
       aria-label="Updates"
@@ -118,7 +126,7 @@
   *ngIf="
     tournament?.allowRegistration &&
     tournament?.contestants?.length < tournament?.contestantCount &&
-    !checkIfContestant()
+    !checkIfContestant() && !checkIfWaitingApproval()
   "
   mat-fab
   color="primary"

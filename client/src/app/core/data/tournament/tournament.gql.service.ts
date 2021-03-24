@@ -48,6 +48,8 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         }
         registrationRequests {
           _id
+          isReviewed
+          isApproved
           contestant {
             _id
             profile {

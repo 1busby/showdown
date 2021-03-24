@@ -62,7 +62,7 @@ export class TournamentResolver {
       }
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
-      this.logger.log('LOOK returning tournament ', JSON.stringify(tournament));
+      // this.logger.log('LOOK returning tournament ', JSON.stringify(tournament));
 
       return tournament;
     } catch (e) {
@@ -269,6 +269,64 @@ export class TournamentResolver {
       })
       .then(res => {
         return res;
+      });
+  }
+
+  @Mutation(returns => Tournament)
+  async editRegistrationRequest(
+    @Args('requestId', { type: () => ID }) requestId: string,
+    @Args('tournamentId', { type: () => ID }) tournamentId: string,
+    @Args('isApproved', { nullable: true }) isApproved: boolean,
+  ): Promise<Tournament> {
+    const tournament = await this.tournamentService.findOneById(tournamentId);
+    // TODO send notification to user
+    const request = tournament.registrationRequests.find(
+      request => {
+        const id = request._id;
+        console.log('1234');
+        return request._id == requestId
+      }
+    );
+
+    let seed = 0;
+    for (let i = 1; i <= tournament.contestantCount; i++) {
+      const alreadySeededContestant = tournament.contestants.find(
+        cont => cont.seed === i,
+      );
+      if (!alreadySeededContestant) {
+        seed = i;
+        break;
+      }
+    }
+
+    const addContestantArgs = [tournamentId, seed];
+
+    if (request.contestant.profile._id) {
+      addContestantArgs.push(undefined);
+      addContestantArgs.push(request.contestant.profile._id);
+    } else {
+      addContestantArgs.push(request.contestant.name);
+      addContestantArgs.push(undefined);
+    }
+
+    return this.tournamentService
+      .addContestant(
+        addContestantArgs[0],
+        addContestantArgs[1],
+        addContestantArgs[2],
+        addContestantArgs[3],
+      )
+      .then(res => {
+        return this.tournamentService.updateOne({
+          _id: tournamentId,
+          registrationRequests: [
+            {
+              _id: requestId,
+              isApproved,
+              isReviewed: true,
+            },
+          ],
+        });
       });
   }
 
