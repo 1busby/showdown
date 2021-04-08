@@ -24,6 +24,7 @@
 }
 
 .options-container {
+  margin-top: 10px;
 }
 
 .contestant-container {
@@ -61,4 +62,8 @@
 .list-container.cdk-drop-list-dragging
   .contestant-container:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.randomize-button {
+  margin-left: 10px;
 }

@@ -73,7 +73,7 @@ export class TournamentsService {
             model: 'User',
           },
         })
-        .populate('registrationRequests')
+        // .populate('registrationRequests')
         // .populate({
         //   path: 'registrationRequests.contestant',
         //   model: 'Contestant',
@@ -108,7 +108,7 @@ export class TournamentsService {
             model: 'User',
           },
         })
-        .populate('registrationRequests')
+        // .populate('registrationRequests')
         // .populate({
         //   path: 'registrationRequests.contestant',
         //   model: 'Contestant',

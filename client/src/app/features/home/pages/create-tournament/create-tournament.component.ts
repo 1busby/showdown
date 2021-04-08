@@ -58,6 +58,10 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     structure: ['single-elim'],
   });
 
+  ctx1 = {
+    tournamentForm: this.tournamentForm,
+  };
+
   get contestants(): FormArray {
     return this.tournamentForm.get('contestants') as FormArray;
   }
@@ -86,10 +90,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         .fetch({ linkCode }, { fetchPolicy: 'cache-first' })
         .subscribe(({ data: { tournament }, errors }) => {
           this._tournament = tournament;
-          const editAccessCode = localStorage.getItem(
-            `editAccessCode-${tournament.linkCode}`
-          );
-          this.tournamentForm.patchValue({ ...tournament, editAccessCode });
+          this.tournamentForm.patchValue({ ...tournament });
           const contestants = tournament.contestants
             .slice()
             .sort((a, b) => a.seed - b.seed);
@@ -101,7 +102,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
       this.tournamentForm.patchValue({
         name: '',
         description: '',
-        contestantCount: 0,
+        contestantCount: 2,
         contestants: [],
         editAccessCode: '123',
         matches: [],
@@ -205,16 +206,16 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
             addTournament: {
               _id: 'newTourny1',
               name: mutationInput.name,
-              description: mutationInput.description
+              description: mutationInput.description,
             },
           },
           update: (proxy, { data: { addTournament } }: any) => {
-            let { tournaments }: any = proxy.readQuery({
+            let result: any = proxy.readQuery({
               query: this.tournamentsGql.document,
             });
             proxy.writeQuery({
               query: this.tournamentsGql.document,
-              data: { tournaments: [...tournaments, addTournament] },
+              data: { tournaments: [...result.tournaments, addTournament] },
             });
           },
         })

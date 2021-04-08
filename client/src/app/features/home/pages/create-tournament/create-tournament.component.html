@@ -6,76 +6,35 @@
   >
     <!-- Step 1 -->
     <mat-step class="height-100">
-      <div class="form-fields-container">
-        <mat-form-field appearance="outline">
-          <mat-label>Tournament Name</mat-label>
-          <input type="text" matInput required formControlName="name" />
-        </mat-form-field>
+      <ng-container *ngTemplateOutlet="part1;context:ctx1">
+      </ng-container>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description"></textarea>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Number of Contestants</mat-label>
-          <input
-            matInput
-            type="number"
-            required
-            formControlName="contestantCount"
-            (change)="contestantCountChange($event)"
-            min="0"
-          />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Sets per Match</mat-label>
-          <input
-            matInput
-            type="number"
-            required
-            formControlName="setCount"
-            min="1"
-          />
-        </mat-form-field>
-
-        <mat-slide-toggle color="accent" formControlName="allowRegistration">
-          Allow Registration
-        </mat-slide-toggle>
-
-        <div *ngIf="tournamentForm.controls.allowRegistration.value" style="margin-left: 12px">
-          <mat-slide-toggle
-            color="accent"
-            formControlName="requireRegistrationApproval"
-          >
-            Require Approval
-          </mat-slide-toggle>
-        </div>
-
-        <mat-slide-toggle color="accent" formControlName="allowSelfScoring">
-          Allow Self Scoring
-        </mat-slide-toggle>
-
-        <mat-form-field appearance="outline">
-          <mat-select formControlName="structure">
-            <mat-option
-              *ngFor="let option of structureOptions"
-              [value]="option.value"
-            >
-              {{ option.viewLabel }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
-          <button mat-button matStepperNext type="button">Next</button>
-        </div>
+      <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
+        <button
+          mat-raised-button
+          matStepperNext
+          color="primary"
+          type="button"
+        >
+          Next
+        </button>
       </div>
     </mat-step>
 
     <!-- Step 2 -->
     <mat-step>
+      <mat-form-field appearance="outline">
+        <mat-label>Number of Contestants</mat-label>
+        <input
+          matInput
+          type="number"
+          required
+          formControlName="contestantCount"
+          (change)="contestantCountChange($event)"
+          min="2"
+          max="64"
+        />
+      </mat-form-field>
       <contestant-list
         interactionMode="edit"
         [contestantCount]="tournamentForm.value.contestantCount"
@@ -84,17 +43,6 @@
         (removeContestantEmitter)="removeContestant($event)"
         (rearrangedContestantsEmitter)="rearrangeContestants($event)"
       ></contestant-list>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Admin Access Code</mat-label>
-        <input
-          matInput
-          type="text"
-          required
-          formControlName="editAccessCode"
-          (change)="contestantCountChange($event)"
-        />
-      </mat-form-field>
 
       <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
         <button mat-button matStepperPrevious type="button">Back</button>
@@ -106,3 +54,72 @@
     </mat-step>
   </mat-horizontal-stepper>
 </form>
+
+<ng-template #part1>
+  <div [formGroup]="tournamentForm" class="form-fields-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Tournament Name</mat-label>
+      <input type="text" matInput required formControlName="name" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Tournament Type</mat-label>
+      <mat-select formControlName="structure">
+        <mat-option
+          *ngFor="let option of structureOptions"
+          [value]="option.value"
+        >
+          {{ option.viewLabel }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Sets per Match</mat-label>
+      <input
+        matInput
+        type="number"
+        required
+        formControlName="setCount"
+        min="1"
+      />
+    </mat-form-field>
+  
+    <mat-slide-toggle color="accent" formControlName="allowRegistration">
+      Allow Registration
+    </mat-slide-toggle>
+  
+    <div
+      *ngIf="tournamentForm.controls.allowRegistration.value"
+      style="margin-left: 12px"
+    >
+      <mat-slide-toggle
+        color="accent"
+        formControlName="requireRegistrationApproval"
+      >
+        Require Approval
+      </mat-slide-toggle>
+    </div>
+  
+    <!-- <mat-slide-toggle color="accent" formControlName="allowSelfScoring">
+      Allow Self Scoring
+    </mat-slide-toggle> -->
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Admin Access Code</mat-label>
+      <input
+        matInput
+        type="text"
+        required
+        formControlName="editAccessCode"
+        (change)="contestantCountChange($event)"
+      />
+    </mat-form-field>
+  
+  </div>
+</ng-template>

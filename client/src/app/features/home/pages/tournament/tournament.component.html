@@ -65,14 +65,16 @@
 
     <ng-container label="Requests" *ngIf="viewBeingShown === 'requests'">
       <div class="tournament-view">
-        <div *ngFor="let request of tournament.registrationRequests">
-          {{
-            request.contestant.profile?.username || request.contestant.name
-          }}
-          wants to join the tournament
-          <button mat-stroked-button color="primary" (click)="reviewRegistrationRequest(request, true)">APPROVE</button>
-          <button mat-stroked-button color="warn" (click)="reviewRegistrationRequest(request, false)">DENY</button>
-        </div>
+        <ng-container *ngFor="let request of tournament.registrationRequests">
+          <div *ngIf="!request.isReviewed">
+            {{
+              request.contestant.profile?.username || request.contestant.name
+            }}
+            wants to join the tournament
+            <button mat-stroked-button color="primary" (click)="reviewRegistrationRequest(request, true)">APPROVE</button>
+            <button mat-stroked-button color="warn" (click)="reviewRegistrationRequest(request, false)">DENY</button>
+          </div>
+        </ng-container>
       </div>
     </ng-container>
   </ng-container>

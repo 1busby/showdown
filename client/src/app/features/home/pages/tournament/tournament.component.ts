@@ -12,8 +12,6 @@ import {
   MatchContainer,
   RunTournamentGQL,
   AuthService,
-  BracketHandler,
-  EditTournamentGQL,
   EditRegistrationRequestGQL,
   AppStore,
 } from '@app/core';
@@ -260,6 +258,14 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   editTournament(runTournament?: boolean) {
+    if (
+      this.tournament.createdBy &&
+      this.tournament.createdBy._id === this.loggedInUser?._id
+    ) {
+      this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+      return;
+    }
+
     this.isCheckingEditAccess = true;
     const editAccessCode = localStorage.getItem(
       `editAccessCode-${this.tournament.linkCode}`
@@ -405,12 +411,13 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   reviewRegistrationRequest(request, isApproved) {
-    this.editRegistrationRequestGql.mutate({
-      requestId: request._id,
-      tournamentId: this.tournament._id,
-      isApproved,
-    })
-    .pipe(first())
-    .subscribe();
+    this.editRegistrationRequestGql
+      .mutate({
+        requestId: request._id,
+        tournamentId: this.tournament._id,
+        isApproved,
+      })
+      .pipe(first())
+      .subscribe();
   }
 }
