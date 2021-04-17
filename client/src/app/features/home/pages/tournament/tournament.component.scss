@@ -72,3 +72,9 @@ contestant-list {
   flex-grow: 1;
   width: 100%;
 }
+
+@media screen and (min-width: 1200px) {
+  bracket-view.tournament-view {
+    width: 75%;
+  }
+}

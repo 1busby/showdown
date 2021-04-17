@@ -28,14 +28,30 @@
     </p>
   </div>
 
-  <ng-container>
-    <ng-container label="Bracket" *ngIf="viewBeingShown === 'bracket'">
-      <bracket-view
-        class="tournament-view"
-        [tournament]="this.tournament"
-        (showMatchDetailsEmitter)="showMatchDetails($event)"
-      ></bracket-view>
-    </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="tournament-view" *ngIf="viewBeingShown === 'bracket'">
+    <bracket-view
+      [tournament]="this.tournament"
+      (showMatchDetailsEmitter)="showMatchDetails($event)"
+    ></bracket-view>
+  </div>
+
+
+
+
+  <div class="tournament-view" *ngIf="viewBeingShown !== 'bracket'">
 
     <ng-container label="Contestants" *ngIf="viewBeingShown === 'contestants'">
       <div>
@@ -43,41 +59,71 @@
         {{ this.tournament?.contestantCount || 0 }} Contestants Registered
       </div>
       <contestant-list
-        class="tournament-view"
         interactionMode="view"
         [contestants]="this.tournament?.contestants || []"
       ></contestant-list>
     </ng-container>
-
+  
     <ng-container label="Matches" *ngIf="viewBeingShown === 'matches'">
       <match-list
-        class="tournament-view"
         [matches]="this.appStore.getWinnersMatchContainers() | async"
         (showMatchDetailsEmitter)="showMatchDetails($event)"
       ></match-list>
     </ng-container>
-
+  
     <ng-container label="Updates" *ngIf="viewBeingShown === 'updates'">
-      <div class="tournament-view">
         <sd-update-list [updates]="tournament.updates"> </sd-update-list>
-      </div>
     </ng-container>
-
+  
     <ng-container label="Requests" *ngIf="viewBeingShown === 'requests'">
-      <div class="tournament-view">
+      <div>
         <ng-container *ngFor="let request of tournament.registrationRequests">
           <div *ngIf="!request.isReviewed">
-            {{
-              request.contestant.profile?.username || request.contestant.name
-            }}
+            {{ request.contestant.profile?.username || request.contestant.name }}
             wants to join the tournament
-            <button mat-stroked-button color="primary" (click)="reviewRegistrationRequest(request, true)">APPROVE</button>
-            <button mat-stroked-button color="warn" (click)="reviewRegistrationRequest(request, false)">DENY</button>
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="reviewRegistrationRequest(request, true)"
+            >
+              APPROVE
+            </button>
+            <button
+              mat-stroked-button
+              color="warn"
+              (click)="reviewRegistrationRequest(request, false)"
+            >
+              DENY
+            </button>
           </div>
         </ng-container>
       </div>
     </ng-container>
-  </ng-container>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <mat-button-toggle-group class="action-buttons" #group="matButtonToggleGroup">
     <mat-button-toggle
@@ -88,6 +134,7 @@
     >
       <mat-icon>schema</mat-icon>
     </mat-button-toggle>
+
     <mat-button-toggle
       value="center"
       (click)="showView('contestants')"
@@ -95,6 +142,7 @@
     >
       <mat-icon>people</mat-icon>
     </mat-button-toggle>
+
     <mat-button-toggle
       value="right"
       (click)="showView('matches')"
@@ -102,6 +150,7 @@
     >
       <mat-icon>format_list_numbered</mat-icon>
     </mat-button-toggle>
+
     <mat-button-toggle
       value="justify"
       (click)="showView('updates')"
@@ -109,6 +158,7 @@
     >
       <mat-icon>dynamic_feed</mat-icon>
     </mat-button-toggle>
+
     <mat-button-toggle
       *ngIf="
         !tournament.hasStarted &&
@@ -128,7 +178,8 @@
   *ngIf="
     tournament?.allowRegistration &&
     tournament?.contestants?.length < tournament?.contestantCount &&
-    !checkIfContestant() && !checkIfWaitingApproval()
+    !checkIfContestant() &&
+    !checkIfWaitingApproval()
   "
   mat-fab
   color="primary"

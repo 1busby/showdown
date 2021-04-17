@@ -1,28 +1,28 @@
-<mat-button-toggle-group
-  *ngIf="tournament.structure === 'double-elim'"
-  name="bracketSide"
-  (change)="changeBracketSide($event.value)"
-  vertical="true"
-  aria-label="Bracket Side"
-  class="bracket-view-button-group"
->
-  <mat-button-toggle checked="true" value="winners">W</mat-button-toggle>
-  <mat-button-toggle value="losers">L</mat-button-toggle>
-</mat-button-toggle-group>
 
-<mat-slider
-  class="zoom-slider"
-  [max]="1.5"
-  [min]="0.25"
-  [step]="0.25"
-  [tickInterval]="0.25"
-  [vertical]="true"
-  [(ngModel)]="zoomLevel"
-  (input)="onZoomInput($event)"
->
-</mat-slider>
 
 <div class="outer-container">
+  <mat-button-toggle-group
+    *ngIf="tournament.structure === 'double-elim'"
+    name="bracketSide"
+    (change)="changeBracketSide($event.value)"
+    vertical="true"
+    aria-label="Bracket Side"
+    class="bracket-view-button-group"
+  >
+    <mat-button-toggle checked="true" value="winners">W</mat-button-toggle>
+    <mat-button-toggle value="losers">L</mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-slider
+    class="zoom-slider"
+    [max]="1.5"
+    [min]="0.25"
+    [step]="0.25"
+    [tickInterval]="0.25"
+    [vertical]="true"
+    [(ngModel)]="zoomLevel"
+    (input)="onZoomInput($event)"
+  >
+  </mat-slider>
   <div
     class="bracket-view-container"
     #bracketViewContainer
