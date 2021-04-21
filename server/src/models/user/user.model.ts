@@ -24,9 +24,6 @@ export class User extends Document implements IUser {
   @Field({ nullable: true })
   lastName?: string;
 
-  @Field(type => [Tournament], { nullable: 'itemsAndList' })
-  tournaments?: Tournament[];
-
   @Field({ nullable: true })
   iconPublicAddress?: string;
 

@@ -59,7 +59,7 @@ export class BracketViewComponent
     console.log('LOOK BracketViewComponent ngOnChanges ', this.tournament);
     if (changes.tournament.firstChange) return;
     this.changeDetectorRef.detectChanges();
-    
+
     // const matches = this.bracketHandler.createBracket(this.tournament);
     // this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
@@ -78,26 +78,32 @@ export class BracketViewComponent
   }
 
   ngAfterViewInit() {
-    this.appStore.getWinnersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
-      if (!m) return;
-      if (!this.matches) {
-        const ctx = this.lineCanvas.nativeElement.getContext('2d');
-        this.drawLines(m, ctx);
-      }
-      this.matches = null;
-      this.matches = m;
-      this.changeDetectorRef.detectChanges();
-    });
-    this.appStore.getLosersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
-      if (!m) return;
-      if (!this.losersMatches) {
-        const ctx = this.lineCanvasLosers.nativeElement.getContext('2d');
-        this.drawLinesLosers(m, ctx);
-      }
-      this.losersMatches = null;
-      this.losersMatches = m;
-      this.changeDetectorRef.detectChanges();
-    });
+    this.appStore
+      .getWinnersMatchContainers()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((m) => {
+        if (!m) return;
+        if (!this.matches) {
+          const ctx = this.lineCanvas.nativeElement.getContext('2d');
+          this.drawLines(m, ctx);
+        }
+        this.matches = null;
+        this.matches = m;
+        this.changeDetectorRef.detectChanges();
+      });
+    this.appStore
+      .getLosersMatchContainers()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((m) => {
+        if (!m) return;
+        if (!this.losersMatches) {
+          const ctx = this.lineCanvasLosers.nativeElement.getContext('2d');
+          this.drawLinesLosers(m, ctx);
+        }
+        this.losersMatches = null;
+        this.losersMatches = m;
+        this.changeDetectorRef.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {
@@ -110,7 +116,7 @@ export class BracketViewComponent
   }
 
   drawLines(matches, ctx) {
-    ctx.strokeStyle = "#71BC76";
+    ctx.strokeStyle = '#71BC76';
     ctx.lineWidth = 5;
     matches.forEach((match: MatchContainer) => {
       if (match.highMatch && match.highMatch.hasLowSeed) {
@@ -159,7 +165,7 @@ export class BracketViewComponent
   }
 
   drawLinesLosers(matches, ctx) {
-    ctx.strokeStyle = "#71BC76";
+    ctx.strokeStyle = '#71BC76';
     ctx.lineWidth = 5;
     matches.forEach((match: MatchContainer) => {
       if (match.highMatch && match.highMatch.isLosersBracket) {

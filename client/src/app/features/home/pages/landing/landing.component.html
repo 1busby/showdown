@@ -21,7 +21,7 @@
       (delete)="deleteTournament(tournament._id)"
     ></tournament-card>
   </ng-container>
-
+<!-- 
   <ng-container *ngIf="allTournaments">
     <h1>Users</h1>
     <button mat-button
@@ -29,7 +29,7 @@
       (click)="viewTournament(tournament)"
       routerLink="/profile/{{user.username}}"
     >{{user.username}}</button>
-  </ng-container>
+  </ng-container> -->
 
   <mat-spinner *ngIf="!allTournaments"></mat-spinner>
 </div>

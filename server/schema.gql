@@ -283,7 +283,6 @@ type User {
   email: String
   firstName: String
   lastName: String
-  tournaments: [Tournament]
   iconPublicAddress: String
   createdOn: Date
   updatedOn: Date
