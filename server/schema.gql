@@ -109,7 +109,7 @@ type Query {
   user(username: String, dId: String): User!
   users(skip: Int = 0, take: Int = 25): [User!]!
   tournament(linkCode: String, id: String): Tournament!
-  tournaments(skip: Int = 0, take: Int = 25): [Tournament!]!
+  tournaments(skip: Int = 0, take: Int = 25, userId: String): [Tournament!]!
   requestEditAccess(requestEditAccessInput: RequestEditAccessInput!): EditAccessRequest!
   showdown(linkCode: String, id: String): Showdown!
   showdowns(skip: Int = 0, take: Int = 25): [Showdown!]!
@@ -288,4 +288,5 @@ type User {
   updatedOn: Date
   pushSubscription: String
   imageUrl: String
+  tournaments: [Tournament!]!
 }

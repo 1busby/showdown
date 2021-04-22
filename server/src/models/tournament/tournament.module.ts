@@ -16,5 +16,6 @@ import { MatchModule } from '@models/match/match.module';
     MatchModule,
   ],
   providers: [TournamentResolver, TournamentsService],
+  exports: [TournamentsService],
 })
 export class TournamentsModule {}

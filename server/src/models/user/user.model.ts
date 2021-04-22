@@ -38,4 +38,7 @@ export class User extends Document implements IUser {
 
   @Field({ nullable: true })
   imageUrl?: string;
+
+  @Field(type => [Tournament], { nullable: 'itemsAndList' })
+  tournaments?: Tournament[];
 }

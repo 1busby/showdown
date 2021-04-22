@@ -82,10 +82,10 @@
         <sd-update-list *ngIf="viewBeingShown === 'updates' || viewBeingShown === 'bracket'" [updates]="tournament.updates"> </sd-update-list>
 
         <ng-container label="Contestants" *ngIf="viewBeingShown === 'contestants'">
-          <div>
+          <!-- <div>
             {{ this.tournament?.contestants?.length || 0 }} /
             {{ this.tournament?.contestantCount || 0 }} Contestants Registered
-          </div>
+          </div> -->
           <contestant-list
             interactionMode="view"
             [contestants]="this.tournament?.contestants || []"
@@ -111,10 +111,10 @@
     </ng-container>
 
     <ng-container label="Contestants" *ngIf="viewBeingShown === 'contestants'">
-      <div>
+      <!-- <div>
         {{ this.tournament?.contestants?.length || 0 }} /
         {{ this.tournament?.contestantCount || 0 }} Contestants Registered
-      </div>
+      </div> -->
       <contestant-list
         interactionMode="view"
         [contestants]="this.tournament?.contestants || []"

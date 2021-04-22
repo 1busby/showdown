@@ -21,6 +21,7 @@
 mat-list-item.update-list-item {
   height: fit-content;
   cursor: pointer;
+  z-index: -1;
 
   > div {
     padding: 0;

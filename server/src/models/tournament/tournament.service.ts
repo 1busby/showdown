@@ -131,7 +131,9 @@ export class TournamentsService {
 
   async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
     return await this.tournamentModel
-      .find()
+      .find({
+        'createdBy._id': tournamentsArgs.userId
+      })
       .populate('createdBy')
       .exec();
   }

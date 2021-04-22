@@ -2,18 +2,22 @@ import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CustomLogger } from '@shared/index';
 import { PubSub } from 'apollo-server-express';
+
+
+import { Tournament } from '@models/tournament/tournament.model';
 import { NewUserInput } from './dto/new-user.input';
 import { SigninInput } from './dto/signin.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UsersArgs } from './dto/users.args';
 import { User } from './user.model';
 import { UsersService } from './user.service';
+import { TournamentsService } from '@models/tournament/tournament.service';
 
 const pubSub = new PubSub();
 
 @Resolver(of => User)
 export class UsersResolver {
-  constructor(private logger: CustomLogger, private readonly usersService: UsersService) {}
+  constructor(private logger: CustomLogger, private readonly usersService: UsersService, private tournamentService: TournamentsService) {}
 
   @Query(returns => User)
   async user(@Args('dId', { nullable: true }) dId?: string, @Args('username', { nullable: true }) username?: string): Promise<User> {
@@ -56,5 +60,11 @@ export class UsersResolver {
       this.logger.log('LOOK res ' + res);
       return res;
     });
+  }
+
+  @ResolveField('tournaments', returns => [Tournament])
+  async getTournaments(@Parent() user: User) {
+    const { _id } = user;
+    return this.tournamentService.findAll({ userId: _id });
   }
 }

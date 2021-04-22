@@ -1,9 +1,8 @@
-<div *ngIf="user">
-
+<div class="content">
+  <img *ngIf="user?._id" ngxGravatar [email]="user?.username" size="200" />
   <p class="name__text">
-    {{ user.username }}
+    {{ user?.username }}
   </p>
-  <br />
 
   <!-- <ng-container *ngIf="user?._id === loggedInUser?._id">
     <h1>ICX Wallet Address</h1>
@@ -28,10 +27,14 @@
   <h1>Showdowns</h1>
   <ng-container *ngFor="let challenge of user.challenges"> </ng-container> -->
 
-  <h3>Tournaments</h3>
-  <ng-container *ngFor="let tournament of user.tournaments">
-    <button mat-raised-button (click)="openTournament(tournament.linkCode)">
-      {{ tournament.name }}
-    </button>
-  </ng-container>
+  <div class="tournaments-container">
+    <h3>Tournaments</h3>
+    <div class="tournament-list">
+      <ng-container *ngFor="let tournament of user?.tournaments">
+        <button mat-raised-button (click)="openTournament(tournament.linkCode)">
+          {{ tournament.name }}
+        </button>
+      </ng-container>
+    </div>
+  </div>
 </div>
