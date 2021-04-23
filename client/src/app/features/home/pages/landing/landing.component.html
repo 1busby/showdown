@@ -12,16 +12,7 @@
 
 <div class="content-container">
   <ng-container *ngIf="allTournaments">
-    <h1 style="padding-left: 12px;">Tournaments</h1>
-    <div class="tournament-list">
-      <tournament-card
-        *ngFor="let tournament of allTournaments; trackBy: trackByFn"
-        [tournament]="tournament"
-        [user]="loggedInUser"
-        (selectTournament)="viewTournament(tournament)"
-        (delete)="deleteTournament(tournament._id)"
-      ></tournament-card>
-    </div>
+    <tournament-list [tournaments]="allTournaments"></tournament-list>
   </ng-container>
 <!-- 
   <ng-container *ngIf="allTournaments">

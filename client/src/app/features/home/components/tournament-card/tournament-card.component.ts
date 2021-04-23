@@ -11,13 +11,15 @@ import { ITournament, IUser } from '@app/shared';
   selector: 'tournament-card',
   templateUrl: './tournament-card.component.html',
   styleUrls: ['./tournament-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TournamentCardComponent {
   @Input() tournament: ITournament;
   @Input() user: IUser;
-  @Output() selectTournament: EventEmitter<ITournament> = new EventEmitter<ITournament>();
+  @Output()
+  selectTournament: EventEmitter<ITournament> = new EventEmitter<ITournament>();
   @Output() delete: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() userClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {}
 
@@ -28,5 +30,10 @@ export class TournamentCardComponent {
   onDelete(event) {
     this.delete.emit(true);
     event.stopPropagation();
+  }
+
+  onUserClick(event, user) {
+    event.stopPropagation();
+    this.userClicked.emit(user);
   }
 }

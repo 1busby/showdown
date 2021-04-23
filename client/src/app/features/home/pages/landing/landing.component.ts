@@ -1,11 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { first, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   AuthService,
   TournamentsGQL,
-  RemoveTournamentGQL,
   UsersGQL,
 } from '@app/core';
 import { ITournament, IUser } from '@app/shared';
@@ -26,7 +25,6 @@ export class LandingComponent implements OnDestroy {
     private router: Router,
     private tournamentsGql: TournamentsGQL,
     private usersGql: UsersGQL,
-    private removeTournamentGql: RemoveTournamentGQL,
     private authService: AuthService
   ) {
     this.tournamentsGql
@@ -58,43 +56,5 @@ export class LandingComponent implements OnDestroy {
 
   createTournament() {
     this.router.navigateByUrl('/create');
-  }
-
-  viewTournament(tournament: ITournament) {
-    if (!tournament.linkCode) {
-      return;
-    }
-    this.router.navigateByUrl(`/${tournament.linkCode}`);
-  }
-
-  deleteTournament(_id) {
-    this.removeTournamentGql
-      .mutate(
-        { _id },
-        {
-          // Optimistically update tournament list shown on screen
-          update: (proxy, { data: { removeTournament } }: any) => {
-            if (removeTournament === false) {
-              return;
-            }
-            // Read the data from our cache for this query.
-            let { tournaments }: any = proxy.readQuery({
-              query: this.tournamentsGql.document,
-            });
-            // Add our comment from the mutation to the end.\
-            tournaments = tournaments.filter(
-              (m) => m._id !== _id
-            );
-            // Write our data back to the cache.
-            proxy.writeQuery({ query: this.tournamentsGql.document, data: { tournaments } });
-          },
-        }
-      )
-      .pipe(first())
-      .subscribe();
-  }
-
-  trackByFn(index, tournament) {
-    return tournament._id;
   }
 }

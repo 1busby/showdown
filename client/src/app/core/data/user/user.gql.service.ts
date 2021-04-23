@@ -15,13 +15,6 @@ export class UserGQL extends Query<{ user: IUser }> {
         username
         email
         iconPublicAddress
-        tournaments {
-          _id
-          name
-          description
-          createdOn
-          linkCode
-        }
       }
     }
   `;

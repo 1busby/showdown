@@ -129,13 +129,28 @@ export class TournamentsService {
     );
   }
 
-  async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
-    return await this.tournamentModel
-      .find({
-        'createdBy._id': tournamentsArgs.userId
-      })
+  findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+    return this.tournamentModel
+      .find()
       .populate('createdBy')
       .exec();
+  }
+
+  findAllByUser(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+    const pipeline: any = [];
+
+    pipeline.push({
+      $lookup: {
+        from: 'users',
+        localField: 'createdBy',
+        foreignField: '_id',
+        as: 'createdByUser',
+      },
+    });
+    pipeline.push({
+      $match: { 'createdByUser._id': tournamentsArgs.userId },
+    });
+    return this.tournamentModel.aggregate(pipeline).exec();
   }
 
   async updateOne(

@@ -28,13 +28,6 @@
   <ng-container *ngFor="let challenge of user.challenges"> </ng-container> -->
 
   <div class="tournaments-container">
-    <h3>Tournaments</h3>
-    <div class="tournament-list">
-      <ng-container *ngFor="let tournament of user?.tournaments">
-        <button mat-raised-button (click)="openTournament(tournament.linkCode)">
-          {{ tournament.name }}
-        </button>
-      </ng-container>
-    </div>
+    <tournament-list [tournaments]="user?.tournaments"></tournament-list>
   </div>
 </div>

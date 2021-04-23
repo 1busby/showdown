@@ -63,8 +63,9 @@ export class UsersResolver {
   }
 
   @ResolveField('tournaments', returns => [Tournament])
-  async getTournaments(@Parent() user: User) {
+  getTournaments(@Parent() user: User): Promise<Tournament[]> {
     const { _id } = user;
-    return this.tournamentService.findAll({ userId: _id });
+    const sid = _id.toString();
+    return this.tournamentService.findAllByUser({ userId: _id });
   }
 }

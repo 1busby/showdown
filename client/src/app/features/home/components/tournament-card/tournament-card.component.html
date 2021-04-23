@@ -18,4 +18,10 @@
   <!-- <mat-card-actions *ngIf="user && tournament?.createdBy?._id === user?._id"> -->
     <button mat-stroked-button color="warn" (click)="onDelete($event)">DELETE</button>
   </mat-card-actions>
+
+  <mat-card-footer style="padding: 8px;" (click)="onUserClick($event, tournament.createdBy)">
+    <button mat-button>
+      {{ tournament.createdBy?.username }}
+    </button>
+  </mat-card-footer>
 </mat-card>
