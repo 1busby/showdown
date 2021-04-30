@@ -64,9 +64,40 @@ export class BracketHandler {
         }
       );
     } else {
-      this.matchContainers.forEach((matchContainer, index) => {
-        matchContainer.matchNumber = index;
+      let matchNumber = 0;
+      let losersRound = 0;
+      this.matchesPerRound.forEach((round) => {
+        round.forEach((match) => {
+          match.matchNumber = matchNumber;
+          matchNumber++;
+        });
+
+        if (
+          this.losersMatchContainers.length > 0 &&
+          this.losersMatchesPerRound[losersRound]
+        ) {
+          this.losersMatchesPerRound[losersRound].forEach((losersMatch) => {
+            losersMatch.matchNumber = matchNumber;
+            matchNumber++;
+          });
+          losersRound++;
+
+          if (
+            this.losersMatchesPerRound[losersRound] &&
+            this.losersMatchesPerRound[losersRound].length > 0 &&
+            this.losersMatchesPerRound[losersRound][0].highMatch.isLosersBracket
+          ) {
+            this.losersMatchesPerRound[losersRound].forEach((losersMatch) => {
+              losersMatch.matchNumber = matchNumber;
+              matchNumber++;
+            });
+            losersRound++;
+          }
+        }
       });
+      // this.matchContainers.forEach((matchContainer, index) => {
+      //   matchContainer.matchNumber = index;
+      // });
     }
 
     return {
@@ -136,7 +167,6 @@ export class BracketHandler {
             if (j % 2 === 0) {
               losersMatch = new MatchContainer();
               losersMatch.isLosersBracket = true;
-              losersMatch.matchNumber = losersMatchNumber;
               losersMatchNumber++;
               losersMatch.roundNumber = 1;
               losersMatch.setHighMatch(newMatch, 'loser');
@@ -154,7 +184,6 @@ export class BracketHandler {
           } else if (roundNumber === 1) {
             losersMatch = new MatchContainer();
             losersMatch.isLosersBracket = true;
-            losersMatch.matchNumber = losersMatchNumber;
             losersMatchNumber++;
             const lowMatch = this.losersMatchesPerRound[0][j];
             losersMatch.roundNumber = roundNumber + 1;
@@ -165,13 +194,10 @@ export class BracketHandler {
             this.losersMatchesPerRound[roundNumber][j] = losersMatch;
           } else {
             const losersRound: number = this.losersMatchesPerRound.length - 1;
-            const matchNumber1 = losersMatchNumber + losersMatchNumberOffset;
-            const matchNumber2 = matchNumber1 + matchCountThisRound;
             losersMatchNumber++;
 
             const losersMatch1 = new MatchContainer();
             losersMatch1.isLosersBracket = true;
-            losersMatch1.matchNumber = matchNumber1;
             const parentBase =
               this.losersMatchesPerRound[losersRound - 1].length * 2;
             const highSeedMatch = this.losersMatchesPerRound[losersRound - 2][
@@ -189,7 +215,6 @@ export class BracketHandler {
 
             const losersMatch2 = new MatchContainer();
             losersMatch2.isLosersBracket = true;
-            losersMatch2.matchNumber = matchNumber2;
             losersMatch2.roundNumber = losersRound;
             losersMatch2.setHighMatch(newMatch, 'loser');
             losersMatch2.setLowMatch(losersMatch1);
@@ -364,7 +389,7 @@ export class BracketHandler {
             thisMatch.highMatch.top -
             (thisMatch.highMatch.top - thisMatch.lowMatch.top) / 2;
           thisMatch.left =
-            thisMatch.highMatch.left + this.matchWidth + this.margin * 3 //* (i + 1);
+            thisMatch.highMatch.left + this.matchWidth + this.margin * 3; //* (i + 1);
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
@@ -450,9 +475,7 @@ export class BracketHandler {
 
           thisMatch.top = matchTop;
           thisMatch.left =
-            thisMatch.lowMatch.left +
-            this.matchWidth +
-            this.margin * 3//(i + 1) - leftOffset;
+            thisMatch.lowMatch.left + this.matchWidth + this.margin * 3; //(i + 1) - leftOffset;
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;
@@ -466,8 +489,6 @@ export class BracketHandler {
         if (right > this.canvasWidthLosers) {
           this.canvasWidthLosers = right + 24;
         }
-
-        thisMatch.matchNumber -= soonToBeRemovedMatches.length;
       }
 
       // 0 left offset because we use previous round as reference point
