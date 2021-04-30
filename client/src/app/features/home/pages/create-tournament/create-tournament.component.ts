@@ -66,6 +66,9 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     return this.tournamentForm.get('contestants') as FormArray;
   }
 
+  minStartDate: Date;
+  maxStartDate: Date;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -79,7 +82,11 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     private bracketHandlerService: BracketHandler,
     private appStore: AppStore,
     private authService: AuthService
-  ) {}
+  ) {
+    const currentDate = new Date();
+    this.minStartDate = currentDate;
+    this.maxStartDate = new Date(currentDate.getFullYear(), 10, 31);
+  }
 
   ngOnInit() {
     const linkCode = this.route.snapshot.paramMap.get('linkCode');

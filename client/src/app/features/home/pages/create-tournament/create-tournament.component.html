@@ -105,6 +105,13 @@
         Require Approval
       </mat-slide-toggle>
     </div>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Optional Start Date</mat-label>
+      <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
   
     <!-- <mat-slide-toggle color="accent" formControlName="allowSelfScoring">
       Allow Self Scoring

@@ -22,6 +22,10 @@ export class UserProfileGQL extends Query<{ user: IUser }> {
           description
           createdOn
           linkCode
+          createdBy {
+            _id
+            username
+          }
         }
       }
     }
