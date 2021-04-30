@@ -1,58 +1,55 @@
 <form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()">
-  <mat-horizontal-stepper
-    style="display: initial"
-    (animationDone)="this.stepperIsInTransition = false"
-    (selectionChange)="this.stepperIsInTransition = true"
-  >
-    <!-- Step 1 -->
-    <mat-step class="height-100">
-      <ng-container *ngTemplateOutlet="part1;context:ctx1">
-      </ng-container>
+  <div class="small-container">
+    <mat-horizontal-stepper
+      style="display: initial"
+      (animationDone)="this.stepperIsInTransition = false"
+      (selectionChange)="this.stepperIsInTransition = true"
+    >
+      <!-- Step 1 -->
+      <mat-step class="height-100">
+        <ng-container *ngTemplateOutlet="part1; context: ctx1"> </ng-container>
 
-      <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
-        <button
-          mat-raised-button
-          matStepperNext
-          color="primary"
-          type="button"
-        >
-          Next
-        </button>
+        <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
+          <button
+            mat-raised-button
+            matStepperNext
+            color="primary"
+            type="button"
+          >
+            Next
+          </button>
+        </div>
+      </mat-step>
+
+      <!-- Step 2 -->
+      <mat-step>
+        <ng-container *ngTemplateOutlet="part2; context: ctx1"> </ng-container>
+
+        <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button type="submit" mat-raised-button color="primary">
+            <ng-container *ngIf="!editMode">Create</ng-container>
+            <ng-container *ngIf="editMode">Save</ng-container>
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+
+  <div class="large-container">
+    <div style="display: flex; padding: 24px;">
+      <div style="width: 75%; padding-right: 20px">
+        <ng-container *ngTemplateOutlet="part1; context: ctx1"> </ng-container>
       </div>
-    </mat-step>
-
-    <!-- Step 2 -->
-    <mat-step>
-      <mat-form-field appearance="outline">
-        <mat-label>Number of Contestants</mat-label>
-        <input
-          matInput
-          type="number"
-          required
-          formControlName="contestantCount"
-          (change)="contestantCountChange($event)"
-          min="2"
-          max="64"
-        />
-      </mat-form-field>
-      <contestant-list
-        interactionMode="edit"
-        [contestantCount]="tournamentForm.value.contestantCount"
-        [contestants]="contestants.value"
-        (newContestantEmitter)="addContestant($event)"
-        (removeContestantEmitter)="removeContestant($event)"
-        (rearrangedContestantsEmitter)="rearrangeContestants($event)"
-      ></contestant-list>
-
-      <div class="step-buttons fade-in" *ngIf="!this.stepperIsInTransition">
-        <button mat-button matStepperPrevious type="button">Back</button>
-        <button type="submit" mat-raised-button color="primary">
-          <ng-container *ngIf="!editMode">Create</ng-container>
-          <ng-container *ngIf="editMode">Save</ng-container>
-        </button>
+      <div style="width: 25%;">
+        <ng-container *ngTemplateOutlet="part2; context: ctx1"> </ng-container>
       </div>
-    </mat-step>
-  </mat-horizontal-stepper>
+    </div>
+    <button type="submit" mat-raised-button color="primary">
+      <ng-container *ngIf="!editMode">Create</ng-container>
+      <ng-container *ngIf="editMode">Save</ng-container>
+    </button>
+  </div>
 </form>
 
 <ng-template #part1>
@@ -61,12 +58,12 @@
       <mat-label>Tournament Name</mat-label>
       <input type="text" matInput required formControlName="name" />
     </mat-form-field>
-  
+
     <mat-form-field appearance="outline">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
-  
+
     <mat-form-field appearance="outline">
       <mat-label>Tournament Type</mat-label>
       <mat-select formControlName="structure">
@@ -78,7 +75,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  
+
     <mat-form-field appearance="outline">
       <mat-label>Sets per Match</mat-label>
       <input
@@ -89,11 +86,11 @@
         min="1"
       />
     </mat-form-field>
-  
+
     <mat-slide-toggle color="accent" formControlName="allowRegistration">
       Allow Registration
     </mat-slide-toggle>
-  
+
     <div
       *ngIf="tournamentForm.controls.allowRegistration.value"
       style="margin-left: 12px"
@@ -108,15 +105,20 @@
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Optional Start Date</mat-label>
-      <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker">
+      <input
+        matInput
+        [min]="minDate"
+        [max]="maxDate"
+        [matDatepicker]="picker"
+      />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-  
+
     <!-- <mat-slide-toggle color="accent" formControlName="allowSelfScoring">
       Allow Self Scoring
     </mat-slide-toggle> -->
-  
+
     <mat-form-field appearance="outline">
       <mat-label>Admin Access Code</mat-label>
       <input
@@ -127,8 +129,40 @@
         (change)="contestantCountChange($event)"
       />
     </mat-form-field>
-  
 
-    <button *ngIf="editMode" mat-stroked-button (click)="deleteTournament()" color="warn" type="button">DELETE</button>
+    <button
+      *ngIf="editMode"
+      mat-stroked-button
+      (click)="deleteTournament()"
+      color="warn"
+      type="button"
+    >
+      DELETE
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #part2>
+  <div [formGroup]="tournamentForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Number of Contestants</mat-label>
+      <input
+        matInput
+        type="number"
+        required
+        formControlName="contestantCount"
+        (change)="contestantCountChange($event)"
+        min="2"
+        max="64"
+      />
+    </mat-form-field>
+    <contestant-list
+      interactionMode="edit"
+      [contestantCount]="tournamentForm.value.contestantCount"
+      [contestants]="contestants.value"
+      (newContestantEmitter)="addContestant($event)"
+      (removeContestantEmitter)="removeContestant($event)"
+      (rearrangedContestantsEmitter)="rearrangeContestants($event)"
+    ></contestant-list>
   </div>
 </ng-template>

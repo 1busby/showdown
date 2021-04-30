@@ -23,6 +23,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @NgModule({
   exports: [
@@ -50,6 +51,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MatDatepickerModule,
     MatNativeDateModule,
     OverlayModule,
+    CdkStepperModule
   ],
 })
 export class MaterialModule {}
