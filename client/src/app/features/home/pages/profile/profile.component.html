@@ -1,5 +1,5 @@
 <div class="content">
-  <img *ngIf="user?._id" ngxGravatar [email]="user?.username" size="200" />
+  <img *ngIf="user?._id" ngxGravatar [email]="user?.username" size="150" />
   <p class="name__text">
     {{ user?.username }}
   </p>
@@ -29,6 +29,6 @@
 
   <div class="tournaments-container">
     <h3>Tournaments</h3>
-    <tournament-list [tournaments]="user?.tournaments"></tournament-list>
+    <tournament-list [tournaments]="user?.tournaments" [loggedInUser]="loggedInUser"></tournament-list>
   </div>
 </div>

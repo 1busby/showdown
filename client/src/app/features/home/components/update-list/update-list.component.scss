@@ -31,9 +31,11 @@ mat-list-item.update-list-item {
 .update {
   margin-top: 16px;
   width: 100%;
-  height: 100px;
 }
 
 .update__footer {
   display: contents;
+  font-size: 0.8rem;
+  color: #ddd;
+  font-style: italic;
 }

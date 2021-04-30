@@ -262,7 +262,14 @@ export class TournamentComponent implements OnInit, OnDestroy {
       this.tournament.createdBy &&
       this.tournament.createdBy._id === this.loggedInUser?._id
     ) {
-      this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+      if (runTournament) {
+        this.runTournamentGql
+          .mutate({ _id: this.tournament._id })
+          .pipe(first())
+          .subscribe();
+      } else {
+        this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+      }
       return;
     }
 

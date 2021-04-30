@@ -230,32 +230,30 @@ export class TournamentResolver {
 
           if (highseedSetsWon + lowseedSetsWon >= matchData.sets.length) {
             const currentDate = new Date();
+            const lowSeed = matchData.lowSeedNumber;
+            const lowSeedContestant = tournament.contestants.find(
+              c => c.seed === lowSeed,
+            );
+            const highSeed = matchData.highSeedNumber;
+            const highSeedContestant = tournament.contestants.find(
+              c => c.seed === highSeed,
+            );
             if (highseedSetsWon > lowseedSetsWon) {
               matchData.winnerSeed = 'HIGHSEED';
 
-              const highSeed = matchData.highSeedNumber;
-              const contestant = tournament.contestants.find(
-                c => c.seed === highSeed,
-              );
-
+              
               updates.push({
-                title: `Match ${matchData.matchNumber + 1} goes to ${
-                  contestant.name
-                }`,
+                title: `Match Over`,
+                description: `${highSeedContestant.name} defeated ${lowSeedContestant.name} and will move on to Round ${matchData.roundNumber + 1}`,
                 createdOn: currentDate,
               });
             } else {
               matchData.winnerSeed = 'LOWSEED';
 
-              const lowSeed = matchData.lowSeedNumber;
-              const contestant = tournament.contestants.find(
-                c => c.seed === lowSeed,
-              );
 
               updates.push({
-                title: `Match ${matchData.matchNumber + 1} goes to ${
-                  contestant.name
-                }`,
+                title: `Match Over`,
+                description: `${lowSeedContestant.name} defeated ${highSeedContestant.name} and will move on to Round ${matchData.roundNumber + 1}`,
                 createdOn: currentDate,
               });
             }

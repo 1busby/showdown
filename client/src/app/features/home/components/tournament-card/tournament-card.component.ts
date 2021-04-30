@@ -11,7 +11,7 @@ import { ITournament } from '@app/shared';
   selector: 'tournament-card',
   templateUrl: './tournament-card.component.html',
   styleUrls: ['./tournament-card.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TournamentCardComponent {
   @Input() tournament: ITournament;
