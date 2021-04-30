@@ -5,17 +5,17 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { ITournament, IUser } from '@app/shared';
+import { ITournament } from '@app/shared';
 
 @Component({
   selector: 'tournament-card',
   templateUrl: './tournament-card.component.html',
   styleUrls: ['./tournament-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TournamentCardComponent {
   @Input() tournament: ITournament;
-  @Input() user: IUser;
+  @Input() canDelete: boolean;
   @Output()
   selectTournament: EventEmitter<ITournament> = new EventEmitter<ITournament>();
   @Output() delete: EventEmitter<boolean> = new EventEmitter<boolean>();

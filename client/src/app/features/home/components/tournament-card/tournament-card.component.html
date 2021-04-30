@@ -13,8 +13,8 @@
     {{ tournament.createdOn | date }}
   </mat-card-subtitle>
   
-  <div class="actions">
-  <!-- <div *ngIf="user && tournament?.createdBy?._id === user?._id"> -->
+  <!-- <div class="actions"> -->
+  <div class="actions" *ngIf="canDelete">
     <button mat-icon-button color="warn" (click)="onDelete($event)">
       <mat-icon>delete_outline</mat-icon>
     </button>

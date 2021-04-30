@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
 import { RemoveTournamentGQL, TournamentsGQL } from '@app/core';
-import { ITournament } from '@app/shared';
+import { ITournament, IUser } from '@app/shared';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
@@ -17,6 +17,7 @@ import { ConfirmationDialogComponent } from '@app/shared/components/confirmation
 })
 export class TournamentListComponent {
   @Input() tournaments: ITournament[];
+  @Input() loggedInUser: IUser;
   constructor(
     private router: Router,
     private dialog: MatDialog,

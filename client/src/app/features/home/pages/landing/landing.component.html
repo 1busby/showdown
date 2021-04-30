@@ -1,4 +1,4 @@
-<div class="top-container mat-app-background">
+<!-- <div class="top-container mat-app-background">
   <button
     mat-raised-button
     class="create-button"
@@ -6,14 +6,23 @@
     color="accent"
     (click)="createTournament()"
   >
-    Create Tournament
+    NEW TOURNAMENT
   </button>
-</div>
+</div> -->
+<button
+  mat-raised-button
+  class="create-button mat-elevation-z8"
+  isRoundButton="true"
+  color="accent"
+  (click)="createTournament()"
+>
+  NEW TOURNAMENT
+</button>
 
 <div class="content-container">
   <ng-container *ngIf="allTournaments">
     <h3 style="padding-left: 24px;">Tournaments</h3>
-    <tournament-list [tournaments]="allTournaments"></tournament-list>
+    <tournament-list [tournaments]="allTournaments" [loggedInUser]="loggedInUser"></tournament-list>
   </ng-container>
 <!-- 
   <ng-container *ngIf="allTournaments">

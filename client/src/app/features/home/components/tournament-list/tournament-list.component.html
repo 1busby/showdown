@@ -3,7 +3,7 @@
   <tournament-card
     *ngFor="let tournament of tournaments; trackBy: trackByFn"
     [tournament]="tournament"
-    [user]="loggedInUser"
+    [canDelete]="loggedInUser && tournament?.createdBy?._id === loggedInUser?._id"
     (selectTournament)="viewTournament(tournament)"
     (delete)="deleteTournament(tournament)"
     (userClicked)="openProfile($event)"

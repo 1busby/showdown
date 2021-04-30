@@ -19,7 +19,7 @@ export class LandingComponent implements OnDestroy {
   ngUnsubscribe: Subject<any> = new Subject<any>();
   allTournaments: Partial<ITournament>[];
   allUsers: Partial<IUser>[];
-  loggedInUser;
+  loggedInUser: IUser;
 
   constructor(
     private router: Router,
