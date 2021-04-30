@@ -128,5 +128,7 @@
       />
     </mat-form-field>
   
+
+    <button *ngIf="editMode" mat-stroked-button (click)="deleteTournament()" color="warn" type="button">DELETE</button>
   </div>
 </ng-template>

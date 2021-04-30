@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first, takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 
 import { ITournament, IContestant, IMatch, IUser } from '@app/shared';
 import {
@@ -13,9 +14,11 @@ import {
   RemoveContestantGQL,
   AuthService,
   TournamentsGQL,
+  RemoveTournamentGQL,
 } from '@app/core';
 import { Subject } from 'rxjs';
 import { EditUserGQL } from '@app/core/data/user/edit-user.gql.service';
+import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-home-create-tournament',
@@ -73,15 +76,16 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private dialog: MatDialog,
     private createTournamentGql: CreateTournamentGQL,
     private editTournamentGql: EditTournamentGQL,
     private tournamentGql: TournamentGQL,
     private tournamentsGql: TournamentsGQL,
-    private removeContestantGql: RemoveContestantGQL,
     private updateUserGql: EditUserGQL,
     private bracketHandlerService: BracketHandler,
     private appStore: AppStore,
-    private authService: AuthService
+    private authService: AuthService,
+    private removeTournamentGql: RemoveTournamentGQL,
   ) {
     const currentDate = new Date();
     this.minStartDate = currentDate;
@@ -271,5 +275,43 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
 
   rearrangeContestants(contestants) {
     this.contestants.patchValue(contestants);
+  }
+
+  deleteTournament() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {title: `Delete ${this._tournament.name}?`, message: 'Are you sure you want to delete this tournament?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.removeTournamentGql
+        .mutate(
+          { _id: this._tournament._id },
+          {
+            // Optimistically update tournament list shown on screen
+            update: (proxy, { data: { removeTournament } }: any) => {
+              if (removeTournament === false) {
+                return;
+              }
+              // Read the data from our cache for this query.
+              let { tournaments }: any = proxy.readQuery({
+                query: this.tournamentsGql.document,
+              });
+              // Add our comment from the mutation to the end.\
+              tournaments = tournaments.filter(
+                (m) => m._id !== this._tournament._id
+              );
+              // Write our data back to the cache.
+              proxy.writeQuery({ query: this.tournamentsGql.document, data: { tournaments } });
+            },
+          }
+        )
+        .pipe(first())
+        .subscribe(res => {
+          this.router.navigateByUrl(`/`);
+        });
+
+      }
+    });
   }
 }
