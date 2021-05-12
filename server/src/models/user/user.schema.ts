@@ -11,6 +11,7 @@ export const UserSchema = new mongoose.Schema({
   teams: mongodb.ObjectID,
   createdOn: Date,
   updatedOn: Date,
+  numWins: Number,
   tournaments: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Tournament',

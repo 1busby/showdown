@@ -26,9 +26,9 @@ export const TournamentSchema = new mongoose.Schema({
   hasStarted: Boolean,
   allowRegistration: Boolean,
   allowSelfScoring: Boolean,
+  isComplete: Boolean,
   requireRegistrationApproval: Boolean,
   registrationRequests: [RegistrationRequestSchema],
   structure: String,
-  // anonymousContestants: [anonymousContestantSchema],
   updates: [UpdateSchema]
 });

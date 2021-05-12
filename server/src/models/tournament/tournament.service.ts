@@ -14,7 +14,7 @@ import { CustomLogger } from '@shared/index';
 import { merge } from 'rxjs';
 
 @Injectable()
-export class TournamentsService {
+export class TournamentService {
   constructor(
     @InjectModel('Tournament')
     private readonly tournamentModel: Model<Tournament>,
@@ -165,17 +165,15 @@ export class TournamentsService {
       registrationRequests,
       ...updateData
     } = data;
-    // if (data.contestants && data.contestants.length > 0) {
-    //   const anonymousContestants = [];
-    //   for (let i = data.contestants.length - 1; i >= 0; i--) {
-    //     if (!data.contestants[i].isRegistered) {
-    //       data.contestants[i]._id = new ObjectId() as any;
-    //       anonymousContestants.push(data.contestants[i]);
-    //       data.contestants.splice(i, 1);
-    //     }
-    //   }
-    //   updateData.anonymousContestants = anonymousContestants;
-    // }
+    
+    updateData.contestants.forEach(contestant => {
+      if (contestant._id) {
+        contestant._id = new ObjectId(contestant._id) as any;
+      } else {
+        contestant._id = new ObjectId() as any;
+      }
+
+    })
 
     let matchIds: string[] = [];
     if (matches && matches.length > 0) {

@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 import { IUser } from '@shared/index';
 import { Document } from 'mongoose';
@@ -38,6 +38,9 @@ export class User extends Document implements IUser {
 
   @Field({ nullable: true })
   imageUrl?: string;
+
+  @Field(type => Int, { nullable: true })
+  numWins?: number;
 
   @Field(type => [Tournament], { nullable: 'itemsAndList' })
   tournaments?: Tournament[];

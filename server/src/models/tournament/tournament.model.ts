@@ -63,6 +63,9 @@ export class Tournament extends Document implements ITournament {
   allowSelfScoring?: boolean;
 
   @Field({ nullable: true })
+  isComplete?: boolean;
+
+  @Field({ nullable: true })
   requireRegistrationApproval?: boolean;
 
   @Field(type => [RegistrationRequest], { nullable: 'itemsAndList' })

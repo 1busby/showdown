@@ -19,6 +19,7 @@ export interface ITournament {
   hasStarted?: boolean;
   allowRegistration?: boolean;
   allowSelfScoring?: boolean;
+  isComplete?: boolean;
   requireRegistrationApproval?: boolean;
   registrationRequests?: IRegistrationRequest[];
   structure?: 'single-elim' | 'double-elim' | 'round-robin';

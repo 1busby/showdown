@@ -2,30 +2,32 @@
   <div id="tournament-name">
     <p>
       {{ this.tournament?.name }}
-      <ng-container
-        *ngIf="
-          !tournament.hasStarted &&
-          (!tournament.createdBy ||
-            tournament.createdBy._id === loggedInUser?._id)
-        "
-      >
-        <ng-container *ngIf="isCheckingEditAccess">
-          <mat-spinner color="accent" diameter="30"></mat-spinner>
-        </ng-container>
-        <ng-container *ngIf="!isCheckingEditAccess">
-          <button mat-icon-button color="primary" (click)="editTournament()">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="editTournament(true)"
-          >
-            <mat-icon>play_arrow</mat-icon>
-          </button>
-        </ng-container>
-      </ng-container>
     </p>
+    <div
+      *ngIf="
+        !tournament.hasStarted &&
+        (!tournament.createdBy ||
+          tournament.createdBy._id === loggedInUser?._id)
+      "
+      style="position: absolute; top: 0; left: 15px;"
+    >
+      <ng-container *ngIf="isCheckingEditAccess">
+        <mat-spinner color="accent" diameter="30"></mat-spinner>
+      </ng-container>
+      <ng-container *ngIf="!isCheckingEditAccess">
+        <button mat-stroked-button color="primary" (click)="editTournament()">
+          EDIT
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="editTournament(true)"
+          style="margin-left: 12px;"
+        >
+          RUN
+        </button>
+      </ng-container>
+    </div>
   </div>
 
   <div class="content-large">
@@ -44,6 +46,8 @@
             value="justify"
             (click)="showView('updates')"
             aria-label="Updates"
+            matTooltip="Updates"
+            [matTooltipShowDelay]="tooltipDelay"
           >
             <mat-icon>dynamic_feed</mat-icon>
           </mat-button-toggle>
@@ -52,6 +56,8 @@
             value="center"
             (click)="showView('contestants')"
             aria-label="Contestants"
+            matTooltip="Contestants"
+            [matTooltipShowDelay]="tooltipDelay"
           >
             <mat-icon>people</mat-icon>
           </mat-button-toggle>
@@ -60,6 +66,8 @@
             value="right"
             (click)="showView('matches')"
             aria-label="Matches"
+            matTooltip="Matches"
+            [matTooltipShowDelay]="tooltipDelay"
           >
             <mat-icon>format_list_numbered</mat-icon>
           </mat-button-toggle>
@@ -72,16 +80,24 @@
             "
             value="justify"
             (click)="showView('requests')"
-            aria-label="Updates"
+            aria-label="Registrations"
+            matTooltip=""
+            [matTooltipShowDelay]="tooltipDelay"
           >
             <mat-icon>how_to_reg</mat-icon>
           </mat-button-toggle>
         </mat-button-toggle-group>
 
+        <sd-update-list
+          *ngIf="viewBeingShown === 'updates' || viewBeingShown === 'bracket'"
+          [updates]="tournament.updates"
+        >
+        </sd-update-list>
 
-        <sd-update-list *ngIf="viewBeingShown === 'updates' || viewBeingShown === 'bracket'" [updates]="tournament.updates"> </sd-update-list>
-
-        <ng-container label="Contestants" *ngIf="viewBeingShown === 'contestants'">
+        <ng-container
+          label="Contestants"
+          *ngIf="viewBeingShown === 'contestants'"
+        >
           <!-- <div>
             {{ this.tournament?.contestants?.length || 0 }} /
             {{ this.tournament?.contestantCount || 0 }} Contestants Registered
@@ -91,7 +107,7 @@
             [contestants]="this.tournament?.contestants || []"
           ></contestant-list>
         </ng-container>
-    
+
         <ng-container label="Matches" *ngIf="viewBeingShown === 'matches'">
           <match-list
             [matches]="this.appStore.getWinnersMatchContainers() | async"
@@ -168,6 +184,8 @@
       value="left"
       (click)="showView('bracket')"
       aria-label="Bracket View"
+      matTooltip="Bracket View"
+      [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>schema</mat-icon>
     </mat-button-toggle>
@@ -176,6 +194,8 @@
       value="center"
       (click)="showView('contestants')"
       aria-label="Contestants"
+      matTooltip="Contestants"
+      [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>people</mat-icon>
     </mat-button-toggle>
@@ -184,6 +204,8 @@
       value="right"
       (click)="showView('matches')"
       aria-label="Matches"
+      matTooltip="Matches"
+      [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>format_list_numbered</mat-icon>
     </mat-button-toggle>
@@ -192,6 +214,8 @@
       value="justify"
       (click)="showView('updates')"
       aria-label="Updates"
+      matTooltip="Updates"
+      [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>dynamic_feed</mat-icon>
     </mat-button-toggle>
@@ -204,7 +228,9 @@
       "
       value="justify"
       (click)="showView('requests')"
-      aria-label="Updates"
+      aria-label="Registrations"
+      matTooltip="Registrations"
+      [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>how_to_reg</mat-icon>
     </mat-button-toggle>

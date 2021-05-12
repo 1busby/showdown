@@ -15,15 +15,15 @@ import { PubSub } from 'apollo-server-express';
 import { NewTournamentInput } from './dto/new-tournament.input';
 import { TournamentsArgs } from './dto/tournament.args';
 import { Tournament } from './tournament.model';
-import { TournamentsService } from './tournament.service';
+import { TournamentService } from './tournament.service';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
-import { MatchService } from '@models/match/match.service';
 import { CustomLogger } from '@shared/index';
 import { MatchInput } from '@models/match/dto/match.input';
 import { WebPushService } from '@shared/services/web-push.service';
-// import { UsersService } from '@models/user/user.service';
+import { UserService } from '@models/user/user.service';
+import { Contestant } from '@models/contestant/contestant.model';
 
 const pubSub = new PubSub();
 
@@ -31,8 +31,8 @@ const pubSub = new PubSub();
 export class TournamentResolver {
   constructor(
     private logger: CustomLogger,
-    private readonly tournamentService: TournamentsService,
-    private readonly matchService: MatchService,
+    private readonly tournamentService: TournamentService,
+    private readonly userService: UserService,
     private webPushService: WebPushService,
   ) {}
 
@@ -210,7 +210,6 @@ export class TournamentResolver {
     return this.tournamentService
       .findOneById(matchData.tournamentId)
       .then(tournament => {
-        this.logger.log('LOOK Tournament fetched: ' + tournament);
         const match = tournament.matches.find(
           m => m.matchNumber === matchData.matchNumber,
         );
@@ -238,22 +237,34 @@ export class TournamentResolver {
             const highSeedContestant = tournament.contestants.find(
               c => c.seed === highSeed,
             );
+            let winner;
+            let loser;
+            const nextRound = matchData.roundNumber + 1;
             if (highseedSetsWon > lowseedSetsWon) {
               matchData.winnerSeed = 'HIGHSEED';
-
-              
-              updates.push({
-                title: `Match Over`,
-                description: `${highSeedContestant.name} defeated ${lowSeedContestant.name} and will move on to Round ${matchData.roundNumber + 1}`,
-                createdOn: currentDate,
-              });
+              winner = highSeedContestant;
+              loser = lowSeedContestant;
             } else {
               matchData.winnerSeed = 'LOWSEED';
+              winner = lowSeedContestant;
+              loser = highSeedContestant;
+            }
 
-
+            // If this is the last match
+            if (matchData.matchNumber === tournament.matches.length) {
               updates.push({
-                title: `Match Over`,
-                description: `${lowSeedContestant.name} defeated ${highSeedContestant.name} and will move on to Round ${matchData.roundNumber + 1}`,
+                title: `Tournament Complete`,
+                description: `${winner.name} defeated ${loser.name} to win the Tournament!`,
+                createdOn: currentDate,
+              });
+
+              if (winner.email) {
+                this.userService.incrementWins(winner._id);
+              }
+            } else {
+              updates.push({
+                title: `Match Complete`,
+                description: `${winner.name} defeated ${loser.name} and will move on to Round ${nextRound}`,
                 createdOn: currentDate,
               });
             }

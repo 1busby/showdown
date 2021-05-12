@@ -14,6 +14,7 @@ export interface IUser extends IContestant {
   iconPublicAddress?: string;
   pushSubscription?: string;
   imageUrl?: string;
+  numWins?: number;
 
   // front end only
   token?: string;

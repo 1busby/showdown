@@ -208,6 +208,7 @@ type Tournament {
   hasStarted: Boolean
   allowRegistration: Boolean
   allowSelfScoring: Boolean
+  isComplete: Boolean
   requireRegistrationApproval: Boolean
   registrationRequests: [RegistrationRequest]
   structure: String
@@ -288,5 +289,6 @@ type User {
   updatedOn: Date
   pushSubscription: String
   imageUrl: String
+  numWins: Int
   tournaments: [Tournament!]!
 }

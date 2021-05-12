@@ -40,6 +40,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     | 'updates'
     | 'requests' = 'bracket';
   isContestant = false;
+  tooltipDelay = 500;
 
   constructor(
     private router: Router,
