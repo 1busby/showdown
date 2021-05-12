@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'bracket-view',
   templateUrl: './bracket-view.component.html',
   styleUrls: ['./bracket-view.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BracketViewComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy {
@@ -60,8 +60,9 @@ export class BracketViewComponent
     if (changes.tournament.firstChange) return;
     this.changeDetectorRef.detectChanges();
 
-    // const matches = this.bracketHandler.createBracket(this.tournament);
-    // this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
+    debugger
+    const matches = this.bracketHandler.createBracket(this.tournament);
+    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
 
   ngOnInit() {
@@ -119,6 +120,7 @@ export class BracketViewComponent
     ctx.strokeStyle = '#71BC76';
     ctx.lineWidth = 5;
     matches.forEach((match: MatchContainer) => {
+      // debugger
       if (match.highMatch && match.highMatch.hasLowSeed) {
         ctx.beginPath();
         const from = match.highMatch.getLineConnectionPoint('next');

@@ -381,6 +381,7 @@ export class BracketHandler {
             soonToBeRemovedMatches.push(thisMatch);
             soonToBeRemovedIndexes.push(j);
             thisMatch.updateWinner(MatchContainer.HIGHSEED);
+            thisMatch.isRemovable = true;
           }
           thisMatch.top =
             (this.matchHeight + this.margin) * j + this.margin * (j + 1);
@@ -391,6 +392,13 @@ export class BracketHandler {
             (thisMatch.highMatch.top - thisMatch.lowMatch.top) / 2;
           thisMatch.left =
             thisMatch.highMatch.left + this.matchWidth + this.margin * 3; //* (i + 1);
+
+          if (thisMatch.highMatch.isRemovable) {
+            thisMatch.highMatch = null;
+          }
+          if (thisMatch.lowMatch.isRemovable) {
+            thisMatch.lowMatch = null;
+          }
         }
         thisMatch.width = this.matchWidth;
         thisMatch.height = this.matchHeight;

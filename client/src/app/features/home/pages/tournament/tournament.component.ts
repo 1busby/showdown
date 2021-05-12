@@ -72,9 +72,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
           this.tournamentGql
             .watch(
               { linkCode: params.get('linkCode') },
-              {
-                returnPartialData: true,
-              }
+              // {
+              //   returnPartialData: true,
+              // }
             )
             .valueChanges.pipe(takeUntil(this.ngUnsubscribe))
         ),
