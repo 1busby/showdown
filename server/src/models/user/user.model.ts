@@ -39,6 +39,9 @@ export class User extends Document implements IUser {
   @Field({ nullable: true })
   imageUrl?: string;
 
+  @Field({ nullable: true })
+  isSuperAdmin?: boolean;
+
   @Field(type => Int, { nullable: true })
   numWins?: number;
 

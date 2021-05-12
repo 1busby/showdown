@@ -91,3 +91,21 @@ app-home > div > * {
 .match-detail-panel > .mat-dialog-container {
   border-radius: 25px;
 }
+
+.my-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: max-content;
+}
+
+.my-center-vertical {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}

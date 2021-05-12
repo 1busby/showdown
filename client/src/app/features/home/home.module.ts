@@ -21,6 +21,7 @@ import { NewShowdownComponent } from './components/new-showdown/new-showdown.com
 import { UpdateListComponent } from './components/update-list/update-list.component';
 import { TournamentListComponent } from './components/tournament-list/tournament-list.component';
 import { RegistrationRequestListComponent } from './components/registration-request-list/registration-request-list.component';
+import { ContestantBannerComponent } from './components/contestant-banner/contestant-banner.component';
 
 const gravatarConfig: GravatarConfig = {
   fallback: FALLBACK.robohash,
@@ -53,7 +54,8 @@ const gravatarConfig: GravatarConfig = {
     NewShowdownComponent,
     UpdateListComponent,
     TournamentListComponent,
-    RegistrationRequestListComponent
+    RegistrationRequestListComponent,
+    ContestantBannerComponent
   ],
   providers: [MatchService],
   bootstrap: [

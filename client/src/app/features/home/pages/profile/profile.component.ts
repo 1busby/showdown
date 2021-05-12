@@ -37,6 +37,8 @@ export class ProfileComponent implements OnDestroy {
     private iconService: IconTransactionService,
     private createShowdownGql: CreateShowdownGQL
   ) {
+    // force route reload whenever params change;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.route.params
       .pipe(
         takeUntil(this.ngUnsubscribe),

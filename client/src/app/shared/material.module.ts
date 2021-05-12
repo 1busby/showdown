@@ -23,6 +23,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatRippleModule } from '@angular/material/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 
@@ -52,8 +53,9 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatRippleModule,
     OverlayModule,
-    CdkStepperModule
+    CdkStepperModule,
   ],
 })
 export class MaterialModule {}

@@ -21,8 +21,8 @@
   </div>
 
   <mat-card-footer style="padding: 8px;" (click)="onUserClick($event, tournament.createdBy)">
-    <button mat-button>
-      {{ tournament.createdBy?.username }}
-    </button>
+    <div  style="width: 50%;">
+      <sd-contestant-banner matRipple [contestant]="tournament.createdBy"></sd-contestant-banner>
+    </div>
   </mat-card-footer>
 </mat-card>
