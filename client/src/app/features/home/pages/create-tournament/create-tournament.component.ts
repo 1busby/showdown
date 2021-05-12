@@ -11,7 +11,6 @@ import {
   EditTournamentGQL,
   AppStore,
   BracketHandler,
-  RemoveContestantGQL,
   AuthService,
   TournamentsGQL,
   RemoveTournamentGQL,

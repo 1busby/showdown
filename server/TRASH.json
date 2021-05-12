@@ -1,151 +1,80 @@
 {
-  "_id": "605adc1c3587f9a295e90132",
-  "name": "require approval",
-  "description": "asdfsd",
-  "contestantCount": 4,
-  "createdBy": {
-    "tournaments": [
-      "6044428beeae5d6dfec09181",
-      "60444367eeae5d6dfec09189",
-      "6045066234b14a6687f23328",
-      "60450719387fc26d2108ec0f",
-      "604509beded68a821545528c",
-      "60450dd0cebb211e3fc8609b",
-      "60451969ecff083f0819e20b",
-      "60451babe057d28067515e5a",
-      "604520f9cb8164ad20aa7e89",
-      "6045236b7c631ace5fbce3c6",
-      "60454adb65969b70fb66ff8f",
-      "604555f9064deac1b554129f",
-      "60468fd6b447fdb4f8a7dc1d",
-      "605179e19ec1325568e4f6ab",
-      "60517a429ec1325568e4f6ba",
-      "60517af49ec1325568e4f6c0",
-      "60517b189ec1325568e4f6c8",
-      "60517b439ec1325568e4f6ee",
-      "60517e179ec1325568e4f7f9",
-      "60517e279ec1325568e4f80e",
-      "60518d40a93b8b4f3ff85e38",
-      "60518dbea93b8b4f3ff85f54",
-      "6051b6bca93b8b4f3ff85f80",
-      "6051c44da93b8b4f3ff8601e",
-      "6052a2ef6c16830f5c796001",
-      "605ad9729a80063d4f96b64e",
-      "605adab59a80063d4f96b668",
-      "605adb799a80063d4f96b676",
-      "605adc1c3587f9a295e90132"
-    ],
-    "_id": "6035c314a453ba3dc552952e",
-    "dId": "did:ethr:0x5271F39CEbc7a3e984f593d682322941A2d22422",
-    "username": "busby",
-    "email": "busbyBAM@gmail.com",
-    "iconPublicAddress": "hx061169bd54f68158f47c91e4db5d858b2c390304",
-    "createdOn": "2021-02-24T03:08:04.903Z",
-    "updatedOn": "2021-02-24T03:08:04.903Z",
-    "isRegistered": true,
-    "__v": 0,
-    "pushSubscription": "{\"endpoint\":\"https://updates.push.services.mozilla.com/wpush/v2/gAAAAABgRo-fTUkr0QpETX0vLDj6MPD0ecG7hEKwK859LK7IlOn2hpB-CHkDkzMXA--GL1RWNTEgJ4OrSrjz9SihvjVe3BvT7Liis2XKPRDLEIIThi9IHo87VISyS5SW9XwETAPOg1sHe4tsA2OsDeVxsPwJXqGjFXQiiARNDUPBH4Yh_WbFc8k\",\"keys\":{\"auth\":\"13dy7shiIKAktgaMUsnqgA\",\"p256dh\":\"BKrXXL_jrsAbA-ulG4rD4WV7VJ4kMqYpfqiiE5r9MzXSIV8sKMzgdTrQ0gFSNWkpAnxxriayAhEBMizu-utvqSE\"}}"
-  },
+  "_id": "609b87ad2a7e44193dc4ceee",
+  "name": "1234",
+  "description": "",
+  "contestantCount": 6,
   "contestants": [],
   "matches": [
     {
-      "_id": "605adc1c3587f9a295e90133",
+      "_id": "609b87ad2a7e44193dc4ceef",
       "matchNumber": 0,
       "roundNumber": 1,
       "highSeedNumber": null,
       "lowSeedNumber": null,
+      "winnerSeed": null,
       "sets": [
-        { "_id": "605adc1c3587f9a295e90134", "orderNumber": 1 },
-        { "_id": "605adc1c3587f9a295e90135", "orderNumber": 2 },
-        { "_id": "605adc1c3587f9a295e90136", "orderNumber": 3 }
+        {
+          "_id": "609b87ad2a7e44193dc4cef0",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
       ]
     },
     {
-      "_id": "605adc1c3587f9a295e90137",
+      "_id": "609b87ad2a7e44193dc4cef1",
       "matchNumber": 1,
       "roundNumber": 1,
       "highSeedNumber": null,
       "lowSeedNumber": null,
+      "winnerSeed": null,
       "sets": [
-        { "_id": "605adc1c3587f9a295e90138", "orderNumber": 1 },
-        { "_id": "605adc1c3587f9a295e90139", "orderNumber": 2 },
-        { "_id": "605adc1c3587f9a295e9013a", "orderNumber": 3 }
+        {
+          "_id": "609b87ad2a7e44193dc4cef2",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
       ]
     },
     {
-      "_id": "605adc1c3587f9a295e9013b",
+      "_id": "609b87ad2a7e44193dc4cef3",
       "matchNumber": 2,
       "roundNumber": 2,
       "highSeedNumber": null,
       "lowSeedNumber": null,
+      "winnerSeed": null,
       "sets": [
-        { "_id": "605adc1c3587f9a295e9013c", "orderNumber": 1 },
-        { "_id": "605adc1c3587f9a295e9013d", "orderNumber": 2 },
-        { "_id": "605adc1c3587f9a295e9013e", "orderNumber": 3 }
-      ]
-    }
-  ],
-  "editAccessCode": "123",
-  "setCount": 3,
-  "allowRegistration": true,
-  "allowSelfScoring": false,
-  "requireRegistrationApproval": true,
-  "structure": "single-elim",
-  "linkCode": "CHu3WQg1N",
-  "createdOn": "2021-03-24T06:28:44.332Z",
-  "updatedOn": "2021-03-24T06:28:44.332Z",
-  "updates": [
-    {
-      "_id": "605adc1c3587f9a295e9013f",
-      "title": "Tournament created!",
-      "createdOn": "2021-03-24T06:28:44.332Z"
-    }
-  ],
-  "__v": 0,
-  "registrationRequests": [
-    {
-      "_id": "605af3cb05f160669f541680",
-      "contestant": {
-        "_id": "605af3cb05f160669f541681",
-        "profile": {
-          "tournaments": [
-            "603848f31764eb50e9d8a2e4",
-            "603ae004493059e76fb17485",
-            "6042a0933ececc3ffc4e3b4c",
-            "6042a2e63ececc3ffc4e3b51",
-            "6044134fdd2a520774a4139c",
-            "60441d339ec35006699041c4",
-            "60441e829ec35006699041cc",
-            "60441e9a9ec35006699041d6",
-            "6044238a69431b7b9c0896e0",
-            "60448454c860cce0669e84c4",
-            "60448b98c860cce0669e84d4",
-            "6044b02cc860cce0669e84dc",
-            "6044b0ccc860cce0669e84e4",
-            "6044b152c860cce0669e84ec",
-            "6044c98763dde5a43cd1382d",
-            "6044cdf72047bbc9f03c23b2",
-            "6044d22d9c6cbae3e4bd502e",
-            "6044d46ce544d2fcdad0521d",
-            "604500262e291c219b8fce23",
-            "604502092e291c219b8fce32",
-            "60454de83dc92783e5de45ed",
-            "604ad1a8a58a431082f03345",
-            "604ce6e01fdea65ddef759e5",
-            "604ceba41fdea65ddef75a03"
-          ],
-          "_id": "6035c490a453ba3dc552952f",
-          "dId": "did:ethr:0x806098A5559Df2728aaD6205bc5a9498cBB2689A",
-          "username": "Alexander",
-          "email": "mbusbyIT@gmail.com",
-          "iconPublicAddress": "hxe2830edbae09838bd32bd262491d6ec2916d3240",
-          "createdOn": "2021-02-24T03:14:24.343Z",
-          "updatedOn": "2021-02-24T03:14:24.343Z",
-          "isRegistered": true,
-          "__v": 0,
-          "pushSubscription": "{\"endpoint\":\"https://fcm.googleapis.com/fcm/send/dSjLb9mAhZU:APA91bHpZO0jDA9q0clB0YPPRmXEFjt0wmmyOIYwKLXP62uq2TgMd_N6meb-gM5g3LFYhXFjI47_U8CRcpAdGwzAtZuwDxYnPMvCG4P0WN6pYCUVdIRCjabie31LESicWCUZ-CMX8YPM\",\"expirationTime\":null,\"keys\":{\"p256dh\":\"BAU9XXvqc1wsClRS6EKi8BFEur3igNKuiwM6RRc_FV1sb-hnLBHM0aJnkUcxWVQkgzsV-8RMz6EwSJPFX3QLhUQ\",\"auth\":\"_u5k-X2k3f5uO-alxECf4A\"}}"
+        {
+          "_id": "609b87ad2a7e44193dc4cef4",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
         }
-      }
+      ]
+    },
+    {
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1 }]
+    },
+    {
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1 }]
     }
-  ]
+  ],
+  "editAccessCode": "",
+  "setCount": 1,
+  "allowRegistration": false,
+  "allowSelfScoring": false,
+  "structure": "single-elim"
 }

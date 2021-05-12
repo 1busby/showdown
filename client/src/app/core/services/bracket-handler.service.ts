@@ -51,8 +51,9 @@ export class BracketHandler {
     this.losersMatchContainers = this.defineLosersLayoutPlacements();
 
     if (
-      this.activeTournament.matches &&
-      this.activeTournament.matches.length > 0
+      // this.activeTournament.matches &&
+      // this.activeTournament.matches.length > 0
+      this.activeTournament.hasStarted
     ) {
       [...this.matchContainers, ...this.losersMatchContainers].forEach(
         (match, i) => {

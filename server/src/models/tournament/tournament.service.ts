@@ -165,48 +165,66 @@ export class TournamentService {
       registrationRequests,
       ...updateData
     } = data;
-    
+
     updateData.contestants.forEach(contestant => {
       if (contestant._id) {
         contestant._id = new ObjectId(contestant._id) as any;
       } else {
         contestant._id = new ObjectId() as any;
       }
-
-    })
+    });
 
     let matchIds: string[] = [];
+    const newMatches = [];
     if (matches && matches.length > 0) {
       matchIds = matches.map(match => {
-        match._id = new ObjectId(match._id) as any;
+        if (match._id) {
+          match._id = new ObjectId(match._id) as any;
+        } else {
+          match._id = new ObjectId() as any;
+          newMatches.push(match);
+        }
+
+        match.sets.forEach(set => {
+          if (set._id) {
+            set._id = new ObjectId(set._id) as any;
+          } else {
+            set._id = new ObjectId() as any;
+          }
+        });
         return match._id;
       });
       updateData.matches = {
-        $map: {
-          input: '$matches',
-          as: 'match',
-          in: {
-            $cond: {
-              if: {
-                $in: ['$$match._id', matchIds],
-              },
-              then: {
-                $mergeObjects: [
-                  '$$match',
-                  {
-                    $arrayElemAt: [
-                      matches,
+        $concatArrays: [
+          {
+            $map: {
+              input: '$matches',
+              as: 'match',
+              in: {
+                $cond: {
+                  if: {
+                    $in: ['$$match._id', matchIds],
+                  },
+                  then: {
+                    $mergeObjects: [
+                      '$$match',
                       {
-                        $indexOfArray: [matchIds, '$$match._id'],
+                        $arrayElemAt: [
+                          matches,
+                          {
+                            $indexOfArray: [matchIds, '$$match._id'],
+                          },
+                        ],
                       },
                     ],
                   },
-                ],
+                  else: '$$match',
+                },
               },
-              else: '$$match',
             },
           },
-        },
+          newMatches
+        ],
       };
     }
 
