@@ -19,7 +19,7 @@ import { TournamentService } from './tournament.service';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
-import { CustomLogger } from '@shared/index';
+import { CustomLogger, IContestant } from '@shared/index';
 import { MatchInput } from '@models/match/dto/match.input';
 import { WebPushService } from '@shared/services/web-push.service';
 import { UserService } from '@models/user/user.service';
@@ -237,8 +237,8 @@ export class TournamentResolver {
             const highSeedContestant = tournament.contestants.find(
               c => c.seed === highSeed,
             );
-            let winner;
-            let loser;
+            let winner: IContestant;
+            let loser: IContestant;
             const nextRound = matchData.roundNumber + 1;
             if (highseedSetsWon > lowseedSetsWon) {
               matchData.winnerSeed = 'HIGHSEED';
@@ -251,20 +251,20 @@ export class TournamentResolver {
             }
 
             // If this is the last match
-            if (matchData.matchNumber === tournament.matches.length) {
+            if (matchData.matchNumber === tournament.matches.length - 1) {
               updates.push({
                 title: `Tournament Complete`,
-                description: `${winner.name} defeated ${loser.name} to win the Tournament!`,
+                description: `${winner.profile ? winner.profile.username : winner.name} defeated ${loser.profile ? loser.profile.username : loser.name} to win the Tournament!`,
                 createdOn: currentDate,
               });
 
-              if (winner.email) {
-                this.userService.incrementWins(winner._id);
+              if (winner.profile) {
+                this.userService.incrementWins(winner.profile._id);
               }
             } else {
               updates.push({
                 title: `Match Complete`,
-                description: `${winner.name} defeated ${loser.name} and will move on to Round ${nextRound}`,
+                description: `${winner.profile ? winner.profile.username : winner.name} defeated ${loser.profile ? loser.profile.username : loser.name} and will move on to Round ${nextRound}`,
                 createdOn: currentDate,
               });
             }

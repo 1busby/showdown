@@ -74,15 +74,19 @@ export class TournamentService {
             model: 'User',
           },
         })
+        .populate({
+          path: 'contestants.profile',
+          model: 'User',
+        })
         // .populate('registrationRequests')
         // .populate({
         //   path: 'registrationRequests.contestant',
         //   model: 'Contestant',
         // })
-        // .populate({
-        //   path: 'registrationRequests.contestant.profile',
-        //   model: 'User',
-        // })
+        .populate({
+          path: 'registrationRequests.contestant.profile',
+          model: 'User',
+        })
         // .then(tournament => {
         //   tournament = tournament.toJSON();
         //   tournament.contestants = [
@@ -110,14 +114,18 @@ export class TournamentService {
             model: 'User',
           },
         })
+        .populate({
+          path: 'contestants.profile',
+          model: 'User',
+        })
         // .populate({
         //   path: 'registrationRequests.contestant',
         //   model: 'Contestant',
         // })
-        // .populate({
-        //   path: 'registrationRequests.contestant.profile',
-        //   model: 'User',
-        // })
+        .populate({
+          path: 'registrationRequests.contestant.profile',
+          model: 'User',
+        })
         // .then(tournament => {
         //   tournament = tournament.toJSON();
         //   tournament.contestants = [
