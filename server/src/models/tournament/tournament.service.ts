@@ -352,8 +352,6 @@ export class TournamentService {
   }
 
   addContestant(tournamentId, seed?, name?, userId?) {
-    this.logger.log('LOOK addContestant seed ', seed);
-    this.logger.log('LOOK addContestant userId ', userId);
     const contestant = {
       _id: new ObjectId(),
       seed,

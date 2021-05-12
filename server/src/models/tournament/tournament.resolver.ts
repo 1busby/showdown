@@ -169,7 +169,7 @@ export class TournamentResolver {
         contestant => {
           return (
             contestant.name === contestantName ||
-            contestant.profile.id === userId
+            (contestant.profile && contestant.profile._id === userId)
           );
         },
       );
@@ -254,7 +254,11 @@ export class TournamentResolver {
             if (matchData.matchNumber === tournament.matches.length - 1) {
               updates.push({
                 title: `Tournament Complete`,
-                description: `${winner.profile ? winner.profile.username : winner.name} defeated ${loser.profile ? loser.profile.username : loser.name} to win the Tournament!`,
+                description: `${
+                  winner.profile ? winner.profile.username : winner.name
+                } defeated ${
+                  loser.profile ? loser.profile.username : loser.name
+                } to win the Tournament!`,
                 createdOn: currentDate,
               });
 
@@ -264,7 +268,11 @@ export class TournamentResolver {
             } else {
               updates.push({
                 title: `Match Complete`,
-                description: `${winner.profile ? winner.profile.username : winner.name} defeated ${loser.profile ? loser.profile.username : loser.name} and will move on to Round ${nextRound}`,
+                description: `${
+                  winner.profile ? winner.profile.username : winner.name
+                } defeated ${
+                  loser.profile ? loser.profile.username : loser.name
+                } and will move on to Round ${nextRound}`,
                 createdOn: currentDate,
               });
             }
@@ -289,13 +297,11 @@ export class TournamentResolver {
   ): Promise<Tournament> {
     const tournament = await this.tournamentService.findOneById(tournamentId);
     // TODO send notification to user
-    const request = tournament.registrationRequests.find(
-      request => {
-        const id = request._id;
-        console.log('1234');
-        return request._id == requestId
-      }
-    );
+    const request = tournament.registrationRequests.find(request => {
+      const id = request._id;
+      console.log('1234');
+      return request._id == requestId;
+    });
 
     let seed = 0;
     for (let i = 1; i <= tournament.contestantCount; i++) {
