@@ -418,12 +418,12 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.viewBeingShown = view;
   }
 
-  reviewRegistrationRequest(request, isApproved) {
+  reviewRegistrationRequest(event) {
     this.editRegistrationRequestGql
       .mutate({
-        requestId: request._id,
+        requestId: event.request._id,
         tournamentId: this.tournament._id,
-        isApproved,
+        isApproved: event.isApproved,
       })
       .pipe(first())
       .subscribe();

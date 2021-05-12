@@ -9,7 +9,7 @@
         (!tournament.createdBy ||
           tournament.createdBy._id === loggedInUser?._id)
       "
-      style="position: absolute; top: 0; left: 15px;"
+      style="position: absolute; top: 0; left: 15px"
     >
       <ng-container *ngIf="isCheckingEditAccess">
         <mat-spinner color="accent" diameter="30"></mat-spinner>
@@ -22,7 +22,7 @@
           mat-raised-button
           color="primary"
           (click)="editTournament(true)"
-          style="margin-left: 12px;"
+          style="margin-left: 12px"
         >
           RUN
         </button>
@@ -81,7 +81,7 @@
             value="justify"
             (click)="showView('requests')"
             aria-label="Registrations"
-            matTooltip=""
+            matTooltip="Registration Requests"
             [matTooltipShowDelay]="tooltipDelay"
           >
             <mat-icon>how_to_reg</mat-icon>
@@ -113,6 +113,13 @@
             [matches]="this.appStore.getWinnersMatchContainers() | async"
             (showMatchDetailsEmitter)="showMatchDetails($event)"
           ></match-list>
+        </ng-container>
+
+        <ng-container label="Requests" *ngIf="viewBeingShown === 'requests'">
+          <sd-registration-request-list
+            [requests]="tournament.registrationRequests"
+            (approvalDecisionEmitter)="reviewRegistrationRequest($event)"
+          ></sd-registration-request-list>
         </ng-container>
       </div>
     </div>
@@ -149,30 +156,10 @@
     </ng-container>
 
     <ng-container label="Requests" *ngIf="viewBeingShown === 'requests'">
-      <div>
-        <ng-container *ngFor="let request of tournament.registrationRequests">
-          <div *ngIf="!request.isReviewed">
-            {{
-              request.contestant.profile?.username || request.contestant.name
-            }}
-            wants to join the tournament
-            <button
-              mat-stroked-button
-              color="primary"
-              (click)="reviewRegistrationRequest(request, true)"
-            >
-              APPROVE
-            </button>
-            <button
-              mat-stroked-button
-              color="warn"
-              (click)="reviewRegistrationRequest(request, false)"
-            >
-              DENY
-            </button>
-          </div>
-        </ng-container>
-      </div>
+      <sd-registration-request-list
+        [requests]="tournament.registrationRequests"
+        (approvalDecisionEmitter)="reviewRegistrationRequest($event)"
+      ></sd-registration-request-list>
     </ng-container>
   </div>
 
@@ -229,7 +216,7 @@
       value="justify"
       (click)="showView('requests')"
       aria-label="Registrations"
-      matTooltip="Registrations"
+      matTooltip="Registration Requests"
       [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>how_to_reg</mat-icon>

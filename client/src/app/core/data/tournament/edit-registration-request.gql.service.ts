@@ -20,6 +20,18 @@ export class EditRegistrationRequestGQL extends Mutation<{
         tournamentId: $tournamentId
         isApproved: $isApproved
       ) {
+        contestants {
+          _id
+          name
+          seed
+          points
+          isRegistered
+          profile {
+            _id
+            username
+            imageUrl
+          }
+        }
         registrationRequests {
           _id
           isReviewed

@@ -1,0 +1,36 @@
+<div class="outer-container">
+  <mat-list class="list-container">
+    <ng-container
+      *ngFor="let request of requests; let i = index; trackBy: trackById"
+    >
+      <mat-list-item *ngIf="!request.isReviewed" class="request-list-item">
+        <mat-card class="request">
+          <div>
+            {{
+              request.contestant.profile?.username || request.contestant.name
+            }}
+            wants to join the tournament
+          </div>
+          <mat-card-actions>
+            <button
+              mat-button
+              color="primary"
+              (click)="approvalDecisionEmitter.emit({ request: request, isApproved: true })"
+            >
+              APPROVE
+            </button>
+            <button
+              mat-button
+              color="warn"
+              (click)="approvalDecisionEmitter.emit({ request: request, isApproved: false })"
+            >
+              DENY
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-list-item>
+    </ng-container>
+  </mat-list>
+
+  <div class="options-container" *ngIf="false"></div>
+</div>

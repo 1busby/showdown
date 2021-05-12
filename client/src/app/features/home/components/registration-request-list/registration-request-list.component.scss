@@ -18,7 +18,7 @@
   overflow: auto;
 }
 
-mat-list-item.update-list-item {
+mat-list-item.request-list-item {
   height: fit-content;
   cursor: pointer;
 
@@ -27,7 +27,7 @@ mat-list-item.update-list-item {
   }
 }
 
-.update {
+.request {
   margin-top: 16px;
   width: 100%;
   border-style: solid;
@@ -36,11 +36,10 @@ mat-list-item.update-list-item {
   border-radius: 25px;
   height: 100%;
   overflow: hidden;
-  z-index: -1;
   padding: 12px;
 }
 
-.update__footer {
+.request__footer {
   display: contents;
   font-size: 0.8rem;
   color: #ddd;

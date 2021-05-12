@@ -65,6 +65,7 @@ export class TournamentService {
         .findById(id)
         .populate('updates')
         .populate('createdBy')
+        .populate('registrationRequests')
         .populate('contestants')
         .populate({
           path: 'contestants',
@@ -78,10 +79,10 @@ export class TournamentService {
         //   path: 'registrationRequests.contestant',
         //   model: 'Contestant',
         // })
-        .populate({
-          path: 'registrationRequests.contestant.profile',
-          model: 'User',
-        })
+        // .populate({
+        //   path: 'registrationRequests.contestant.profile',
+        //   model: 'User',
+        // })
         // .then(tournament => {
         //   tournament = tournament.toJSON();
         //   tournament.contestants = [
@@ -100,6 +101,7 @@ export class TournamentService {
         .findOne({ linkCode })
         .populate('updates')
         .populate('createdBy')
+        .populate('registrationRequests')
         .populate('contestants')
         .populate({
           path: 'contestants',
@@ -108,15 +110,14 @@ export class TournamentService {
             model: 'User',
           },
         })
-        // .populate('registrationRequests')
         // .populate({
         //   path: 'registrationRequests.contestant',
         //   model: 'Contestant',
         // })
-        .populate({
-          path: 'registrationRequests.contestant.profile',
-          model: 'User',
-        })
+        // .populate({
+        //   path: 'registrationRequests.contestant.profile',
+        //   model: 'User',
+        // })
         // .then(tournament => {
         //   tournament = tournament.toJSON();
         //   tournament.contestants = [
@@ -166,13 +167,15 @@ export class TournamentService {
       ...updateData
     } = data;
 
-    updateData.contestants.forEach(contestant => {
-      if (contestant._id) {
-        contestant._id = new ObjectId(contestant._id) as any;
-      } else {
-        contestant._id = new ObjectId() as any;
-      }
-    });
+    if (updateData.contestants && updateData.contestants.length > 0) {
+      updateData.contestants.forEach(contestant => {
+        if (contestant._id) {
+          contestant._id = new ObjectId(contestant._id) as any;
+        } else {
+          contestant._id = new ObjectId() as any;
+        }
+      });
+    }
 
     let matchIds: string[] = [];
     const newMatches = [];
@@ -223,7 +226,7 @@ export class TournamentService {
               },
             },
           },
-          newMatches
+          newMatches,
         ],
       };
     }
