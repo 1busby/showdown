@@ -21,6 +21,7 @@ import { EditAccessDialogComponent } from '../../components/edit-access-dialog/e
 import { MatchService } from '../../services/match.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PushSubscriptionsDialogComponent } from '../../components/push-subscriptions-dialog/push-subscriptions-dialog.component';
 
 @Component({
   selector: 'app-home-tournament',
@@ -71,7 +72,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         switchMap((params: ParamMap) =>
           this.tournamentGql
             .watch(
-              { linkCode: params.get('linkCode') },
+              { linkCode: params.get('linkCode') }
               // {
               //   returnPartialData: true,
               // }
@@ -164,6 +165,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
             message = 'You have successfully joined this tournament!';
           }
           this.alertService.success(message);
+          this.requestNotificationSubscription();
 
           // // TODO Optimize
           // const matchContainers = this.bracketHandlerService.createBracket(
@@ -208,7 +210,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
               })
               .pipe(first())
               .subscribe((result) => {
-                console.log('LOOK joinTournament result: ', result);
+                let message;
+                if (this.tournament.requireRegistrationApproval) {
+                  message =
+                    'You have successfully requested to join this tournament!';
+                } else {
+                  message = 'You have successfully joined this tournament!';
+                }
+
+                this.alertService.success(message);
+                this.requestNotificationSubscription();
               });
           } else if (contestant.id && contestant.id.length > 0) {
             this.joinTournamentGql
@@ -227,6 +238,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
                 }
 
                 this.alertService.success(message);
+                this.requestNotificationSubscription();
               });
           }
         });
@@ -427,5 +439,20 @@ export class TournamentComponent implements OnInit, OnDestroy {
       })
       .pipe(first())
       .subscribe();
+  }
+
+  requestNotificationSubscription() {
+    const dialogRef = this.dialog.open(PushSubscriptionsDialogComponent);
+
+    dialogRef
+      .afterClosed()
+      .pipe(first())
+      .subscribe((confirmation) => {
+        debugger
+        if (confirmation && this.loggedInUser && !this.loggedInUser.pushSubscription) {
+            // TODO: dont immediately ask
+            this.alertService.subscribeToNotifications(this.loggedInUser);
+        }
+      });
   }
 }

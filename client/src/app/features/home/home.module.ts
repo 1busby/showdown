@@ -22,6 +22,7 @@ import { UpdateListComponent } from './components/update-list/update-list.compon
 import { TournamentListComponent } from './components/tournament-list/tournament-list.component';
 import { RegistrationRequestListComponent } from './components/registration-request-list/registration-request-list.component';
 import { ContestantBannerComponent } from './components/contestant-banner/contestant-banner.component';
+import { PushSubscriptionsDialogComponent } from './components/push-subscriptions-dialog/push-subscriptions-dialog.component';
 
 const gravatarConfig: GravatarConfig = {
   fallback: FALLBACK.robohash,
@@ -48,6 +49,7 @@ const gravatarConfig: GravatarConfig = {
     QuickJoinDialogComponent,
     EditAccessDialogComponent,
     MatchDetailDialogComponent,
+    PushSubscriptionsDialogComponent,
     MatchListComponent,
     BracketViewComponent,
     MatchCardComponent,
@@ -61,6 +63,7 @@ const gravatarConfig: GravatarConfig = {
   bootstrap: [
     QuickJoinDialogComponent,
     EditAccessDialogComponent,
+    PushSubscriptionsDialogComponent,
     MatchDetailDialogComponent,
     NewShowdownComponent,
   ],

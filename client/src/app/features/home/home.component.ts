@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 
-import { AppStore, AuthService, AlertService, EditUserGQL } from '@app/core';
+import { AppStore, AuthService, AlertService} from '@app/core';
 import { IUser, LoginComponent } from '@app/shared';
-import { Router } from '@angular/router';
-import { SwPush } from '@angular/service-worker';
 
 @Component({
   selector: 'app-home',
@@ -29,8 +28,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     public dialog: MatDialog,
     private router: Router,
-    private swPush: SwPush,
-    private editUserGql: EditUserGQL
   ) {
     this.alertService
       .getAlert()
@@ -54,10 +51,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       console.log('LOOK homeComponent user ', user);
       this.user = user;
-      if (user && !user.pushSubscription) {
-        // TODO: dont immediately ask
-        this.subscribeToNotifications();
-      }
     });
   }
 
@@ -82,21 +75,5 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   openProfile() {
     this.router.navigateByUrl(`/profile/${this.user.username}`);
-  }
-
-  subscribeToNotifications() {
-    this.swPush
-      .requestSubscription({
-        serverPublicKey: this.VAPID_PUBLIC_KEY,
-      })
-      .then((sub) => {
-        this.editUserGql.mutate({ 
-          _id: this.user._id,
-          pushSubscription: JSON.stringify(sub)
-        }).pipe(first()).subscribe();
-      })
-      .catch((err) =>
-        console.error('Could not subscribe to notifications', err)
-      );
   }
 }
