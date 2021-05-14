@@ -9,7 +9,7 @@
     <div class="high">
       <div class="high__left">
         <sd-contestant-banner [contestant]="match?.highSeed"></sd-contestant-banner>
-        <p *ngIf="!match?.highSeed" class="placeholder-text">
+        <p *ngIf="!match?.highSeed" class="placeholder-text my-center">
           {{ getPlaceholderText('high') }}
         </p>
       </div>
@@ -23,7 +23,7 @@
     <div class="low">
       <div class="low__left">
         <sd-contestant-banner [contestant]="match?.lowSeed"></sd-contestant-banner>
-        <p *ngIf="!match?.lowSeed" class="placeholder-text">
+        <p *ngIf="!match?.lowSeed" class="placeholder-text my-center">
           {{ getPlaceholderText('low') }}
         </p>
       </div>
