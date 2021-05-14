@@ -3,6 +3,7 @@ import { Field, InputType, ID, Int } from '@nestjs/graphql';
 import { ContestantInput } from '../../contestant/contestant.input';
 import { MatchInput } from '@models/match/dto/match.input';
 import { UpdateInput } from '@models/update/dto/update.input';
+import { RegistrationRequestInput } from './registration-request.input';
 
 @InputType()
 export class UpdateTournamentInput {
@@ -46,6 +47,12 @@ export class UpdateTournamentInput {
 
   @Field({ nullable: true })
   allowSelfScoring?: boolean;
+
+  @Field({ nullable: true })
+  requireRegistrationApproval?: boolean;
+
+  @Field(type => [RegistrationRequestInput], { nullable: true })
+  registrationRequests?: RegistrationRequestInput[];
 
   @Field({ nullable: true })
   structure?: 'single-elim' | 'double-elim' | 'round-robin';

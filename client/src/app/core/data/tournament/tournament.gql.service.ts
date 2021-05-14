@@ -20,6 +20,7 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         hasStarted
         allowRegistration
         allowSelfScoring
+        requireRegistrationApproval
         structure
         contestants {
           _id
@@ -44,6 +45,18 @@ export class TournamentGQL extends Query<{ tournament: ITournament }> {
         }
         createdBy {
           _id
+        }
+        registrationRequests {
+          _id
+          isReviewed
+          isApproved
+          contestant {
+            _id
+            profile {
+              _id
+              username
+            }
+          }
         }
       }
     }

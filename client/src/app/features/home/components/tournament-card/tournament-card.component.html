@@ -12,10 +12,17 @@
   <mat-card-subtitle>
     {{ tournament.createdOn | date }}
   </mat-card-subtitle>
-  <!-- <mat-card-footer>
-  </mat-card-footer> -->
-  <mat-card-actions>
-  <!-- <mat-card-actions *ngIf="user && tournament?.createdBy?._id === user?._id"> -->
-    <button mat-stroked-button color="warn" (click)="onDelete($event)">DELETE</button>
-  </mat-card-actions>
+  
+  <!-- <div class="actions"> -->
+  <div class="actions" *ngIf="canDelete">
+    <button mat-icon-button color="warn" (click)="onDelete($event)">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+  </div>
+
+  <mat-card-footer style="padding: 8px;" (click)="onUserClick($event, tournament.createdBy)">
+    <div  style="width: 50%;">
+      <sd-contestant-banner matRipple [contestant]="tournament.createdBy"></sd-contestant-banner>
+    </div>
+  </mat-card-footer>
 </mat-card>

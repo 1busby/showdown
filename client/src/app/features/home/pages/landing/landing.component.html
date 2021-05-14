@@ -1,4 +1,4 @@
-<div class="top-container mat-app-background">
+<!-- <div class="top-container mat-app-background">
   <button
     mat-raised-button
     class="create-button"
@@ -6,22 +6,26 @@
     color="accent"
     (click)="createTournament()"
   >
-    Create Tournament
+    NEW TOURNAMENT
   </button>
+</div> -->
+<button
+  mat-raised-button
+  class="create-button mat-elevation-z8"
+  color="accent"
+  (click)="createTournament()"
+>
+<div>
+  NEW TOURNAMENT
 </div>
+</button>
 
 <div class="content-container">
   <ng-container *ngIf="allTournaments">
-    <h1>Tournaments</h1>
-    <tournament-card
-      *ngFor="let tournament of allTournaments; trackBy: trackByFn"
-      [tournament]="tournament"
-      [user]="loggedInUser"
-      (selectTournament)="viewTournament(tournament)"
-      (delete)="deleteTournament(tournament._id)"
-    ></tournament-card>
+    <h3 style="padding-left: 24px;">Tournaments</h3>
+    <tournament-list [tournaments]="allTournaments" [loggedInUser]="loggedInUser"></tournament-list>
   </ng-container>
-
+<!-- 
   <ng-container *ngIf="allTournaments">
     <h1>Users</h1>
     <button mat-button
@@ -29,7 +33,7 @@
       (click)="viewTournament(tournament)"
       routerLink="/profile/{{user.username}}"
     >{{user.username}}</button>
-  </ng-container>
+  </ng-container> -->
 
   <mat-spinner *ngIf="!allTournaments"></mat-spinner>
 </div>

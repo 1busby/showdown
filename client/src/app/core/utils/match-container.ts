@@ -34,6 +34,8 @@ export class MatchContainer extends MatchSubject implements MatchObserver {
   top;
   left;
 
+  isRemovable = false;
+
   update() {
     this.highSeed = this.highMatch[this.highSeedSource];
     this.lowSeed = this.lowMatch[this.lowSeedSource];

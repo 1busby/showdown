@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ObjectId } from 'mongodb';
+
 import { NewUserInput } from './dto/new-user.input';
 import { UsersArgs } from './dto/users.args';
 import { User } from './user.model';
 import { UpdateUserInput } from './dto/update-user.input';
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   create(data: NewUserInput): Promise<User> {
-    console.log('LOOK new user data ', data);
     const createdUser = new this.userModel({
       ...data,
       tournaments: [],
@@ -25,7 +26,6 @@ export class UsersService {
   }
 
   findOne({ username }): Promise<User> {
-    console.log('LOOK signin Data ', username);
     return this.userModel.findOne({ username }).populate('tournaments').exec();
   }
 
@@ -73,6 +73,13 @@ export class UsersService {
       .catch(error => {
         throw new Error('Error updating tournament >>> ' + error);
       });
+  }
+
+  incrementWins(_id) {
+    return this.userModel.updateOne(
+      { _id },
+      { $inc: { numWins: 1 } }
+    ).exec();
   }
 
   async remove(id: string): Promise<boolean> {

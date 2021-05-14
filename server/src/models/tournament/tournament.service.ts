@@ -14,7 +14,7 @@ import { CustomLogger } from '@shared/index';
 import { merge } from 'rxjs';
 
 @Injectable()
-export class TournamentsService {
+export class TournamentService {
   constructor(
     @InjectModel('Tournament')
     private readonly tournamentModel: Model<Tournament>,
@@ -59,16 +59,13 @@ export class TournamentsService {
     // });
   }
 
-  async findOneById(id: string): Promise<Tournament> {
-    return this.tournamentModel.findById(id).exec();
-  }
-
-  findOneByLinkCode(linkCode: string): Promise<Tournament> {
+  findOneById(id: string): Promise<Tournament> {
     return (
       this.tournamentModel
-        .findOne({ linkCode })
+        .findById(id)
         .populate('updates')
         .populate('createdBy')
+        .populate('registrationRequests')
         .populate('contestants')
         .populate({
           path: 'contestants',
@@ -76,6 +73,19 @@ export class TournamentsService {
             path: 'profile',
             model: 'User',
           },
+        })
+        .populate({
+          path: 'contestants.profile',
+          model: 'User',
+        })
+        // .populate('registrationRequests')
+        // .populate({
+        //   path: 'registrationRequests.contestant',
+        //   model: 'Contestant',
+        // })
+        .populate({
+          path: 'registrationRequests.contestant.profile',
+          model: 'User',
         })
         // .then(tournament => {
         //   tournament = tournament.toJSON();
@@ -89,8 +99,67 @@ export class TournamentsService {
     );
   }
 
-  async findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
-    return await this.tournamentModel.find().populate('createdBy').exec();
+  findOneByLinkCode(linkCode: string): Promise<Tournament> {
+    return (
+      this.tournamentModel
+        .findOne({ linkCode })
+        .populate('updates')
+        .populate('createdBy')
+        .populate('registrationRequests')
+        .populate('contestants')
+        .populate({
+          path: 'contestants',
+          populate: {
+            path: 'profile',
+            model: 'User',
+          },
+        })
+        .populate({
+          path: 'contestants.profile',
+          model: 'User',
+        })
+        // .populate({
+        //   path: 'registrationRequests.contestant',
+        //   model: 'Contestant',
+        // })
+        .populate({
+          path: 'registrationRequests.contestant.profile',
+          model: 'User',
+        })
+        // .then(tournament => {
+        //   tournament = tournament.toJSON();
+        //   tournament.contestants = [
+        //     ...tournament.contestants,
+        //     ...tournament.anonymousContestants,
+        //   ];
+        //   return tournament;
+        // });
+        .exec()
+    );
+  }
+
+  findAll(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+    return this.tournamentModel
+      .find()
+      .populate('createdBy')
+      .exec();
+  }
+
+  findAllByUser(tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
+    const pipeline: any = [];
+
+    pipeline.push({
+      $lookup: {
+        from: 'users',
+        localField: 'createdBy',
+        foreignField: '_id',
+        as: 'createdByUser',
+      },
+    });
+    pipeline.push({
+      $match: { 'createdByUser._id': tournamentsArgs.userId },
+    });
+    return this.tournamentModel.aggregate(pipeline).exec();
   }
 
   async updateOne(
@@ -98,48 +167,110 @@ export class TournamentsService {
   ): Promise<Tournament> {
     console.log('LOOK updateOne data ', JSON.stringify(data));
     // separate anonymous users from regular users
-    const { _id, matches = [], updates, ...updateData } = data;
-    // if (data.contestants && data.contestants.length > 0) {
-    //   const anonymousContestants = [];
-    //   for (let i = data.contestants.length - 1; i >= 0; i--) {
-    //     if (!data.contestants[i].isRegistered) {
-    //       data.contestants[i]._id = new ObjectId() as any;
-    //       anonymousContestants.push(data.contestants[i]);
-    //       data.contestants.splice(i, 1);
-    //     }
-    //   }
-    //   updateData.anonymousContestants = anonymousContestants;
-    // }
+    const {
+      _id,
+      matches = [],
+      updates,
+      registrationRequests,
+      ...updateData
+    } = data;
+
+    if (updateData.contestants && updateData.contestants.length > 0) {
+      updateData.contestants.forEach(contestant => {
+        if (contestant._id) {
+          contestant._id = new ObjectId(contestant._id) as any;
+        } else {
+          contestant._id = new ObjectId() as any;
+        }
+      });
+    }
 
     let matchIds: string[] = [];
+    const newMatches = [];
     if (matches && matches.length > 0) {
       matchIds = matches.map(match => {
-        match._id = new ObjectId(match._id) as any;
+        if (match._id) {
+          match._id = new ObjectId(match._id) as any;
+        } else {
+          match._id = new ObjectId() as any;
+          newMatches.push(match);
+        }
+
+        match.sets.forEach(set => {
+          if (set._id) {
+            set._id = new ObjectId(set._id) as any;
+          } else {
+            set._id = new ObjectId() as any;
+          }
+        });
         return match._id;
       });
       updateData.matches = {
+        $concatArrays: [
+          {
+            $map: {
+              input: '$matches',
+              as: 'match',
+              in: {
+                $cond: {
+                  if: {
+                    $in: ['$$match._id', matchIds],
+                  },
+                  then: {
+                    $mergeObjects: [
+                      '$$match',
+                      {
+                        $arrayElemAt: [
+                          matches,
+                          {
+                            $indexOfArray: [matchIds, '$$match._id'],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  else: '$$match',
+                },
+              },
+            },
+          },
+          newMatches,
+        ],
+      };
+    }
+
+    let registrationRequestIds: string[] = [];
+    if (registrationRequests && registrationRequests.length > 0) {
+      registrationRequestIds = registrationRequests.map(request => {
+        request._id = new ObjectId(request._id) as any;
+        return request._id;
+      });
+      updateData.registrationRequests = {
         $map: {
-          input: '$matches',
-          as: 'match',
+          input: '$registrationRequests',
+          as: 'request',
           in: {
             $cond: {
               if: {
-                $in: ['$$match._id', matchIds],
+                $in: ['$$request._id', registrationRequestIds],
               },
               then: {
                 $mergeObjects: [
-                  '$$match',
+                  '$$request',
                   {
                     $arrayElemAt: [
-                      matches,
+                      registrationRequests,
                       {
-                        $indexOfArray: [matchIds, '$$match._id'],
+                        $indexOfArray: [
+                          registrationRequestIds,
+                          '$$request._id',
+                        ],
                       },
                     ],
                   },
                 ],
               },
-              else: '$$match',
+              else: '$$request',
             },
           },
         },
@@ -190,7 +321,7 @@ export class TournamentsService {
           model: 'User',
         },
       })
-      .then((result) => {
+      .then(result => {
         const resultObject = result.toObject();
         const returnObject: any = resultObject;
 
@@ -220,9 +351,7 @@ export class TournamentsService {
       });
   }
 
-  addContestant(id, seed?, name?, userId?) {
-    this.logger.log('LOOK addContestant seed ', seed);
-    this.logger.log('LOOK addContestant userId ', userId);
+  addContestant(tournamentId, seed?, name?, userId?) {
     const contestant = {
       _id: new ObjectId(),
       seed,
@@ -232,7 +361,7 @@ export class TournamentsService {
 
     return this.tournamentModel
       .findOneAndUpdate(
-        { _id: id },
+        { _id: tournamentId },
         { $push: { contestants: contestant } },
         { new: true },
       )
@@ -253,6 +382,27 @@ export class TournamentsService {
         { $pull: { contestants: { _id: contestantId } as never } },
         // { $pull: { anonymousContestants: { _id: contestantId } as never } },
       )
+      .exec();
+  }
+
+  addRegistrationRequest(tournamentId, request) {
+    return this.tournamentModel
+      .findOneAndUpdate(
+        { _id: tournamentId },
+        { $push: { registrationRequests: request } },
+        { new: true },
+      )
+      .populate({
+        path: 'registrationRequests',
+        populate: {
+          path: 'contestant',
+          model: 'Contestant',
+          populate: {
+            path: 'profile',
+            model: 'User',
+          },
+        },
+      })
       .exec();
   }
 

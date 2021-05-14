@@ -15,24 +15,24 @@ import { PubSub } from 'apollo-server-express';
 import { NewTournamentInput } from './dto/new-tournament.input';
 import { TournamentsArgs } from './dto/tournament.args';
 import { Tournament } from './tournament.model';
-import { TournamentsService } from './tournament.service';
+import { TournamentService } from './tournament.service';
 import { UpdateTournamentInput } from './dto/update-tournament.input';
 import { RequestEditAccessInput } from './dto/request-edit-access.input';
 import { EditAccessRequest } from './dto/edit-access-request';
-import { MatchService } from '@models/match/match.service';
-import { CustomLogger } from '@shared/index';
+import { CustomLogger, IContestant } from '@shared/index';
 import { MatchInput } from '@models/match/dto/match.input';
 import { WebPushService } from '@shared/services/web-push.service';
-// import { UsersService } from '@models/user/user.service';
+import { UserService } from '@models/user/user.service';
+import { Contestant } from '@models/contestant/contestant.model';
 
 const pubSub = new PubSub();
 
 @Resolver(of => Tournament)
-export class TournamentsResolver {
+export class TournamentResolver {
   constructor(
     private logger: CustomLogger,
-    private readonly tournamentsService: TournamentsService,
-    private readonly matchService: MatchService,
+    private readonly tournamentService: TournamentService,
+    private readonly userService: UserService,
     private webPushService: WebPushService,
   ) {}
 
@@ -48,9 +48,9 @@ export class TournamentsResolver {
     try {
       let tournament: Tournament;
       if (id) {
-        tournament = await this.tournamentsService.findOneById(id);
+        tournament = await this.tournamentService.findOneById(id);
       } else if (linkCode) {
-        tournament = await this.tournamentsService.findOneByLinkCode(linkCode);
+        tournament = await this.tournamentService.findOneByLinkCode(linkCode);
       } else {
         throw new NotAcceptableException(
           null,
@@ -62,9 +62,9 @@ export class TournamentsResolver {
       }
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
-      this.logger.log('LOOK returning tournament ', JSON.stringify(tournament));
+      this.logger.log('LOOK returning tournament ', tournament.toJSON());
 
-      return tournament;
+      return tournament.toJSON();
     } catch (e) {
       this.logger.error('Error getting tournament becuase ', e);
     }
@@ -73,7 +73,7 @@ export class TournamentsResolver {
   @Query(returns => [Tournament])
   tournaments(@Args() tournamentsArgs: TournamentsArgs): Promise<Tournament[]> {
     // this.webPushService.sendNotification();
-    return this.tournamentsService.findAll(tournamentsArgs);
+    return this.tournamentService.findAll(tournamentsArgs);
   }
 
   @Query(returns => EditAccessRequest)
@@ -81,7 +81,7 @@ export class TournamentsResolver {
     @Args('requestEditAccessInput')
     requestEditAccessInput: RequestEditAccessInput,
   ): Promise<EditAccessRequest> {
-    return this.tournamentsService.handleEditAccessRequest(
+    return this.tournamentService.handleEditAccessRequest(
       requestEditAccessInput,
     );
   }
@@ -90,7 +90,7 @@ export class TournamentsResolver {
   async addTournament(
     @Args('newTournamentData') newTournamentData: NewTournamentInput,
   ): Promise<Tournament> {
-    return await this.tournamentsService.create(newTournamentData);
+    return await this.tournamentService.create(newTournamentData);
     // .then(tournament => {
     //   this.userService.updateOne({ _id: newTournamentData.createdBy, })
     //   return tournament
@@ -101,7 +101,7 @@ export class TournamentsResolver {
   async updateTournament(
     @Args('updateTournamentData') updateTournamentData: UpdateTournamentInput,
   ): Promise<Tournament> {
-    return this.tournamentsService.updateOne(updateTournamentData).then(res => {
+    return this.tournamentService.updateOne(updateTournamentData).then(res => {
       return res;
     });
   }
@@ -115,7 +115,7 @@ export class TournamentsResolver {
       // description: 'Tournament has been started.',
       createdOn: new Date(),
     };
-    return this.tournamentsService
+    return this.tournamentService
       .updateOne({
         _id,
         hasStarted: true,
@@ -128,26 +128,64 @@ export class TournamentsResolver {
             .map(c => {
               return JSON.parse(c.profile.pushSubscription);
             }),
-            `${res.name} has started!`,
-            `The Showdown begins`,
+          `${res.name} has started!`,
+          `The Showdown begins`,
         );
         return res;
       });
   }
 
   @Mutation(returns => Tournament)
-  joinTournament(
+  async joinTournament(
     @Args('_id', { type: () => ID }) _id: string,
     @Args('contestantName', { nullable: true }) contestantName?: string,
     @Args('userId', { nullable: true, type: () => ID }) userId?: string,
     @Args('seed', { nullable: true, type: () => Int }) seed?: number,
   ): Promise<Tournament> {
-    return this.tournamentsService.addContestant(
-      _id,
-      seed,
-      contestantName,
-      userId,
-    );
+    const tournament = await this.tournamentService.findOneById(_id);
+    if (tournament.requireRegistrationApproval) {
+      let existingRequestIndex = tournament.registrationRequests.findIndex(
+        request => {
+          return (
+            request.contestant.name === contestantName ||
+            request.contestant.profile.id === userId
+          );
+        },
+      );
+
+      if (existingRequestIndex >= 0) {
+        // LOOK TODO: return useful message
+        throw new Error();
+      } else {
+        return this.tournamentService.addRegistrationRequest(_id, {
+          contestant: {
+            profile: userId,
+            name: contestantName,
+          },
+        });
+      }
+    } else {
+      let existingContestantIndex = tournament.contestants.findIndex(
+        contestant => {
+          return (
+            contestant.name === contestantName ||
+            (contestant.profile && contestant.profile._id === userId)
+          );
+        },
+      );
+
+      if (existingContestantIndex >= 0) {
+        // LOOK TODO: return useful message
+        throw new Error();
+      } else {
+        return this.tournamentService.addContestant(
+          _id,
+          seed,
+          contestantName,
+          userId,
+        );
+      }
+    }
   }
 
   @Mutation(returns => Tournament)
@@ -155,12 +193,12 @@ export class TournamentsResolver {
     @Args('_id', { type: () => ID }) _id: string,
     @Args('contestantId', { type: () => ID }) contestantId: string,
   ): Promise<Tournament> {
-    return this.tournamentsService.removeContestant(_id, contestantId);
+    return this.tournamentService.removeContestant(_id, contestantId);
   }
 
   @Mutation(returns => Boolean)
   removeTournament(@Args('_id', { type: () => ID }) _id: string) {
-    return this.tournamentsService.remove(_id);
+    return this.tournamentService.remove(_id);
   }
 
   @Mutation(returns => Tournament)
@@ -169,10 +207,9 @@ export class TournamentsResolver {
       return 'No tournament ID received!';
     }
 
-    return this.tournamentsService
+    return this.tournamentService
       .findOneById(matchData.tournamentId)
       .then(tournament => {
-        this.logger.log('LOOK Tournament fetched: ' + tournament);
         const match = tournament.matches.find(
           m => m.matchNumber === matchData.matchNumber,
         );
@@ -192,38 +229,56 @@ export class TournamentsResolver {
 
           if (highseedSetsWon + lowseedSetsWon >= matchData.sets.length) {
             const currentDate = new Date();
+            const lowSeed = matchData.lowSeedNumber;
+            const lowSeedContestant = tournament.contestants.find(
+              c => c.seed === lowSeed,
+            );
+            const highSeed = matchData.highSeedNumber;
+            const highSeedContestant = tournament.contestants.find(
+              c => c.seed === highSeed,
+            );
+            let winner: IContestant;
+            let loser: IContestant;
+            const nextRound = matchData.roundNumber + 1;
             if (highseedSetsWon > lowseedSetsWon) {
               matchData.winnerSeed = 'HIGHSEED';
-
-              const highSeed = matchData.highSeedNumber;
-              const contestant = tournament.contestants.find(
-                c => c.seed === highSeed,
-              );
-
-              updates.push({
-                title: `Match ${matchData.matchNumber + 1} goes to ${
-                  contestant.name
-                }`,
-                createdOn: currentDate,
-              });
+              winner = highSeedContestant;
+              loser = lowSeedContestant;
             } else {
               matchData.winnerSeed = 'LOWSEED';
+              winner = lowSeedContestant;
+              loser = highSeedContestant;
+            }
 
-              const lowSeed = matchData.lowSeedNumber;
-              const contestant = tournament.contestants.find(
-                c => c.seed === lowSeed,
-              );
-
+            // If this is the last match
+            if (matchData.matchNumber === tournament.matches.length - 1) {
               updates.push({
-                title: `Match ${matchData.matchNumber + 1} goes to ${
-                  contestant.name
-                }`,
+                title: `Tournament Complete`,
+                description: `${
+                  winner.profile ? winner.profile.username : winner.name
+                } defeated ${
+                  loser.profile ? loser.profile.username : loser.name
+                } to win the Tournament!`,
+                createdOn: currentDate,
+              });
+
+              if (winner.profile) {
+                this.userService.incrementWins(winner.profile._id);
+              }
+            } else {
+              updates.push({
+                title: `Match Complete`,
+                description: `${
+                  winner.profile ? winner.profile.username : winner.name
+                } defeated ${
+                  loser.profile ? loser.profile.username : loser.name
+                } and will move on to Round ${nextRound}`,
                 createdOn: currentDate,
               });
             }
           }
         }
-        return this.tournamentsService.updateOne({
+        return this.tournamentService.updateOne({
           _id: matchData.tournamentId,
           matches: [matchData],
           updates,
@@ -231,6 +286,62 @@ export class TournamentsResolver {
       })
       .then(res => {
         return res;
+      });
+  }
+
+  @Mutation(returns => Tournament)
+  async editRegistrationRequest(
+    @Args('requestId', { type: () => ID }) requestId: string,
+    @Args('tournamentId', { type: () => ID }) tournamentId: string,
+    @Args('isApproved', { nullable: true }) isApproved: boolean,
+  ): Promise<Tournament> {
+    const tournament = await this.tournamentService.findOneById(tournamentId);
+    // TODO send notification to user
+    const request = tournament.registrationRequests.find(request => {
+      const id = request._id;
+      console.log('1234');
+      return request._id == requestId;
+    });
+
+    let seed = 0;
+    for (let i = 1; i <= tournament.contestantCount; i++) {
+      const alreadySeededContestant = tournament.contestants.find(
+        cont => cont.seed === i,
+      );
+      if (!alreadySeededContestant) {
+        seed = i;
+        break;
+      }
+    }
+
+    const addContestantArgs = [tournamentId, seed];
+
+    if (request.contestant.profile._id) {
+      addContestantArgs.push(undefined);
+      addContestantArgs.push(request.contestant.profile._id);
+    } else {
+      addContestantArgs.push(request.contestant.name);
+      addContestantArgs.push(undefined);
+    }
+
+    return this.tournamentService
+      .addContestant(
+        addContestantArgs[0],
+        addContestantArgs[1],
+        addContestantArgs[2],
+        addContestantArgs[3],
+      )
+      .then(res => {
+        return this.tournamentService.updateOne({
+          _id: tournamentId,
+          registrationRequests: [
+            {
+              _id: requestId,
+              isApproved,
+              isReviewed: true,
+            },
+          ],
+        });
       });
   }
 

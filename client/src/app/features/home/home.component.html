@@ -6,7 +6,7 @@
   <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon>menu</mat-icon>
     </button> -->
-  <span [routerLink]="'/'">Showdown</span>
+  <span [routerLink]="'/'" style="cursor: pointer;">Showdown</span>
   <span class="example-spacer"></span>
 
   <ng-container *ngIf="!isLoadingProfile">
@@ -22,14 +22,24 @@
       <mat-icon>login</mat-icon>
     </button> -->
 
-    {{ user?.username }}
-    <button
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      aria-label="Example icon-button with a menu"
+    <div 
+    style="cursor: pointer;"
+    [matMenuTriggerFor]="menu"
     >
-      <mat-icon>account_circle</mat-icon>
-    </button>
+      {{ user?.username }}
+      <button
+        mat-icon-button
+        aria-label="Example icon-button with a menu"
+      >
+        <mat-icon *ngIf="!user?._id">account_circle</mat-icon>
+        <img
+            *ngIf="user?._id"
+            ngxGravatar
+            [email]="user.username"
+            size="30"
+          />
+      </button>
+    </div>
     <mat-menu #menu="matMenu" color="accent">
       <button mat-menu-item *ngIf="user?._id" (click)="openProfile()">
         <mat-icon>account_circle</mat-icon>

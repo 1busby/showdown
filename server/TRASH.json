@@ -1,78 +1,754 @@
 {
-  "_id": "605144792c9b44ca55f748cf",
-  "name": "7 - 3 c",
+  "_id": "609b87ad2a7e44193dc4ceee",
+  "name": "saves 2 prof",
   "description": "",
-  "contestantCount": 7,
+  "contestantCount": 4,
+  "createdBy": {
+    "tournaments": ["609b7b8d73138a701ef1d5c9", "609b87ad2a7e44193dc4ceee"],
+    "_id": "609b7b2373138a701ef1d5c8",
+    "dId": "did:ethr:0x0c35Cf17B043600833eB64eb57d5e363eca1d1dF",
+    "username": "schoolMike",
+    "email": "mab2187@email.vccs.edu",
+    "iconPublicAddress": "hxe165b173839d7ca27004789bd040c54fd9919af0",
+    "createdOn": "2021-05-12T06:52:19.745Z",
+    "updatedOn": "2021-05-12T06:52:19.745Z",
+    "__v": 0
+  },
   "contestants": [
-    { "_id": "605144792c9b44ca55f748d0", "name": "a", "seed": 1 },
-    { "_id": "605144792c9b44ca55f748d1", "name": "b", "seed": 2 },
-    { "_id": "605144792c9b44ca55f748d2", "name": "c", "seed": 3 },
-    { "_id": "605144792c9b44ca55f748d3", "name": "d", "seed": 4 },
-    { "_id": "605144a32c9b44ca55f748e1", "profile": null }
+    { "name": "a", "seed": 1, "_id": "609b8f998f6e056f198c19df" },
+    { "name": "b", "seed": 2, "_id": "609b8f998f6e056f198c19e0" },
+    { "name": "c", "seed": 3, "_id": "609b8f998f6e056f198c19e1" },
+    {
+      "_id": "609b9d7e8c69fcf6e5df68d9",
+      "seed": 4,
+      "profile": {
+        "tournaments": [
+          "6044428beeae5d6dfec09181",
+          "60444367eeae5d6dfec09189",
+          "6045066234b14a6687f23328",
+          "60450719387fc26d2108ec0f",
+          "604509beded68a821545528c",
+          "60450dd0cebb211e3fc8609b",
+          "60451969ecff083f0819e20b",
+          "60451babe057d28067515e5a",
+          "604520f9cb8164ad20aa7e89",
+          "6045236b7c631ace5fbce3c6",
+          "60454adb65969b70fb66ff8f",
+          "604555f9064deac1b554129f",
+          "60468fd6b447fdb4f8a7dc1d",
+          "605179e19ec1325568e4f6ab",
+          "60517a429ec1325568e4f6ba",
+          "60517af49ec1325568e4f6c0",
+          "60517b189ec1325568e4f6c8",
+          "60517b439ec1325568e4f6ee",
+          "60517e179ec1325568e4f7f9",
+          "60517e279ec1325568e4f80e",
+          "60518d40a93b8b4f3ff85e38",
+          "60518dbea93b8b4f3ff85f54",
+          "6051b6bca93b8b4f3ff85f80",
+          "6051c44da93b8b4f3ff8601e",
+          "6052a2ef6c16830f5c796001",
+          "605ad9729a80063d4f96b64e",
+          "605adab59a80063d4f96b668",
+          "605adb799a80063d4f96b676",
+          "605adc1c3587f9a295e90132",
+          "605bd938bb0e526718bf59e9",
+          "60810bfa9802c2479ac88d66",
+          "6082179cc692627a04797d33",
+          "608bc072eb28160ac7284ff0",
+          "608bd28ceb28160ac72850f3",
+          "608bd2b6eb28160ac7285111",
+          "608bd2e5eb28160ac728512b"
+        ],
+        "_id": "6035c314a453ba3dc552952e",
+        "dId": "did:ethr:0x5271F39CEbc7a3e984f593d682322941A2d22422",
+        "username": "busby",
+        "email": "busbyBAM@gmail.com",
+        "iconPublicAddress": "hx061169bd54f68158f47c91e4db5d858b2c390304",
+        "createdOn": "2021-02-24T03:08:04.903Z",
+        "updatedOn": "2021-02-24T03:08:04.903Z",
+        "isRegistered": true,
+        "__v": 0,
+        "pushSubscription": "{\"endpoint\":\"https://updates.push.services.mozilla.com/wpush/v2/gAAAAABgRo-fTUkr0QpETX0vLDj6MPD0ecG7hEKwK859LK7IlOn2hpB-CHkDkzMXA--GL1RWNTEgJ4OrSrjz9SihvjVe3BvT7Liis2XKPRDLEIIThi9IHo87VISyS5SW9XwETAPOg1sHe4tsA2OsDeVxsPwJXqGjFXQiiARNDUPBH4Yh_WbFc8k\",\"keys\":{\"auth\":\"13dy7shiIKAktgaMUsnqgA\",\"p256dh\":\"BKrXXL_jrsAbA-ulG4rD4WV7VJ4kMqYpfqiiE5r9MzXSIV8sKMzgdTrQ0gFSNWkpAnxxriayAhEBMizu-utvqSE\"}}"
+      }
+    }
   ],
   "matches": [
     {
-      "_id": "605144792c9b44ca55f748d4",
+      "_id": "609b87ad2a7e44193dc4ceef",
       "matchNumber": 0,
       "roundNumber": 1,
-      "highSeedNumber": 4,
+      "highSeedNumber": null,
       "lowSeedNumber": null,
-      "sets": [{ "_id": "605144792c9b44ca55f748d5", "orderNumber": 1 }]
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef0",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ],
+      "winnerSeed": null
     },
     {
-      "_id": "605144792c9b44ca55f748d6",
+      "_id": "609b87ad2a7e44193dc4cef1",
       "matchNumber": 1,
       "roundNumber": 1,
-      "highSeedNumber": 2,
+      "highSeedNumber": null,
       "lowSeedNumber": null,
-      "sets": [{ "_id": "605144792c9b44ca55f748d7", "orderNumber": 1 }]
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef2",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ],
+      "winnerSeed": null
     },
     {
-      "_id": "605144792c9b44ca55f748d8",
+      "_id": "609b87ad2a7e44193dc4cef3",
+      "matchNumber": 2,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef4",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ],
+      "winnerSeed": null
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4ceef",
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef0",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4cef1",
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef2",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4cef3",
+      "matchNumber": 2,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef4",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4ceef",
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef0",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4cef1",
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef2",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4cef3",
+      "matchNumber": 2,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef4",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4ceef",
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef0",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4cef1",
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef2",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "_id": "609b87ad2a7e44193dc4cef3",
+      "matchNumber": 2,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "winnerSeed": null,
+      "sets": [
+        {
+          "_id": "609b87ad2a7e44193dc4cef4",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ]
+    },
+    {
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [
+        {
+          "_id": "609b8b988f6e056f198c198e",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ],
+      "_id": "609b8b988f6e056f198c198d",
+      "matchNumber": null,
+      "winnerSeed": null
+    },
+    {
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [
+        {
+          "_id": "609b8b988f6e056f198c1990",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ],
+      "_id": "609b8b988f6e056f198c198f",
+      "matchNumber": null,
+      "winnerSeed": null
+    },
+    {
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [
+        {
+          "_id": "609b8ce48f6e056f198c1992",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ],
+      "_id": "609b8ce48f6e056f198c1991",
+      "matchNumber": null,
+      "winnerSeed": null
+    },
+    {
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [
+        {
+          "_id": "609b8ce48f6e056f198c1994",
+          "orderNumber": 1,
+          "highSeedScore": null,
+          "lowSeedScore": null,
+          "outcome": null,
+          "notes": null
+        }
+      ],
+      "_id": "609b8ce48f6e056f198c1993",
+      "matchNumber": null,
+      "winnerSeed": null
+    },
+    {
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8e148f6e056f198c1996" }],
+      "_id": "609b8e148f6e056f198c1995"
+    },
+    {
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8e148f6e056f198c1998" }],
+      "_id": "609b8e148f6e056f198c1997"
+    },
+    {
+      "matchNumber": 2,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8e148f6e056f198c199a" }],
+      "_id": "609b8e148f6e056f198c1999"
+    },
+    {
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8e1e8f6e056f198c199c" }],
+      "_id": "609b8e1e8f6e056f198c199b"
+    },
+    {
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8e1e8f6e056f198c199e" }],
+      "_id": "609b8e1e8f6e056f198c199d"
+    },
+    {
       "matchNumber": 2,
       "roundNumber": 1,
-      "highSeedNumber": 3,
+      "highSeedNumber": null,
       "lowSeedNumber": null,
-      "sets": [{ "_id": "605144792c9b44ca55f748d9", "orderNumber": 1 }]
+      "sets": [{ "orderNumber": 1, "_id": "609b8e1e8f6e056f198c19a0" }],
+      "_id": "609b8e1e8f6e056f198c199f"
     },
     {
-      "_id": "605144792c9b44ca55f748da",
       "matchNumber": 3,
-      "roundNumber": 2,
-      "highSeedNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
       "lowSeedNumber": null,
-      "sets": [{ "_id": "605144792c9b44ca55f748db", "orderNumber": 1 }]
+      "sets": [{ "orderNumber": 1, "_id": "609b8e1e8f6e056f198c19a2" }],
+      "_id": "609b8e1e8f6e056f198c19a1"
     },
     {
-      "_id": "605144792c9b44ca55f748dc",
       "matchNumber": 4,
       "roundNumber": 2,
       "highSeedNumber": null,
       "lowSeedNumber": null,
-      "sets": [{ "_id": "605144792c9b44ca55f748dd", "orderNumber": 1 }]
+      "sets": [{ "orderNumber": 1, "_id": "609b8e1e8f6e056f198c19a4" }],
+      "_id": "609b8e1e8f6e056f198c19a3"
     },
     {
-      "_id": "605144792c9b44ca55f748de",
       "matchNumber": 5,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8e1e8f6e056f198c19a6" }],
+      "_id": "609b8e1e8f6e056f198c19a5"
+    },
+    {
+      "matchNumber": 6,
       "roundNumber": 3,
       "highSeedNumber": null,
       "lowSeedNumber": null,
-      "sets": [{ "_id": "605144792c9b44ca55f748df", "orderNumber": 1 }]
+      "sets": [{ "orderNumber": 1, "_id": "609b8e1e8f6e056f198c19a8" }],
+      "_id": "609b8e1e8f6e056f198c19a7"
+    },
+    {
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f068f6e056f198c19ac" }],
+      "_id": "609b8f068f6e056f198c19ab"
+    },
+    {
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f068f6e056f198c19ae" }],
+      "_id": "609b8f068f6e056f198c19ad"
+    },
+    {
+      "matchNumber": 2,
+      "roundNumber": 2,
+      "highSeedNumber": 1,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f068f6e056f198c19b0" }],
+      "_id": "609b8f068f6e056f198c19af"
+    },
+    {
+      "matchNumber": 3,
+      "roundNumber": 2,
+      "highSeedNumber": 2,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f068f6e056f198c19b2" }],
+      "_id": "609b8f068f6e056f198c19b1"
+    },
+    {
+      "matchNumber": 4,
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f068f6e056f198c19b4" }],
+      "_id": "609b8f068f6e056f198c19b3"
+    },
+    {
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f2d8f6e056f198c19b6" }],
+      "_id": "609b8f2d8f6e056f198c19b5"
+    },
+    {
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f2d8f6e056f198c19b8" }],
+      "_id": "609b8f2d8f6e056f198c19b7"
+    },
+    {
+      "matchNumber": 2,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f2d8f6e056f198c19ba" }],
+      "_id": "609b8f2d8f6e056f198c19b9"
+    },
+    {
+      "matchNumber": 3,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f2d8f6e056f198c19bc" }],
+      "_id": "609b8f2d8f6e056f198c19bb"
+    },
+    {
+      "matchNumber": 4,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f2d8f6e056f198c19be" }],
+      "_id": "609b8f2d8f6e056f198c19bd"
+    },
+    {
+      "matchNumber": 5,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f2d8f6e056f198c19c0" }],
+      "_id": "609b8f2d8f6e056f198c19bf"
+    },
+    {
+      "matchNumber": 6,
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f2d8f6e056f198c19c2" }],
+      "_id": "609b8f2d8f6e056f198c19c1"
+    },
+    {
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19c4" }],
+      "_id": "609b8f418f6e056f198c19c3"
+    },
+    {
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19c6" }],
+      "_id": "609b8f418f6e056f198c19c5"
+    },
+    {
+      "matchNumber": 2,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19c8" }],
+      "_id": "609b8f418f6e056f198c19c7"
+    },
+    {
+      "matchNumber": 3,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19ca" }],
+      "_id": "609b8f418f6e056f198c19c9"
+    },
+    {
+      "matchNumber": 6,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19cc" }],
+      "_id": "609b8f418f6e056f198c19cb"
+    },
+    {
+      "matchNumber": 7,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19ce" }],
+      "_id": "609b8f418f6e056f198c19cd"
+    },
+    {
+      "matchNumber": 11,
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19d0" }],
+      "_id": "609b8f418f6e056f198c19cf"
+    },
+    {
+      "matchNumber": 13,
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19d2" }],
+      "_id": "609b8f418f6e056f198c19d1"
+    },
+    {
+      "matchNumber": 4,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19d4" }],
+      "_id": "609b8f418f6e056f198c19d3"
+    },
+    {
+      "matchNumber": 5,
+      "roundNumber": 1,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19d6" }],
+      "_id": "609b8f418f6e056f198c19d5"
+    },
+    {
+      "matchNumber": 8,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19d8" }],
+      "_id": "609b8f418f6e056f198c19d7"
+    },
+    {
+      "matchNumber": 9,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19da" }],
+      "_id": "609b8f418f6e056f198c19d9"
+    },
+    {
+      "matchNumber": 10,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19dc" }],
+      "_id": "609b8f418f6e056f198c19db"
+    },
+    {
+      "matchNumber": 12,
+      "roundNumber": 3,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f418f6e056f198c19de" }],
+      "_id": "609b8f418f6e056f198c19dd"
+    },
+    {
+      "matchNumber": 0,
+      "roundNumber": 1,
+      "highSeedNumber": 1,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f998f6e056f198c19e3" }],
+      "_id": "609b8f998f6e056f198c19e2"
+    },
+    {
+      "matchNumber": 1,
+      "roundNumber": 1,
+      "highSeedNumber": 2,
+      "lowSeedNumber": 3,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f998f6e056f198c19e5" }],
+      "_id": "609b8f998f6e056f198c19e4"
+    },
+    {
+      "matchNumber": 2,
+      "roundNumber": 2,
+      "highSeedNumber": null,
+      "lowSeedNumber": null,
+      "sets": [{ "orderNumber": 1, "_id": "609b8f998f6e056f198c19e7" }],
+      "_id": "609b8f998f6e056f198c19e6"
     }
   ],
-  "editAccessCode": "123",
+  "editAccessCode": "",
   "setCount": 1,
   "allowRegistration": true,
   "allowSelfScoring": false,
+  "requireRegistrationApproval": true,
   "structure": "single-elim",
-  "linkCode": "iVCei2o_e",
-  "createdOn": "2021-03-16T23:51:21.235Z",
-  "updatedOn": "2021-03-16T23:51:21.235Z",
+  "linkCode": "z-I7SGAP_",
+  "createdOn": "2021-05-12T07:45:49.368Z",
+  "updatedOn": "2021-05-12T07:45:49.368Z",
   "updates": [
     {
-      "_id": "605144792c9b44ca55f748e0",
+      "_id": "609b87ad2a7e44193dc4cef5",
       "title": "Tournament created!",
-      "createdOn": "2021-03-16T23:51:21.235Z"
+      "createdOn": "2021-05-12T07:45:49.368Z"
+    }
+  ],
+  "registrationRequests": [
+    {
+      "_id": "609b8fe68f6e056f198c19e8",
+      "contestant": {
+        "_id": "609b8fe68f6e056f198c19e9",
+        "profile": {
+          "tournaments": [
+            "6044428beeae5d6dfec09181",
+            "60444367eeae5d6dfec09189",
+            "6045066234b14a6687f23328",
+            "60450719387fc26d2108ec0f",
+            "604509beded68a821545528c",
+            "60450dd0cebb211e3fc8609b",
+            "60451969ecff083f0819e20b",
+            "60451babe057d28067515e5a",
+            "604520f9cb8164ad20aa7e89",
+            "6045236b7c631ace5fbce3c6",
+            "60454adb65969b70fb66ff8f",
+            "604555f9064deac1b554129f",
+            "60468fd6b447fdb4f8a7dc1d",
+            "605179e19ec1325568e4f6ab",
+            "60517a429ec1325568e4f6ba",
+            "60517af49ec1325568e4f6c0",
+            "60517b189ec1325568e4f6c8",
+            "60517b439ec1325568e4f6ee",
+            "60517e179ec1325568e4f7f9",
+            "60517e279ec1325568e4f80e",
+            "60518d40a93b8b4f3ff85e38",
+            "60518dbea93b8b4f3ff85f54",
+            "6051b6bca93b8b4f3ff85f80",
+            "6051c44da93b8b4f3ff8601e",
+            "6052a2ef6c16830f5c796001",
+            "605ad9729a80063d4f96b64e",
+            "605adab59a80063d4f96b668",
+            "605adb799a80063d4f96b676",
+            "605adc1c3587f9a295e90132",
+            "605bd938bb0e526718bf59e9",
+            "60810bfa9802c2479ac88d66",
+            "6082179cc692627a04797d33",
+            "608bc072eb28160ac7284ff0",
+            "608bd28ceb28160ac72850f3",
+            "608bd2b6eb28160ac7285111",
+            "608bd2e5eb28160ac728512b"
+          ],
+          "_id": "6035c314a453ba3dc552952e",
+          "dId": "did:ethr:0x5271F39CEbc7a3e984f593d682322941A2d22422",
+          "username": "busby",
+          "email": "busbyBAM@gmail.com",
+          "iconPublicAddress": "hx061169bd54f68158f47c91e4db5d858b2c390304",
+          "createdOn": "2021-02-24T03:08:04.903Z",
+          "updatedOn": "2021-02-24T03:08:04.903Z",
+          "isRegistered": true,
+          "__v": 0,
+          "pushSubscription": "{\"endpoint\":\"https://updates.push.services.mozilla.com/wpush/v2/gAAAAABgRo-fTUkr0QpETX0vLDj6MPD0ecG7hEKwK859LK7IlOn2hpB-CHkDkzMXA--GL1RWNTEgJ4OrSrjz9SihvjVe3BvT7Liis2XKPRDLEIIThi9IHo87VISyS5SW9XwETAPOg1sHe4tsA2OsDeVxsPwJXqGjFXQiiARNDUPBH4Yh_WbFc8k\",\"keys\":{\"auth\":\"13dy7shiIKAktgaMUsnqgA\",\"p256dh\":\"BKrXXL_jrsAbA-ulG4rD4WV7VJ4kMqYpfqiiE5r9MzXSIV8sKMzgdTrQ0gFSNWkpAnxxriayAhEBMizu-utvqSE\"}}"
+        }
+      },
+      "isApproved": true,
+      "isReviewed": true
     }
   ],
   "__v": 0

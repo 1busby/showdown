@@ -20,11 +20,11 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
                 return myMerge(existing, incoming);
               },
             },
-            contestants: {
-              merge(existing = [], incoming: any[]) {
-                return myMerge(existing, incoming);
-              },
-            },
+            // contestants: {
+            //   merge(existing = [], incoming: any[]) {
+            //     return myMerge(existing, incoming);
+            //   },
+            // },
           },
         },
         Set: {

@@ -13,7 +13,7 @@
 <div>
   <mat-list *ngIf="this.data.allowEdit && this.data.hasStarted && data.match.lowSeed && data.match.highSeed">
     <mat-list-item *ngFor="let set of match.sets">
-      <mat-radio-group [(ngModel)]="set.outcome">
+      <mat-radio-group [(ngModel)]="set.potentialOutcome">
         <mat-radio-button *ngIf="!set.outcome" value="high"></mat-radio-button>
         <mat-icon *ngIf="set.outcome == 'high'" color="primary">check_circle</mat-icon>
         {{ set.orderNumber }}

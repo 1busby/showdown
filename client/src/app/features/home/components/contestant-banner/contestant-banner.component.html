@@ -1,0 +1,12 @@
+
+<img
+  *ngIf="contestant?.name || contestant?.username"
+  ngxGravatar
+  [email]="contestant?.name || contestant?.username"
+  size="30"
+/>
+<div class="my-center">
+  <p *ngIf="contestant?.name || contestant?.username">
+    {{ contestant?.name || contestant?.username }}
+  </p>
+</div>

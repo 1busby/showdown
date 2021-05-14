@@ -19,7 +19,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatRippleModule } from '@angular/material/core';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @NgModule({
   exports: [
@@ -43,7 +49,13 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MatSelectModule,
     MatButtonToggleModule,
     MatMenuModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTooltipModule,
+    MatRippleModule,
     OverlayModule,
+    CdkStepperModule,
   ],
 })
 export class MaterialModule {}

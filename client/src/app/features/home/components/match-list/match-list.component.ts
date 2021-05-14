@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatchContainer } from '@app/core';
 
@@ -6,6 +6,7 @@ import { MatchContainer } from '@app/core';
   selector: 'match-list',
   templateUrl: './match-list.component.html',
   styleUrls: ['./match-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MatchListComponent implements OnChanges {
   @Input() matches: Partial<MatchContainer>[] = [];
@@ -29,6 +30,6 @@ export class MatchListComponent implements OnChanges {
   }
 
   trackById(index: number, match: MatchContainer): string {
-    return match._id;
+    return match._id + match.winnerSeed;
   }
 }

@@ -5,6 +5,36 @@
   box-sizing: border-box;
 }
 
+
+@media only screen and (min-width: 600px) {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0); 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 20px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  ::-webkit-scrollbar-corner {
+    display: none;
+  }
+}
+
+
 a {
   cursor: pointer;
 }
@@ -56,4 +86,26 @@ app-home > div > * {
 
 .mat-divider {
   bottom: auto !important;
+}
+
+.match-detail-panel > .mat-dialog-container {
+  border-radius: 25px;
+}
+
+.my-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: max-content;
+}
+
+.my-center-vertical {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }

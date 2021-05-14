@@ -5,10 +5,13 @@ import { ArgsType, Field, Int } from '@nestjs/graphql';
 export class TournamentsArgs {
   @Field(type => Int, { nullable: true })
   @Min(0)
-  skip: number = 0;
+  skip?: number = 0;
 
   @Field(type => Int, { nullable: true })
   @Min(1)
   @Max(50)
-  take: number = 25;
+  take?: number = 25;
+
+  @Field({ nullable: true })
+  userId?: string;
 }

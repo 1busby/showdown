@@ -5,6 +5,7 @@ import {
   EventEmitter,
   SimpleChanges,
   OnChanges,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -15,6 +16,7 @@ import { IContestant } from '@app/shared';
   selector: 'contestant-list',
   templateUrl: './contestant-list.component.html',
   styleUrls: ['./contestant-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContestantListComponent implements OnChanges {
   @Input() interactionMode: 'view' | 'edit' = 'view';

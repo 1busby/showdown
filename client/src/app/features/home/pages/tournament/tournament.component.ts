@@ -12,8 +12,7 @@ import {
   MatchContainer,
   RunTournamentGQL,
   AuthService,
-  BracketHandler,
-  EditTournamentGQL,
+  EditRegistrationRequestGQL,
   AppStore,
 } from '@app/core';
 import { ITournament, IContestant, IUser } from '@app/shared';
@@ -22,6 +21,7 @@ import { EditAccessDialogComponent } from '../../components/edit-access-dialog/e
 import { MatchService } from '../../services/match.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PushSubscriptionsDialogComponent } from '../../components/push-subscriptions-dialog/push-subscriptions-dialog.component';
 
 @Component({
   selector: 'app-home-tournament',
@@ -34,8 +34,14 @@ export class TournamentComponent implements OnInit, OnDestroy {
   tournament: Partial<ITournament>;
   contestantList: Partial<IContestant>[] = [];
   isCheckingEditAccess = false;
-  viewBeingShown: 'bracket' | 'contestants' | 'matches' | 'updates' = 'bracket';
+  viewBeingShown:
+    | 'bracket'
+    | 'contestants'
+    | 'matches'
+    | 'updates'
+    | 'requests' = 'bracket';
   isContestant = false;
+  tooltipDelay = 500;
 
   constructor(
     private router: Router,
@@ -50,7 +56,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private runTournamentGql: RunTournamentGQL,
     public appStore: AppStore,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private editRegistrationRequestGql: EditRegistrationRequestGQL
   ) {
     matIconRegistry.addSvgIcon(
       'swords',
@@ -62,14 +69,15 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        switchMap(
-          (params: ParamMap) =>
-            this.tournamentGql.watch(
-              { linkCode: params.get('linkCode') },
-              {
-                returnPartialData: true,
-              }
-            ).valueChanges.pipe(takeUntil(this.ngUnsubscribe)),
+        switchMap((params: ParamMap) =>
+          this.tournamentGql
+            .watch(
+              { linkCode: params.get('linkCode') }
+              // {
+              //   returnPartialData: true,
+              // }
+            )
+            .valueChanges.pipe(takeUntil(this.ngUnsubscribe))
         ),
         catchError((error) => {
           this.router.navigateByUrl('/');
@@ -131,7 +139,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
       }
 
       let seed = 0;
-
       for (let i = 1; i <= this.tournament.contestantCount; i++) {
         const alreadySeededContestant = this.tournament.contestants.find(
           (cont) => cont.seed === i
@@ -150,7 +157,15 @@ export class TournamentComponent implements OnInit, OnDestroy {
         })
         .pipe(first())
         .subscribe((result) => {
-          console.log('LOOK joinTournament result: ', result);
+          let message;
+          if (this.tournament.requireRegistrationApproval) {
+            message =
+              'You have successfully requested to join this tournament!';
+          } else {
+            message = 'You have successfully joined this tournament!';
+          }
+          this.alertService.success(message);
+          this.requestNotificationSubscription();
 
           // // TODO Optimize
           // const matchContainers = this.bracketHandlerService.createBracket(
@@ -195,7 +210,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
               })
               .pipe(first())
               .subscribe((result) => {
-                console.log('LOOK joinTournament result: ', result);
+                let message;
+                if (this.tournament.requireRegistrationApproval) {
+                  message =
+                    'You have successfully requested to join this tournament!';
+                } else {
+                  message = 'You have successfully joined this tournament!';
+                }
+
+                this.alertService.success(message);
+                this.requestNotificationSubscription();
               });
           } else if (contestant.id && contestant.id.length > 0) {
             this.joinTournamentGql
@@ -205,7 +229,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
               })
               .pipe(first())
               .subscribe((result) => {
-                console.log('LOOK joinTournament result: ', result);
+                let message;
+                if (this.tournament.requireRegistrationApproval) {
+                  message =
+                    'You have successfully requested to join this tournament!';
+                } else {
+                  message = 'You have successfully joined this tournament!';
+                }
+
+                this.alertService.success(message);
+                this.requestNotificationSubscription();
               });
           }
         });
@@ -223,7 +256,36 @@ export class TournamentComponent implements OnInit, OnDestroy {
     return index > -1 ? true : false;
   }
 
+  checkIfWaitingApproval(): boolean {
+    if (!this.loggedInUser || !this.tournament) {
+      return false;
+    }
+    const index = this.tournament.registrationRequests.findIndex((request) => {
+      return (
+        request.contestant.profile &&
+        request.contestant.profile._id === this.loggedInUser._id
+      );
+    });
+
+    return index > -1 ? true : false;
+  }
+
   editTournament(runTournament?: boolean) {
+    if (
+      this.tournament.createdBy &&
+      this.tournament.createdBy._id === this.loggedInUser?._id
+    ) {
+      if (runTournament) {
+        this.runTournamentGql
+          .mutate({ _id: this.tournament._id })
+          .pipe(first())
+          .subscribe();
+      } else {
+        this.router.navigateByUrl(`/${this.tournament.linkCode}/edit`);
+      }
+      return;
+    }
+
     this.isCheckingEditAccess = true;
     const editAccessCode = localStorage.getItem(
       `editAccessCode-${this.tournament.linkCode}`
@@ -362,7 +424,35 @@ export class TournamentComponent implements OnInit, OnDestroy {
     // });
   }
 
-  showView(view: 'bracket' | 'contestants' | 'matches' | 'updates') {
+  showView(
+    view: 'bracket' | 'contestants' | 'matches' | 'updates' | 'requests'
+  ) {
     this.viewBeingShown = view;
+  }
+
+  reviewRegistrationRequest(event) {
+    this.editRegistrationRequestGql
+      .mutate({
+        requestId: event.request._id,
+        tournamentId: this.tournament._id,
+        isApproved: event.isApproved,
+      })
+      .pipe(first())
+      .subscribe();
+  }
+
+  requestNotificationSubscription() {
+    const dialogRef = this.dialog.open(PushSubscriptionsDialogComponent);
+
+    dialogRef
+      .afterClosed()
+      .pipe(first())
+      .subscribe((confirmation) => {
+        debugger
+        if (confirmation && this.loggedInUser && !this.loggedInUser.pushSubscription) {
+            // TODO: dont immediately ask
+            this.alertService.subscribeToNotifications(this.loggedInUser);
+        }
+      });
   }
 }

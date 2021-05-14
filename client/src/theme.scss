@@ -58,7 +58,7 @@ $showdown-blue: (
     100: $black-87-opacity,
     200: $black-87-opacity,
     300: $black-87-opacity,
-    400: $black-87-opacity,
+    400: $white-87-opacity,
     500: white,
     600: white,
     700: white,
@@ -73,7 +73,7 @@ $showdown-blue: (
 
 // Define the default theme (same as the example above).
 $app-primary: mat-palette($showdown-green, 400, 200, 700);
-$app-accent: mat-palette($showdown-blue, 400, 200, 700);
+$app-accent: mat-palette($showdown-blue, 300, 200, 500);
 $app-warn: mat-palette($mat-deep-orange);
 $dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
 

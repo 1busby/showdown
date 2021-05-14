@@ -10,8 +10,15 @@
 }
 
 .create-button {
-  width: 100%;
+  // width: 100%;
+  // display: block;
+
+  margin: 0 auto;
   display: block;
+  margin-top: 24px;
+  font-size: 2rem;
+  border-radius: 10px;
+  line-height: 4rem;
 }
 
 .content-container {
@@ -21,8 +28,4 @@
   right: 0;
   bottom: 0;
   top: 64px;
-
-  tournament-card {
-    cursor: pointer;
-  }
 }

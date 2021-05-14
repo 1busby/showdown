@@ -1,13 +1,20 @@
 .container {
   border-style: solid;
-  border-width: 1px;
-  border-color: black;
-  border-radius: 10px;
+  border-width: 2.5px;
+  border-color: #000;
+  border-radius: 25px;
   margin: 12px;
+  width: 20rem;
   // box-shadow: 0.2px 1px 12px;
 }
 
 .tournament-name {
   font-size: 1.2em;
   font-weight: bold;
+}
+
+.actions {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }

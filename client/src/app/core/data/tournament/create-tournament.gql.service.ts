@@ -20,6 +20,7 @@ export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }
       $setCount: Int
       $allowRegistration: Boolean
       $allowSelfScoring: Boolean
+      $requireRegistrationApproval: Boolean
       $structure: String
       $createdBy: String
     ) {
@@ -34,6 +35,7 @@ export class CreateTournamentGQL extends Mutation<{ addTournament: ITournament }
           setCount: $setCount
           allowRegistration: $allowRegistration
           allowSelfScoring: $allowSelfScoring
+          requireRegistrationApproval: $requireRegistrationApproval
           structure: $structure
           createdBy: $createdBy
         }

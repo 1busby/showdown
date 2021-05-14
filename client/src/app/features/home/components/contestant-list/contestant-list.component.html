@@ -24,6 +24,7 @@
         [matBadge]="contestant.seed"
         matBadgePosition="before"
         matBadgeColor="accent"
+        matBadgeSize="large"
         class="contestant-container"
       >
         <mat-card-content class="contestant-content">
@@ -64,13 +65,14 @@
         </button>
       </mat-form-field>
       <button
+        class="randomize-button"
         mat-raised-button
         type="button"
         color="accent"
         aria-label="Randomize Seeds"
         (click)="shuffleSeeds()"
       >
-        Randomize
+        Shuffle
       </button>
     </ng-container>
   </div>

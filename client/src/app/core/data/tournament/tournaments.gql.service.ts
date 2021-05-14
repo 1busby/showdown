@@ -1,8 +1,6 @@
 import {Query, gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
 
-
-
 import { ITournament } from '@app/shared';
 
 @Injectable({

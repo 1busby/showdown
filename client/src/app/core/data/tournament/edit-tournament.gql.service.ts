@@ -69,6 +69,18 @@ export class EditTournamentGQL extends Mutation<{
             notes
           }
         }
+        contestants {
+          _id
+          name
+          seed
+          points
+          isRegistered
+          profile {
+            _id
+            username
+            imageUrl
+          }
+        }
       }
     }
   `;

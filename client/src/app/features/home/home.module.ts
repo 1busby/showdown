@@ -18,17 +18,26 @@ import { BracketViewComponent } from './components/bracket-view/bracket-view.com
 import { MatchCardComponent } from './components/match-card/match-card.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { NewShowdownComponent } from './components/new-showdown/new-showdown.component';
+import { UpdateListComponent } from './components/update-list/update-list.component';
+import { TournamentListComponent } from './components/tournament-list/tournament-list.component';
+import { RegistrationRequestListComponent } from './components/registration-request-list/registration-request-list.component';
+import { ContestantBannerComponent } from './components/contestant-banner/contestant-banner.component';
+import { PushSubscriptionsDialogComponent } from './components/push-subscriptions-dialog/push-subscriptions-dialog.component';
 
 const gravatarConfig: GravatarConfig = {
   fallback: FALLBACK.robohash,
   rating: RATING.x,
   backgroundColor: 'rgba(0, 0, 0, 0.1)',
   borderColor: 'rgba(0, 0, 0, 0.1)',
-  hasBorder: true // Set this flag to true to have a border by default
+  hasBorder: true, // Set this flag to true to have a border by default
 };
 
 @NgModule({
-  imports: [GravatarModule.forRoot(gravatarConfig), HomeRoutingModule, SharedModule],
+  imports: [
+    GravatarModule.forRoot(gravatarConfig),
+    HomeRoutingModule,
+    SharedModule,
+  ],
   declarations: [
     HomeComponent,
     LandingComponent,
@@ -40,12 +49,23 @@ const gravatarConfig: GravatarConfig = {
     QuickJoinDialogComponent,
     EditAccessDialogComponent,
     MatchDetailDialogComponent,
+    PushSubscriptionsDialogComponent,
     MatchListComponent,
     BracketViewComponent,
     MatchCardComponent,
-    NewShowdownComponent
+    NewShowdownComponent,
+    UpdateListComponent,
+    TournamentListComponent,
+    RegistrationRequestListComponent,
+    ContestantBannerComponent
   ],
   providers: [MatchService],
-  bootstrap: [QuickJoinDialogComponent, EditAccessDialogComponent, MatchDetailDialogComponent, NewShowdownComponent]
+  bootstrap: [
+    QuickJoinDialogComponent,
+    EditAccessDialogComponent,
+    PushSubscriptionsDialogComponent,
+    MatchDetailDialogComponent,
+    NewShowdownComponent,
+  ],
 })
 export class HomeModule {}

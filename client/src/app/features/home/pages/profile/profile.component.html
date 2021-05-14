@@ -1,58 +1,15 @@
-<div *ngIf="user">
-  <div *ngIf="user; else loading" class="navigation-space-buffer">
-    <h2>Profile image <i class="fas fa-portrait"></i></h2>
-    <div class="profile-image">
-      <img
-        *ngIf="selectedFileSrc || user.profile.imageUrl; else robot"
-        [src]="selectedFileSrc || user.profile.imageUrl"
-        height="200"
-        alt="User profile image"
-      />
-      <br />
-      <br />
-      <ng-template #robot>
-        <div class="generic-profile-image"><i class="fas fa-robot"></i></div>
-      </ng-template>
-      <div class="custom-file">
-        <input
-          #imageInput
-          type="file"
-          accept="image/*"
-          class="form-control"
-          id="picture"
-          (change)="changeImage(imageInput)"
-        />
-        <label
-          class="custom-file-label"
-          style="cursor: pointer"
-          for="picture"
-        ></label>
-      </div>
-    </div>
-
-    <div [hidden]="!imageFileIsTooBig" class="alert alert-danger mt-2">
-      The image file selected is too big (max 1MB)
-    </div>
-    <div
-      *ngIf="profileImageChangedStatus === 'ok'"
-      class="alert alert-success mt-2"
-    >
-      Image Profile updated successfully!
-    </div>
-    <div
-      *ngIf="profileImageChangedStatus === 'fail'"
-      class="alert alert-danger mt-2"
-    >
-      Image Profile failed to update!
-    </div>
-
-    <hr />
-  </div>
-
+<div class="content">
+  <img *ngIf="user?._id" ngxGravatar [email]="user?.username" size="150" />
   <p class="name__text">
-    {{ user.username }}
+    {{ user?.username }} <mat-icon
+    matBadgeColor="accent"
+    style="font-size: 2.2rem"
+    aria-label="Win Count Icon"
+    [matBadge]="user?.numWins || 0"
+    >military_tech</mat-icon>
   </p>
-  <br />
+  
+
 
   <!-- <ng-container *ngIf="user?._id === loggedInUser?._id">
     <h1>ICX Wallet Address</h1>
@@ -77,10 +34,8 @@
   <h1>Showdowns</h1>
   <ng-container *ngFor="let challenge of user.challenges"> </ng-container> -->
 
-  <h3>Tournaments</h3>
-  <ng-container *ngFor="let tournament of user.tournaments">
-    <button mat-raised-button (click)="openTournament(tournament.linkCode)">
-      {{ tournament.name }}
-    </button>
-  </ng-container>
+  <div class="tournaments-container">
+    <h3>Tournaments</h3>
+    <tournament-list [tournaments]="user?.tournaments" [loggedInUser]="loggedInUser"></tournament-list>
+  </div>
 </div>

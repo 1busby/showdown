@@ -2,48 +2,143 @@
   <div id="tournament-name">
     <p>
       {{ this.tournament?.name }}
-      <ng-container
-        *ngIf="
-          !tournament.hasStarted &&
-          (!tournament.createdBy ||
-            tournament.createdBy._id === loggedInUser?._id)
-        "
-      >
-        <ng-container *ngIf="isCheckingEditAccess">
-          <mat-spinner color="accent" diameter="30"></mat-spinner>
-        </ng-container>
-        <ng-container *ngIf="!isCheckingEditAccess">
-          <button mat-icon-button color="primary" (click)="editTournament()">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="editTournament(true)"
-          >
-            <mat-icon>play_arrow</mat-icon>
-          </button>
-        </ng-container>
-      </ng-container>
     </p>
+    <div
+      *ngIf="
+        !tournament.hasStarted &&
+        (!tournament.createdBy ||
+          tournament.createdBy._id === loggedInUser?._id)
+      "
+      style="position: absolute; top: 0; left: 15px"
+    >
+      <ng-container *ngIf="isCheckingEditAccess">
+        <mat-spinner color="accent" diameter="30"></mat-spinner>
+      </ng-container>
+      <ng-container *ngIf="!isCheckingEditAccess">
+        <button mat-stroked-button color="primary" (click)="editTournament()">
+          EDIT
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="editTournament(true)"
+          style="margin-left: 12px"
+        >
+          RUN
+        </button>
+      </ng-container>
+    </div>
   </div>
 
-  <ng-container>
-    <ng-container label="Bracket" *ngIf="viewBeingShown === 'bracket'">
+  <div class="content-large">
+    <div class="large-box">
       <bracket-view
-        class="tournament-view"
+        [tournament]="this.tournament"
+        (showMatchDetailsEmitter)="showMatchDetails($event)"
+      ></bracket-view>
+
+      <div class="side-list">
+        <mat-button-toggle-group
+          class="action-buttons"
+          #group="matButtonToggleGroup"
+        >
+          <mat-button-toggle
+            value="justify"
+            (click)="showView('updates')"
+            aria-label="Updates"
+            matTooltip="Updates"
+            [matTooltipShowDelay]="tooltipDelay"
+          >
+            <mat-icon>dynamic_feed</mat-icon>
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            value="center"
+            (click)="showView('contestants')"
+            aria-label="Contestants"
+            matTooltip="Contestants"
+            [matTooltipShowDelay]="tooltipDelay"
+          >
+            <mat-icon>people</mat-icon>
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            value="right"
+            (click)="showView('matches')"
+            aria-label="Matches"
+            matTooltip="Matches"
+            [matTooltipShowDelay]="tooltipDelay"
+          >
+            <mat-icon>format_list_numbered</mat-icon>
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            *ngIf="
+              !tournament.hasStarted &&
+              (!tournament.createdBy ||
+                tournament.createdBy._id === loggedInUser?._id)
+            "
+            value="justify"
+            (click)="showView('requests')"
+            aria-label="Registrations"
+            matTooltip="Registration Requests"
+            [matTooltipShowDelay]="tooltipDelay"
+          >
+            <mat-icon>how_to_reg</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <sd-update-list
+          *ngIf="viewBeingShown === 'updates' || viewBeingShown === 'bracket'"
+          [updates]="tournament.updates"
+        >
+        </sd-update-list>
+
+        <ng-container
+          label="Contestants"
+          *ngIf="viewBeingShown === 'contestants'"
+        >
+          <!-- <div>
+            {{ this.tournament?.contestants?.length || 0 }} /
+            {{ this.tournament?.contestantCount || 0 }} Contestants Registered
+          </div> -->
+          <contestant-list
+            interactionMode="view"
+            [contestants]="this.tournament?.contestants || []"
+          ></contestant-list>
+        </ng-container>
+
+        <ng-container label="Matches" *ngIf="viewBeingShown === 'matches'">
+          <match-list
+            [matches]="this.appStore.getWinnersMatchContainers() | async"
+            (showMatchDetailsEmitter)="showMatchDetails($event)"
+          ></match-list>
+        </ng-container>
+
+        <ng-container label="Requests" *ngIf="viewBeingShown === 'requests'">
+          <sd-registration-request-list
+            [requests]="tournament.registrationRequests"
+            (approvalDecisionEmitter)="reviewRegistrationRequest($event)"
+          ></sd-registration-request-list>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-small">
+    <ng-container label="Brackets" *ngIf="viewBeingShown === 'bracket'">
+      <bracket-view
         [tournament]="this.tournament"
         (showMatchDetailsEmitter)="showMatchDetails($event)"
       ></bracket-view>
     </ng-container>
 
     <ng-container label="Contestants" *ngIf="viewBeingShown === 'contestants'">
-      <div>
+      <!-- <div>
         {{ this.tournament?.contestants?.length || 0 }} /
         {{ this.tournament?.contestantCount || 0 }} Contestants Registered
-      </div>
+      </div> -->
       <contestant-list
-        class="tournament-view"
         interactionMode="view"
         [contestants]="this.tournament?.contestants || []"
       ></contestant-list>
@@ -51,60 +146,80 @@
 
     <ng-container label="Matches" *ngIf="viewBeingShown === 'matches'">
       <match-list
-        class="tournament-view"
         [matches]="this.appStore.getWinnersMatchContainers() | async"
         (showMatchDetailsEmitter)="showMatchDetails($event)"
       ></match-list>
     </ng-container>
 
     <ng-container label="Updates" *ngIf="viewBeingShown === 'updates'">
-      <div class="tournament-view">
-        <ng-container *ngFor="let update of tournament.updates">
-          <mat-card>
-            <mat-card-title>
-              {{ update.title }}
-            </mat-card-title>
-            <mat-card-content>
-              {{ update.description }}
-            </mat-card-content>
-            <mat-card-footer>
-              {{ update.createdOn | date: 'long' }}
-            </mat-card-footer>
-          </mat-card>
-        </ng-container>
-      </div>
+      <sd-update-list [updates]="tournament.updates"> </sd-update-list>
     </ng-container>
-  </ng-container>
 
-  <mat-button-toggle-group class="action-buttons" #group="matButtonToggleGroup">
+    <ng-container label="Requests" *ngIf="viewBeingShown === 'requests'">
+      <sd-registration-request-list
+        [requests]="tournament.registrationRequests"
+        (approvalDecisionEmitter)="reviewRegistrationRequest($event)"
+      ></sd-registration-request-list>
+    </ng-container>
+  </div>
+
+  <mat-button-toggle-group
+    class="action-buttons small-screen"
+    #group="matButtonToggleGroup"
+  >
     <mat-button-toggle
-      color="primary"
       value="left"
       (click)="showView('bracket')"
       aria-label="Bracket View"
+      matTooltip="Bracket View"
+      [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>schema</mat-icon>
     </mat-button-toggle>
+
     <mat-button-toggle
       value="center"
       (click)="showView('contestants')"
       aria-label="Contestants"
+      matTooltip="Contestants"
+      [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>people</mat-icon>
     </mat-button-toggle>
+
     <mat-button-toggle
       value="right"
       (click)="showView('matches')"
       aria-label="Matches"
+      matTooltip="Matches"
+      [matTooltipShowDelay]="tooltipDelay"
     >
       <mat-icon>format_list_numbered</mat-icon>
     </mat-button-toggle>
+
     <mat-button-toggle
       value="justify"
       (click)="showView('updates')"
       aria-label="Updates"
+      matTooltip="Updates"
+      [matTooltipShowDelay]="tooltipDelay"
     >
-      <mat-icon>subscriptions</mat-icon>
+      <mat-icon>dynamic_feed</mat-icon>
+    </mat-button-toggle>
+
+    <mat-button-toggle
+      *ngIf="
+        !tournament.hasStarted &&
+        (!tournament.createdBy ||
+          tournament.createdBy._id === loggedInUser?._id)
+      "
+      value="justify"
+      (click)="showView('requests')"
+      aria-label="Registrations"
+      matTooltip="Registration Requests"
+      [matTooltipShowDelay]="tooltipDelay"
+    >
+      <mat-icon>how_to_reg</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
 </ng-container>
@@ -112,8 +227,9 @@
 <button
   *ngIf="
     tournament?.allowRegistration &&
-    this.tournament?.contestants?.length < this.tournament?.contestantCount &&
-    !this.checkIfContestant()
+    tournament?.contestants?.length < tournament?.contestantCount &&
+    !checkIfContestant() &&
+    !checkIfWaitingApproval()
   "
   mat-fab
   color="primary"

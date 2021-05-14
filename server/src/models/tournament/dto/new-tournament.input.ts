@@ -38,5 +38,8 @@ export class NewTournamentInput {
   allowSelfScoring?: boolean;
 
   @Field({ nullable: true })
+  requireRegistrationApproval?: boolean;
+
+  @Field({ nullable: true })
   structure?: 'single-elim' | 'double-elim' | 'round-robin';
 }

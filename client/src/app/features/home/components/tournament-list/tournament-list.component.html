@@ -1,0 +1,11 @@
+<!-- <h1 style="padding-left: 12px">Tournaments</h1> -->
+<div class="tournament-list">
+  <tournament-card
+    *ngFor="let tournament of tournaments; trackBy: trackByFn"
+    [tournament]="tournament"
+    [canDelete]="loggedInUser && tournament?.createdBy?._id === loggedInUser?._id"
+    (selectTournament)="viewTournament(tournament)"
+    (delete)="deleteTournament(tournament)"
+    (userClicked)="openProfile($event)"
+  ></tournament-card>
+</div>

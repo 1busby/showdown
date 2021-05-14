@@ -1,4 +1,21 @@
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+}
+
 .name__text {
   font-size: 2rem;
   font-weight: bold;
+}
+
+.tournaments-container {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.tournament-list {
+  display: flex;
 }

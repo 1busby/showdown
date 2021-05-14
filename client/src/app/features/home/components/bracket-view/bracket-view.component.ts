@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'bracket-view',
   templateUrl: './bracket-view.component.html',
   styleUrls: ['./bracket-view.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BracketViewComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy {
@@ -39,6 +39,7 @@ export class BracketViewComponent
   canvasHeight = 0;
   canvasWidthLosers = 0;
   canvasHeightLosers = 0;
+  zoomLevel = 0.75;
 
   @Input() tournament: ITournament;
   @Output()
@@ -58,9 +59,9 @@ export class BracketViewComponent
     console.log('LOOK BracketViewComponent ngOnChanges ', this.tournament);
     if (changes.tournament.firstChange) return;
     this.changeDetectorRef.detectChanges();
-    
-    // const matches = this.bracketHandler.createBracket(this.tournament);
-    // this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
+
+    const matches = this.bracketHandler.createBracket(this.tournament);
+    this.appStore.setMatchContainers(matches.matches, matches.losersMatches);
   }
 
   ngOnInit() {
@@ -77,26 +78,32 @@ export class BracketViewComponent
   }
 
   ngAfterViewInit() {
-    this.appStore.getWinnersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
-      if (!m) return;
-      if (!this.matches) {
-        const ctx = this.lineCanvas.nativeElement.getContext('2d');
-        this.drawLines(m, ctx);
-      }
-      this.matches = null;
-      this.matches = m;
-      this.changeDetectorRef.detectChanges();
-    });
-    this.appStore.getLosersMatchContainers().pipe(takeUntil(this.ngUnsubscribe)).subscribe((m) => {
-      if (!m) return;
-      if (!this.losersMatches) {
-        const ctx = this.lineCanvasLosers.nativeElement.getContext('2d');
-        this.drawLinesLosers(m, ctx);
-      }
-      this.losersMatches = null;
-      this.losersMatches = m;
-      this.changeDetectorRef.detectChanges();
-    });
+    this.appStore
+      .getWinnersMatchContainers()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((m) => {
+        if (!m) return;
+        if (!this.matches) {
+          const ctx = this.lineCanvas.nativeElement.getContext('2d');
+          this.drawLines(m, ctx);
+        }
+        this.matches = null;
+        this.matches = m;
+        this.changeDetectorRef.detectChanges();
+      });
+    this.appStore
+      .getLosersMatchContainers()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((m) => {
+        if (!m) return;
+        if (!this.losersMatches) {
+          const ctx = this.lineCanvasLosers.nativeElement.getContext('2d');
+          this.drawLinesLosers(m, ctx);
+        }
+        this.losersMatches = null;
+        this.losersMatches = m;
+        this.changeDetectorRef.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {
@@ -109,23 +116,28 @@ export class BracketViewComponent
   }
 
   drawLines(matches, ctx) {
-    ctx.strokeStyle = "#71BC76";
+    ctx.strokeStyle = '#71BC76';
+    ctx.lineWidth = 5;
     matches.forEach((match: MatchContainer) => {
       if (match.highMatch && match.highMatch.hasLowSeed) {
         ctx.beginPath();
         const from = match.highMatch.getLineConnectionPoint('next');
         const to = match.getLineConnectionPoint('high');
         const midX = from.x + (to.x - from.x) / 2;
+        const midY = from.y + (to.y - from.y) / 2;
         ctx.moveTo(from.x, from.y);
-        ctx.lineTo(
-          midX,
-          from.y
-        );
-        ctx.lineTo(
-          midX,
-          to.y
-        );
-        ctx.lineTo(to.x, to.y);
+        // ctx.lineTo(
+        //   midX,
+        //   from.y
+        // );
+        // ctx.lineTo(
+        //   midX,
+        //   to.y
+        // );
+        // ctx.quadraticCurveTo(midX, from.y, midX, to.y);
+        ctx.bezierCurveTo(midX, from.y, midX, from.y, midX, midY);
+        ctx.bezierCurveTo(midX, to.y, midX, to.y, to.x, to.y);
+        // ctx.lineTo(to.x, to.y);
         ctx.stroke();
       }
       if (match.lowMatch && !match.lowMatch.isLosersBracket) {
@@ -133,39 +145,48 @@ export class BracketViewComponent
         const from = match.lowMatch.getLineConnectionPoint('next');
         const to = match.getLineConnectionPoint('low');
         const midX = from.x + (to.x - from.x) / 2;
+        const midY = from.y + (to.y - from.y) / 2;
         ctx.moveTo(from.x, from.y);
-        ctx.lineTo(
-          midX,
-          from.y
-        );
-        ctx.lineTo(
-          midX,
-          to.y
-        );
-        ctx.lineTo(to.x, to.y);
+        // ctx.lineTo(
+        //   midX,
+        //   from.y
+        // );
+        // ctx.lineTo(
+        //   midX,
+        //   to.y
+        // );
+        // ctx.quadraticCurveTo(midX, from.y, midX, to.y);
+        ctx.bezierCurveTo(midX, from.y, midX, from.y, midX, midY);
+        ctx.bezierCurveTo(midX, to.y, midX, to.y, to.x, to.y);
+        // ctx.lineTo(to.x, to.y);
         ctx.stroke();
       }
     });
   }
 
   drawLinesLosers(matches, ctx) {
-    ctx.strokeStyle = "#71BC76";
+    ctx.strokeStyle = '#71BC76';
+    ctx.lineWidth = 5;
     matches.forEach((match: MatchContainer) => {
       if (match.highMatch && match.highMatch.isLosersBracket) {
         ctx.beginPath();
         const from = match.highMatch.getLineConnectionPoint('next');
         const to = match.getLineConnectionPoint('high');
         const midX = from.x + (to.x - from.x) / 2;
+        const midY = from.y + (to.y - from.y) / 2;
         ctx.moveTo(from.x, from.y);
-        ctx.lineTo(
-          midX,
-          from.y
-        );
-        ctx.lineTo(
-          midX,
-          to.y
-        );
-        ctx.lineTo(to.x, to.y);
+        // ctx.lineTo(
+        //   midX,
+        //   from.y
+        // );
+        // ctx.lineTo(
+        //   midX,
+        //   to.y
+        // );
+        // ctx.bezierCurveTo(midX, from.y, midX, from.y, midX, to.y);
+        // ctx.lineTo(to.x, to.y);
+        ctx.bezierCurveTo(midX, from.y, midX, from.y, midX, midY);
+        ctx.bezierCurveTo(midX, to.y, midX, to.y, to.x, to.y);
         ctx.stroke();
       }
       if (match.lowMatch && match.lowMatch.isLosersBracket) {
@@ -173,16 +194,20 @@ export class BracketViewComponent
         const from = match.lowMatch.getLineConnectionPoint('next');
         const to = match.getLineConnectionPoint('low');
         const midX = from.x + (to.x - from.x) / 2;
+        const midY = from.y + (to.y - from.y) / 2;
         ctx.moveTo(from.x, from.y);
-        ctx.lineTo(
-          midX,
-          from.y
-        );
-        ctx.lineTo(
-          midX,
-          to.y
-        );
-        ctx.lineTo(to.x, to.y);
+        // ctx.lineTo(
+        //   midX,
+        //   from.y
+        // );
+        // ctx.lineTo(
+        //   midX,
+        //   to.y
+        // );
+        // ctx.bezierCurveTo(midX, from.y, midX, from.y, midX, to.y);
+        // ctx.lineTo(to.x, to.y);
+        ctx.bezierCurveTo(midX, from.y, midX, from.y, midX, midY);
+        ctx.bezierCurveTo(midX, to.y, midX, to.y, to.x, to.y);
         ctx.stroke();
       }
     });
@@ -219,5 +244,9 @@ export class BracketViewComponent
   mouseUp() {
     this.isMouseDown = false;
     this.bracketViewContainer.nativeElement.style.cursor = 'grab';
+  }
+
+  onZoomInput(event) {
+    this.zoomLevel = event.value;
   }
 }

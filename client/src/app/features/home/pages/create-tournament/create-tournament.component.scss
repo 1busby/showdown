@@ -7,3 +7,95 @@ mat-slide-toggle {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.form-fields-container {
+  display: flex;
+  flex-direction: column;
+}
+
+button[matStepperPrevious] {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+}
+
+button[matStepperNext] {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+}
+
+button[type='submit'] {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+}
+
+.fade-in {
+  animation: fadeIn ease 0.3s;
+  -webkit-animation: fadeIn ease 0.3s;
+  -moz-animation: fadeIn ease 0.3s;
+  -o-animation: fadeIn ease 0.3s;
+  -ms-animation: fadeIn ease 0.3s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .small-container {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .large-container {
+    display: none;
+    height: 0;
+    width: 0; 
+  }
+}
