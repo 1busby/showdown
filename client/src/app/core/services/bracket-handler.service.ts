@@ -433,7 +433,7 @@ export class BracketHandler {
   }
 
   defineLosersLayoutPlacements() {
-    this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 200);
+    this.matchWidth = Math.max(this.containerWidth / 4 - this.margin, 300);
     this.matchHeight = Math.max(this.containerHeight / 6 - this.margin, 100);
 
     // create an offest bracket to the left if
