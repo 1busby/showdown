@@ -33,9 +33,9 @@ async function bootstrap() {
 
   if (process.env.ISPRODUCTION === 'true') {
     options.httpsOptions = {
-      key: fs.readFileSync(path.join(__dirname , '..', 'utils', 'keys', 'gamebrackets_app.key')),
-      cert: fs.readFileSync(path.join(__dirname, '..', 'utils', 'keys', 'gamebrackets_app.crt')),
-      ca: fs.readFileSync(path.join(__dirname, '..', 'utils', 'keys', 'gamebrackets_app.ca-bundle')),
+      key: fs.readFileSync(path.join(__dirname , '..', 'utils', 'keys', 'theshowdown_io.key')),
+      cert: fs.readFileSync(path.join(__dirname, '..', 'utils', 'keys', 'theshowdown_io.crt')),
+      ca: fs.readFileSync(path.join(__dirname, '..', 'utils', 'keys', 'theshowdown_io.ca-bundle')),
     };
   }
 
