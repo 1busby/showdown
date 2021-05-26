@@ -5,6 +5,7 @@ import * as path from 'path';
 
 import { AppModule } from './app.module';
 import { CustomLogger } from './shared';
+import { https } from './https.middleware';
 
 const whitelist = ['http://localhost:4200'];
 const corsOptions = {
@@ -31,15 +32,17 @@ async function bootstrap() {
     logger: false,
   };
 
+  const app = await NestFactory.create(AppModule, options);
+
   if (process.env.ISPRODUCTION === 'true') {
     options.httpsOptions = {
       key: fs.readFileSync(path.join(__dirname , '..', 'utils', 'keys', 'theshowdown_io.key')),
       cert: fs.readFileSync(path.join(__dirname, '..', 'utils', 'keys', 'theshowdown_io.crt')),
       ca: fs.readFileSync(path.join(__dirname, '..', 'utils', 'keys', 'theshowdown_io.ca-bundle')),
     };
-  }
 
-  const app = await NestFactory.create(AppModule, options);
+    app.use(https);
+  }
 
   app.useLogger(new CustomLogger());
   app.enableCors(corsOptions);
