@@ -26,9 +26,11 @@ export const TournamentSchema = new mongoose.Schema({
   hasStarted: Boolean,
   allowRegistration: Boolean,
   allowSelfScoring: Boolean,
+  isTeamBased: Boolean,
+  teamSize: Number,
   isComplete: Boolean,
   requireRegistrationApproval: Boolean,
   registrationRequests: [RegistrationRequestSchema],
   structure: String,
-  updates: [UpdateSchema]
+  updates: [UpdateSchema],
 });

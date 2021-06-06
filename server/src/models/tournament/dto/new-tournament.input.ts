@@ -41,5 +41,11 @@ export class NewTournamentInput {
   requireRegistrationApproval?: boolean;
 
   @Field({ nullable: true })
+  isTeamBased?: boolean;
+
+  @Field(type => Int, { nullable: true })
+  teamSize?: number;
+
+  @Field({ nullable: true })
   structure?: 'single-elim' | 'double-elim' | 'round-robin';
 }

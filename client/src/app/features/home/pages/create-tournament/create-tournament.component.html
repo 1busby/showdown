@@ -59,10 +59,10 @@
       <input type="text" matInput required formControlName="name" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <!-- <mat-form-field appearance="outline">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <mat-form-field appearance="outline">
       <mat-label>Tournament Type</mat-label>
@@ -77,12 +77,32 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Sets per Match</mat-label>
+      <mat-label>Score to Win / Best of __</mat-label>
       <input
         matInput
         type="number"
         required
         formControlName="setCount"
+        min="1"
+      />
+    </mat-form-field>
+
+    <mat-slide-toggle color="accent" formControlName="isTeamBased">
+      <ng-container *ngIf="!tournamentForm.controls.isTeamBased.value">
+        Solo Play
+      </ng-container>
+      <ng-container *ngIf="tournamentForm.controls.isTeamBased.value">
+        Team Play
+      </ng-container>
+    </mat-slide-toggle>
+
+    <mat-form-field appearance="outline" *ngIf="tournamentForm.controls.isTeamBased.value">
+      <mat-label>Team Size</mat-label>
+      <input
+        matInput
+        type="number"
+        required
+        formControlName="teamSize"
         min="1"
       />
     </mat-form-field>
