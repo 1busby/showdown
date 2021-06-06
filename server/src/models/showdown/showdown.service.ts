@@ -132,7 +132,7 @@ export class ShowdownService {
       .exec()
       .then(result => {
         result.populate('matches.sets');
-        const resultObject = result.toObject();
+        const resultObject: any = result.toObject();
         const returnObject: any = resultObject;
 
         returnObject.matches = matches.map(updateDataMatch => {
