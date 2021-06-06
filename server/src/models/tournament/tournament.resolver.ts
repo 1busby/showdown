@@ -62,9 +62,9 @@ export class TournamentResolver {
       }
       tournament.contestants.sort((a, b) => a.seed - b.seed);
 
-      this.logger.log('LOOK returning tournament ', tournament.toJSON());
+      this.logger.log('LOOK returning tournament ', tournament.toJSON() as any);
 
-      return tournament.toJSON();
+      return tournament.toJSON() as any;
     } catch (e) {
       this.logger.error('Error getting tournament becuase ', e);
     }
@@ -192,7 +192,7 @@ export class TournamentResolver {
   removeContestant(
     @Args('_id', { type: () => ID }) _id: string,
     @Args('contestantId', { type: () => ID }) contestantId: string,
-  ): Promise<Tournament> {
+  ): Promise<any> {
     return this.tournamentService.removeContestant(_id, contestantId);
   }
 

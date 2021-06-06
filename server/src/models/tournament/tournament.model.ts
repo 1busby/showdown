@@ -57,6 +57,12 @@ export class Tournament extends Document implements ITournament {
   hasStarted?: boolean;
 
   @Field({ nullable: true })
+  isTeamBased?: boolean;
+
+  @Field(type => Int, { nullable: true })
+  teamSize?: number;
+
+  @Field({ nullable: true })
   allowRegistration?: boolean;
 
   @Field({ nullable: true })
@@ -73,6 +79,4 @@ export class Tournament extends Document implements ITournament {
 
   @Field({ nullable: true })
   structure?: 'single-elim' | 'double-elim' | 'round-robin';
-
-  // anonymousContestants?: [];
 }

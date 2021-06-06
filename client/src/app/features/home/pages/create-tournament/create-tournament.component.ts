@@ -40,10 +40,10 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
       viewLabel: 'Double Elimination',
       value: 'double-elim',
     },
-    {
-      viewLabel: 'Round Robin',
-      value: 'round-robin',
-    },
+    // {
+    //   viewLabel: 'Round Robin',
+    //   value: 'round-robin',
+    // },
   ];
 
   tournamentForm: FormGroup = this.formBuilder.group({
@@ -57,6 +57,8 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     allowRegistration: [false],
     requireRegistrationApproval: [true],
     allowSelfScoring: [false],
+    isTeamBased: [false],
+    teamSize: [1],
     structure: ['single-elim'],
   });
 
