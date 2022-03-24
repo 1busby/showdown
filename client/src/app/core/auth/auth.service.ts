@@ -22,8 +22,8 @@ export class AuthService {
     false
   );
 
-  provider;
-  sdk;
+  provider: ethers.providers.BaseProvider;
+  sdk: ThirdwebSDK;
   signer;
   address;
 
@@ -31,7 +31,10 @@ export class AuthService {
     // We instantiate the sdk on Rinkeby.
     // This url indicates which chain you want to connect to
     // const rpcUrl = 'https://eth-rinkeby.alchemyapi.io/v2/Pvi8U5jFmJtHMBb9ch8Cb_ipWdFv4IwC';
-    // this.provider = ethers.getDefaultProvider(rpcUrl);
+    // const rpcUrl = 'rinkeby';
+    // this.provider = ethers.getDefaultProvider(rpcUrl, {
+    //   alchemy: 'https://eth-rinkeby.alchemyapi.io/v2/Pvi8U5jFmJtHMBb9ch8Cb_ipWdFv4IwC'
+    // });
     // this.sdk = new ThirdwebSDK(this.provider);
 
     // // We can grab a reference to our ERC-1155 contract.
@@ -142,9 +145,22 @@ export class AuthService {
   }
 
   async loginEthereum() {
-    await this.provider.send('eth_requestAccounts', []);
-    this.signer = this.provider.getSigner();
-    this.address = await this.signer.getAddress();
+    if ((window as any).ethereum) {
+      console.log('detected');
+
+      try {
+        const accounts = await (window as any).ethereum.request({
+          method: 'eth_requestAccounts'
+        });
+
+        this.address = accounts[0];
+        this.provider = new ethers.providers.Web3Provider((window as any).ethereum);
+      } catch (error) {
+        console.error('Error connecting to meta mask...');
+      }
+    } else {
+      console.log('Meta Mask not detected');
+    }
   }
 
   logout() {

@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   login() {
     // MetaMask requires requesting permission to connect users accounts
-    this.authService.loginEthereum();  
+    this.authService.loginEthereum();
     // this.dialog.open(LoginComponent, {
     //   width: '250px',
     // });
