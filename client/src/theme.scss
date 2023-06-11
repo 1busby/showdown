@@ -1,9 +1,9 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // **Be sure that you only ever include this mixin once!**
-@include mat-core();
+@include mat.core();
 
 $showdown-green: (
   50: #e9f5eb,
@@ -21,17 +21,17 @@ $showdown-green: (
   A400: #52a156,
   A700: #2c5f2e,
   contrast: (
-    50: $black-87-opacity,
-    100: $black-87-opacity,
-    200: $black-87-opacity,
-    300: $black-87-opacity,
-    400: $black-87-opacity,
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
     500: white,
     600: white,
     700: white,
-    800: $white-87-opacity,
-    900: $white-87-opacity,
-    A100: $black-87-opacity,
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
     A200: white,
     A400: white,
     A700: white,
@@ -54,17 +54,17 @@ $showdown-blue: (
   A400: #5b4fa6,
   A700: #3e2878,
   contrast: (
-    50: $black-87-opacity,
-    100: $black-87-opacity,
-    200: $black-87-opacity,
-    300: $black-87-opacity,
-    400: $white-87-opacity,
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(white, 0.87),
     500: white,
     600: white,
     700: white,
-    800: $white-87-opacity,
-    900: $white-87-opacity,
-    A100: $black-87-opacity,
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
     A200: white,
     A400: white,
     A700: white,
@@ -72,15 +72,15 @@ $showdown-blue: (
 );
 
 // Define the default theme (same as the example above).
-$app-primary: mat-palette($showdown-green, 400, 200, 700);
-$app-accent: mat-palette($showdown-blue, 300, 200, 500);
-$app-warn: mat-palette($mat-deep-orange);
-$dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
+$app-primary: mat.define-palette($showdown-green, 400, 200, 700);
+$app-accent: mat.define-palette($showdown-blue, 300, 200, 500);
+$app-warn: mat.define-palette(mat.$deep-orange-palette);
+$dark-theme: mat.define-dark-theme($app-primary, $app-accent, $app-warn);
 
-@include angular-material-theme($dark-theme);
+@include mat.all-component-themes($dark-theme);
 
-$light-theme: mat-light-theme($app-primary, $app-accent);
+$light-theme: mat.define-light-theme($app-primary, $app-accent);
 
 .basic-light-theme {
-  @include angular-material-theme($light-theme);
+  @include mat.all-component-themes($light-theme);
 }

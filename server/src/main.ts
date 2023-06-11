@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestApplicationOptions } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
+import helmet from 'helmet';
 
 import { AppModule } from './app.module';
 import { CustomLogger } from './shared';
@@ -42,6 +43,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, options);
 
   app.useLogger(new CustomLogger());
+  app.use(helmet());
   app.enableCors(corsOptions);
   await app.listen(process.env.PORT);
 }

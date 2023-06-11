@@ -60,6 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   login() {
+    // this.authService.loginEthereum();
     this.dialog.open(LoginComponent, {
       width: '250px',
     });
